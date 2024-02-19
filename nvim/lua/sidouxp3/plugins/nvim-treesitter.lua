@@ -42,6 +42,7 @@ return {
           "gitignore",
           "sql",
           "php",
+          "c",
         },
         -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
         ts_context_commentstring = {

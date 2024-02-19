@@ -186,6 +186,11 @@ return {
       capabilities = capabilities,
       on_attach = on_attach,
     })
+    -- configure clangd language server
+    lspconfig["clangd"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+    })
     -- configure php language server
     lspconfig["intelephense"].setup({
       capabilities = capabilities,
