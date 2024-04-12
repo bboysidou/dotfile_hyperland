@@ -44,6 +44,8 @@ sudo pacman -S alsa-utils alsa-plugins alsa-lib alsa-firmware \
 # 5- zsh-syntax-highlighting
 # 6- install tmux plugin manager (tpm)
 # 7- copy FontUsed to ~/.fonts   
+# 7- copy Juno-ocean to /usr/share/themes/   
+# 7- copy kora-green to /usr/share/icons/
 
 # YAY ----------------------------------------------------------- 
 yay -S rofi-lbonn-wayland 
