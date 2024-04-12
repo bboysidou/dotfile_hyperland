@@ -7,9 +7,23 @@ check=$(tmux ls |grep $selected)
 
 echo "${check}"
 
-if [ -z "$check" ]; then
-    tmux new -s $selected
-else
-    tmux attach -t $selected
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $selected -c $selected
+    exit 0
 fi
+
+if ! tmux has-session -t=$selected 2> /dev/null; then
+    tmux new-session -ds $selected -c $selected
+fi
+
+# tmux switch-client -t $selected
+tmux attach -t $selected
+
+# if [ -z "$check" ]; then
+#     tmux new -s $selected
+# else
+#     tmux attach -t $selected
+# fi
 

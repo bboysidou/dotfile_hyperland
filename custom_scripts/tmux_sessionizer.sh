@@ -2,7 +2,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    folder= selected=$(find ~/Web-development -mindepth 2 -maxdepth 3 -type d -not -path '*/\.*' | fzf)
+    folder= selected=$(find  ~/Web-development -mindepth 1 -maxdepth 3 -type d -not -path '*/\.*' | fzf)
 fi
 if [[ -z $selected ]]; then
     exit 0

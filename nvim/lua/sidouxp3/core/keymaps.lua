@@ -40,6 +40,17 @@ keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 -- vim.keymap.set('n', '[b', '<CMD>BufferLineMovePrev<CR>')
 -- vim.keymap.set('n', 'gs', '<CMD>BufferLineSortByDirectory<CR>')
 
+-- harpoon
+keymap.set("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", { desc = "Mark file with harpoon" })
+keymap.set("n", "<leader>nn", ":lua require('harpoon.ui').nav_next()<cr>", { desc = "Go to next harpoon mark" })
+keymap.set("n", "<leader>pp", ":lua require('harpoon.ui').nav_prev()<cr>", { desc = "Go to previous harpoon mark" })
+keymap.set(
+  "n",
+  "<leader>hh",
+  ":lua require('harpoon.ui').toggle_quick_menu()<cr>",
+  { desc = "Go to previous harpoon mark" }
+)
+
 -- flutter
 keymap.set({ "n", "v", "i" }, "<A-f>", ":FlutterOutlineToggle<CR>")
 

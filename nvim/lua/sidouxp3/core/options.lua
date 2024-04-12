@@ -1,5 +1,6 @@
-local opt = vim.opt -- Declare a variable
+vim.cmd("let g:netrw_liststyle = 3")
 
+local opt = vim.opt -- Declare a variable
 vim.g.skip_ts_context_commentstring_module = true
 opt.guicursor = ""
 -- line numbers
@@ -19,9 +20,12 @@ opt.wrap = false
 opt.ignorecase = true
 opt.smartcase = true
 
+opt.cursorline = true
+
 -- appearance
 opt.termguicolors = true
 opt.background = "dark"
+opt.signcolumn = "yes"
 -- clipboard
 opt.clipboard:append("unnamedplus")
 

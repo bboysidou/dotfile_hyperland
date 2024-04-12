@@ -13,14 +13,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({ { import = "sidouxp3.plugins" }, { import = "sidouxp3.plugins.lsp" } }, {
   ui = {
-    border = "double",
+    border = "single",
     size = {
       width = 0.8,
       height = 0.8,
     },
-  },
-  install = {
-    colorscheme = { "nightfly" },
   },
   checker = {
     enabled = true,
