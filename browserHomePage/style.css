@@ -88,6 +88,7 @@ a {
   color: var(--foreground);
   text-decoration: none;
   outline: none;
+  font-weight: bold;
 }
 
 a:hover {
