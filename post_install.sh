@@ -29,7 +29,7 @@ sudo pacman -S linux-firmware linux-firmware-marvell linux-firmware-qlogic \
 sudo pacman -S amd-ucode
 
 # IF GPU IS NVIDIA -----------------------------------------------------------
-sudo pacman -S nvidia nvidia-utils nvidia-settings nvidia-dkms nvidia-prime
+sudo pacman -S nvidia nvidia-utils nvidia-settings nvidia-dkms
 
 # VIDEO AUDIO CODECS -----------------------------------------------------------
 sudo pacman -S alsa-utils alsa-plugins alsa-lib alsa-firmware \
@@ -48,9 +48,7 @@ sudo pacman -S alsa-utils alsa-plugins alsa-lib alsa-firmware \
 # 7- copy kora-green to /usr/share/icons/
 
 # YAY ----------------------------------------------------------- 
-yay -S rofi-lbonn-wayland 
-yay -S brave-bin
-yay -S pacseek trizen
+yay -S brave-bin rofi-lbonn-wayland pacseek trizen 
 
 # SNAPs ----------------------------------------------------------- 
 sudo snap install android-studio --classic
@@ -71,12 +69,7 @@ auto-cpufreq
 # HARDWARE ACCELERATION -----------------------------------------------------------
 
 # FOR AMD APU OR GPU
-sudo pacman -S libva-mesa-driver
-sudo pacman -S libva-vdpau-driver
-sudo pacman -S mesa_vdpau
-sudo pacman -S mesa-vdpau
-sudo pacman -S libva-utils
-sudo pacman -S vdpauinfo
+sudo pacman -S libva-mesa-driver vdpauinfo libva-vdpau-driver mesa-vdpau libva-utils
 
 # ADD THIS TO /etc/environment
 LIBVA_DRIVER_NAME=radeonsi
