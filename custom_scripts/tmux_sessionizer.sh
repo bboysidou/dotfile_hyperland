@@ -2,7 +2,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    folder= selected=$(find  ~/Web-development -mindepth 1 -maxdepth 3 -type d -not -path '*/\.*' | fzf)
+    folder= selected=$(find  ~/Web-development -mindepth 1 -maxdepth 3 -type d -not -path '*/\.*' |  fzf --reverse --border "rounded" --border-label "TMUX SESSIONIZER")
 fi
 if [[ -z $selected ]]; then
     exit 0

@@ -2,7 +2,7 @@
 sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   unzip ripgrep gvfs-mtp net-tools mtpfs neofetch usbutils \
   udisks2 udiskie acpi dhcpcd fzf zip mpv pacman-contrib cronie brightnessctl\
-  thunar tumbler transmission-gtk nvtop
+  thunar tumbler transmission-gtk nvtop man-db
 
 # HYPRLAND -----------------------------------------------------------
 sudo pacman -S wl-clipboard waybar hyprpaper hyprlock 

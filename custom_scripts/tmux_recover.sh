@@ -1,5 +1,5 @@
 #!/bin/sh
-selected=$(cat ~/.config/custom_scripts/tmux_sessions.txt | fzf)
+selected=$(cat ~/.config/custom_scripts/tmux_sessions.txt | fzf --reverse --border "rounded" --border-label "WORK PROJECTS")
 if [[ -z $selected ]]; then
     exit 0
 fi
