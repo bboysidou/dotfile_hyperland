@@ -17,7 +17,8 @@
   "modules-left": [
     "hyprland/workspaces",
     "backlight",
-    "custom/updates"
+    "custom/updates",
+    "bluetooth"
   ],
   // Modules Center
   "modules-center": [
@@ -26,7 +27,6 @@
   // Modules Right    
   "modules-right": [
     "pulseaudio",
-    "bluetooth",
     "battery",
     "network",
     "group/hardware",
