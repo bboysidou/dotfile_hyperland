@@ -1,7 +1,8 @@
 :root {
   --font: "monospace";
   --font-family: "monospace";
-  --background: #080c07;
+  --background: #000000;
+  /* --background: #080c07; */
   --foreground: #b9c9b8;
   --green: #638660;
   --red: #bd4d5a;
@@ -15,6 +16,7 @@ html {
 
 body {
   background: var(--background);
+  font-weight: bold;
 }
 
 .container {
@@ -41,7 +43,7 @@ h1 {
   display: inline;
   font-family: var(--font);
   font-size: 1rem;
-  font-weight: normal;
+  /* font-weight: normal; */
   color: var(--red);
 }
 
@@ -105,6 +107,8 @@ input {
   font-size: 1rem;
   color: var(--foreground);
   background-color: var(--background);
-  border: none;
+  border: 1px solid var(--green);
+  border-radius: 1rem;
+  padding: 0.2rem;
   outline: none;
 }
