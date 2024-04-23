@@ -46,6 +46,8 @@ sudo pacman -S alsa-utils alsa-plugins alsa-lib alsa-firmware \
 # 7- copy FontUsed to ~/.fonts   
 # 7- copy Juno-ocean to /usr/share/themes/   
 # 7- copy kora-green to /usr/share/icons/
+# 8- mkdir -p ~/Pictures/wallpaper/
+# 9- copy Wallpaper in ~/Pictures/wallpaper/
 
 # YAY ----------------------------------------------------------- 
 yay -S brave-bin rofi-lbonn-wayland pacseek trizen 
