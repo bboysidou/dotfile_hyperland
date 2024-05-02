@@ -44,11 +44,11 @@ keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 keymap.set("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", { desc = "Mark file with harpoon" })
 keymap.set("n", "<leader>nn", ":lua require('harpoon.ui').nav_next()<cr>", { desc = "Go to next harpoon mark" })
 keymap.set("n", "<leader>pp", ":lua require('harpoon.ui').nav_prev()<cr>", { desc = "Go to previous harpoon mark" })
-keymap.set("n", "<C-h>", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
-keymap.set("n", "<C-j>", ":lua require('harpoon.ui').nav_file(2)<cr>", { desc = "navigate to the 2 file" })
-keymap.set("n", "<C-k>", ":lua require('harpoon.ui').nav_file(3)<cr>", { desc = "navigate to the 3 file" })
-keymap.set("n", "<C-l>", ":lua require('harpoon.ui').nav_file(4)<cr>", { desc = "navigate to the 4 file" })
-keymap.set("n", "<C-;>", ":lua require('harpoon.ui').nav_file(5)<cr>", { desc = "navigate to the 5 file" })
+-- keymap.set("n", "<C-h>", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
+keymap.set("n", "<leader>y", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
+keymap.set("n", "<leader>u", ":lua require('harpoon.ui').nav_file(2)<cr>", { desc = "navigate to the 2 file" })
+keymap.set("n", "<leader>i", ":lua require('harpoon.ui').nav_file(3)<cr>", { desc = "navigate to the 3 file" })
+keymap.set("n", "<leader>o", ":lua require('harpoon.ui').nav_file(4)<cr>", { desc = "navigate to the 4 file" })
 keymap.set(
   "n",
   "<leader>hh",
@@ -59,9 +59,6 @@ keymap.set(
 -- flutter
 keymap.set({ "n", "v", "i" }, "<A-f>", ":FlutterOutlineToggle<CR>")
 
--- dbui
-keymap.set("n", "<leader>db", ":DBUIToggle<CR>")
-
 -- file
 keymap.set("n", "n", "nzzzv") -- search down and center the view
 keymap.set("n", "N", "Nzzzv") -- search up center the view
@@ -71,6 +68,3 @@ keymap.set({ "n", "v", "i" }, "<C-s>", "<ESC>:w<CR>") -- save the file
 keymap.set({ "n", "v", "i" }, "<C-w>", "<ESC>:q!<CR>") -- close the file
 keymap.set({ "n", "v", "i" }, "<C-down>", "5jzz") -- jump 5 down lines
 keymap.set({ "n", "v", "i" }, "<C-up>", "5kzz") -- jump 5 up lines
-
--- VIM REST CONSOLE
-keymap.set("n", "<C-x>", ":call VrcQuery()<CR>") -- RUN REST QUERY
