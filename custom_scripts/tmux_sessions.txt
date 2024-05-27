@@ -8,3 +8,4 @@ Stock_app
 test
 Island_shop
 Rashid_shop
+Astro
