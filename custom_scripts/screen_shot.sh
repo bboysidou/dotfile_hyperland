@@ -14,12 +14,12 @@ if [ ! -d "$DIRECTORY" ]; then
     mkdir -p "$DIRECTORY"
 fi
 
-option2="Selected area"
-option3="Fullscreen (delay 1 sec)"
+option2="󰆞  Selected area"
+option3="󰹑  Fullscreen (delay 1 sec)"
 
 options="$option2\n$option3"
 
-choice=$(echo -e "$options" | rofi -dmenu -replace -config ~/dotfiles/rofi/config-screenshot.rasi -i -no-show-icons -l 2 -width 30 -p "Take Screenshot")
+choice=$(echo -e "$options" | rofi -dmenu -replace -config ~/.config/rofi/config.rasi -l 2 -width 30 -p "Take Screenshot")
 
 case $choice in
     $option2)
