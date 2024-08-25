@@ -20,7 +20,7 @@ return {
         colors.bg_float = bg_dark
         colors.bg_highlight = bg_highlight
         colors.bg_popup = bg_dark
-        --     colors.bg_search = bg_search
+        -- colors.bg_search = bg_search
         colors.bg_sidebar = bg_dark
         --     colors.bg_statusline = bg_dark
         --     colors.bg_visual = bg_visual
