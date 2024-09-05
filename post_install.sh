@@ -1,8 +1,9 @@
 # APP NEEDED TO WINDOW MANAGER WORK PROPERLLY -----------------------------------------------------------
 sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
-  unzip ripgrep gvfs-mtp net-tools mtpfs neofetch usbutils \
+  unzip ripgrep gvfs-mtp net-tools mtpfs fastfetch usbutils \
   udisks2 udiskie acpi dhcpcd fzf zip mpv pacman-contrib cronie brightnessctl\
-  thunar tumbler transmission-gtk nvtop man-db eza slurp grim fish loupe
+  thunar tumbler transmission-gtk nvtop man-db eza slurp grim fish loupe vi \
+  unrar btop htop
 
 # HYPRLAND -----------------------------------------------------------
 sudo pacman -S wl-clipboard waybar hyprpaper hyprlock 
@@ -114,6 +115,12 @@ Color
 CheckSpace
 VerbosePkgLists
 ParallelDownloads = 5
+
+# CHECK ZRAM ------------------------------------------------------------------ 
+sudo vim /etc/systemd/zram-generator.conf
+# add this 
+# [zram0]
+# zram-size=ram
 
 # PACKAGE INSTALLED ----------------------------------------------------------- 
 see sidou_arch.txt

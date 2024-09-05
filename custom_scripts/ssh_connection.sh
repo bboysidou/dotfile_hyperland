@@ -1,7 +1,7 @@
 #!/bin/sh
 
-server_names=`echo "evo_production evo_gestion evo_net evo_auth isale_api isale_db femispace"|tr ' ' '\n'`
-server_ips=("admineasy@185.243.215.222" "root@185.243.215.112" "root@185.96.163.193" "root@185.96.163.100" "root@194.32.79.85" "root@89.38.135.237" "root@93.115.21.152")
+server_names=`echo "sidou evo_production evo_gestion femispace"|tr ' ' '\n'`
+server_ips=("root@164.90.168.40" "evo@185.243.215.28 -p 1973" "evo_gestion" "root@93.115.21.152")
 
 selected=`echo "$server_names"| cat -n | fzf --reverse --border "rounded" --border-label "SSH CONNECTION" --with-nth 2.. | awk '{print $1}'`
 
