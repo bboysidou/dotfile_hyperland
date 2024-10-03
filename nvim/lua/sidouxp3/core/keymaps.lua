@@ -8,10 +8,10 @@ keymap.set("n", "<A-up>", ":m .-2<CR>==") -- move line down(n)
 keymap.set("v", "<A-down>", ":m '>+1<CR>gv=gv") -- move line up(v)
 keymap.set("v", "<A-up>", ":m '<-2<CR>gv=gv") -- move line down(v)
 -- window management
-keymap.set("n", "<leader>sv", "<C-w>v") -- split window vertically
-keymap.set("n", "<leader>sh", "<C-w>s") -- split window horizontally
-keymap.set("n", "<leader>se", "<C-w>=") -- make split windows equal width & height
-keymap.set("n", "<leader>sx", ":close<CR>") -- close current split window
+keymap.set("n", "sv", "<C-w>v") -- split window vertically
+keymap.set("n", "sh", "<C-w>s") -- split window horizontally
+keymap.set("n", "se", "<C-w>=") -- make split windows equal width & height
+keymap.set("n", "sx", ":close<CR>") -- close current split window
 
 keymap.set("n", "<leader>to", ":tabnew<CR>") -- open new tab
 keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
@@ -27,12 +27,13 @@ keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- toggle file explorer
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>") -- find files within current working directory, respects .gitignore
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>") -- find string in current working directory as you type
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
-keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
+keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
 
 -- bufferline
-keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>")
-keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>BufferLineCyclePrev<CR>")
+keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>") -- cycle through buffers
+keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>BufferLineCyclePrev<CR>") -- cycle through buffers
+keymap.set({ "n", "v", "i" }, "<A-a>", "<CMD>BufferLineCloseOthers<CR>") -- close all other buffers
 keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 -- vim.keymap.set('n', 'gb', '<CMD>BufferLinePick<CR>')
 -- vim.keymap.set("n", "<leader>ts", "<CMD>BufferLinePickClose<CR>")
