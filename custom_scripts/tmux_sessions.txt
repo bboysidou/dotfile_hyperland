@@ -1,12 +1,5 @@
-Astro
-EVO
-Island_shop
 Rashid_shop
 dotfile
-I_Sale
-Stock_app
-Vitfe-Driver
-IShop
-Portfolio
 cosidar
-fromReactToNext
+Octadome
+Army

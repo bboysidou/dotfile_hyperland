@@ -1,2 +1,2 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+require("sidouxp3.core")
+require("sidouxp3.lazy")
