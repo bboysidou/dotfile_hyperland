@@ -23,6 +23,11 @@ return {
     })
 
     telescope.setup({
+      pickers = {
+        find_files = {
+          cwd = vim.fn.getcwd(),
+        },
+      },
       defaults = {
         path_display = { "smart" },
         mappings = {
