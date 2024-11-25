@@ -10,7 +10,7 @@ if [ ! -f "$SESSION_FILE" ]; then
 fi
 
 # Extract unique session names using `awk` and pass them to `fzf`
-SESSION_NAME=$(awk -F ':' '{print $1}' "$SESSION_FILE" | sort -u | fzf --preview "grep -e '^{}' $SESSION_FILE | column -t -s ':'" --preview-window=up:6:wrap)
+SESSION_NAME=$(awk -F ':' '{print $1}' "$SESSION_FILE" | sort -u | fzf --reverse --info right --prompt "Select a session: " --border "rounded" --border-label "WORK PROJECTS" --preview "grep -e '^{}' $SESSION_FILE | column -t -s ':'" --preview-window=right:wrap)
 
 # Check if a session was selected
 if [ -z "$SESSION_NAME" ]; then
