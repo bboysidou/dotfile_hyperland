@@ -1,0 +1,27 @@
+Army:1:frontend:%1:/home/sidouxp3/Web-development/Army/SupplyManagment/frontend/src/features/products_tracking/presentation/components:nvim
+Army:2:backend:%2:/home/sidouxp3/Web-development/Army/SupplyManagment/backend:nvim
+Army:3:docker:%3:/home/sidouxp3/Web-development/Army/SupplyManagment:fish
+Army:4:git:%4:/home/sidouxp3/Web-development/Army/SupplyManagment:fish
+Army:5:database:%5:/home/sidouxp3/Web-development/Army/SupplyManagment/db:nvim
+Army:6:server:%6:/home/sidouxp3/Web-development/Army/SupplyManagment:fish
+Learn_django:1:nvim:%7:/home/sidouxp3/Web-development/learn_django/first_project:nvim
+Learn_django:2:fish:%8:/home/sidouxp3/Web-development/learn_django:fish
+Octadome:1:flutter_app:%9:/home/sidouxp3/Web-development/Octadome/CRM/crm_app:nvim
+Octadome:2:fish:%10:/home/sidouxp3/Web-development/Octadome/CRM/crm_app:fish
+Rashid_shop:1:nvim:%11:/home/sidouxp3/Web-development/Rashid_shop/frontend_v4/src/feature/ads/presentation/components:nvim
+Rashid_shop:2:docker:%12:/home/sidouxp3/Web-development/Rashid_shop:fish
+Rashid_shop:3:git :%13:/home/sidouxp3/Web-development/Rashid_shop/frontend_v2:nvim
+Rashid_shop:4:fish:%14:/home/sidouxp3/Web-development/Rashid_shop/frontend_v4:fish
+Vitfe-Driver:1:nvim:%15:/home/sidouxp3/Web-development/Vitfe-Driver:nvim
+Vitfe-Driver:2:flutter:%16:/home/sidouxp3/Web-development/Vitfe-Driver:fish
+Vitfe-Driver:3:git:%17:/home/sidouxp3/Web-development/Vitfe-Driver:fish
+cosidar:1:frontend:%18:/home/sidouxp3/Web-development/cosidar/frontend:nvim
+cosidar:2:backend:%19:/home/sidouxp3/Web-development/cosidar/backend:nvim
+cosidar:3:docker:%20:/home/sidouxp3/Web-development/cosidar:fish
+cosidar:4:git:%21:/home/sidouxp3/Web-development/cosidar:fish
+cosidar:5:database:%22:/home/sidouxp3/Web-development/cosidar/db:nvim
+cosidar:6:fish:%23:/home/sidouxp3/Web-development/cosidar:fish
+dotfile:1:config:%24:/home/sidouxp3/.config:nvim
+dotfile:2:nvim:%25:/home/sidouxp3/.config/nvim:nvim
+dotfile:3:post_install:%26:/home/sidouxp3/Downloads/dotfile_hyperland:fish
+dotfile:4:tmux:%27:/home/sidouxp3/.config/tmux:nvim

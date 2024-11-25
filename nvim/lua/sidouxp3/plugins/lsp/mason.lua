@@ -27,7 +27,6 @@ return {
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {
-        -- "tsserver",
         "ts_ls",
         "clangd",
         "eslint",
@@ -42,6 +41,7 @@ return {
         "emmet_ls",
         "graphql",
         "html",
+        "sqlls",
         "jsonls",
         "lua_ls",
         "emmet_ls",

@@ -81,9 +81,6 @@ return {
     mason_lspconfig.setup_handlers({
       -- default handler for installed servers
       function(server_name)
-        if server_name == "tsserver" then
-          server_name = "ts_ls"
-        end
         lspconfig[server_name].setup({
           capabilities = capabilities,
         })
@@ -129,6 +126,43 @@ return {
               },
               completion = {
                 callSnippet = "Replace",
+              },
+            },
+          },
+        })
+      end,
+      ["rust_analyzer"] = function()
+        lspconfig["rust_analyzer"].setup({
+          capabilities = capabilities,
+          settings = {
+            ["rust-analyzer"] = {
+              cargo = {
+                allFeatures = true,
+              },
+              checkOnSave = {
+                command = "clippy",
+              },
+              procMacro = {
+                enable = true,
+              },
+              inlayHints = {
+                enable = true,
+              },
+            },
+          },
+        })
+      end,
+      ["gopls"] = function()
+        lspconfig["gopls"].setup({
+          capabilities = capabilities,
+          settings = {
+            gopls = {
+              usePlaceholders = true, -- Enable placeholders for function parameters or struct fields
+              completeUnimported = true, -- Automatically suggest unimported packages
+              staticcheck = true, -- Enable static analysis checks
+              analyses = {
+                unusedparams = true, -- Enable analysis for unused parameters
+                nilness = true, -- Enable nilness checks
               },
             },
           },

@@ -3,6 +3,7 @@ vim.cmd("let g:netrw_keepdir = 0")
 
 local opt = vim.opt -- Declare a variable
 vim.g.skip_ts_context_commentstring_module = true
+vim.opt.autochdir = false
 
 opt.guicursor = ""
 -- line numbers
