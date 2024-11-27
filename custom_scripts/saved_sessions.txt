@@ -25,4 +25,5 @@ dotfile:1:config:/home/sidouxp3/.config:nvim
 dotfile:2:nvim:/home/sidouxp3/.config/nvim:nvim
 dotfile:3:post_install:/home/sidouxp3/Downloads/dotfile_hyperland:fish
 dotfile:4:tmux:/home/sidouxp3/.config/tmux:nvim
-Army:1:nvim:/home/sidouxp3/Web-development/Army/SupplyManagment/frontend:nvim
+dotfile:1:nvim:/home/sidouxp3/.config:nvim
+dotfile:5:custom_scripts:/home/sidouxp3/.config/custom_scripts:nvim
