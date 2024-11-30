@@ -21,6 +21,11 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
+        local bufnr = ev.buf
+        local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+        if filetype == "netrw" then
+          return
+        end
         -- Buffer local mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }
