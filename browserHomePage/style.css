@@ -1,6 +1,5 @@
 :root {
   --font: "monospace";
-  --font-family: "monospace";
   --background: #000000;
   /* --background: #080c07; */
   --foreground: #b9c9b8;
@@ -16,7 +15,7 @@ html {
 
 body {
   background: var(--background);
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .container {
@@ -86,11 +85,11 @@ li:last-child::after {
 
 a {
   font-family: var(--font);
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--foreground);
   text-decoration: none;
   outline: none;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 a:hover {

@@ -26,3 +26,9 @@ dotfile:3:post_install:/home/sidouxp3/Downloads/dotfile_hyperland:fish
 dotfile:4:tmux:/home/sidouxp3/.config/tmux:nvim
 dotfile:1:config:/home/sidouxp3/.config:nvim
 dotfile:5:custom_scripts:/home/sidouxp3/.config/custom_scripts:nvim
+ERP_adopen_frontend:1:frontend:/home/sidouxp3/Web-development/Octadome/ERP_adopen_frontend:fish
+ERP_adopen_frontend:2:docker:/home/sidouxp3/Web-development/Octadome/ERP_adopen_frontend:fish
+ERP_adopen_frontend:3:git:/home/sidouxp3/Web-development/Octadome/ERP_adopen_frontend:fish
+ERP_adopen_mobile:1:app:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:nvim
+ERP_adopen_mobile:2:flutter_run:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:fish
+ERP_adopen_mobile:3:git:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:fish

@@ -65,7 +65,13 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 # 6- install tmux plugin manager (tpm)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # 7- copy FontUsed to ~/.fonts   
+# copy ./fontconfig to ~/.config and copy ./fonts.conf to /etc/fonts/local.conf 
 cp -r Fonts_used ~/.fonts
+sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+cp -r ./fontconfig ~/.config
+sudo cp -r ./fonts.conf /etc/fonts/local.conf
+fc-cache -fv
+sudo fc-cache -fv
 # 8- copy Juno-ocean to /usr/share/themes/   
 sudo cp -r Juno-ocean /usr/share/themes/
 # 9- copy kora-green to /usr/share/icons/

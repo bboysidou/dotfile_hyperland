@@ -1,6 +1,4 @@
 -- vim.cmd("let g:netrw_liststyle = 3")
-vim.cmd("let g:netrw_keepdir = 0")
-vim.cmd("let g:netrw_dirhistmax = 0")
 
 local opt = vim.opt -- Declare a variable
 vim.g.skip_ts_context_commentstring_module = true
