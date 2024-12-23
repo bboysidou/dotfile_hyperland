@@ -3,7 +3,7 @@ configuration {
   display-window: "Windows:";
   drun-display-format: "{icon} {name}";
   show-icons: true;
-  font: "Fira Code Medium 10";
+  font: "MesloLGS NF Medium 10";
   modi: "drun";
 }
 

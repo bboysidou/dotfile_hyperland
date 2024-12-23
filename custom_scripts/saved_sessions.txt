@@ -32,3 +32,5 @@ ERP_adopen_frontend:3:git:/home/sidouxp3/Web-development/Octadome/ERP_adopen_fro
 ERP_adopen_mobile:1:app:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:nvim
 ERP_adopen_mobile:2:flutter_run:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:fish
 ERP_adopen_mobile:3:git:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:fish
+Lazyman:1:nvim:/home/sidouxp3/Web-development/Personal_projects/Lazyman:nvim
+Lazyman:2:go:/home/sidouxp3/Web-development/Personal_projects/Lazyman:fish

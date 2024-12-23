@@ -22,11 +22,16 @@ return {
       end,
     })
 
+    telescope.load_extension("fzf")
+
     telescope.setup({
       pickers = {
         find_files = {
           cwd = vim.fn.getcwd(),
         },
+      },
+      extensions = {
+        fzf = {},
       },
       defaults = {
         path_display = { "smart" },
@@ -55,8 +60,6 @@ return {
         },
       },
     })
-
-    telescope.load_extension("fzf")
 
     -- set keymaps
     -- local keymap = vim.keymap -- for conciseness
