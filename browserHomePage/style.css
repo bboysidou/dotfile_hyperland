@@ -1,0 +1,113 @@
+:root {
+  --font: "monospace";
+  --background: #000000;
+  /* --background: #080c07; */
+  --foreground: #b9c9b8;
+  --green: #638660;
+  --red: #bd4d5a;
+  --orange: #a47449;
+  --branch: 1px solid #b9c9b8;
+}
+
+html {
+  font-size: 20px;
+}
+
+body {
+  background: var(--background);
+  /* font-weight: bold; */
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.prompt {
+  font-family: var(--font);
+  color: var(--foreground);
+}
+
+.prompt ~ .prompt {
+  padding: 1.5rem 0 0.3125rem;
+}
+
+span {
+  color: var(--green);
+}
+
+h1 {
+  display: inline;
+  font-family: var(--font);
+  font-size: 1rem;
+  /* font-weight: normal; */
+  color: var(--red);
+}
+
+.tree > ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 2.5rem;
+}
+
+li {
+  position: relative;
+}
+
+li::before,
+li::after {
+  content: "";
+  position: absolute;
+  left: -0.75rem;
+}
+
+li::before {
+  border-top: var(--branch);
+  top: 0.75rem;
+  width: 0.5rem;
+}
+
+li::after {
+  border-left: var(--branch);
+  height: 100%;
+  top: 0.25rem;
+}
+
+li:last-child::after {
+  height: 0.5rem;
+}
+
+a {
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--foreground);
+  text-decoration: none;
+  outline: none;
+  /* font-weight: bold; */
+}
+
+a:hover {
+  color: var(--background);
+  background: var(--orange);
+}
+
+form h1 {
+  padding-left: 0.125rem;
+}
+
+input {
+  font-family: var(--font);
+  font-size: 1rem;
+  color: var(--foreground);
+  background-color: var(--background);
+  border: 1px solid var(--green);
+  border-radius: 1rem;
+  padding: 0.2rem;
+  outline: none;
+}

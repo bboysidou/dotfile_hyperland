@@ -1,0 +1,194 @@
+{
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "active-only": false,
+    "all-outputs": true,
+    "format": "{}",
+    "format-icons": {
+      "urgent": "",
+      "active": "",
+      "default": ""
+    },
+    "persistent-workspaces": {
+      "*": 3
+    }
+  },
+
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 18,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "ignore-list": ["Alacritty"],
+    "app_ids-mapping": {
+      "firefoxdeveloperedition": "firefox-developer-edition"
+    },
+    "rewrite": {
+      "Firefox Web Browser": "Firefox",
+      "Foot Server": "Terminal"
+    }
+  },
+
+  "hyprland/window": {
+    "rewrite": {
+      "(.*) - Brave": "$1",
+      "(.*) - Chromium": "$1",
+      "(.*) - Brave Search": "$1",
+      "(.*) - Outlook": "$1",
+      "(.*) Microsoft Teams": "$1"
+    },
+    "max-length": 30,
+    "separate-outputs": true
+  },
+
+  "custom/cliphist": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "custom/updates": {
+    "format": "  {}",
+    "tooltip-format": "{}",
+    "escape": true,
+    "return-type": "json",
+    "exec": "~/.config/custom_scripts/updates.sh",
+    "restart-interval": 60,
+    "on-click": "kitty pacseek",
+    "tooltip": false
+  },
+
+  "keyboard-state": {
+    "numlock": true,
+    "capslock": true,
+    "format": "{name} {icon}",
+    "format-icons": {
+      "locked": "",
+      "unlocked": ""
+    }
+  },
+
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+
+  "clock": {
+    "interval": 1,
+    "format": "   {:%H:%M:%S  %b %d %a} ",
+    "timezone": "Africa/Algiers",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+
+  "custom/system": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "cpu": {
+    "interval": 5,
+    "format": "  󰍛 {usage}% ",
+    "format-alt": "󰍛 {load}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+    "on-click": "kitty htop"
+  },
+
+  "memory": {
+    "interval": 5,
+    "format": "/  {}%   ",
+    "on-click": "kitty htop"
+  },
+
+  "disk": {
+    "interval": 30,
+    "format": "D {percentage_used}% ",
+    "path": "/",
+    "on-click": "alacritty -e htop"
+  },
+
+  "group/hardware": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "not-memory",
+      "transition-left-to-right": false
+    },
+    "modules": ["custom/system", "cpu", "memory"]
+  },
+
+  "group/settings": {
+    "orientation": "horizontal",
+    "modules": ["custom/settings", "custom/waybarthemes", "custom/wallpaper"]
+  },
+
+  "group/quicklinks": {
+    "orientation": "horizontal",
+    "modules": ["custom/browser", "custom/filemanager"]
+  },
+
+  "network": {
+    "format": "{ifname}",
+    "format-wifi": "󰤨   {essid}     {bandwidthUpBytes}    {bandwidthDownBytes}",
+    "format-ethernet": "   {bandwidthUpBytes}    {bandwidthDownBytes}",
+    "format-disconnected": "󰤭 No connection",
+    "tooltip-format-wifi": "{ipaddr} {ifname} 󰤨",
+    "tooltip-format-ethernet": "{ipaddr} {ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 2,
+    "max-length": 50
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}   {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-plugged": "  {capacity}%",
+    "format-alt": "{icon}  {time}",
+    "format-icons": [" ", " ", " ", " ", " "],
+    "interval": 10
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", " ", " "]
+    },
+    "on-click": "pavucontrol"
+  },
+
+  "bluetooth": {
+    "format": " {status}",
+    "format-disabled": "",
+    "format-off": "",
+    "interval": 30,
+    "on-click": "blueman-manager"
+  },
+
+  "user": {
+    "format": "{user}",
+    "interval": 60,
+    "icon": false
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{percent}% {icon}",
+    "format-icons": ["󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥"]
+  }
+}
