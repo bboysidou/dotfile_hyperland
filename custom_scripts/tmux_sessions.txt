@@ -1,0 +1,9 @@
+Rashid_shop
+dotfile
+cosidar
+Octadome
+Army
+Learn_django
+Octadome_ERP_adopen
+Octadome_ERP_adopen_mobile
+Lazyman

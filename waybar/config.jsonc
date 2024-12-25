@@ -1,0 +1,37 @@
+{
+  "layer": "top",
+  "margin-top": 3,
+  "margin-bottom": 3,
+  // "output": [
+  //   "eDP-1",
+  //   "HDMI-A-1",
+  //   "eDP-2",
+  // ],
+  "margin-left": 0,
+  "margin-right": 0,
+  "spacing": 0,
+  // Load Modules
+  "include": [
+    "~/.config/waybar/modules.json"
+  ],
+  // Modules Left
+  "modules-left": [
+    "hyprland/workspaces",
+    "backlight",
+    "custom/updates",
+    "bluetooth"
+  ],
+  // Modules Center
+  "modules-center": [
+    "hyprland/window"
+  ],
+  // Modules Right    
+  "modules-right": [
+    "pulseaudio",
+    "battery",
+    "network",
+    "group/hardware",
+    "tray",
+    "clock"
+  ]
+}
