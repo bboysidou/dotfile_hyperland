@@ -34,3 +34,8 @@ ERP_adopen_mobile:2:flutter_run:/home/sidouxp3/Web-development/Octadome/ERP_adop
 ERP_adopen_mobile:3:git:/home/sidouxp3/Web-development/Octadome/ERP_adopen_mobile/app:fish
 Lazyman:1:nvim:/home/sidouxp3/Web-development/Personal_projects/Lazyman:nvim
 Lazyman:2:go:/home/sidouxp3/Web-development/Personal_projects/Lazyman:fish
+PlanFlow:1:frontend:/home/sidouxp3/Web-development/PlanFlow/frontend:nvim
+PlanFlow:2:backend:/home/sidouxp3/Web-development/PlanFlow/backend/plan_flow_api:nvim
+PlanFlow:3:docker:/home/sidouxp3/Web-development/PlanFlow:fish
+PlanFlow:4:django_server:/home/sidouxp3/Web-development/PlanFlow/backend:fish
+PlanFlow:5:git:/home/sidouxp3/Web-development/PlanFlow:fish
