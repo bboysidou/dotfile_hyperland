@@ -38,7 +38,6 @@ return {
         "cssmodules_ls",
         "docker_compose_language_service",
         "dockerls",
-        "emmet_ls",
         "graphql",
         "html",
         "sqlls",
@@ -60,7 +59,11 @@ return {
         "black", -- python formatter
         "pylint", -- python linter
         "eslint_d", -- js linter
+        "sql-formatter", -- sql linter
+        "sqlfluff", -- sql linter
       },
+      auto_update = true,
+      run_on_start = true,
     })
   end,
 }
