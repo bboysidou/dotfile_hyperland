@@ -8,3 +8,4 @@ Octadome_ERP_adopen
 Octadome_ERP_adopen_mobile
 Lazyman
 PlanFlow
+EVO

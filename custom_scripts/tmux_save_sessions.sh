@@ -1,7 +1,5 @@
 #!/bin/sh
-tmux display-message "Saved sessions ...."
-# tmux list-windows -a -F "#{session_name}:#{window_index}:#{window_name}:#{pane_id}:#{pane_current_path}:#{pane_current_command}" > ~/.config/custom_scripts/saved_sessions.txt
-# tmux list-windows -a -F "#{session_name}:#{window_index}:#{window_name}:#{pane_id}:#{pane_current_path}:#{pane_current_command}" > ~/Downloads/dotfile_hyperland/tmux/saved_sessions.txt
+tmux display-message "Saving sessions ...."
 
 # Path to the saved sessions file
 SAVED_SESSIONS_FILE="$HOME/.config/custom_scripts/saved_sessions.txt"
@@ -13,7 +11,11 @@ TEMP_FILE=$(mktemp)
 tmux list-windows -a -F "#{session_name}:#{window_index}:#{window_name}:#{pane_current_path}:#{pane_current_command}" > "$TEMP_FILE"
 
 # Ensure the saved sessions file exists
-touch "$SAVED_SESSIONS_FILE"
+if [ ! -f "$SAVED_SESSIONS_FILE" ]; then
+    echo "Session file not found: $SAVED_SESSIONS_FILE"
+    echo "Creating new session file: $SAVED_SESSIONS_FILE"
+    touch "$SAVED_SESSIONS_FILE"
+fi
 
 # Append unique entries to the saved sessions file
 while read -r line; do

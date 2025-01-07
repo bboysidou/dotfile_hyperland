@@ -4,7 +4,8 @@ SESSION_FILE="$HOME/.config/custom_scripts/saved_sessions.txt"
 
 if [ ! -f "$SESSION_FILE" ]; then
     echo "Session file not found: $SESSION_FILE"
-    exit 1
+    echo "Creating new session file: $SESSION_FILE"
+    touch "$SESSION_FILE"
 fi
 
 SESSION_NAME=$(awk -F ':' '{print $1}' "$SESSION_FILE" | sort -u | fzf --reverse --info right --prompt "Select a session: " --border "rounded" --border-label "WORK PROJECTS" --preview "grep -e '^{}' $SESSION_FILE | column -t -s ':'" --preview-window=right:65%)
