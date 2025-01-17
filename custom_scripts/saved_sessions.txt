@@ -46,3 +46,13 @@ PlanFlow:6:docker_db:/home/sidouxp3/Web-development/PlanFlow:fish
 EVO:1:app:/home/sidouxp3/Web-development/EVO/4.0.0_evo/app:nvim
 EVO:2:backend:/home/sidouxp3/Web-development/EVO/4.0.0_evo/backend:nvim
 EVO:3:nvim:/home/sidouxp3/Web-development/EVO/4.0.0_evo:nvim
+cosidar:3:docker:/home/sidouxp3/Web-development/cosidar:docker
+dp_mob:1:app:/home/sidouxp3/Web-development/DP_mob/app:nvim
+dp_mob:2:frontend:/home/sidouxp3/Web-development/DP_mob/frontend:nvim
+dp_mob:3:backend:/home/sidouxp3/Web-development/DP_mob/backend:nvim
+dp_mob:4:database:/home/sidouxp3/Web-development/DP_mob/db:nvim
+dp_mob:5:git:/home/sidouxp3/Web-development/DP_mob:fish
+dp_mob:6:docker:/home/sidouxp3/Web-development/DP_mob:fish
+dp_mob:7:docker_db_server:/home/sidouxp3/Web-development/DP_mob:fish
+learn_laravel:1:nvim:/home/sidouxp3/Web-development/Personal_projects/php/hotel_booking_api:nvim
+dp_mob:1:app:/home/sidouxp3/Web-development/DP_mob/app:fish
