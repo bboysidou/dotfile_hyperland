@@ -12,6 +12,13 @@ application/x-extension-xht=firefox.desktop
 image/jpeg=org.gnome.Loupe.desktop
 image/png=org.gnome.Loupe.desktop
 inode/directory=thunar.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-Y8GN02.desktop
+message/rfc822=userapp-Thunderbird-Y8GN02.desktop
+x-scheme-handler/mid=userapp-Thunderbird-Y8GN02.desktop
+x-scheme-handler/webcal=userapp-Thunderbird-67DM02.desktop
+text/calendar=userapp-Thunderbird-67DM02.desktop
+application/x-extension-ics=userapp-Thunderbird-67DM02.desktop
+x-scheme-handler/webcals=userapp-Thunderbird-67DM02.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;
@@ -27,3 +34,7 @@ application/x-extension-xht=firefox.desktop;
 image/jpeg=org.gnome.Loupe.desktop;firefox.desktop;chromium.desktop;
 image/png=org.gnome.Loupe.desktop;
 inode/directory=thunar.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-Y8GN02.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-Y8GN02.desktop;
+x-scheme-handler/webcal=userapp-Thunderbird-67DM02.desktop;
+x-scheme-handler/webcals=userapp-Thunderbird-67DM02.desktop;

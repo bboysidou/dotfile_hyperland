@@ -42,7 +42,6 @@ h1 {
   display: inline;
   font-family: var(--font);
   font-size: 1rem;
-  /* font-weight: normal; */
   color: var(--red);
 }
 
@@ -89,7 +88,7 @@ a {
   color: var(--foreground);
   text-decoration: none;
   outline: none;
-  /* font-weight: bold; */
+  font-weight: 500;
 }
 
 a:hover {
@@ -103,11 +102,13 @@ form h1 {
 
 input {
   font-family: var(--font);
-  font-size: 1rem;
+  font-size: 0.6rem;
   color: var(--foreground);
   background-color: var(--background);
   border: 1px solid var(--green);
   border-radius: 1rem;
-  padding: 0.2rem;
+  padding: 0.5rem 1rem;
   outline: none;
+  margin-top: 0.5rem;
+  max-width: 10rem;
 }

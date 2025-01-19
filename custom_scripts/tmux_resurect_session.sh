@@ -8,7 +8,17 @@ if [ ! -f "$SESSION_FILE" ]; then
     touch "$SESSION_FILE"
 fi
 
-SESSION_NAME=$(awk -F ':' '{print $1}' "$SESSION_FILE" | sort -u | fzf --reverse --info right --prompt "Select a session: " --border "rounded" --border-label "WORK PROJECTS" --preview "grep -e '^{}' $SESSION_FILE | column -t -s ':'" --preview-window=right:65%)
+SESSION_NAME=$(
+  awk -F ':' '{print $1}' "$SESSION_FILE" | 
+  sort -u | 
+  fzf --reverse \
+      --info right \
+      --prompt "Select a session: " \
+      --border "rounded" \
+      --border-label "WORK PROJECTS" \
+      --preview "grep -e '^{}' $SESSION_FILE | column -t -s ':'" \
+      --preview-window=right:65%
+)
 
 if [ -z "$SESSION_NAME" ]; then
     echo "No session selected."

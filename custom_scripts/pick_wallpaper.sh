@@ -1,22 +1,37 @@
 #!/bin/bash
 
 IMAGE_DIR="$HOME/Pictures/wallpaper/"
+HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
 
-# Find images and display them in Rofi
-IMAGE=$(for a in "$IMAGE_DIR"*; do echo -en "$a\0icon\x1f$a\n" ; done | rofi -dmenu)
+selection=$(ls "$IMAGE_DIR" | 
+  fzf --reverse \
+  --info right \
+  --prompt "Select a Image: " \
+  --border "rounded" \
+  --border-label "WALLPAPERS" \
+  --height=100% \
+  --preview "chafa --clear -c full --color-space rgb --dither none -p on -s 50x50 $IMAGE_DIR{}" \
+  --preview-window=right:65% 
+)
 
-# Show a preview notification if an image is selected
-if [ -n "$IMAGE" ]; then
-    # Send a notification with the image preview (requires dunst)
-    dunstify -I "$IMAGE" -t 1500 "Image Preview" "$(basename "$IMAGE")"
-    # Open the selected image in default viewer
-    # xdg-open "$IMAGE"
-    hyprctl hyprpaper preload "$IMAGE" 
-    hyprctl hyprpaper monitor "$IMAGE"
-    killall hyprpaper
-    sleep 1
-    hyprpaper &
-
-else
+if [ -z "$selection" ]; then
     echo "No image selected."
+    exit 1
 fi
+
+echo $IMAGE_DIR$selection
+echo "" > $HYPRPAPER_CONF
+
+PRELOAD="preload = $IMAGE_DIR$selection"
+WALLPAPER="wallpaper = ,$IMAGE_DIR$selection" 
+SPLASH="splash = false"
+IPC="ipc = off"
+
+echo $PRELOAD >> $HYPRPAPER_CONF 
+echo $WALLPAPER >> $HYPRPAPER_CONF 
+echo $SPLASH >> $HYPRPAPER_CONF 
+echo $IPC >> $HYPRPAPER_CONF
+
+killall hyprpaper
+sleep 1
+hyprpaper &
