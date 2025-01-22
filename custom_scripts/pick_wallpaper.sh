@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 IMAGE_DIR="$HOME/Pictures/wallpaper/"
 HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
@@ -32,6 +32,16 @@ echo $WALLPAPER >> $HYPRPAPER_CONF
 echo $SPLASH >> $HYPRPAPER_CONF 
 echo $IPC >> $HYPRPAPER_CONF
 
-killall hyprpaper
-sleep 1
-hyprpaper &
+
+hyprpaper
+hyprctl hyprpaper unload all
+
+hyprctl hyprpaper preload $IMAGE_DIR$selection
+hyprctl hyprpaper wallpaper ",$IMAGE_DIR$selection"
+
+hyprctl hyprpaper reload ,$IMAGE_DIR$selection
+
+# killall hyprpaper
+# sleep 1
+# hyprpaper &
+
