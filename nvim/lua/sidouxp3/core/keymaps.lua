@@ -47,6 +47,7 @@ keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>") -- find string in 
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
 keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
+keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>") -- list TODOs comments
 
 -- bufferline
 keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>") -- cycle through buffers
