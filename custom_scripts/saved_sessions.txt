@@ -56,3 +56,8 @@ Fivation:4:git-frontend:/home/sidouxp3/Web-development/Fivation/frontend:fish
 Fivation:5:git-backend:/home/sidouxp3/Web-development/Fivation:fish
 Fivation:6:db-sql:/home/sidouxp3/Web-development/Fivation/db:nvim
 Fivation:7:docker-server-pg:/home/sidouxp3/Web-development/Fivation:fish
+ArmyPurchaseManagement:1:frontend:/home/sidouxp3/Web-development/Army/PurchaseManagement/frontend:nvim
+ArmyPurchaseManagement:2:backend:/home/sidouxp3/Web-development/Army/PurchaseManagement/backend:nvim
+ArmyPurchaseManagement:3:docker:/home/sidouxp3/Web-development/Army/PurchaseManagement:fish
+ArmyPurchaseManagement:4:git:/home/sidouxp3/Web-development/Army/PurchaseManagement:fish
+ArmyPurchaseManagement:5:db:/home/sidouxp3/Web-development/Army/PurchaseManagement/db:nvim
