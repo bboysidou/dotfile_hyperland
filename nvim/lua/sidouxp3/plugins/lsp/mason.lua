@@ -57,6 +57,7 @@ return {
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
+        "clang-format", -- c formatter
         "pylint", -- python linter
         "eslint_d", -- js linter
         "sql-formatter", -- sql linter

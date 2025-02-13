@@ -5,7 +5,7 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
   noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra unrar vi \
-  feh tree 
+  feh tree gcc gdb make valgrind clang
 
 # EMAIL CLIENT -------------------------------------------------------
 sudo pacman -S thunderbird

@@ -88,3 +88,13 @@ keymap.set({ "n", "v", "i" }, "<C-s>", "<ESC>:w<CR>") -- save the file
 keymap.set({ "n", "v", "i" }, "<C-w>", "<ESC>:q!<CR>") -- close the file
 keymap.set({ "n", "v", "i" }, "<C-down>", "5jzz") -- jump 5 down lines
 keymap.set({ "n", "v", "i" }, "<C-up>", "5kzz") -- jump 5 up lines
+
+-- debugger
+keymap.set("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
+keymap.set("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { desc = "Toggle breakpoint" })
+keymap.set("n", "<leader>dn", ":lua require'dap'.continue()<CR>", { desc = "Continue debugging" })
+keymap.set("n", "<leader>do", ":lua require'dap'.step_over()<CR>", { desc = "Step over" })
+keymap.set("n", "<leader>di", ":lua require'dap'.step_into()<CR>", { desc = "Step into" })
+keymap.set("n", "<leader>de", ":lua require'dap'.step_out()<CR>", { desc = "Step out" })
+keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", { desc = "Open REPL" })
+keymap.set("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { desc = "Run last" })
