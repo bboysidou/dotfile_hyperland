@@ -8,7 +8,7 @@ return {
     },
     config = function()
       -- import nvim-treesitter plugin
-      require("nvim-ts-autotag").setup()
+      -- require("nvim-ts-autotag").setup()
       local treesitter = require("nvim-treesitter.configs")
       -- local ts_context_commentstring = require("ts_context_commentstring").setup({})
 
