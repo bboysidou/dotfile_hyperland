@@ -15,5 +15,5 @@ firefox --new-window &
 # Open Woking Project in workspace 2
 sleep 1 
 hyprctl dispatch workspace 2
-kitty sh $HOME/.config/custom_scripts/tmux_resurect_session.sh & 
+sh $HOME/.config/custom_scripts/tmux_resurect_session.sh
 
