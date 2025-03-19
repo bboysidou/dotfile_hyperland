@@ -10,6 +10,7 @@ fi
 TABS=($(cat "$TABS_FILE"))
 
 # Open Firefox Working Browser in workspace 1
+sleep 1
 hyprctl dispatch workspace 1
 firefox "${TABS[@]}" &
 
@@ -21,5 +22,5 @@ firefox --new-window &
 # Open Woking Project in workspace 2
 sleep 1 
 hyprctl dispatch workspace 2
-kitty sh $HOME/.config/custom_scripts/tmux_resurect_session.sh
+kitty --start-as=fullscreen sh $HOME/.config/custom_scripts/tmux_resurect_session.sh
 
