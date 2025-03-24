@@ -24,11 +24,11 @@ choice=$(echo -e "$options" | rofi -dmenu -replace -config ~/.config/rofi/config
 case $choice in
     $option2)
         grim -g "$(slurp)" "$DIR$NAME"
-        notify-send "Screenshot created and copied to clipboard" "Mode: Selected area"
+        notify-send "Screenshot created" "Mode: Selected area\n $DIR$NAME"
     ;;
     $option3)
         sleep 1
         grim "$DIR$NAME" 
-        notify-send "Screenshot created and copied to clipboard" "Mode: Fullscreen"
+        notify-send "Screenshot created" "Mode: Fullscreen\n $DIR$NAME"
     ;;
 esac
