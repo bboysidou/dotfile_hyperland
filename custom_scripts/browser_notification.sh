@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 APP_NAME="$1"
 MSG_BODY="$2"
