@@ -9,6 +9,7 @@ fi
 
 TABS=($(cat "$TABS_FILE"))
 
+hyprctl dispatch workspace 1
 # Open Firefox Working Browser in workspace 1
 sleep 1
 hyprctl dispatch workspace 1

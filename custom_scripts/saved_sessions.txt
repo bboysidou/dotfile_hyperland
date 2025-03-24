@@ -65,7 +65,7 @@ ArmyPurchaseManagement:3:docker:/home/sidouxp3/Web-development/Army/PurchaseMana
 ArmyPurchaseManagement:6:db-server:/home/sidouxp3/Web-development/Army/PurchaseManagement/db:docker
 Learning:1:C-Lang:/home/sidouxp3/Web-development/Learning/c-lang:nvim
 OpenMDB:1:frontend:/home/sidouxp3/Web-development/OpenMDB/frontend:nvim
-OpenMDB:2:backend:/home/sidouxp3/Web-development/OpenMDB:fish
+OpenMDB:2:backend:/home/sidouxp3/Web-development/OpenMDB/backend:fish
 OpenMDB:3:docker:/home/sidouxp3/Web-development/OpenMDB:fish
 OpenMDB:4:git:/home/sidouxp3/Web-development/OpenMDB:fish
 Auth_template:1:frontend:/home/sidouxp3/Web-development/Auth_template/frontend:nvim
