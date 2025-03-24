@@ -25,14 +25,15 @@ elif [ "$chosen_network" = "󰖪  Disable Wi-Fi" ]; then
 else
 	# Message to show when connection is activated successfully
   	success_message="You are now connected to the Wi-Fi network \"$chosen_id\"."
+    notify-send -u low "Wi-Fi Connected" "You are now connected to the Wi-Fi network \"$chosen_id\"."
 	# Get saved connections
 	saved_connections=$(nmcli -g NAME connection)
 	if [[ $(echo "$saved_connections" | grep -w "$chosen_id") = "$chosen_id" ]]; then
-		nmcli connection up id "$chosen_id" | grep "successfully" && notify-send "Connection Established" "$success_message"
+		nmcli connection up id "$chosen_id" | grep "successfully" && notify-send -u low "Connection Established" "$success_message"
 	else
 		if [[ "$chosen_network" =~ "" ]]; then
 			wifi_password=$(rofi -dmenu -p "Password: " )
 		fi
-		nmcli device wifi connect "$chosen_id" password "$wifi_password" | grep "successfully" && notify-send "Connection Established" "$success_message"
+		nmcli device wifi connect "$chosen_id" password "$wifi_password" | grep "successfully" && notify-send -u low "Connection Established" "$success_message"
     fi
 fi

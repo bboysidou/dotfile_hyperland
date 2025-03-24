@@ -25,3 +25,4 @@ sleep 1
 hyprctl dispatch workspace 2
 kitty --start-as=fullscreen sh $HOME/.config/custom_scripts/tmux_resurect_session.sh
 
+notify-send -u low "Setup Started" "Happy Coding!"
