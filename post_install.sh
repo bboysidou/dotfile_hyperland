@@ -4,11 +4,12 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   udisks2 udiskie acpi dhcpcd fzf zip mpv pacman-contrib cronie brightnessctl\
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
-  noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra unrar vi \
+  unrar vi \
   feh tree gcc gdb make valgrind clang papirus-icon-theme curl
 
 # EMAIL CLIENT -------------------------------------------------------
 sudo pacman -S thunderbird
+
 # HYPRLAND -----------------------------------------------------------
 sudo pacman -S wl-clipboard waybar hyprpaper hyprlock 
 
@@ -68,14 +69,19 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # 6- install tmux plugin manager (tpm)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # 7- copy FontUsed to ~/.fonts   
+sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd ttf-fira-code
 cp -r Fonts_used ~/.fonts
+
 # 8- copy Juno-ocean to /usr/share/themes/   
 sudo cp -r Juno-ocean /usr/share/themes/
 # 9- copy kora-green to /usr/share/icons/
 sudo cp -r kora-green /usr/share/icons/
+
 # 10- mkdir -p ~/Pictures/wallpaper/
-# 11- copy Wallpaper in ~/Pictures/wallpaper/
+mkdir -p ~/Pictures/wallpaper/
+cp -r Wallpaper/* ~/Pictures/wallpaper/
 
 # YAY ----------------------------------------------------------- 
 yay -S brave-bin rofi-lbonn-wayland-git pacseek trizen 
@@ -92,11 +98,6 @@ alias sysupdate="sudo pacman -Syu"
 alias sysclean="paccache -r & sudo pacman -R $(pacman -Qtdq)"
 bindkey -s '^[c' 'sh ~/.config/custom_scripts/ssh_connection.sh\n'
 bindkey -s '^t' 'sh ~/.config/custom_scripts/tmux_recover.sh\n'
-
-# MANUAL INSTALL auto-cpufreq------------------------------------
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git && cd auto-cpufreq && sudo ./auto-cpufreq-installer
-sudo auto-cpufreq --install
-
 
 # HARDWARE ACCELERATION -----------------------------------------
 
@@ -119,3 +120,46 @@ Color
 CheckSpace
 VerbosePkgLists
 ParallelDownloads = 5
+
+# SECURITY -----------------------------------------
+# FIREWALL
+sudo pacman -S ufw
+sudo systemctl enable --now ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp  # Allow SSH if needed
+sudo ufw enable
+
+# APPLICATION CONFINEMENT (SELINUX, APPARMOR)
+sudo pacman -S apparmor
+sudo systemctl enable --now apparmor
+
+# OPTIONAL (fail2ban , aide, firejail)
+# fail2ban for bans IP addresses conducting too many failed login attempts
+sudo pacman -S fail2ban
+sudo systemctl enable --now fail2ban
+
+# aide for checking filesystem integrity
+sudo pacman -S aide
+sudo aide --init
+sudo systemctl enable --now aide.timer
+
+# firejail for sandboxing applications restricts what applications can access
+sudo pacman -S firejail
+sudo systemctl enable --now firejail
+
+# OPTIMIZATION -----------------------------------------
+# CPU FREQUENCY SCALING auto-cpufreq
+git clone https://github.com/AdnanHodzic/auto-cpufreq.git && cd auto-cpufreq && sudo ./auto-cpufreq-installer
+sudo auto-cpufreq --install
+
+# APP CACHING
+sudo pacman -S preload
+sudo systemctl enable --now preload
+
+# SWAP ZRAM
+sudo vim /etc/systemd/zram-generator.conf
+# add
+# [zram0]
+# zram-size=ram
+
