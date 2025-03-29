@@ -4,7 +4,7 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   udisks2 udiskie acpi dhcpcd fzf zip mpv pacman-contrib cronie brightnessctl\
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
-  unrar vi fish kitty papirus-icon-theme rsync obs-studio chafa \
+  unrar vi fish kitty papirus-icon-theme rsync obs-studio evince \
   feh tree gcc gdb make valgrind clang papirus-icon-theme curl
 
 # EMAIL CLIENT -------------------------------------------------------
@@ -103,6 +103,9 @@ sudo cp -r kora-green /usr/share/icons/
 # mkdir -p ~/Pictures/wallpaper/
 mkdir -p ~/Pictures/wallpaper/
 cp -r Wallpaper/* ~/Pictures/wallpaper/
+
+# SDDM
+# install the theme sddm-astronaut-theme
 
 # YAY ----------------------------------------------------------- 
 yay -S brave-bin rofi-lbonn-wayland-git pacseek trizen 
