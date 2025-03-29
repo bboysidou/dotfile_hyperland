@@ -98,3 +98,9 @@ keymap.set("n", "<leader>di", ":lua require'dap'.step_into()<CR>", { desc = "Ste
 keymap.set("n", "<leader>de", ":lua require'dap'.step_out()<CR>", { desc = "Step out" })
 keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", { desc = "Open REPL" })
 keymap.set("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { desc = "Run last" })
+
+-- code base wide
+keymap.set("n", "<leader>xw", function()
+  vim.diagnostic.setqflist() -- Collects all LSP diagnostics into the quickfix list
+  require("trouble").open("qflist") -- Opens Trouble in quickfix mode
+end, { desc = "Workspace Diagnostics (Trouble)" })
