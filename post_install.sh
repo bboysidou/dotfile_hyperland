@@ -1,10 +1,10 @@
 # APP NEEDED TO WINDOW MANAGER WORK PROPERLLY -----------------------
 sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
-  unzip ripgrep gvfs-mtp net-tools mtpfs neofetch usbutils \
+  unzip ripgrep gvfs-mtp net-tools mtpfs fastfetch usbutils \
   udisks2 udiskie acpi dhcpcd fzf zip mpv pacman-contrib cronie brightnessctl\
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
-  unrar vi \
+  unrar vi fish kitty papirus-icon-theme rsync obs-studio chafa \
   feh tree gcc gdb make valgrind clang papirus-icon-theme curl
 
 # EMAIL CLIENT -------------------------------------------------------
