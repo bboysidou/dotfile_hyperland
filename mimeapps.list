@@ -19,6 +19,8 @@ x-scheme-handler/webcal=userapp-Thunderbird-67DM02.desktop
 text/calendar=userapp-Thunderbird-67DM02.desktop
 application/x-extension-ics=userapp-Thunderbird-67DM02.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-67DM02.desktop
+application/pdf=org.gnome.Evince.desktop
+x-scheme-handler/terminal=kitty.desktop
 
 [Added Associations]
 x-scheme-handler/http=firefox.desktop;
@@ -38,3 +40,5 @@ x-scheme-handler/mailto=userapp-Thunderbird-Y8GN02.desktop;
 x-scheme-handler/mid=userapp-Thunderbird-Y8GN02.desktop;
 x-scheme-handler/webcal=userapp-Thunderbird-67DM02.desktop;
 x-scheme-handler/webcals=userapp-Thunderbird-67DM02.desktop;
+application/pdf=org.gnome.Evince.desktop;org.pwmt.zathura.desktop;
+x-scheme-handler/terminal=kitty.desktop
