@@ -56,30 +56,48 @@ sudo systemctl enable --now snapd.apparmor.service
 sudo ln -s /var/lib/snapd/snap /snap
 # to check snap is installed try see https://snapcraft.io/docs/installing-snap-on-arch-linux
 sudo snap install hello-world
-# 2- OH-MY-ZSH
-# 3- powerlevel10k
+
+# SHELL -----------------------------------------------------------------
+# ZSH
+# oh-my-zsh
+# powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 # in .zshrc replace ZSH_THEME with ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# 4- zsh-autosuggestions
+# zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# 5- zsh-syntax-highlighting
+# zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # in .zshrc replace plugins withplugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 
-# 6- install tmux plugin manager (tpm)
+# FISH
+# make fish the default shell one of the following commands
+sudo chsh -s /bin/fish
+sudo chsh -s /usr/bin/fish
+chsh -s /usr/bin/fish
+chsh -s /bin/fish
+# install fisher
+curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+# install tide prompt
+fisher install jethrokuan/tide
+# configuration
+tide configure
+
+# TMUX --------------------------------------------------
+# install tmux plugin manager (tpm)
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-# 7- copy FontUsed to ~/.fonts   
+# PERSONALIZATIONS --------------------------------------------------
+# copy FontUsed to ~/.fonts   
 sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd ttf-fira-code
 cp -r Fonts_used ~/.fonts
 
-# 8- copy Juno-ocean to /usr/share/themes/   
+# copy Juno-ocean to /usr/share/themes/   
 sudo cp -r Juno-ocean /usr/share/themes/
-# 9- copy kora-green to /usr/share/icons/
+# copy kora-green to /usr/share/icons/
 sudo cp -r kora-green /usr/share/icons/
 
-# 10- mkdir -p ~/Pictures/wallpaper/
+# mkdir -p ~/Pictures/wallpaper/
 mkdir -p ~/Pictures/wallpaper/
 cp -r Wallpaper/* ~/Pictures/wallpaper/
 
