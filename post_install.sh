@@ -5,7 +5,7 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
   unrar vi fish kitty papirus-icon-theme rsync obs-studio evince \
-  feh tree gcc gdb make valgrind clang papirus-icon-theme curl
+  feh tree gcc gdb make valgrind clang papirus-icon-theme curl gtk-engine-murrine sassc
 
 # EMAIL CLIENT -------------------------------------------------------
 sudo pacman -S thunderbird
@@ -96,6 +96,7 @@ sudo fc-cache -fv
 fc-cache -fv
 
 # copy Juno-ocean to /usr/share/themes/   
+mkdir ~/.themes
 sudo cp -r Juno-ocean /usr/share/themes/
 # copy kora-green to /usr/share/icons/
 sudo cp -r kora-green /usr/share/icons/
@@ -107,8 +108,13 @@ cp -r Wallpaper/* ~/Pictures/wallpaper/
 # SDDM
 # install the theme sddm-astronaut-theme
 
+# GTK THEME
+git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
+cd Graphite-gtk-theme
+./install.sh -d ~/.themes -t teal -c dark -s standard -l --tweaks black rimless normal
+
 # YAY ----------------------------------------------------------- 
-yay -S brave-bin rofi-lbonn-wayland-git pacseek trizen 
+yay -S brave-bin rofi-lbonn-wayland-git pacseek trizen nwg-look
 
 # SNAPs ---------------------------------------------------------
 sudo snap install android-studio --classic
