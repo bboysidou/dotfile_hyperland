@@ -91,6 +91,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # copy FontUsed to ~/.fonts   
 sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd ttf-fira-code
 cp -r Fonts_used ~/.fonts
+sudo cp .config/fontconfig/fonts.conf /etc/fonts/local.conf
+sudo fc-cache -fv
+fc-cache -fv
 
 # copy Juno-ocean to /usr/share/themes/   
 sudo cp -r Juno-ocean /usr/share/themes/
