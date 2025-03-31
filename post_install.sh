@@ -193,3 +193,13 @@ sudo vim /etc/systemd/zram-generator.conf
 # [zram0]
 # zram-size=ram
 
+# MISELINEOUS -----------------------------------------
+# Config Keyboard using https://www.usevia.app/
+# in a chromium base browser go to the flags 
+# chrome://flags/
+# search for web hid and enable it then restart the browser
+# check if the keyboard is connected
+ls -l /dev/hidraw3   
+# change the permissions
+sudo chmod a+rw /dev/hidraw3
+# go to https://www.usevia.app/ and start editing the keyboard
