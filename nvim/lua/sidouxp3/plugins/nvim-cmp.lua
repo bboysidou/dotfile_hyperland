@@ -50,8 +50,19 @@ return {
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
       }),
+      vim.diagnostic.config({
+        update_in_insert = true,
+        virtual_text = {
+          prefix = "●",
+          spacing = 2,
+        },
+        signs = true,
+        underline = true,
+      }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
+        fields = { "kind", "abbr", "menu" }, -- Explicitly define the fields to display
+        expandable_indicator = true, -- Show indicator for expandable items
         format = lspkind.cmp_format({
           maxwidth = 50,
           ellipsis_char = "...",

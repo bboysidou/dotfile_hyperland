@@ -29,10 +29,10 @@ function toggle_netrw()
 end
 
 keymap.set("x", "<leader>p", '"_dP') -- past without overriding the register
-keymap.set("n", "<A-down>", ":m .+1<CR>==") -- move line up(n)
-keymap.set("n", "<A-up>", ":m .-2<CR>==") -- move line down(n)
-keymap.set("v", "<A-down>", ":m '>+1<CR>gv=gv") -- move line up(v)
-keymap.set("v", "<A-up>", ":m '<-2<CR>gv=gv") -- move line down(v)
+keymap.set("n", "<C-J>", ":m .+1<CR>==") -- move line up(n)
+keymap.set("n", "<C-K>", ":m .-2<CR>==") -- move line down(n)
+keymap.set("v", "<C-J>", ":m '>+1<CR>gv=gv") -- move line up(v)
+keymap.set("v", "<C-K>", ":m '<-2<CR>gv=gv") -- move line down(v)
 -- window management
 keymap.set("n", "sv", "<C-w>v") -- split window vertically
 keymap.set("n", "sh", "<C-w>s") -- split window horizontally
@@ -73,17 +73,11 @@ keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 keymap.set("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", { desc = "Mark file with harpoon" })
 keymap.set("n", "<leader>nn", ":lua require('harpoon.ui').nav_next()<cr>", { desc = "Go to next harpoon mark" })
 keymap.set("n", "<leader>pp", ":lua require('harpoon.ui').nav_prev()<cr>", { desc = "Go to previous harpoon mark" })
--- keymap.set("n", "<C-h>", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
 keymap.set("n", "<leader>y", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
 keymap.set("n", "<leader>u", ":lua require('harpoon.ui').nav_file(2)<cr>", { desc = "navigate to the 2 file" })
 keymap.set("n", "<leader>i", ":lua require('harpoon.ui').nav_file(3)<cr>", { desc = "navigate to the 3 file" })
 keymap.set("n", "<leader>o", ":lua require('harpoon.ui').nav_file(4)<cr>", { desc = "navigate to the 4 file" })
-keymap.set(
-  "n",
-  "<leader>hh",
-  ":lua require('harpoon.ui').toggle_quick_menu()<cr>",
-  { desc = "Go to previous harpoon mark" }
-)
+keymap.set("n", "<leader>hh", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", { desc = "show harpoon menu" })
 
 -- flutter
 keymap.set({ "n", "v", "i" }, "<A-f>", ":FlutterOutlineToggle<CR>")
