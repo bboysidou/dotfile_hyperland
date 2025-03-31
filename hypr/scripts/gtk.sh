@@ -2,7 +2,8 @@
 # Source: https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
 #
 gnome_schema="org.gnome.desktop.interface"
-THEME='Juno-ocean'
+THEME='Graphite-teal-Dark'
+# THEME='Juno-ocean'
 ICON='kora-green'
 
 gsettings set "$gnome_schema" gtk-theme "$THEME"

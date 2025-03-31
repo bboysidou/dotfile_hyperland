@@ -1,6 +1,16 @@
 --set leader key to space
 vim.g.mapleader = " "
 
+-- local function get_project_root()
+--   local clients = vim.lsp.get_active_clients()
+--   for _, client in ipairs(clients) do
+--     if client.config.root_dir then
+--       return client.config.root_dir
+--     end
+--   end
+--   return vim.fn.getcwd() -- Fallback
+-- end
+
 function toggle_netrw()
   local netrw_buf = nil
 
@@ -43,7 +53,7 @@ keymap.set("n", "<leader>e", ":lua toggle_netrw()<CR>", { silent = true }) -- to
 
 -- telescope
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>") -- find files within current working directory, respects .gitignore
-keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>") -- find string in current working directory as you type
+keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
 keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
