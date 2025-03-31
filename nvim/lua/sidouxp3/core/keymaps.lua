@@ -1,15 +1,15 @@
 --set leader key to space
 vim.g.mapleader = " "
+local keymap = vim.keymap -- variable declaration
 
--- local function get_project_root()
---   local clients = vim.lsp.get_active_clients()
---   for _, client in ipairs(clients) do
---     if client.config.root_dir then
---       return client.config.root_dir
---     end
---   end
---   return vim.fn.getcwd() -- Fallback
--- end
+local function telescopeLiveFuzzyFind()
+  require("telescope.builtin").grep_string({
+    shorten_path = true,
+    word_match = "-w",
+    only_sort_text = true,
+    search = "",
+  })
+end
 
 function toggle_netrw()
   local netrw_buf = nil
@@ -28,7 +28,6 @@ function toggle_netrw()
   end
 end
 
-local keymap = vim.keymap -- variable declaration
 keymap.set("x", "<leader>p", '"_dP') -- past without overriding the register
 keymap.set("n", "<A-down>", ":m .+1<CR>==") -- move line up(n)
 keymap.set("n", "<A-up>", ":m .-2<CR>==") -- move line down(n)
@@ -54,11 +53,11 @@ keymap.set("n", "<leader>e", ":lua toggle_netrw()<CR>", { silent = true }) -- to
 -- telescope
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>") -- find files within current working directory, respects .gitignore
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")
+keymap.set("n", "<leader>fw", telescopeLiveFuzzyFind)
 keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string under cursor in current working directory
 keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
 keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>") -- list TODOs comments
-
 -- bufferline
 keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>") -- cycle through buffers
 keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>BufferLineCyclePrev<CR>") -- cycle through buffers
