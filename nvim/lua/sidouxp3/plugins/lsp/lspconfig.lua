@@ -69,6 +69,11 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+        opts.desc = "Highlight current params"
+        -- keymap.set("i", "<C-h>", function()
+        --   vim.lsp.buf.signature_help()
+        -- end, opts) -- mapping to restart lsp if necessary
       end,
     })
 

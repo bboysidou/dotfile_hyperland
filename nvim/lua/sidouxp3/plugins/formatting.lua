@@ -20,7 +20,22 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
-        sql = { "sqlfluff", "sql-formatter" },
+        sql = {
+          -- "sqlfluff",
+          "sql-formatter",
+        },
+      },
+      formatters = {
+        -- ["sqlfluff"] = {
+        --   command = "sqlfluff",
+        --   args = { "fix", "--dialect", "postgres" }, -- Change 'postgres' to your preferred SQL dialect
+        --   stdin = false, -- sqlfluff does not support stdin formatting
+        -- },
+        ["sql-formatter"] = {
+          command = vim.fn.expand("$HOME/.local/share/nvim/mason/bin/sql-formatter"),
+          -- args = { "--config", vim.fn.expand("~/.config/sql-formatter.json") }, -- Optional config
+          stdin = true,
+        },
       },
       format_on_save = {
         lsp_fallback = true,
