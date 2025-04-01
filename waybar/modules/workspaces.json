@@ -3,11 +3,10 @@
     "on-click": "activate",
     "active-only": false,
     "all-outputs": true,
-    "format": "{}",
+    "format": "<span font='18px'>{icon}</span>",
     "format-icons": {
-      "urgent": "",
-      "active": "",
-      "default": ""
+      "active": "",
+      "default": ""
     },
     "persistent-workspaces": {
       "*": 3

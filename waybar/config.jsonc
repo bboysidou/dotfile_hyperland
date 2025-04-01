@@ -1,16 +1,6 @@
 {
   "layer": "top",
-  "margin-top": 1,
-  "margin-bottom": 1,
-  // "output": [
-  //   "eDP-1",
-  //   "HDMI-A-1",
-  //   "eDP-2",
-  // ],
-  "margin-left": 0,
-  "margin-right": 0,
-  "spacing": 0,
-  // Load Modules
+  "position": "top",
   "include": [
     // Modules Left
     "~/.config/waybar/modules/os.json",
@@ -48,5 +38,13 @@
     "group/hardware",
     "tray",
     "clock"
-  ]
+  ],
+  "custom/arrow_right": {
+    "format": "󱎕",
+    "tooltip": false
+  },
+  "custom/arrow_left": {
+    "format": "",
+    "tooltip": false
+  }
 }
