@@ -1,0 +1,40 @@
+{
+  "custom/system": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "cpu": {
+    "interval": 5,
+    "format": "  󰍛 {usage}% ",
+    "format-alt": "󰍛 {load}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+    "on-click": "kitty htop"
+  },
+
+  "memory": {
+    "interval": 5,
+    "format": "/  {}%   ",
+    "on-click": "kitty htop"
+  },
+
+  "disk": {
+    "interval": 30,
+    "format": "D {percentage_used}% ",
+    "path": "/",
+    "on-click": "kitty htop"
+  },
+
+  "group/hardware": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "not-memory",
+      "transition-left-to-right": false
+    },
+    "modules": ["custom/system", "cpu", "memory", "disk"]
+  }
+}

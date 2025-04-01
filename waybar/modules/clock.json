@@ -1,0 +1,8 @@
+{
+  "clock": {
+    "interval": 1,
+    "format": "   {:%H:%M:%S  %b %d %a} ",
+    "timezone": "Africa/Algiers",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  }
+}
