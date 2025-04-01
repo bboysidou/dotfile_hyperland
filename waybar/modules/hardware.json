@@ -6,7 +6,7 @@
 
   "cpu": {
     "interval": 5,
-    "format": "  󰍛 {usage}% ",
+    "format": "󰍛 {usage}%",
     "format-alt": "󰍛 {load}",
     "states": {
       "warning": 70,
@@ -17,13 +17,13 @@
 
   "memory": {
     "interval": 5,
-    "format": "/  {}%   ",
+    "format": " /  {}%",
     "on-click": "kitty htop"
   },
 
   "disk": {
     "interval": 30,
-    "format": "D {percentage_used}% ",
+    "format": " /  {percentage_used}% ",
     "path": "/",
     "on-click": "kitty htop"
   },

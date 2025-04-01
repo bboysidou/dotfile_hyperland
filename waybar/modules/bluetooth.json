@@ -1,8 +1,8 @@
 {
   "bluetooth": {
     "format": " {status}",
-    "format-disabled": "",
-    "format-off": "",
+    "format-disabled": " {status}",
+    "format-off": " {status}",
     "interval": 30,
     "on-click": "blueman-manager"
   }
