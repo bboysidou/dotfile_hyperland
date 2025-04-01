@@ -1,7 +1,7 @@
 {
   "layer": "top",
-  "margin-top": 3,
-  "margin-bottom": 3,
+  "margin-top": 1,
+  "margin-bottom": 1,
   // "output": [
   //   "eDP-1",
   //   "HDMI-A-1",
@@ -12,10 +12,25 @@
   "spacing": 0,
   // Load Modules
   "include": [
-    "~/.config/waybar/modules.json"
+    // Modules Left
+    "~/.config/waybar/modules/os.json",
+    "~/.config/waybar/modules/workspaces.json",
+    "~/.config/waybar/modules/screen_brightness.json",
+    "~/.config/waybar/modules/updates.json",
+    "~/.config/waybar/modules/bluetooth.json",
+    // Modules Center
+    "~/.config/waybar/modules/window.json",
+    // Modules Right    
+    "~/.config/waybar/modules/pulseaudio.json",
+    "~/.config/waybar/modules/battery.json",
+    "~/.config/waybar/modules/network.json",
+    "~/.config/waybar/modules/hardware.json",
+    "~/.config/waybar/modules/tray.json",
+    "~/.config/waybar/modules/clock.json"
   ],
   // Modules Left
   "modules-left": [
+    "custom/distro",
     "hyprland/workspaces",
     "backlight",
     "custom/updates",

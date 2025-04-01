@@ -230,6 +230,19 @@ window#waybar.empty #window {
 }
 
 /* -----------------------------------------------------
+ * Custom Distro
+ * ----------------------------------------------------- */
+
+#custom-distro {
+  background-color: #000000;
+  font-size: 16px;
+  color: #ffffff;
+  border-radius: 15px;
+  padding: 2px 10px 2px 10px;
+  margin: 5px;
+}
+
+/* -----------------------------------------------------
  * Custom Updates
  * ----------------------------------------------------- */
 
@@ -255,20 +268,6 @@ window#waybar.empty #window {
 #custom-updates.red {
   background-color: #dc2f2f;
   color: #ffffff;
-}
-
-/* -----------------------------------------------------
- * Custom Youtube
- * ----------------------------------------------------- */
-
-#custom-youtube {
-  background-color: #000000;
-  font-size: 16px;
-  color: #ffffff;
-  border-radius: 15px;
-  padding: 2px 10px 0px 10px;
-  margin: 5px 15px 5px 0px;
-  opacity: 0.8;
 }
 
 /* -----------------------------------------------------

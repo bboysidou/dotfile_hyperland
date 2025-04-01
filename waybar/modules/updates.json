@@ -1,0 +1,12 @@
+{
+  "custom/updates": {
+    "format": "  {}",
+    "tooltip-format": "{}",
+    "escape": true,
+    "return-type": "json",
+    "exec": "~/.config/custom_scripts/updates.sh",
+    "restart-interval": 60,
+    "on-click": "kitty pacseek",
+    "tooltip": false
+  }
+}

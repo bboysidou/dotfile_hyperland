@@ -1,0 +1,13 @@
+{
+  "network": {
+    "format": "{ifname}",
+    "format-wifi": "󰤨   {essid}     {bandwidthUpBytes}    {bandwidthDownBytes}",
+    "format-ethernet": "   {bandwidthUpBytes}    {bandwidthDownBytes}",
+    "format-disconnected": "󰤭 No connection",
+    "tooltip-format-wifi": "{ipaddr} {ifname} 󰤨",
+    "tooltip-format-ethernet": "{ipaddr} {ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 2,
+    "max-length": 50
+  }
+}
