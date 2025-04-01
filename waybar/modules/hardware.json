@@ -18,6 +18,8 @@
   "memory": {
     "interval": 5,
     "format": " /  {}%",
+    "tooltip": true,
+    "tooltip-format": "USED: {used}\nTOTAL: {total}\nSWAP USED: {swapUsed}\nSWAP TOTAL: {swapTotal}",
     "on-click": "kitty htop"
   },
 
@@ -25,6 +27,12 @@
     "interval": 30,
     "format": " /  {percentage_used}% ",
     "path": "/",
+    "tooltip": true,
+    "tooltip-format": "USED: {used}\nTOTAL: {total}\nFREE: {free}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
     "on-click": "kitty htop"
   },
 
