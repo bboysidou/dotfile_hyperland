@@ -3,6 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
+    "artemave/workspace-diagnostics.nvim",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
   },
@@ -70,7 +71,7 @@ return {
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-        opts.desc = "Highlight current params"
+        -- opts.desc = "Highlight current params"
         -- keymap.set("i", "<C-h>", function()
         --   vim.lsp.buf.signature_help()
         -- end, opts) -- mapping to restart lsp if necessary
@@ -93,6 +94,15 @@ return {
       function(server_name)
         lspconfig[server_name].setup({
           capabilities = capabilities,
+        })
+      end,
+      ["ts_ls"] = function()
+        -- configure svelte server
+        lspconfig["ts_ls"].setup({
+          capabilities = capabilities,
+          on_attach = function(client, bufnr)
+            require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+          end,
         })
       end,
       ["svelte"] = function()
