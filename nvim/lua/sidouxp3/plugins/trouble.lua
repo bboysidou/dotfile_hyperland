@@ -22,8 +22,8 @@ return {
       desc = "Symbols (Trouble)",
     },
     {
-      "<leader>cl",
-      "<cmd>Trouble lsp toggle focus=false",
+      "<leader>xl",
+      "<cmd>Trouble lsp toggle<cr>",
       desc = "LSP Definitions / references / ... (Trouble)",
     },
     {

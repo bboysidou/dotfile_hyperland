@@ -34,6 +34,10 @@ return {
           luasnip.lsp_expand(args.body)
         end,
       },
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
       mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
         ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
@@ -61,10 +65,10 @@ return {
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
-        fields = { "kind", "abbr", "menu" }, -- Explicitly define the fields to display
+        fields = { "abbr", "kind", "menu" }, -- Explicitly define the fields to display
         expandable_indicator = true, -- Show indicator for expandable items
         format = lspkind.cmp_format({
-          maxwidth = 50,
+          maxwidth = 80,
           ellipsis_char = "...",
         }),
       },

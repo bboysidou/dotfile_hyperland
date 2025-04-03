@@ -1,2 +1,2 @@
-./custom_scripts/gitignore
-./fish/fishd.tmp*
+custom_scripts/gitignore
+fish/fishd.tmp*
