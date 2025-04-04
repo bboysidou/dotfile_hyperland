@@ -201,5 +201,7 @@ sudo vim /etc/systemd/zram-generator.conf
 # check if the keyboard is connected
 ls -l /dev/hidraw3   
 # change the permissions
-sudo chmod a+rw /dev/hidraw3
+sudo chmod a+rw /dev/hidraw*
 # go to https://www.usevia.app/ and start editing the keyboard
+# after finishing 
+sudo chmod 600 /dev/hidraw*
