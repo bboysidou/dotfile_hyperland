@@ -7,6 +7,8 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   unrar vi fish kitty papirus-icon-theme rsync obs-studio evince \
   feh tree gcc gdb make valgrind clang papirus-icon-theme curl gtk-engine-murrine sassc
 
+# FOR DUAL BOOT (OPTIONAL) -------------------------------------------------------
+sudo pacman -S efibootmgr dosfstools mtools os-prober 
 # EMAIL CLIENT -------------------------------------------------------
 sudo pacman -S thunderbird
 

@@ -11,14 +11,14 @@ TABS=($(cat "$TABS_FILE"))
 
 hyprctl dispatch workspace 1
 # Open Firefox Working Browser in workspace 1
-sleep 1
 hyprctl dispatch workspace 1
 firefox "${TABS[@]}" &
+sleep 1
 
 # Open Firefox Searching and Testing Browser in workspace 3
-sleep 1
 hyprctl dispatch workspace 3
 firefox --new-window &
+sleep 1
 
 # Open Woking Project in workspace 2
 sleep 1 
