@@ -5,6 +5,7 @@ set -Ux SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
 set -Ux SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
 
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
+alias ocr="sh ~/.config/custom_scripts/ocr.sh"
 alias sysupdate="sudo pacman -Syu"
 alias sysclean="paccache -r & sudo pacman -R $(pacman -Qtdq)"
 

@@ -5,7 +5,11 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   thunar tumbler transmission-gtk nvtop man-db eza slurp grim chafa \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
   unrar vi fish kitty papirus-icon-theme rsync obs-studio evince \
-  feh tree gcc gdb make valgrind clang papirus-icon-theme curl gtk-engine-murrine sassc
+  feh tree gcc gdb make valgrind clang papirus-icon-theme curl \
+  gtk-engine-murrine sassc speedtest-cli 
+
+# FOR OCR ------------------------------------------------------- 
+sudo pacman -S tesseract-data
 
 # FOR DUAL BOOT (OPTIONAL) -------------------------------------------------------
 sudo pacman -S efibootmgr dosfstools mtools os-prober 
