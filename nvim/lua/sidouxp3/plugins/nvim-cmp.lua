@@ -70,6 +70,13 @@ return {
         format = lspkind.cmp_format({
           maxwidth = 80,
           ellipsis_char = "...",
+          symbol_map = {
+            Function = "󰊕",
+            Variable = "",
+            Class = "󰠱",
+            Snippet = "",
+            -- more as you like
+          },
         }),
       },
     })
