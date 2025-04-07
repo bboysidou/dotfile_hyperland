@@ -40,6 +40,17 @@ return {
     vim.cmd("highlight TelescopeNormal guibg=#000000")
     vim.cmd("highlight MasonNormal guibg=#000000")
     vim.cmd("highlight BufferLineFill guibg=#000000")
+
+    vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#91B4D5" }) -- soft blue
+    vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#91B4D5" })
+    vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C4C9C6" }) -- light gray
+    vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#B4BE82" }) -- soft green
+    vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#B4BE82" })
+    vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#E5C890" }) -- yellow
+    vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#D4879C" }) -- pink
+    vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C6D0F5" }) -- subtle lavender
+    vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#F4B8E4" }) -- magenta
+    vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFC914" }) -- a golden yellow
   end,
 }
 
