@@ -4,6 +4,9 @@ set -gx VISUAL "nvim"
 set -Ux SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
 set -Ux SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
 
+set -x JAVA_HOME /usr/lib/jvm/java-21-openjdk
+set -x PATH $JAVA_HOME/bin $PATH
+
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
 alias ocr="sh ~/.config/custom_scripts/ocr.sh"
 alias sysupdate="sudo pacman -Syu"

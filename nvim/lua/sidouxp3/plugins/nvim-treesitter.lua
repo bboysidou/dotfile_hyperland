@@ -13,7 +13,9 @@ return {
       -- local ts_context_commentstring = require("ts_context_commentstring").setup({})
 
       -- configure treesitter
-      treesitter.setup({ -- enable syntax highlighting
+      treesitter.setup({
+        modules = {},
+        -- enable syntax highlighting
         highlight = {
           enable = true,
         },
@@ -45,6 +47,7 @@ return {
           "sql",
           "php",
           "c",
+          "java",
         },
         -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
         ts_context_commentstring = {
@@ -57,6 +60,8 @@ return {
         -- },
         -- auto install above language parsers
         auto_install = true,
+        sync_install = false,
+        ignore_install = {},
       })
     end,
   },

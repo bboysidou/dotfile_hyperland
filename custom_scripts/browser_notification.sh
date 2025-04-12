@@ -29,4 +29,8 @@ ICON_PATH="/tmp/${DOMAIN}.png"
 
 curl -s "$FAVICON_URL" -o "$ICON_PATH"
 
+if [ ! -s "$ICON_PATH" ]; then
+    ICON_PATH="/usr/share/icons/hicolor/48x48/apps/browser.png"
+fi
+
 notify-send -i "$ICON_PATH" "$APP_NAME" "$MSG_BODY"
