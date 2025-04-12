@@ -6,6 +6,10 @@ return {
     "artemave/workspace-diagnostics.nvim",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
+    -- {
+    --   "mfussenegger/nvim-jdtls",
+    --   ft = "java",
+    -- },
   },
   config = function()
     -- import lspconfig plugin
@@ -80,21 +84,37 @@ return {
 
     -- used to enable autocompletion (assign to every lsp server config)
     local capabilities = cmp_nvim_lsp.default_capabilities()
+    capabilities.offsetEncoding = { "utf-16" }
 
-    -- Change the Diagnostic symbols in the sign column (gutter)
-    -- (not in youtube nvim video)
-    local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-    for type, icon in pairs(signs) do
-      local hl = "DiagnosticSign" .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-    end
-
+    vim.diagnostic.config({
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = " ",
+          [vim.diagnostic.severity.WARN] = " ",
+          [vim.diagnostic.severity.INFO] = " ",
+          [vim.diagnostic.severity.HINT] = "󰌵 ",
+        },
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = "",
+          [vim.diagnostic.severity.WARN] = "",
+          [vim.diagnostic.severity.HINT] = "",
+          [vim.diagnostic.severity.INFO] = "",
+        },
+      },
+    })
     mason_lspconfig.setup_handlers({
       -- default handler for installed servers
       function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
+        if server_name ~= "jdtls" then
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              if client.server_capabilities.positionEncoding then
+                vim.lsp.util._set_offset_encoding(client.offset_encoding)
+              end
+            end,
+          })
+        end
       end,
       ["ts_ls"] = function()
         -- configure svelte server
@@ -102,6 +122,9 @@ return {
           capabilities = capabilities,
           on_attach = function(client, bufnr)
             require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+            if client.server_capabilities.positionEncoding then
+              vim.lsp.util._set_offset_encoding(client.offset_encoding)
+            end
           end,
         })
       end,
