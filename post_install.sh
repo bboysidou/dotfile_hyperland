@@ -199,6 +199,29 @@ sudo vim /etc/systemd/zram-generator.conf
 # [zram0]
 # zram-size=ram
 
+# KVM -----------------------------------------
+sudo pacman -S --needed qemu-full libvirt virt-manager dnsmasq iptables-nft edk2-ovmf swtpm bridge-utils vde2 openbsd-netcat dmidecode
+sudo usermod -aG libvirt,kvm $USER
+newgrp libvirt
+sudo virsh net-list --all
+sudo virsh net-start default
+sudo virsh net-autostart default
+sudo systemctl enable --now libvirtd
+# add this to the bottom of /etc/libvirt/qemu.conf
+sudo vim /etc/libvirt/qemu.conf
+user = "sidouxp3" # replace with your username
+group = "kvm"
+sevurity_driver = "none"
+
+# uncomment /etc/libvirt/libvirtd.conf
+sudo vim /etc/libvirt/libvirtd.conf
+unix_sock_group = "libvirt"
+unix_sock_rw_perms = "0770"
+auth_unix_ro = "none"
+auth_unix_rw = "none"
+sudo systemctl restart --now libvirtd
+
+
 # MISELINEOUS -----------------------------------------
 # Config Keyboard using https://www.usevia.app/
 # in a chromium base browser go to the flags 
