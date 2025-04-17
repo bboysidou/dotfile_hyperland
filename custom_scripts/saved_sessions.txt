@@ -85,3 +85,5 @@ ArmyQuizGame:2:backend:/home/sidouxp3/Web-development/Army/QuizGame/backend:nvim
 ArmyQuizGame:3:docker:/home/sidouxp3/Web-development/Army/QuizGame:fish
 ArmyQuizGame:4:git:/home/sidouxp3/Web-development/Army/QuizGame:fish
 ArmyQuizGame:5:db:/home/sidouxp3/Web-development/Army/QuizGame/db:nvim
+ArmyQuizGame:3:docker:/home/sidouxp3/Web-development/Army/QuizGame/backend:bun
+ArmyQuizGame:1:frontend:/home/sidouxp3/Web-development/Army/QuizGame/frontend:nvim
