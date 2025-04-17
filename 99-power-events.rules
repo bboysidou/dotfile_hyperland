@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", KERNEL=="ADP0", ATTR{online}=="0", RUN+="/usr/bin/systemctl start power-events.service"
+SUBSYSTEM=="power_supply", KERNEL=="ADP0", ATTR{online}=="1", RUN+="/usr/bin/systemctl start power-events.service"
