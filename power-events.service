@@ -1,0 +1,7 @@
+[Unit]
+Description=Power Event Handler
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/etc/power-events/power-event-handler.sh

@@ -234,3 +234,10 @@ sudo chmod a+rw /dev/hidraw*
 # go to https://www.usevia.app/ and start editing the keyboard
 # after finishing 
 sudo chmod 600 /dev/hidraw*
+
+# UDEV RULES
+sudo mkdir -p /etc/power-events
+sudo cp power-event-handler.sh /etc/power-events/
+sudo cp power-events.service /etc/systemd/system
+sudo 99-power-events.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
