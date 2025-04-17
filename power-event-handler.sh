@@ -15,8 +15,11 @@ log() {
 
 if [[ "$POWER_STATE" -eq 1 ]]; then
 	log "AC plugged in – enabling hybrid mode"
+	# auto-cpufreq --force="reset"
 	brightnessctl set 100%
 else
 	log "On battery – enabling integrated mode"
+	# for auto-cpufreq users
+	# auto-cpufreq --force="powersave"
 	brightnessctl set 50%
 fi
