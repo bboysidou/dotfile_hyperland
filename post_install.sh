@@ -236,7 +236,7 @@ sudo chmod a+rw /dev/hidraw*
 sudo chmod 600 /dev/hidraw*
 
 # UDEV RULES -----------------------------------------
-sudo cp ~/.config/custom_scripts/power_event_handler.sh /usr/local/bin/power_event_handler.sh
+sudo cp ~/.config/custom_scripts/power_event_handler.sh /usr/local/bin/power_event_handler.sh 
 sudo cp power-events.service /etc/systemd/system
 sudo 99-power-events.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
