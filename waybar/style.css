@@ -66,6 +66,7 @@ window#waybar.empty #window {
 #backlight,
 #custom-distro,
 #window,
+#custom-media,
 #custom-updates {
   font-size: 12px;
   border-radius: 15px;
@@ -221,6 +222,13 @@ window#waybar {
 
 #custom-arrow_left {
   color: @primary;
+  background: @primary;
+}
+/* -----------------------------------------------------
+ * MEDIA 
+ * ----------------------------------------------------- */
+#custom-media {
+  color: @secondary;
   background: @primary;
 }
 

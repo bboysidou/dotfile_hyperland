@@ -8,6 +8,7 @@
     "~/.config/waybar/modules/screen_brightness.json",
     "~/.config/waybar/modules/updates.json",
     "~/.config/waybar/modules/bluetooth.json",
+    "~/.config/waybar/modules/media.json",
     // Modules Center
     "~/.config/waybar/modules/window.json",
     // Modules Right    
@@ -24,7 +25,8 @@
     "hyprland/workspaces",
     "backlight",
     "custom/updates",
-    "bluetooth"
+    "bluetooth",
+    "custom/media"
   ],
   // Modules Center
   "modules-center": [
