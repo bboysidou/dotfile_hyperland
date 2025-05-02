@@ -3,6 +3,7 @@
 TABS_FILE="$HOME/.config/custom_scripts/gitignore/tabs.txt"
 
 if [ ! -f "$TABS_FILE" ]; then
+    notify-send -u critical "Error" "tabs.txt not found."
     echo "Error: tabs.txt not found."
     exit 1
 fi
