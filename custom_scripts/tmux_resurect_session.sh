@@ -3,7 +3,9 @@
 SESSION_FILE="$HOME/.config/custom_scripts/saved_sessions.txt"
 
 if [ ! -f "$SESSION_FILE" ]; then
+    notify-send -u critical "Error" "Session file not found: $SESSION_FILE"
     echo "Session file not found: $SESSION_FILE"
+    notify-send "Creating" "Creating new session file: $SESSION_FILE"
     echo "Creating new session file: $SESSION_FILE"
     touch "$SESSION_FILE"
 fi

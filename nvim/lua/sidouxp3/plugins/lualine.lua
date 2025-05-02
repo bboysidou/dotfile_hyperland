@@ -11,8 +11,8 @@ return {
       violet = "#C586C0",
       yellow = "#D7BA7D",
       red = "#FF4A4A",
-      white = "#FFF",
-      black = "#000",
+      white = "#FFFFFF",
+      black = "#000000",
       fg = "#C3CCDC",
       bg = "#112638",
       inactive_bg = "#2C3043",
@@ -22,34 +22,40 @@ return {
 
     local my_lualine_theme = {
       normal = {
-        a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
+        a = { bg = colors.blue, fg = colors.black, gui = "bold" },
         b = { bg = colors.yellow, fg = colors.bg },
-        c = { bg = colors.bg, fg = colors.fg },
+        c = { bg = colors.black, fg = colors.white },
+        y = { bg = colors.bg, fg = colors.white },
       },
       insert = {
-        a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.yellow, fg = colors.white },
-        c = { bg = colors.bg, fg = colors.fg },
+        a = { bg = colors.green, fg = colors.black, gui = "bold" },
+        b = { bg = colors.yellow, fg = colors.bg },
+        c = { bg = colors.black, fg = colors.white },
+        y = { bg = colors.bg, fg = colors.white },
       },
       visual = {
-        a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.yellow, fg = colors.white },
-        c = { bg = colors.bg, fg = colors.fg },
+        a = { bg = colors.violet, fg = colors.black, gui = "bold" },
+        b = { bg = colors.yellow, fg = colors.bg },
+        c = { bg = colors.black, fg = colors.white },
+        y = { bg = colors.bg, fg = colors.white },
       },
       command = {
-        a = { bg = colors.yellow, fg = colors.bg, gui = "bold" },
+        a = { bg = colors.yellow, fg = colors.black, gui = "bold" },
         b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
+        c = { bg = colors.black, fg = colors.white },
+        y = { bg = colors.bg, fg = colors.white },
       },
       replace = {
-        a = { bg = colors.red, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.yellow, fg = colors.white },
-        c = { bg = colors.bg, fg = colors.fg },
+        a = { bg = colors.red, fg = colors.black, gui = "bold" },
+        b = { bg = colors.yellow, fg = colors.bg },
+        c = { bg = colors.black, fg = colors.white },
+        y = { bg = colors.bg, fg = colors.white },
       },
       inactive = {
         a = { bg = colors.inactive_bg, fg = colors.semilightgray, gui = "bold" },
         b = { bg = colors.inactive_bg, fg = colors.semilightgray },
         c = { bg = colors.inactive_bg, fg = colors.semilightgray },
+        y = { bg = colors.inactive_bg, fg = colors.semilightgray },
       },
     }
 
@@ -61,19 +67,22 @@ return {
       },
       sections = {
         lualine_a = { "mode" },
-        lualine_b = { "branch", "diff", "diagnostics" },
-        lualine_c = { { "filename", path = 3 } },
+        lualine_b = {
+          "branch",
+          "diff",
+        },
+        lualine_c = { { "filename", path = 3, shorting_target = 30 } },
         lualine_x = {
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,
-            color = { fg = "#ff9e64" },
+            color = { fg = "#FF9E64" },
           },
-          { "encoding" },
+          -- { "encoding" },
           { "fileformat" },
           { "filetype" },
         },
-        lualine_y = {},
+        lualine_y = { "diagnostics" },
         lualine_z = { "location" },
       },
     })
