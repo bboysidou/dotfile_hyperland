@@ -6,7 +6,7 @@ sudo pacman -S dunst firefox chromium neovim zsh tmux ntfs-3g \
   yazi ffmpeg p7zip 7zip jq poppler fd fzf zoxide imagemagick \
   unrar vi fish kitty papirus-icon-theme rsync obs-studio evince \
   feh tree gcc gdb make valgrind clang papirus-icon-theme curl \
-  gtk-engine-murrine sassc speedtest-cli android-tools
+  gtk-engine-murrine sassc speedtest-cli android-tools exfatprogs
 
 # FOR OCR ------------------------------------------------------- 
 sudo pacman -S tesseract-data
