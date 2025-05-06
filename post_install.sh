@@ -240,3 +240,11 @@ sudo cp ~/.config/custom_scripts/power_event_handler.sh /usr/local/bin/power_eve
 sudo cp power-events.service /etc/systemd/system
 sudo 99-power-events.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules
+
+# MOUSE MX MASTER -----------------------------------------
+sudo pacman -S gnome-shell-extensions solaar
+sudo usermod -a -G input $USER
+echo 'KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/99-solaar.rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+# and reboot
