@@ -14,6 +14,7 @@
     // Modules Right    
     "~/.config/waybar/modules/pulseaudio.json",
     "~/.config/waybar/modules/battery.json",
+    "~/.config/waybar/modules/mouse_battery.json",
     "~/.config/waybar/modules/network.json",
     "~/.config/waybar/modules/hardware.json",
     "~/.config/waybar/modules/tray.json",
@@ -36,6 +37,7 @@
   "modules-right": [
     "pulseaudio",
     "battery",
+    "custom/mouse",
     "network",
     "group/hardware",
     "tray",

@@ -67,7 +67,8 @@ window#waybar.empty #window {
 #custom-distro,
 #window,
 #custom-media,
-#custom-updates {
+#custom-updates,
+#custom-mouse {
   font-size: 12px;
   border-radius: 15px;
   padding: 1px 10px;
@@ -81,7 +82,9 @@ window#waybar.empty #window {
 #temperature.critical,
 #battery.critical.discharging,
 #battery.critical:not(.charging),
-#custom-updates.red {
+#custom-updates.red,
+#custom-mouse.critical,
+#custom-mouse.error {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -95,6 +98,7 @@ window#waybar.empty #window {
 #cpu.warning,
 #temperature.warning,
 #custom-updates.yellow,
+#custom-mouse.warning,
 #battery.warning.discharging {
   color: @warning;
 }
@@ -231,7 +235,13 @@ window#waybar {
   color: @secondary;
   background: @primary;
 }
-
+/* -----------------------------------------------------
+ * MOUSE 
+ * ----------------------------------------------------- */
+#custom-mouse {
+  color: @secondary;
+  background: @primary;
+}
 /* -----------------------------------------------------
  * UPDATES 
  * ----------------------------------------------------- */
