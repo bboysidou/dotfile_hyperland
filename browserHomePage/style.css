@@ -16,6 +16,11 @@
   background: var(--background);
 }
 
+body {
+  min-height: 100dvh;
+  min-width: 100dvw;
+}
+
 .container {
   position: absolute;
   top: 50%;
