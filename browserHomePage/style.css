@@ -1,21 +1,19 @@
 :root {
   --font: "monospace";
   --background: #000000;
-  /* --background: #080c07; */
-  --foreground: #b9c9b8;
-  --green: #638660;
-  --red: #bd4d5a;
-  --orange: #a47449;
-  --branch: 1px solid #b9c9b8;
+  --foreground: #d4d4d4;
+  --green: #4ec9b0;
+  --red: #569cd6;
+  --orange: #d7ba7d;
+  --branch: 1px solid #3e3e3e;
 }
 
-html {
-  font-size: 26px;
-}
-
-body {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
   background: var(--background);
-  /* font-weight: bold; */
 }
 
 .container {
