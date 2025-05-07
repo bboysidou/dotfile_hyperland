@@ -12,15 +12,17 @@ TABS=($(cat "$TABS_FILE"))
 
 # Open Firefox Working Browser in workspace 1
 hyprctl dispatch workspace 1
-firefox "${TABS[@]}" &
+zen-browser "${TABS[@]}" &
+# firefox "${TABS[@]}" &
 
 # Open Firefox Searching and Testing Browser in workspace 3
-sleep 2
+sleep 1
 hyprctl dispatch workspace 3
-firefox --new-window &
+zen-browser --new-window &
+# firefox --new-window &
 
 # Open Woking Project in workspace 2
-sleep 1 
+sleep 2 
 hyprctl dispatch workspace 2
 notify-send "Startup Script" "Work setup initialized. Happy coding!"
 kitty --start-as=fullscreen sh $HOME/.config/custom_scripts/tmux_resurect_session.sh
