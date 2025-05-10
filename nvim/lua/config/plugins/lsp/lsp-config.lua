@@ -2,23 +2,15 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    -- Va permetre de remplir le plugin de complétion automatique nvim-cmp
-    -- avec les résultats des LSP
     "hrsh7th/cmp-nvim-lsp",
-    -- Ajoute les « code actions » de type renommage de fichiers intelligent, etc
+    "artemave/workspace-diagnostics.nvim",
     { "antosha417/nvim-lsp-file-operations", config = true },
   },
   config = function()
-    -- import de lsp-zero
     local lsp_zero = require("lsp-zero")
     local keymap = vim.keymap
-    -- lsp_attach sert à activer des fonctionnalités qui ne seront disponibles
-    -- que s'il il y a un LSP d'activé pour le fichier courant
     local lsp_attach = function(_, bufnr)
       local opts = { buffer = bufnr, silent = true }
-
-      -- configuration des raccourcis
-      -- je ne vous les traduis pas, ils me semblent parler d'eux-même ;)
       opts.desc = "Show LSP references"
       keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
@@ -70,15 +62,11 @@ return {
     end
 
     lsp_zero.extend_lspconfig({
-      -- On affiche les signes des diagnostics dans la gouttière de gauche
       sign_text = true,
-      -- On attache notre fonction qui définit les raccourcis
       lsp_attach = lsp_attach,
-      -- On augmente les capacités de complétion par défaut avec les propositions du LSP
       capabilities = require("cmp_nvim_lsp").default_capabilities(),
     })
 
-    -- On utilise lsp_zero pour configurer quelques éléments de design
     lsp_zero.ui({
       float_border = "rounded",
       sign_text = {
