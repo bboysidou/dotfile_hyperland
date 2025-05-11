@@ -29,10 +29,10 @@ function toggle_netrw()
 end
 
 keymap.set("x", "<leader>p", '"_dP') -- past without overriding the register
-keymap.set("n", "<C-J>", ":m .+1<CR>==") -- move line up(n)
-keymap.set("n", "<C-K>", ":m .-2<CR>==") -- move line down(n)
-keymap.set("v", "<C-J>", ":m '>+1<CR>gv=gv") -- move line up(v)
-keymap.set("v", "<C-K>", ":m '<-2<CR>gv=gv") -- move line down(v)
+keymap.set("n", "<C-up>", ":m .+1<CR>==") -- move line up(n)
+keymap.set("n", "<C-down>", ":m .-2<CR>==") -- move line down(n)
+keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
+keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
 -- window management
 keymap.set("n", "sv", "<C-w>v") -- split window vertically
 keymap.set("n", "sh", "<C-w>s") -- split window horizontally
@@ -48,7 +48,6 @@ keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>") -- toggle split window max
 
 -- file-tree
 keymap.set("n", "<leader>e", ":lua toggle_netrw()<CR>", { silent = true }) -- toggle file explorer
--- keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>") -- toggle file explorer
 
 -- telescope
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>") -- find files within current working directory, respects .gitignore
@@ -63,11 +62,6 @@ keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>") -- cycle 
 keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>BufferLineCyclePrev<CR>") -- cycle through buffers
 keymap.set({ "n", "v", "i" }, "<A-a>", "<CMD>BufferLineCloseOthers<CR>") -- close all other buffers
 keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
--- vim.keymap.set('n', 'gb', '<CMD>BufferLinePick<CR>')
--- vim.keymap.set("n", "<leader>ts", "<CMD>BufferLinePickClose<CR>")
--- vim.keymap.set('n', ']b', '<CMD>BufferLineMoveNext<CR>')
--- vim.keymap.set('n', '[b', '<CMD>BufferLineMovePrev<CR>')
--- vim.keymap.set('n', 'gs', '<CMD>BufferLineSortByDirectory<CR>')
 
 -- harpoon
 keymap.set("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", { desc = "Mark file with harpoon" })
@@ -89,8 +83,6 @@ keymap.set({ "n", "v", "i" }, "<C-d>", "<C-d>zz") -- move half page up and cente
 keymap.set({ "n", "v", "i" }, "<C-u>", "<C-u>zz") -- move half page down and center the view
 keymap.set({ "n", "v", "i" }, "<C-s>", "<ESC>:w<CR>") -- save the file
 keymap.set({ "n", "v", "i" }, "<C-w>", "<ESC>:q!<CR>") -- close the file
-keymap.set({ "n", "v", "i" }, "<C-down>", "5jzz") -- jump 5 down lines
-keymap.set({ "n", "v", "i" }, "<C-up>", "5kzz") -- jump 5 up lines
 
 -- debugger
 keymap.set("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
