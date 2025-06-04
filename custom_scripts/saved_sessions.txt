@@ -89,6 +89,9 @@ ArmyQuizGame:3:docker:/home/sidouxp3/Web-development/Army/QuizGame/backend:bun
 ArmyQuizGame:1:frontend:/home/sidouxp3/Web-development/Army/QuizGame/frontend:nvim
 sifartekstore:1:admin_frontend:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin/client:nvim
 sifartekstore:2:sifartek_store_api:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_api/api:nvim
-sifartekstore:3:docker:/home/sidouxp3/Web-development/Sifartek/sifartek_store:fish
-sifartekstore:4:git_admin_frontend:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin:fish
+sifartekstore:3:store-client:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store/client:nvim
+sifartekstore:4:docker:/home/sidouxp3/Web-development/Sifartek/sifartek_store:fish
 sifartekstore:5:git_backend_api:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_api:fish
+sifartekstore:6:git-store-admin:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin:fish
+sifartekstore:7:git-store-client:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store
+wergonic:1:app:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter-main:nvim

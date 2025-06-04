@@ -12,8 +12,8 @@ TABS=($(cat "$TABS_FILE"))
 
 # Open Firefox Working Browser in workspace 1
 hyprctl dispatch workspace 1
-zen-browser "${TABS[@]}" &
-# firefox "${TABS[@]}" &
+# zen-browser "${TABS[@]}" &
+firefox "${TABS[@]}" &
 
 # Open Firefox Searching and Testing Browser in workspace 3
 sleep 1
