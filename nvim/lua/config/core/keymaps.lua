@@ -99,3 +99,11 @@ keymap.set("n", "<leader>xw", function()
   vim.diagnostic.setqflist() -- Collects all LSP diagnostics into the quickfix list
   require("trouble").open("qflist") -- Opens Trouble in quickfix mode
 end, { desc = "Workspace Diagnostics (Trouble)" })
+
+-- custom
+keymap.set(
+  "n",
+  "<leader>g",
+  ":CreateCleanArchitectureFeature<CR>",
+  { desc = "Generate Clean Architecture Folder Structure" }
+)

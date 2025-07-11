@@ -95,3 +95,15 @@ sifartekstore:5:git_backend_api:/home/sidouxp3/Web-development/Sifartek/sifartek
 sifartekstore:6:git-store-admin:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin:fish
 sifartekstore:7:git-store-client:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store
 wergonic:1:app:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter-main:nvim
+realtime:1:app:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:nvim
+realtime:2:frontend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/frontend:nvim
+realtime:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:fish
+realtime:4:docker:/home/sidouxp3/Web-development/Personal_projects/Real_time_app:fish
+realtime:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:nvim
+realtime:5:flutter-run:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:fish
+realtime:6:flutter-build:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:fish
+wergonic:2:frontend:/home/sidouxp3/Web-development/Wergonic/wergonic-web-apps-main:nvim
+realtime:4:docker:/home/sidouxp3/Web-development/Personal_projects/Real_time_app:docker
+realtime:5:flutter-run:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:bash
+realtime:7:nvim:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/database:nvim
+realtime:8:docker:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/database:docker
