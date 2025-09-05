@@ -94,6 +94,7 @@ sifartekstore:4:docker:/home/sidouxp3/Web-development/Sifartek/sifartek_store:fi
 sifartekstore:5:git_backend_api:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_api:fish
 sifartekstore:6:git-store-admin:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin:fish
 sifartekstore:7:git-store-client:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store
+wergonic:1:app:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter-main:nvim
 realtime:1:app:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:nvim
 realtime:2:frontend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/frontend:nvim
 realtime:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:fish
@@ -101,6 +102,7 @@ realtime:4:docker:/home/sidouxp3/Web-development/Personal_projects/Real_time_app
 realtime:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:nvim
 realtime:5:flutter-run:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:fish
 realtime:6:flutter-build:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:fish
+wergonic:2:frontend:/home/sidouxp3/Web-development/Wergonic/wergonic-web-apps-main:nvim
 realtime:4:docker:/home/sidouxp3/Web-development/Personal_projects/Real_time_app:docker
 realtime:5:flutter-run:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:bash
 realtime:7:nvim:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/database:nvim
@@ -116,6 +118,10 @@ reusable_shit:1:frontend:/home/sidouxp3/Web-development/Reusable_shit/frontend:n
 reusable_shit:3:flutter:/home/sidouxp3/Web-development/Reusable_shit/flutter:nvim
 sifartekstore:7:git-store-client:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store:fish
 reusable_shit:3:flutter:/home/sidouxp3/Web-development/Reusable_shit/flutter/app:fish
+wergonic:3:backend-django:/home/sidouxp3/Web-development/Wergonic/wergonic-django-backend-main:fish
+wergonic:4:flutter-run:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter-main:fish
+wergonic:5:docker-django:/home/sidouxp3/Web-development/Wergonic/wergonic-django-backend-main:fish
+wergonic:6:fish:/home/sidouxp3/Web-development/Wergonic/wergonic-web-apps-main:fish
 reusable_shit:3:flutter:/home/sidouxp3/Web-development/Reusable_shit/flutter/app:nvim
 fivation_2_0:1:Frontend:/home/sidouxp3/Web-development/Fivation/2.0/Fivation_frontend:fish
 fivation_2_0:2:Backend:/home/sidouxp3/Web-development/Fivation/2.0/Fivation_backend:fish
@@ -131,7 +137,3 @@ opencompany:2:backend:/home/sidouxp3/Web-development/OpenCompany/backend:nvim
 opencompany:3:docker:/home/sidouxp3/Web-development/OpenCompany:docker
 opencompany:4:git:/home/sidouxp3/Web-development/OpenCompany:fish
 opencompany:5:database:/home/sidouxp3/Web-development/OpenCompany/database:nvim
-isale:1:nvim:/home/sidouxp3/Web-development/I-Sale:nvim
-sifartekstore:4:docker:/home/sidouxp3/Web-development/Sifartek/sifartek_store/sifartek_store_admin:fish
-wergonic:1:wergonic_app:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:nvim
-wergonic:2:flutter_run:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish

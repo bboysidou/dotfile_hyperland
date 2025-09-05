@@ -107,3 +107,13 @@ keymap.set(
   ":CreateCleanArchitectureFeature<CR>",
   { desc = "Generate Clean Architecture Folder Structure" }
 )
+
+-- Create BLoC quickly
+vim.keymap.set("n", "<Leader>fb", "<cmd>lua require('flutter-bloc').create_bloc()<cr>", {
+  desc = "[C]reate [F]lutter [B]loc",
+})
+
+-- Create Cubit quickly
+vim.keymap.set("n", "<Leader>fc", "<cmd>lua require('flutter-bloc').create_cubit()<cr>", {
+  desc = "[C]reate [F]lutter [C]ubit",
+})
