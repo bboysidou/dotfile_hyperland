@@ -23,16 +23,16 @@ zen-browser --new-window &
 # firefox --new-window &
 
 # Point in workspace 2
-sleep 1
-hyprctl dispatch workspace 2
-# Open mailspring in workspace 7
-sleep 1
-hyprctl dispatch workspace 7
-mailspring --password-store="gnome-libsecret" &
-# Open thunderbird in workspace 6
-sleep 2
-hyprctl dispatch workspace 6
-thunderbird &
+# sleep 1
+# hyprctl dispatch workspace 2
+# # Open mailspring in workspace 7
+# sleep 1
+# hyprctl dispatch workspace 7
+# mailspring --password-store="gnome-libsecret" &
+# # Open thunderbird in workspace 6
+# sleep 2
+# hyprctl dispatch workspace 6
+# thunderbird &
 
 # Open Woking Project in workspace 2
 sleep 3 

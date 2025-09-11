@@ -3,6 +3,8 @@ set -gx VISUAL "nvim"
 
 set -Ux SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
 set -Ux SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
+set -Ux PATH $PATH $HOME/.fvm_flutter/bin
+set -Ux CHROME_EXECUTABLE /usr/bin/chromium
 
 set -x JAVA_HOME /usr/lib/jvm/java-21-openjdk
 set -x PATH $JAVA_HOME/bin $PATH
@@ -28,3 +30,5 @@ end
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 set --export MANPAGER "nvim +Man!"
+set --export PATH $HOME/flutter/bin $PATH
+
