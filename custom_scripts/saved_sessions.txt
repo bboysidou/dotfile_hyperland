@@ -136,3 +136,5 @@ sifartekstore:4:docker:/home/sidouxp3/Web-development/Sifartek/sifartek_store/si
 wergonic:1:wergonic_app:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:nvim
 wergonic:2:flutter_run:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish
 test_firebase:1:fish:/home/sidouxp3/Web-development/Test_firebase/app:fish
+octadom_crm:1:app:/home/sidouxp3/Web-development/Octadom/CRM/app:nvim
+octadom_crm:2:frontend:/home/sidouxp3/Web-development/Octadom/CRM/frontend:nvim
