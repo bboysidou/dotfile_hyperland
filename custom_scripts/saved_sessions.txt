@@ -138,3 +138,11 @@ wergonic:2:flutter_run:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:
 test_firebase:1:fish:/home/sidouxp3/Web-development/Test_firebase/app:fish
 octadom_crm:1:app:/home/sidouxp3/Web-development/Octadom/CRM/app:nvim
 octadom_crm:2:frontend:/home/sidouxp3/Web-development/Octadom/CRM/frontend:nvim
+Templates:1:template-mobile:/home/sidouxp3/Web-development/project_templates/mobile:nvim
+Templates:2:template-frontend:/home/sidouxp3/Web-development/project_templates/frontend:nvim
+Templates:3:template-backend:/home/sidouxp3/Web-development/project_templates/backend:nvim
+octadom_crm:3:app_run:/home/sidouxp3/Web-development/Octadom/CRM/app:fish
+octadom_crm:4:fish:/home/sidouxp3/Web-development/Octadom/CRM/frontend:fish
+reusable_shit:1:frontend:/home/sidouxp3/Web-development/reusable_shit/frontend:nvim
+reusable_shit:2:functions:/home/sidouxp3/Web-development/reusable_shit/functions:nvim
+reusable_shit:3:flutter:/home/sidouxp3/Web-development/reusable_shit/flutter/app:nvim
