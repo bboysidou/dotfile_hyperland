@@ -112,12 +112,12 @@ window#waybar.empty #window {
 }
 
 #workspaces button {
-  color: @secondary;
+  color: @arch-color;
   background: @primary;
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 15px;
-  opacity: 0.4;
+  opacity: 1;
   transition: all 0.3s ease-in-out;
 }
 
@@ -131,6 +131,11 @@ window#waybar.empty #window {
 #workspaces button:hover {
   color: @secondary;
   opacity: 0.5;
+}
+
+#workspaces button.empty {
+  color: @secondary;
+  opacity: 1;
 }
 
 #backlight {
