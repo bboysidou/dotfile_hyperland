@@ -6,9 +6,9 @@ local function create_directories(base, paths)
   end
 end
 
-local function create_files(base, feature, root_folder, files)
+local function create_files(base, feature, root_folder, files, ext)
   for _, item in ipairs(files) do
-    local full_path = string.format("%s/%s/%s/%s.%s.ts", base, root_folder, item.subdir, feature, item.suffix)
+    local full_path = string.format("%s/%s/%s/%s.%s.%s", base, root_folder, item.subdir, feature, item.suffix, ext)
     vim.fn.writefile({ "// " .. item.suffix .. " for " .. feature }, full_path)
   end
 end
@@ -20,7 +20,7 @@ function M.generate_clean_architecture_structure()
       return
     end
 
-    vim.ui.select({ "frontend", "backend" }, { prompt = "Project type:" }, function(choice)
+    vim.ui.select({ "frontend", "backend", "flutter" }, { prompt = "Project type:" }, function(choice)
       if not choice then
         print("Project type is required.")
         return
@@ -35,7 +35,6 @@ function M.generate_clean_architecture_structure()
         "domain/usecases",
         "data/datasources",
         "data/repositories",
-        "presentation/schemas",
       }
 
       -- frontend-specific folders
@@ -50,11 +49,19 @@ function M.generate_clean_architecture_structure()
         "presentation/controllers",
       }
 
+      -- flutter-specific folders
+      local flutter_extra_paths = {
+        "presentation/pages",
+        "presentation/widgets",
+      }
+
+      -- domain files
       local domain_files = {
         { subdir = "entities", suffix = "entity" },
         { subdir = "repositories", suffix = "domain.repository" },
       }
 
+      -- frontend files
       local frontend_data_files = {
         { subdir = "datasources", suffix = "remote.datasource" },
         { subdir = "repositories", suffix = "data.repository" },
@@ -62,16 +69,26 @@ function M.generate_clean_architecture_structure()
 
       local frontend_presentation_files = {
         { subdir = "actions", suffix = "action" },
-        { subdir = "schemas", suffix = "schema" },
       }
 
+      -- backend files
       local backend_data_files = {
         { subdir = "repositories", suffix = "data.repository" },
       }
 
       local backend_presentation_files = {
         { subdir = "controllers", suffix = "controller" },
-        { subdir = "schemas", suffix = "schema" },
+      }
+
+      -- flutter files
+      local flutter_data_files = {
+        { subdir = "datasources", suffix = "remote.datasource" },
+        { subdir = "repositories", suffix = "data.repository" },
+      }
+
+      local flutter_presentation_files = {
+        { subdir = "widgets", suffix = "widget" },
+        { subdir = "pages", suffix = "page" },
       }
 
       -- combine paths
@@ -80,24 +97,35 @@ function M.generate_clean_architecture_structure()
         vim.list_extend(full_paths, frontend_extra_paths)
       elseif choice == "backend" then
         vim.list_extend(full_paths, backend_extra_paths)
+      elseif choice == "flutter" then
+        vim.list_extend(full_paths, flutter_extra_paths)
       end
 
       -- create folders
       create_directories(cwd, full_paths)
 
-      -- create files
-      create_files(cwd, feature, "domain", domain_files)
+      -- create files (different extensions for Flutter vs TS)
+      local ext = (choice == "flutter") and "dart" or "ts"
+
+      create_files(cwd, feature, "domain", domain_files, ext)
 
       if choice == "frontend" then
-        create_files(cwd, feature, "data", frontend_data_files)
-        create_files(cwd, feature, "presentation", frontend_presentation_files)
+        create_files(cwd, feature, "data", frontend_data_files, ext)
+        create_files(cwd, feature, "presentation", frontend_presentation_files, ext)
       elseif choice == "backend" then
-        create_files(cwd, feature, "data", backend_data_files)
-        create_files(cwd, feature, "presentation", backend_presentation_files)
+        create_files(cwd, feature, "data", backend_data_files, ext)
+        create_files(cwd, feature, "presentation", backend_presentation_files, ext)
 
         -- create route file
-        local route_file = string.format("%s/presentation/%s.route.ts", cwd, feature)
+        local route_file = string.format("%s/presentation/%s.route.%s", cwd, feature, ext)
         vim.fn.writefile({ "// route for " .. feature }, route_file)
+        -- elseif choice == "flutter" then
+        --   create_files(cwd, feature, "data", flutter_data_files, ext)
+        --   create_files(cwd, feature, "presentation", flutter_presentation_files, ext)
+        --
+        --   -- create route file (Flutter style)
+        --   local route_file = string.format("%s/presentation/%s_routes.%s", cwd, feature, ext)
+        --   vim.fn.writefile({ "// routes for " .. feature }, route_file)
       end
 
       print(choice .. " folder structure created for feature: " .. feature)
