@@ -146,3 +146,14 @@ octadom_crm:4:fish:/home/sidouxp3/Web-development/Octadom/CRM/frontend:fish
 reusable_shit:1:frontend:/home/sidouxp3/Web-development/reusable_shit/frontend:nvim
 reusable_shit:2:functions:/home/sidouxp3/Web-development/reusable_shit/functions:nvim
 reusable_shit:3:flutter:/home/sidouxp3/Web-development/reusable_shit/flutter/app:nvim
+realtime:1:app:/home/sidouxp3/Web-development/Real_time_app/app:nvim
+realtime:2:frontend:/home/sidouxp3:nvim
+realtime:3:backend:/home/sidouxp3:nvim
+realtime:4:docker:/home/sidouxp3:fish
+realtime:5:flutter-run:/home/sidouxp3:bash
+realtime:6:flutter-build:/home/sidouxp3:fish
+realtime:7:nvim:/home/sidouxp3:nvim
+realtime:8:docker:/home/sidouxp3:fish
+wergonic:2:flutter_run:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:dart
+wergonic:3:dart:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:dart
+wergonic:4:fish:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish
