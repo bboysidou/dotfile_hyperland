@@ -66,7 +66,10 @@ return {
       lsp_attach = lsp_attach,
       capabilities = require("cmp_nvim_lsp").default_capabilities(),
     })
+    local lspconfig = require("lspconfig")
 
+    -- Enable TypeScript/JavaScript LSP
+    lspconfig.ts_ls.setup({})
     lsp_zero.ui({
       float_border = "rounded",
       sign_text = {

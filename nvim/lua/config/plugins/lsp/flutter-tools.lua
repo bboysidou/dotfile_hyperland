@@ -122,6 +122,14 @@ return {
             enableSnippets = true,
             updateImportsOnRename = true, -- Whether to update imports and other directives when files are renamed. Required for `FlutterRename` command.
           },
+          handlers = {
+            ["window/showMessage"] = function(_, result, ctx, config)
+              if result and result.message and result.message:match("didChange") then
+                return
+              end
+              vim.lsp.handlers["window/showMessage"](_, result, ctx, config)
+            end,
+          },
         },
       })
     end,
