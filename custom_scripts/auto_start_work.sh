@@ -14,7 +14,7 @@ TABS=($(cat "$TABS_FILE"))
 # Open Browser Working Browser in workspace 1
 hyprctl dispatch workspace 1
 # zen-browser "${TABS[@]}" &
-zen-browser "${TABS[@]}" &
+zen-browser &
 
 # Open Browser Searching and Testing Browser in workspace 3
 sleep 2

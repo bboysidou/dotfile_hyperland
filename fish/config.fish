@@ -32,3 +32,6 @@ set --export PATH $BUN_INSTALL/bin $PATH
 set --export MANPAGER "nvim +Man!"
 set --export PATH $HOME/flutter/bin $PATH
 
+
+# FVM
+set --export PATH /home/sidouxp3/.fvm_flutter/bin $PATH
