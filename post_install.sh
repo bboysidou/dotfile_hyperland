@@ -115,6 +115,13 @@ cp -r Wallpaper/* ~/Pictures/wallpaper/
 
 # SDDM
 # install the theme sddm-astronaut-theme
+#
+# GRUB THEME
+# Copy the "CyberEXS" folder with root privileges to /boot/grub/themes/
+# Edit /etc/default/grub and add
+GRUB_THEME="/boot/grub/themes/CyberEXS/theme.txt"
+
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 # GTK THEME
 git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
