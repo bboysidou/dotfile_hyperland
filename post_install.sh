@@ -105,7 +105,9 @@ fc-cache -fv
 mkdir ~/.themes
 sudo cp -r Juno-ocean /usr/share/themes/
 # copy kora-green to /usr/share/icons/
-sudo cp -r kora-green /usr/share/icons/
+# sudo cp -r kora-green /usr/share/icons/
+# copy kora to /usr/share/icons/
+sudo cp -r kora /usr/share/icons/
 
 # mkdir -p ~/Pictures/wallpaper/
 mkdir -p ~/Pictures/wallpaper/
