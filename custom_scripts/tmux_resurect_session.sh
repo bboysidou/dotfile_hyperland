@@ -36,10 +36,11 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
 fi
 
 echo "$SESSION" | while IFS=: read -r session window window_name path command; do
+    echo "Session: $session, Window: $window, Window Name: $window_name, Path: $path, Command: $command"
+    
     tmux has-session -t "$session" 2>/dev/null || tmux new-session -d -s "$session"
     tmux new-window -t "$session:$window" 2>/dev/null
-    tmux send-keys -t "$session:$window" "cd $path" C-m
-    tmux send-keys -t "$session:$window" "$command" C-m
+    tmux send-keys -t "$session:$window" "cd \"$path\" && $command" C-m
     tmux rename-window -t "$session:$window" "$window_name"
 done
 

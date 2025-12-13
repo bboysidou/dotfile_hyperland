@@ -118,6 +118,7 @@ cp -r Wallpaper/* ~/Pictures/wallpaper/
 #
 # GRUB THEME
 # Copy the "CyberEXS" folder with root privileges to /boot/grub/themes/
+sudo cp -r CyberEXS /boot/grub/themes/
 # Edit /etc/default/grub and add
 GRUB_THEME="/boot/grub/themes/CyberEXS/theme.txt"
 

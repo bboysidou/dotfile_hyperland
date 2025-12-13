@@ -66,10 +66,21 @@ return {
       lsp_attach = lsp_attach,
       capabilities = require("cmp_nvim_lsp").default_capabilities(),
     })
-    local lspconfig = require("lspconfig")
 
-    -- Enable TypeScript/JavaScript LSP
-    lspconfig.ts_ls.setup({})
+    vim.lsp.config("ts_ls", {
+      cmd = { "typescript-language-server", "--stdio" },
+      root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      callback = function()
+        vim.lsp.enable("ts_ls")
+      end,
+    })
+
     lsp_zero.ui({
       float_border = "rounded",
       sign_text = {
