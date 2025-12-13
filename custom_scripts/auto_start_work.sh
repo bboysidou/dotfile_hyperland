@@ -18,7 +18,7 @@ zen-browser &
 
 # Open Browser Searching and Testing Browser in workspace 3
 sleep 2
-hyprctl dispatch workspace 3
+hyprctl dispatch workspace 2
 zen-browser --new-window &
 # firefox --new-window &
 
@@ -36,7 +36,7 @@ zen-browser --new-window &
 
 # Open Woking Project in workspace 2
 sleep 3 
-hyprctl dispatch workspace 2
+hyprctl dispatch workspace 3
 notify-send "Startup Script" "Work setup initialized. Happy coding!"
 kitty --start-as=fullscreen sh $WORKING_PROJECTS_FILE
 

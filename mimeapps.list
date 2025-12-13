@@ -10,6 +10,7 @@ application/xhtml+xml=zen.desktop
 application/x-extension-xhtml=zen.desktop
 application/x-extension-xht=zen.desktop
 text/markdown=sublime-text_subl.desktop
+x-scheme-handler/postman=Postman.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
@@ -23,3 +24,4 @@ application/xhtml+xml=zen.desktop;
 application/x-extension-xhtml=zen.desktop;
 application/x-extension-xht=zen.desktop;
 text/markdown=sublime-text_subl.desktop;
+video/x-matroska=vlc.desktop;

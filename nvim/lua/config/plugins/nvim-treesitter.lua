@@ -45,7 +45,7 @@ return {
           "dockerfile",
           "gitignore",
           "sql",
-          "php",
+          -- "php",
           "c",
           "java",
         },
