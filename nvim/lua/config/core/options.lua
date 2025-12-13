@@ -5,6 +5,7 @@ vim.g.skip_ts_context_commentstring_module = true
 vim.opt.autochdir = false
 
 opt.guicursor = ""
+opt.winborder = "rounded"
 -- line numbers
 opt.relativenumber = true
 opt.number = true
