@@ -190,6 +190,7 @@ aur=(
   pacseek
   trizen
   nwg-look
+  nwg-displays
   zen-browser-bin
   ninja
   gcc
