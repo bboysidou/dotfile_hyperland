@@ -24,14 +24,12 @@ source ./core/configuration.sh
 echo "============================================="
 echo "-----| GENERATE HOME DIR |-----"
 echo "============================================="
-
 _installPackages "xdg-user-dirs"
 xdg-user-dirs-update
 
 echo "============================================="
 echo "-----| INSTALL AUR |-----"
 echo "============================================="
-
 if command -v yay &>/dev/null; then
   echo "AUR is installed"
 else
@@ -67,7 +65,6 @@ _installPackagesAUR "${aur[@]}"
 echo "============================================="
 echo "-----| CLONNING DOTFILES |-----"
 echo "============================================="
-
 cd "$DOWNLOAD_DIR"
 if [[ ! -d "$REPO_DIR" ]]; then
   git clone "$REPO"
@@ -183,6 +180,39 @@ LIBVA_DRIVER_NAME=radeonsi
 VDPAU_DRIVER=radeonsi
 MOZ_DISABLE_RDD_SANDBOX=1
 EOF
+
+echo "============================================="
+echo "-----| INSTALL ANDROID DEV ENV |-----"
+echo "============================================="
+mkdir -p ~/Android/cmdline-tools
+cd ~/Android/cmdline-tools
+wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+unzip commandlinetools-linux-9477386_latest.zip
+mv cmdline-tools latest
+sdkmanager --licenses | yes
+sdkmanager "platform-tools"
+sdkmanager "platforms;android-36"
+sdkmanager "build-tools;28.0.3"
+sdkmanager "system-images;android-34;google_apis;x86_64"
+sdkmanager "emulator"
+
+echo "============================================="
+echo "-----| INSTALL ANDROID AVD |-----"
+echo "============================================="
+avdmanager create avd \
+    -n "Pixel_6_API_34" \
+    -k "system-images;android-34;google_apis;x86_64" \
+    -d "pixel_6"
+avdmanager list avd
+echo "hw.keyboard=yes" >> ~/.android/avd/Pixel_6_API_34.avd/config.ini
+echo "hw.gpu.enabled=yes" >> ~/.android/avd/Pixel_6_API_34.avd/config.ini
+
+echo "============================================="
+echo "-----| CONFIGURE ANDROID UDEV |-----"
+echo "============================================="
+sudo usermod -aG adbusers $USER
+newgrp adbusers
+sudo systemctl restart systemd-udevd
 
 echo "============================================="
 echo "-----| CONFIGURE MX MASTER |-----"
