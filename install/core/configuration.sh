@@ -12,4 +12,5 @@ folders=(
   fastfetch
   mpv
   yazi
+  mimeapps.list
 )
