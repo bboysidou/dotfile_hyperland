@@ -82,19 +82,6 @@ echo "============================================="
 sudo usermod -aG docker $USER
 
 echo "============================================="
-echo "-----| INSTALLING SNAP |-----"
-echo "============================================="
-if command -v snap &>/dev/null; then
-  echo "Snap is installed"
-else
-  cd "$DOWNLOAD_DIR"
-  git clone https://aur.archlinux.org/snapd.git && cd snapd && makepkg -si
-  sudo systemctl enable --now snapd.socket
-  sudo systemctl enable --now snapd.apparmor.service
-  sudo ln -s /var/lib/snapd/snap /snap
-fi
-
-echo "============================================="
 echo "-----| CHANGE SHELL TO FISH |-----"
 echo "============================================="
 if [[ "$SHELL" != "$(command -v fish)" ]]; then
@@ -164,18 +151,6 @@ echo "============================================="
 cd $REPO_DIR
 mkdir -p ~/Pictures/wallpaper/
 cp -r Wallpaper/* ~/Pictures/wallpaper/
-
-echo "============================================="
-echo "-----| INSTALL SNAP PACKAGES |-----"
-echo "============================================="
-# sudo snap install android-studio --classic
-# sudo snap install flutter --classic
-if [[ "$SHELL" != "$(command -v subl)" ]]; then
-  sudo snap install sublime-text --classic
-fi
-if [[ "$SHELL" != "$(command -v onlyoffice-desktopeditors)" ]]; then
-  sudo snap install onlyoffice-desktopeditors
-fi
 
 echo "============================================="
 echo "-----| CONFIGURE HARDWARE ACCELERATION |-----"
