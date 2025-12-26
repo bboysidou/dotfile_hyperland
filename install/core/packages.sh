@@ -8,6 +8,7 @@ linux=(
 general=(
   # APP NEEDED TO WINDOW MANAGER WORK PROPERLLY -------------------
   dunst 
+  btop
   rofi
   firefox 
   chromium
@@ -188,4 +189,5 @@ aur=(
   gcc
   cmake
   meson
+  onlyoffice-bin
 )
