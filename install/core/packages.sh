@@ -70,6 +70,8 @@ general=(
   clang
   papirus-icon-theme
   curl
+  wget
+  base-devel
   # gtk-engine-murrine
   sassc
   speedtest-cli
@@ -81,9 +83,17 @@ general=(
   # FOR OCR ------------------------------------------------------- 
   tesseract-data
 
-  # NODE NPM ------------------------------------------------------
+  # DEV -----------------------------------------------------------
+  cmake 
+  ninja 
+  clang 
+  gtk3 
+  pkg-config
   nodejs 
   npm 
+  android-udev
+  jdk17-openjdk
+  jdk21-openjdk
 
   # Docker --------------------------------------------------------
   docker 
@@ -110,9 +120,9 @@ general=(
   mesa-utils
   libva-mesa-driver
   vdpauinfo
+  libva-utils
   # libva-vdpau-driver
   # mesa-vdpau
-  libva-utils
   
   # FIREWALL
   nftables
