@@ -35,3 +35,14 @@ set --export PATH $HOME/flutter/bin $PATH
 
 # FVM
 set --export PATH /home/sidouxp3/.fvm_flutter/bin $PATH
+fish_add_path "$HOME/fvm/bin"
+
+# Android SDK
+set -x ANDROID_HOME $HOME/Android
+set -x ANDROID_SDK_ROOT $ANDROID_HOME
+
+fish_add_path $ANDROID_HOME/cmdline-tools/latest/bin
+fish_add_path $ANDROID_HOME/platform-tools
+fish_add_path $ANDROID_HOME/tools/bin
+fish_add_path $ANDROID_HOME/emulator
+

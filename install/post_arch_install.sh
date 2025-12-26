@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOWNLOAD_DIR="${HOME}/Downloads"
 REPO="https://github.com/sidouxp3/dotfile_hyperland.git"
-REPO_DIR="${DOWNLOAD_DIR}/dotfile_hyperland"
+REPO_DIR="${HOME}/dotfile_hyperland"
 
 _installPackages() {
   sudo pacman -S --noconfirm --needed "$@"
@@ -92,8 +92,6 @@ else
   sudo systemctl enable --now snapd.socket
   sudo systemctl enable --now snapd.apparmor.service
   sudo ln -s /var/lib/snapd/snap /snap
-  sleep 5
-  sudo snap install hello-world
 fi
 
 echo "============================================="
@@ -148,7 +146,9 @@ echo "============================================="
 echo "-----| CONFIGURE THEMES |-----"
 echo "============================================="
 cd $REPO_DIR
-mkdir ~/.themes
+if [[ ! -d "$HOME//.themes" ]]; then
+   mkdir ~/.themes
+fi
 sudo cp -r Juno-ocean /usr/share/themes/
 sudo cp -r kora /usr/share/icons/
 
@@ -187,39 +187,6 @@ MOZ_DISABLE_RDD_SANDBOX=1
 EOF
 
 echo "============================================="
-echo "-----| INSTALL ANDROID DEV ENV |-----"
-echo "============================================="
-mkdir -p ~/Android/cmdline-tools
-cd ~/Android/cmdline-tools
-wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-unzip commandlinetools-linux-9477386_latest.zip
-mv cmdline-tools latest
-sdkmanager --licenses | yes
-sdkmanager "platform-tools"
-sdkmanager "platforms;android-36"
-sdkmanager "build-tools;28.0.3"
-sdkmanager "system-images;android-34;google_apis;x86_64"
-sdkmanager "emulator"
-
-echo "============================================="
-echo "-----| INSTALL ANDROID AVD |-----"
-echo "============================================="
-avdmanager create avd \
-    -n "Pixel_6_API_34" \
-    -k "system-images;android-34;google_apis;x86_64" \
-    -d "pixel_6"
-avdmanager list avd
-echo "hw.keyboard=yes" >> ~/.android/avd/Pixel_6_API_34.avd/config.ini
-echo "hw.gpu.enabled=yes" >> ~/.android/avd/Pixel_6_API_34.avd/config.ini
-
-echo "============================================="
-echo "-----| CONFIGURE ANDROID UDEV |-----"
-echo "============================================="
-sudo usermod -aG adbusers $USER
-newgrp adbusers
-sudo systemctl restart systemd-udevd
-
-echo "============================================="
 echo "-----| CONFIGURE MX MASTER |-----"
 echo "============================================="
 sudo usermod -a -G input $USER
@@ -240,7 +207,6 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22/tcp
 sudo ufw enable
-
 
 echo "============================================="
 echo "-----| REBOOT PLEASE |-----"
