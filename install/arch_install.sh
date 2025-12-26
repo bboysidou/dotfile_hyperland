@@ -214,7 +214,6 @@ pacman -S --noconfirm \
     git \
     wget curl \
     sudo gvfs \
-    power-profiles-daemon \
     openssh \
     amd-ucode
 
@@ -248,7 +247,6 @@ echo "✓ Sudo configuré"
 # Services
 systemctl enable NetworkManager
 systemctl enable fstrim.timer
-systemctl enable  power-profiles-daemon.service
 
 echo "✓ Services activés"
 
@@ -269,7 +267,7 @@ cat << BOOTENTRY > /boot/loader/entries/arch.conf
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw quiet loglevel=3
+options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw loglevel=7 systemd.show_status=1
 BOOTENTRY
 
 # Entrée fallback
