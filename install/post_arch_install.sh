@@ -147,6 +147,11 @@ fc-cache -fv
 echo "============================================="
 echo "-----| CONFIGURE THEMES |-----"
 echo "============================================="
+cd $REPO_DIR
+mkdir ~/.themes
+sudo cp -r Juno-ocean /usr/share/themes/
+sudo cp -r kora /usr/share/icons/
+
 cd $DOWNLOAD_DIR
 rm -rf Graphite-gtk-theme
 git clone https://github.com/vinceliuice/Graphite-gtk-theme.git
