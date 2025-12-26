@@ -1,0 +1,15 @@
+folders=(
+  fontconfig
+  hypr
+  waybar
+  nvim
+  kitty
+  rofi
+  tmux
+  fish
+  custom_scripts
+  dunst
+  fastfetch
+  mpv
+  yazi
+)

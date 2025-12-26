@@ -3,176 +3,175 @@
 set -e
 
 # ==============================================
-# CONFIGURATION - MODIFY THESE VALUES
+# CONFIGURATION - MODIFIEZ CES VALEURS
 # ==============================================
-DISK="/dev/nvme0n1"      # Your NVMe disk
-HOSTNAME="archlinux"     # Machine name
-USERNAME="user"         # Username
-USER_PASSWORD="password" # User password
-ROOT_PASSWORD="password" # Root password
+DISK="/dev/nvme0n1"      # Votre disque NVMe
+HOSTNAME="archlinux"     # Nom de la machine
+USERNAME="user"         # Nom utilisateur
+USER_PASSWORD="password" # Mot de passe utilisateur
+ROOT_PASSWORD="password" # Mot de passe root
 TIMEZONE="Africa/Algiers"
 LOCALE="en_US.UTF-8"
 KEYMAP="us"
 
 echo "============================================="
-echo "   ARCH LINUX INSTALLATION - Configuration"
+echo "   INSTALLATION ARCH LINUX - Configuration"
 echo "============================================="
-echo "Disk: $DISK"
+echo "Disque: $DISK"
 echo "Hostname: $HOSTNAME"
-echo "User: $USERNAME"
+echo "Utilisateur: $USERNAME"
 echo "Timezone: $TIMEZONE"
 echo "Locale: $LOCALE"
-echo "Keyboard: $KEYMAP"
-echo "CPU: AMD (specific microcode installed)"
+echo "Clavier: $KEYMAP"
 echo ""
-echo "WARNING: This installation will ERASE all content on disk $DISK"
+echo "ATTENTION: Cette installation va EFFACER tout le contenu du disque $DISK"
 echo ""
-read -p "Continue? (y/N): " confirm
+read -p "Continuer? (y/N): " confirm
 if [[ ! $confirm =~ ^[Yy]$ ]]; then
-  echo "Installation cancelled."
+  echo "Installation annulée."
   exit 1
 fi
 
 # ==============================================
-# 1. SYSTEM PREPARATION
+# 1. PRÉPARATION SYSTÈME
 # ==============================================
 echo ""
-echo "=== 1. System preparation ==="
+echo "=== 1. Préparation du système ==="
 
-# US keyboard
+# Clavier US
 loadkeys us
 
-# UEFI verification
+# Vérification UEFI
 if [[ ! -d "/sys/firmware/efi/efivars" ]]; then
-  echo "ERROR: UEFI mode required!"
+  echo "ERREUR: Mode UEFI requis!"
   exit 1
 fi
-echo "✓ UEFI mode detected"
+echo "✓ Mode UEFI détecté"
 
-# Network test
+# Test réseau
 if ! ping -c 1 archlinux.org &>/dev/null; then
-  echo "ERROR: No internet connection!"
+  echo "ERREUR: Pas de connexion internet!"
   exit 1
 fi
-echo "✓ Internet connection OK"
+echo "✓ Connexion internet OK"
 
-# Clock synchronization
+# Synchronisation horloge
 timedatectl set-ntp true
-echo "✓ Clock synchronized"
+echo "✓ Horloge synchronisée"
 
 # ==============================================
-# 2. DISK PARTITIONING
+# 2. PARTITIONNEMENT
 # ==============================================
 echo ""
-echo "=== 2. Disk partitioning ==="
+echo "=== 2. Partitionnement du disque ==="
 
-# Disk verification
+# Vérification du disque
 if [[ ! -b "$DISK" ]]; then
-  echo "ERROR: Disk $DISK not found!"
+  echo "ERREUR: Disque $DISK non trouvé!"
   exit 1
 fi
 
-# Complete cleanup
+# Nettoyage complet
 wipefs -af "$DISK"
 sgdisk --zap-all "$DISK"
 
-# Partition creation
+# Création des partitions
 sgdisk --new=1:0:+2G --typecode=1:ef00 --change-name=1:'EFI' \
   --new=2:0:0 --typecode=2:8300 --change-name=2:'ROOT' \
   "$DISK"
 
-echo "✓ Partitions created"
+echo "✓ Partitions créées"
 
 # ==============================================
-# 3. FORMATTING
+# 3. FORMATAGE
 # ==============================================
 echo ""
-echo "=== 3. Partition formatting ==="
+echo "=== 3. Formatage des partitions ==="
 
-# EFI formatting
+# Formatage EFI
 mkfs.fat -F32 -n EFI "${DISK}p1"
-echo "✓ EFI partition formatted"
+echo "✓ Partition EFI formatée"
 
-# BTRFS formatting
+# Formatage BTRFS
 mkfs.btrfs -f -L ROOT "${DISK}p2"
-echo "✓ ROOT partition formatted as BTRFS"
+echo "✓ Partition ROOT formatée en BTRFS"
 
 # ==============================================
-# 4. BTRFS SUBVOLUMES
+# 4. SOUS-VOLUMES BTRFS
 # ==============================================
 echo ""
-echo "=== 4. BTRFS subvolume creation ==="
+echo "=== 4. Création des sous-volumes BTRFS ==="
 
-# Temporary mount
+# Montage temporaire
 mount "${DISK}p2" /mnt
 
-# Subvolume creation
+# Création des sous-volumes
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@var
 btrfs subvolume create /mnt/@tmp
 
-echo "✓ Subvolumes created"
+echo "✓ Sous-volumes créés"
 
-# Unmount
+# Démontage
 umount /mnt
 
 # ==============================================
-# 5. FINAL MOUNTING
+# 5. MONTAGE FINAL
 # ==============================================
 echo ""
-echo "=== 5. Filesystem mounting ==="
+echo "=== 5. Montage des systèmes de fichiers ==="
 
-# BTRFS mount options
+# Options de montage BTRFS
 BTRFS_OPTS="noatime,compress=zstd:3,space_cache=v2,discard=async"
 
-# Root mount
+# Montage racine
 mount -o $BTRFS_OPTS,subvol=@ "${DISK}p2" /mnt
 
-# Mount point creation
+# Création des points de montage
 mkdir -p /mnt/{boot,home,var,tmp}
 
-# Subvolume mounting
+# Montage des sous-volumes
 mount -o $BTRFS_OPTS,subvol=@home "${DISK}p2" /mnt/home
 mount -o $BTRFS_OPTS,subvol=@var "${DISK}p2" /mnt/var
 mount -o $BTRFS_OPTS,subvol=@tmp "${DISK}p2" /mnt/tmp
 
-# EFI mount
+# Montage EFI
 mount "${DISK}p1" /mnt/boot
 
-echo "✓ Filesystems mounted"
+echo "✓ Systèmes de fichiers montés"
 
 # ==============================================
-# 6. BASE SYSTEM INSTALLATION
+# 6. INSTALLATION SYSTÈME DE BASE
 # ==============================================
 echo ""
-echo "=== 6. Base system installation ==="
+echo "=== 6. Installation du système de base ==="
 
-# Key update
+# Mise à jour des clés
 pacman-key --init
 pacman-key --populate archlinux
 
 # Installation
 pacstrap /mnt base base-devel linux linux-firmware linux-headers btrfs-progs
 
-echo "✓ Base system installed"
+echo "✓ Système de base installé"
 
 # ==============================================
-# 7. FSTAB GENERATION
+# 7. GÉNÉRATION FSTAB
 # ==============================================
 echo ""
-echo "=== 7. fstab generation ==="
+echo "=== 7. Génération du fstab ==="
 
 genfstab -U /mnt >>/mnt/etc/fstab
-echo "✓ fstab generated"
+echo "✓ fstab généré"
 
 # ==============================================
-# 8. CHROOT CONFIGURATION
+# 8. CONFIGURATION CHROOT
 # ==============================================
 echo ""
-echo "=== 8. Chroot configuration ==="
+echo "=== 8. Configuration dans chroot ==="
 
-# Configuration script
+# Script de configuration
 cat <<EOF >/mnt/setup.sh
 #!/bin/bash
 set -e
@@ -180,17 +179,17 @@ set -e
 # Timezone
 ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 hwclock --systohc
-echo "✓ Timezone configured: $TIMEZONE"
+echo "✓ Timezone configuré: $TIMEZONE"
 
 # Locale
 echo "$LOCALE UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=$LOCALE" > /etc/locale.conf
-echo "✓ Locale configured: $LOCALE"
+echo "✓ Locale configuré: $LOCALE"
 
-# Keyboard
+# Clavier
 echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
-echo "✓ Keyboard configured: $KEYMAP"
+echo "✓ Clavier configuré: $KEYMAP"
 
 # Hostname
 echo "$HOSTNAME" > /etc/hostname
@@ -199,34 +198,29 @@ cat << 'HOSTS' > /etc/hosts
 ::1         localhost
 127.0.1.1   $HOSTNAME.localdomain $HOSTNAME
 HOSTS
-echo "✓ Hostname configured: $HOSTNAME"
+echo "✓ Hostname configuré: $HOSTNAME"
 
-# Essential packages installation
+# Installation des packages essentiels
 sudo sed -i 's/^#Color$/Color/' /etc/pacman.conf
+sudo sed -i 's/^#CheckSpace$/CheckSpace/' /etc/pacman.conf
 sudo sed -i 's/^#VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
+sudo sed -i 's/^ParallelDownloads *= *[0-9]\+/ParallelDownloads = 12/' /etc/pacman.conf
 sudo sed -i 's/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j\$(nproc)\"/' /etc/makepkg.conf
 pacman -Syu --noconfirm
 pacman -S --noconfirm \
     networkmanager iwd wpa_supplicant \
-    wireless_tools \
     zram-generator \
     vim \
-    git fzf ripgrep fd jq exa \
+    git \
     wget curl \
-    htop btop \
-    man-db man-pages \
-    sudo gvfs trash-cli \
-    which \
-    unzip \
+    sudo gvfs \
+    power-profiles-daemon \
     openssh \
-    amd-ucode \ 
-    grub efibootmgr os-prober \ 
-    fastfetch \
-    zip
+    amd-ucode
 
-echo "✓ Essential packages installed"
+echo "✓ Packages essentiels installés"
 
-# zram configuration
+# Configuration zram
 mkdir -p /etc/systemd/zram-generator.conf.d
 cat << 'ZRAM' > /etc/systemd/zram-generator.conf
 [zram0]
@@ -236,102 +230,99 @@ swap-priority = 100
 fs-type = swap
 ZRAM
 
-echo "✓ zram configured"
+echo "✓ zram configuré"
 
-# User
+# Utilisateur
 useradd -m -G wheel,users,storage,power,audio,video,input -s /bin/bash $USERNAME
 echo "$USERNAME:$USER_PASSWORD" | chpasswd
-echo "✓ User $USERNAME created"
+echo "✓ Utilisateur $USERNAME créé"
 
 # Root password
 echo "root:$ROOT_PASSWORD" | chpasswd
-echo "✓ Root password set"
+echo "✓ Mot de passe root défini"
 
 # Sudo
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-echo "✓ Sudo configured"
+echo "✓ Sudo configuré"
 
 # Services
 systemctl enable NetworkManager
 systemctl enable fstrim.timer
+systemctl enable  power-profiles-daemon.service
 
-echo "✓ Services enabled"
+echo "✓ Services activés"
 
-# GRUB Installation
-pacman -S --noconfirm grub efibootmgr
+# systemd-boot
+bootctl --path=/boot install
 
-# Install GRUB for UEFI
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+# Configuration systemd-boot
+cat << 'LOADER' > /boot/loader/loader.conf
+default  arch.conf
+timeout  3
+console-mode max
+editor   no
+LOADER
 
-# Get root partition UUID
+# Entrée de boot
 ROOT_UUID=\$(blkid -s UUID -o value ${DISK}p2)
+cat << BOOTENTRY > /boot/loader/entries/arch.conf
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw quiet loglevel=3
+BOOTENTRY
 
-# Configure GRUB
-cat << 'GRUBCFG' > /etc/default/grub
-GRUB_DEFAULT=0
-GRUB_TIMEOUT=5
-GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
-GRUB_CMDLINE_LINUX="root=UUID=\$ROOT_UUID rootflags=subvol=@"
-GRUB_PRELOAD_MODULES="part_gpt part_msdos"
-GRUB_ENABLE_CRYPTODISK=n
-GRUB_DISABLE_OS_PROBER=false
-GRUB_DISABLE_SUBMENU=y
-GRUB_TERMINAL_OUTPUT="console"
-GRUB_GFXMODE=auto
-GRUB_GFXPAYLOAD_LINUX=keep
-GRUB_DISABLE_RECOVERY=false
-GRUB_BACKGROUND="/usr/share/grub/background.png"
-GRUB_THEME="/usr/share/grub/themes/archlinux/theme.txt"
-GRUBCFG
+# Entrée fallback
+cat << BOOTFALLBACK > /boot/loader/entries/arch-fallback.conf
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw
+BOOTFALLBACK
 
-# Generate GRUB configuration
-grub-mkconfig -o /boot/grub/grub.cfg
-
-echo "✓ GRUB configured"
+echo "✓ systemd-boot configuré"
 
 # mkinitcpio
 sed -i 's/^MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
 mkinitcpio -p linux
-echo "✓ initramfs generated"
+echo "✓ initramfs généré"
 
 EOF
 
-# Execute configuration script
+# Exécution du script de configuration
 chmod +x /mnt/setup.sh
 arch-chroot /mnt ./setup.sh
 
-# Cleanup
+# Nettoyage
 rm /mnt/setup.sh
 
 # ==============================================
-# 9. FINALIZATION
+# 9. FINALISATION
 # ==============================================
 echo ""
 echo "========================================="
-echo "   INSTALLATION COMPLETED SUCCESSFULLY!"
+echo "   INSTALLATION TERMINÉE AVEC SUCCÈS!"
 echo "========================================="
 echo ""
-echo "Installed configuration:"
-echo "• Filesystem: BTRFS with zstd compression"
-echo "• Bootloader: GRUB (replaced systemd-boot)"
-echo "• Swap: zram (compressed memory)"
+echo "Configuration installée:"
+echo "• Filesystem: BTRFS avec compression zstd"
+echo "• Bootloader: systemd-boot"
+echo "• Swap: zram (mémoire compressée)"
 echo "• Timezone: $TIMEZONE"
 echo "• Locale: $LOCALE"
-echo "• Keyboard: $KEYMAP"
+echo "• Clavier: $KEYMAP"
 echo "• Hostname: $HOSTNAME"
-echo "• User: $USERNAME"
-echo "• Timeshift: Manual snapshots"
+echo "• Utilisateur: $USERNAME"
+echo "• Timeshift: Snapshots manuels"
 echo ""
-echo "Credentials:"
-echo "• User: $USERNAME / $USER_PASSWORD"
+echo "Identifiants:"
+echo "• Utilisateur: $USERNAME / $USER_PASSWORD"
 echo "• Root: root / $ROOT_PASSWORD"
 echo ""
-echo "Next steps:"
+echo "Prochaines étapes:"
 echo "1. umount -R /mnt"
 echo "2. reboot"
-echo "3. First boot:"
-echo "   - zramctl (check zram)"
-echo "   - grub-install --version (verify GRUB)"
+echo "3. Premier démarrage:"
+echo "   - zramctl (vérifier zram)"
 echo ""
-read -p "Press Enter to continue..."
+read -p "Appuyez sur Entrée pour continuer..."
