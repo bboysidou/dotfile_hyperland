@@ -3,6 +3,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
+    branch = "master",
+    main = "nvim-treesitter.configs",
     dependencies = {
       "windwp/nvim-ts-autotag",
     },

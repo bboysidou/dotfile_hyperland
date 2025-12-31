@@ -23,3 +23,8 @@ wergonic:3:flutter_build:/home/sidouxp3/Web-development/Wergonic/wergonic-flutte
 wergonic:2:dart:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:dart
 wergonic:3:dart:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:dart
 wergonic:4:fish:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish
+i_sale_distribution:1:app:/home/sidouxp3/Web-development/I_Sale/Distribution/app:nvim
+i_sale_distribution:2:frontend:/home/sidouxp3/Web-development/I_Sale/Distribution/frontend:nvim
+i_sale_distribution:3:backend:/home/sidouxp3/Web-development/I_Sale/Distribution/backend:nvim
+hotelbeds:1:app:/home/sidouxp3/Web-development/HotelBeds/app:nvim
+hotelbeds:2:frontend:/home/sidouxp3/Web-development/HotelBeds/frontend:nvim

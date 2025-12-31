@@ -6,3 +6,6 @@ project_template
 reusable_shit
 portfolio
 library_management
+
+i_sale
+hotelbeds
