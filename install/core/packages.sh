@@ -20,6 +20,7 @@ general=(
   ripgrep
   gvfs-mtp
   net-tools
+  network-manager-applet
   mtpfs
   fastfetch
   usbutils
