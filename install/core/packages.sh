@@ -193,4 +193,5 @@ aur=(
   cmake
   meson
   onlyoffice-bin
+  bruno-bin
 )
