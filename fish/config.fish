@@ -11,7 +11,7 @@ set -x PATH $JAVA_HOME/bin $PATH
 
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
 alias ocr="sh ~/.config/custom_scripts/ocr.sh"
-alias sysupdate="sudo pacman -Syu"
+alias sysupdate="sudo pacman -Syu && yay -Syu"
 alias sysclean="paccache -r & sudo pacman -R $(pacman -Qtdq)"
 
 alias ls="eza --icons"

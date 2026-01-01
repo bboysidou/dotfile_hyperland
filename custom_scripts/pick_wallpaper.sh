@@ -19,29 +19,15 @@ if [ -z "$selection" ]; then
     exit 1
 fi
 
-echo $IMAGE_DIR$selection
-echo "" > $HYPRPAPER_CONF
+# Update only the path line in hyprpaper.conf
+sed -i "s|^    path = .*$|    path = $IMAGE_DIR$selection|" "$HYPRPAPER_CONF"
 
-PRELOAD="preload = $IMAGE_DIR$selection"
-WALLPAPER="wallpaper = ,$IMAGE_DIR$selection" 
-SPLASH="splash = false"
-IPC="ipc = off"
-
-echo $PRELOAD >> $HYPRPAPER_CONF 
-echo $WALLPAPER >> $HYPRPAPER_CONF 
-echo $SPLASH >> $HYPRPAPER_CONF 
-echo $IPC >> $HYPRPAPER_CONF
-
-
-hyprpaper
+# Rest of your hyprpaper commands...
 hyprctl hyprpaper unload all
-
-hyprctl hyprpaper preload $IMAGE_DIR$selection
-hyprctl hyprpaper wallpaper ",$IMAGE_DIR$selection"
-
-hyprctl hyprpaper reload ,$IMAGE_DIR$selection
-
+hyprctl hyprpaper preload "$IMAGE_DIR$selection"
+hyprctl hyprpaper wallpaper ",\"$IMAGE_DIR$selection\""
+hyprctl hyprpaper reload
+#
 # killall hyprpaper
 # sleep 1
 # hyprpaper &
-

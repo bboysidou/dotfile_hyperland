@@ -25,6 +25,11 @@ wergonic:3:dart:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:dart
 wergonic:4:fish:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish
 i_sale_distribution:1:app:/home/sidouxp3/Web-development/I_Sale/Distribution/app:nvim
 i_sale_distribution:2:frontend:/home/sidouxp3/Web-development/I_Sale/Distribution/frontend:nvim
-i_sale_distribution:3:backend:/home/sidouxp3/Web-development/I_Sale/Distribution/backend:nvim
+i_sale_distribution:3:backend:/home/sidouxp3/Web-development/I_Sale/Distribution/backend/api:nvim
 hotelbeds:1:app:/home/sidouxp3/Web-development/HotelBeds/app:nvim
 hotelbeds:2:frontend:/home/sidouxp3/Web-development/HotelBeds/frontend:nvim
+project_template:4:fish:/home/sidouxp3/Web-development/project_templates:fish
+real_time_app:1:app:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:nvim
+real_time_app:2:frontend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/frontend:nvim
+real_time_app:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:nvim
+real_time_app:4:fish:/home/sidouxp3/Web-development/Personal_projects/Real_time_app:fish
