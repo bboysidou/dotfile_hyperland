@@ -31,6 +31,8 @@ general=(
   fzf
   zip
   mpv
+  scrcpy
+  dpkg
   pacman-contrib
   cronie
   brightnessctl
