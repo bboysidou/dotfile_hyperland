@@ -13,7 +13,8 @@ configuration {
     background-alt: #101010FF;
     foreground:     #FFFFFFFF;
     // selected:       #62AEEFFF;
-    selected:       #1793d0;
+    selected:       #00E5CC;
+    // selected:       #1793d0;
     active:         #98C379FF;
     urgent:         #E06B74FF;
 }
@@ -29,7 +30,7 @@ window {
     enabled:                     true;
     margin:                      0px;
     padding:                     0px;
-    border:                      0px solid;
+    border:                      2px solid;
     border-radius:               24px;
     border-color:                @selected;
     background-color:            @background;

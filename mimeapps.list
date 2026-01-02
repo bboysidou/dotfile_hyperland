@@ -11,6 +11,8 @@ application/x-extension-xhtml=zen.desktop
 application/x-extension-xht=zen.desktop
 text/markdown=sublime-text_subl.desktop
 x-scheme-handler/postman=Postman.desktop
+application/pdf=jopdf.desktop
+x-scheme-handler/bruno=bruno.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
