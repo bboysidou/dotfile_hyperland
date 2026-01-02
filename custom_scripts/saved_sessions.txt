@@ -11,6 +11,7 @@ octadom_crm:2:flutter_run:/home/sidouxp3/Web-development/ERP/CRM/CRM_app:fish
 project_template:1:frontend:/home/sidouxp3/Web-development/project_templates/frontend:nvim
 project_template:2:backend:/home/sidouxp3/Web-development/project_templates/backend:nvim
 project_template:3:mobile:/home/sidouxp3/Web-development/project_templates/mobile:nvim
+project_template:4:fish:/home/sidouxp3/Web-development/project_templates:fish
 reusable_shit:1:frontend:/home/sidouxp3/Web-development/reusable_shit/frontend:nvim
 reusable_shit:2:flutter:/home/sidouxp3/Web-development/reusable_shit/flutter:nvim
 portfolio:1:nvim:/home/sidouxp3/Web-development/myPortfolio:nvim
@@ -26,10 +27,11 @@ wergonic:4:fish:/home/sidouxp3/Web-development/Wergonic/wergonic-flutter:fish
 i_sale_distribution:1:app:/home/sidouxp3/Web-development/I_Sale/Distribution/app:nvim
 i_sale_distribution:2:frontend:/home/sidouxp3/Web-development/I_Sale/Distribution/frontend:nvim
 i_sale_distribution:3:backend:/home/sidouxp3/Web-development/I_Sale/Distribution/backend/api:nvim
-hotelbeds:1:app:/home/sidouxp3/Web-development/HotelBeds/app:nvim
-hotelbeds:2:frontend:/home/sidouxp3/Web-development/HotelBeds/frontend:nvim
-project_template:4:fish:/home/sidouxp3/Web-development/project_templates:fish
+i_sale_distribution:4:docker:/home/sidouxp3/Web-development/I_Sale/Distribution/backend:fish
+i_sale_distribution:5:database:/home/sidouxp3/Web-development/I_Sale/Distribution/backend/db:nvim
 real_time_app:1:app:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/app:nvim
 real_time_app:2:frontend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/frontend:nvim
 real_time_app:3:backend:/home/sidouxp3/Web-development/Personal_projects/Real_time_app/backend:nvim
 real_time_app:4:fish:/home/sidouxp3/Web-development/Personal_projects/Real_time_app:fish
+hotelbeds:1:app:/home/sidouxp3/Web-development/HotelBeds/app:nvim
+hotelbeds:2:frontend:/home/sidouxp3/Web-development/HotelBeds/frontend:nvim
