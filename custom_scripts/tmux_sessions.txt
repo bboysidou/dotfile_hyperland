@@ -15,3 +15,5 @@ opencompany
 wergonic_rewrite
 mds_ble
 wergonic_backend
+questionair_app
+medical_app
