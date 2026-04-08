@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DOWNLOAD_DIR="${HOME}/Downloads"
-REPO="https://github.com/sidouxp3/dotfile_hyperland.git"
+REPO="https://github.com/bboysidou/dotfile_hyperland.git"
 REPO_DIR="${HOME}/dotfile_hyperland"
 
 _installPackages() {

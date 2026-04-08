@@ -17,3 +17,14 @@ mds_ble
 wergonic_backend
 questionair_app
 medical_app
+careermaestros
+career_maestros
+appointment_system
+waitlist_app
+rbac_template
+almartechs_medical
+line_assembly_app
+army_purchse_manager
+fullstask_dashboard
+fullstask_dashboard
+almartechs_invoicing
