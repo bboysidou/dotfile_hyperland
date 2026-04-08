@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="48"
+   height="48"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="emblem-new.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,2.8322526,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,1,1,0,2.8322526,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,2.8322526,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5-7"
+       id="radialGradient6-6"
+       cx="-34.96265"
+       cy="-10.95596"
+       fx="-34.96265"
+       fy="-10.95596"
+       r="27.999001"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(3.5197738,-0.94312064,-0.69243479,-2.5842018,136.74308,-72.387353)" />
+    <linearGradient
+       id="linearGradient5-7"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#01a4f6;stop-opacity:1;"
+         offset="0"
+         id="stop5-5" />
+      <stop
+         style="stop-color:#002c6f;stop-opacity:1;"
+         offset="1"
+         id="stop6-3" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="19.090599"
+     inkscape:cx="23.938484"
+     inkscape:cy="25.457557"
+     inkscape:current-layer="svg2" />
+  <g
+     id="g2"
+     transform="translate(-16.005638,15.994361)">
+    <path
+       id="rect1-6"
+       style="fill:url(#radialGradient6-6);stroke-width:0.714513"
+       d="M 60.011276,8.005639 C 60.011276,-3.077485 51.088762,-12 40.005638,-12 28.922514,-12 20,-3.077485 20,8.005639 c 0,11.083124 8.922514,20.005639 20.005638,20.005639 11.083124,0 20.005639,-8.922515 20.005638,-20.005639 z" />
+    <path
+       style="fill:#ffffff"
+       d="M 17.502705,13.502705 24,20 30.497295,13.502705 a 2.8322526,2.8322526 0 0 1 4.00541,0 2.8284297,2.8284297 90.077493 0 1 -0.0054,4 L 28,24 l 6.497295,6.497295 a 2.8322526,2.8322526 90 0 1 0,4.00541 2.8284297,2.8284297 0.07749305 0 1 -4,-0.0054 L 24,28 17.502705,34.497295 a 2.8322526,2.8322526 0 0 1 -4.00541,0 2.8284297,2.8284297 90.077493 0 1 0.0054,-4 L 20,24 13.502705,17.502705 a 2.8322526,2.8322526 90 0 1 0,-4.00541 2.8284297,2.8284297 0.07749305 0 1 4,0.0054 z"
+       id="path1"
+       inkscape:original-d="m 15.5,11.5 8.5,8.5 8.5,-8.5 4,4 -8.5,8.5 8.5,8.5 -4,4 -8.5,-8.5 -8.5,8.5 -4,-4 L 20,24 11.5,15.5 Z"
+       inkscape:path-effect="#path-effect1"
+       transform="rotate(45,51.309721,35.323334)" />
+  </g>
+</svg>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="48"
+   height="48"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="emblem-synchronizing.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5-7"
+       id="radialGradient6-6"
+       cx="-34.96265"
+       cy="-10.95596"
+       fx="-34.96265"
+       fy="-10.95596"
+       r="27.999001"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(3.5197738,-0.94312064,-0.69243479,-2.5842018,120.73744,-56.392992)" />
+    <linearGradient
+       id="linearGradient5-7"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#01a4f6;stop-opacity:1;"
+         offset="0"
+         id="stop5-5" />
+      <stop
+         style="stop-color:#002c6f;stop-opacity:1;"
+         offset="1"
+         id="stop6-3" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,2.6593046,0,1 @ F,0,0,1,0,2.6593046,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 | F,0,0,1,0,1.8738145,0,1 @ F,0,0,1,0,1.8738145,0,1 @ F,0,0,1,0,1.8738145,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="24.645833"
+     inkscape:cx="21.34235"
+     inkscape:cy="24"
+     inkscape:current-layer="svg1" />
+  <path
+     id="rect1"
+     style="fill:url(#radialGradient6-6);stroke-width:0.714513"
+     d="M 44.005638,24 C 44.005638,12.916876 35.083124,3.994361 24,3.994361 12.916876,3.994361 3.994362,12.916876 3.994362,24 3.994362,35.083124 12.916876,44.005639 24,44.005639 35.083124,44.005639 44.005639,35.083124 44.005638,24 Z" />
+  <path
+     id="path1-3"
+     style="fill:#ffffff"
+     d="M 23.398438 7.125 A 1.0028351 1.0028351 0 0 0 22.347656 8.1269531 L 22.347656 10.251953 C 15.167954 10.251953 9.3476563 16.072251 9.3476562 23.251953 C 9.3476562 27.09111 11.011855 30.542146 13.658203 32.921875 C 14.748383 33.90222 16.370363 33.441981 16.986328 32.111328 C 17.537148 30.921405 16.922209 29.310895 16.025391 28.15625 C 14.973525 26.801981 14.347656 25.099504 14.347656 23.251953 C 14.347656 18.833675 17.929378 15.251953 22.347656 15.251953 L 22.347656 17.378906 A 0.91645233 0.91645233 0 0 0 23.826172 18.101562 L 29.867188 13.402344 A 1.3505691 1.3505691 0 0 0 29.789062 11.212891 L 23.90625 7.2910156 A 1.0028351 1.0028351 0 0 0 23.398438 7.125 z M 33.123047 14.408203 C 32.327563 14.420649 31.549041 14.912482 31.164062 15.744141 C 30.613242 16.934064 31.228182 18.544574 32.125 19.699219 C 33.176866 21.053488 33.802734 22.755965 33.802734 24.603516 C 33.802734 29.021794 30.221012 32.603516 25.802734 32.603516 L 25.802734 30.476562 A 0.91645233 0.91645233 0 0 0 24.324219 29.753906 L 18.283203 34.453125 A 1.3505691 1.3505691 0 0 0 18.361328 36.642578 L 24.244141 40.564453 A 1.0028351 1.0028351 0 0 0 24.751953 40.730469 A 1.0028351 1.0028351 0 0 0 25.802734 39.728516 L 25.802734 37.603516 C 32.982436 37.603516 38.802734 31.783218 38.802734 24.603516 C 38.802734 20.764359 37.138535 17.313323 34.492188 14.933594 C 34.08337 14.565964 33.600337 14.400736 33.123047 14.408203 z " />
+</svg>

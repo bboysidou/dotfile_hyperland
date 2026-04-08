@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="rating-half.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="77.75"
+     inkscape:cx="7.9935691"
+     inkscape:cy="8"
+     inkscape:current-layer="svg1" />
+  <style
+     type="text/css"
+     id="current-color-scheme">.ColorScheme-Text { color: #232629; } </style>
+  <path
+     id="path4"
+     style="fill:#fcfcfc;fill-opacity:1;stroke-width:0.2;stroke-linecap:square;stroke-miterlimit:7.4"
+     d="m 7.9998268,1.8056253 a 1.3549405,1.3549405 0 0 1 1.214844,0.7539063 l 0.9785142,1.9824219 a 1.2029827,1.2029827 0 0 0 0.90625,0.6582031 l 2.183593,0.3164062 a 1.3540113,1.3540113 0 0 1 0.751953,2.3105469 L 12.45295,9.3681253 a 1.2033294,1.2033294 0 0 0 -0.345703,1.0644537 l 0.373047,2.177734 a 1.3546295,1.3546295 0 0 1 -1.966797,1.427734 L 8.5603738,13.008751 a 1.2030308,1.2030308 0 0 0 -1.121093,0 L 5.4861539,14.036094 A 1.3550673,1.3550673 0 0 1 3.5213099,12.60836 l 0.371094,-2.175781 A 1.2032411,1.2032411 0 0 0 3.5467009,9.3681253 L 1.9646699,7.8271097 a 1.3543136,1.3543136 0 0 1 0.751953,-2.3105469 l 2.183594,-0.3183593 a 1.2033573,1.2033573 0 0 0 0.90625,-0.6582032 L 6.7849838,2.5595316 a 1.3549405,1.3549405 0 0 1 1.214843,-0.7539063 z m -0.01172,0.9472656 a 0.31247309,0.31247309 0 0 0 -0.03906,0.00391 V 11.85055 a 2.0334881,2.0334881 0 0 1 0.996093,0.234376 l 2.1093732,1.107421 a 0.3122569,0.3122569 0 0 0 0.453125,-0.328129 L 11.105294,10.51461 A 2.032372,2.032372 0 0 1 11.689279,8.7157816 L 13.398263,7.0517191 A 0.31215247,0.31215247 0 0 0 13.226388,6.5185159 L 10.867013,6.1767191 A 2.033881,2.033881 0 0 1 9.3357648,5.0634378 L 8.2791238,2.9267191 A 0.31247309,0.31247309 0 0 0 7.9881068,2.7528909 Z" />
+</svg>

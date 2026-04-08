@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="dissenter-browser.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7">
+    <linearGradient
+       id="linearGradient7"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#008738;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+      <stop
+         style="stop-color:#37b6aa;stop-opacity:1;"
+         offset="1"
+         id="stop8" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect7"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,12.181204,0,1 @ F,0,0,1,0,28.180967,0,1 @ F,0,0,1,0,28.180967,0,1 @ F,0,0,1,0,12.181204,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7"
+       id="radialGradient8"
+       cx="36.865459"
+       cy="51.893826"
+       fx="36.865459"
+       fy="51.893826"
+       r="30.93033"
+       gradientTransform="matrix(0.75533824,-2.8189607,2.5579563,0.68540233,-110.60694,131.547)"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8"
+       x="-0.085610338"
+       y="-0.099878728"
+       width="1.1712207"
+       height="1.1997575">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.959614"
+         id="feGaussianBlur8" />
+    </filter>
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect7-1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,12.181204,0,1 @ F,0,0,1,0,28.180967,0,1 @ F,0,0,1,0,28.180967,0,1 @ F,0,0,1,0,12.181204,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter9"
+       x="-0.069417461"
+       y="-0.076500558"
+       width="1.1388349"
+       height="1.1530012">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.7433333"
+         id="feGaussianBlur9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="13.093944"
+     inkscape:cx="31.808598"
+     inkscape:cy="37.040024"
+     inkscape:current-layer="svg7" />
+  <path
+     id="rect7"
+     style="fill:url(#radialGradient8);stroke:none;stroke-width:0.2;stroke-miterlimit:7.4"
+     d="M 13.326772,3.9713016 H 34.825261 A 28.180967,28.180967 45 0 1 63.006228,32.152269 28.066644,28.066644 135.23386 0 1 34.825261,60.104122 l -21.498489,0 A 12.181204,12.181204 45 0 1 1.1455678,47.922918 V 16.152506 A 12.181204,12.181204 135 0 1 13.326772,3.9713016 Z"
+     inkscape:path-effect="#path-effect7"
+     inkscape:original-d="M 1.1455678,3.9713016 H 63.006228 V 60.104122 H 1.1455678 Z"
+     transform="matrix(0.90735886,0,0,0.90735886,2.976379,2.9704288)" />
+  <path
+     id="rect7-3"
+     style="mix-blend-mode:normal;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.22041996;stroke-miterlimit:7.4;stroke-opacity:1;filter:url(#filter9);stroke-dasharray:none"
+     d="M 13.326772,3.9713016 H 34.825261 A 28.180967,28.180967 45 0 1 63.006228,32.152269 28.066644,28.066644 135.23386 0 1 34.825261,60.104122 l -21.498489,0 A 12.181204,12.181204 45 0 1 1.1455678,47.922918 V 16.152506 A 12.181204,12.181204 135 0 1 13.326772,3.9713016 Z"
+     inkscape:path-effect="#path-effect7-1"
+     inkscape:original-d="M 1.1455678,3.9713016 H 63.006228 V 60.104122 H 1.1455678 Z"
+     transform="matrix(0.90735886,0,0,0.90735886,2.89565,2.9301922)" />
+  <path
+     id="path4"
+     style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke-width:1.06365;stroke-linecap:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+     d="m 16.880473,19.236205 a 2.1272991,2.1272991 0 0 0 -2.1273,2.127299 2.1272991,2.1272991 0 0 0 2.1273,2.127299 h 25.527589 a 2.1272991,2.1272991 0 0 0 2.127299,-2.127299 2.1272991,2.1272991 0 0 0 -2.127299,-2.127299 z m 0,10.636496 A 2.1272991,2.1272991 0 0 0 14.753173,32 a 2.1272991,2.1272991 0 0 0 2.1273,2.127299 H 42.408062 A 2.1272991,2.1272991 0 0 0 44.535361,32 2.1272991,2.1272991 0 0 0 42.408062,29.872701 Z m 0,10.636496 a 2.1272991,2.1272991 0 0 0 -2.1273,2.127299 2.1272991,2.1272991 0 0 0 2.1273,2.127299 h 17.018393 a 2.1272991,2.1272991 0 0 0 2.127299,-2.127299 2.1272991,2.1272991 0 0 0 -2.127299,-2.127299 z" />
+  <path
+     id="path4-9"
+     style="baseline-shift:baseline;display:inline;overflow:visible;mix-blend-mode:normal;fill:none;fill-opacity:1;stroke:#002bff;stroke-width:0.18803184;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter8);enable-background:accumulate;stop-color:#000000"
+     d="m 17.785236,20 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 h 24 a 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z m 0,10 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 h 24 a 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z m 0,10 a 2,2 0 0 0 -2,2 2,2 0 0 0 2,2 h 16 a 2,2 0 0 0 2,-2 2,2 0 0 0 -2,-2 z"
+     transform="matrix(1.0636496,0,0,1.0636496,-2.0367861,-2.0367863)" />
+</svg>

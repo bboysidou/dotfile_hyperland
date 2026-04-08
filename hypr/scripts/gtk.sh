@@ -4,7 +4,7 @@
 gnome_schema="org.gnome.desktop.interface"
 THEME='Graphite-teal-Dark'
 # THEME='Juno-ocean'
-ICON='kora'
+ICON='FairyWren_black_Dark'
 
 gsettings set "$gnome_schema" gtk-theme "$THEME"
 gsettings set "$gnome_schema" icon-theme "$ICON"

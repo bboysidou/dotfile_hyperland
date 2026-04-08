@@ -46,3 +46,7 @@ fish_add_path $ANDROID_HOME/platform-tools
 fish_add_path $ANDROID_HOME/tools/bin
 fish_add_path $ANDROID_HOME/emulator
 
+
+# opencode
+fish_add_path /home/sidouxp3/.opencode/bin
+export PATH="$HOME/.local/bin:$PATH"
