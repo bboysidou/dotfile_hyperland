@@ -65,14 +65,14 @@ keymap.set({ "n", "v", "i" }, "<A-a>", "<CMD>BufferLineCloseOthers<CR>") -- clos
 keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 
 -- harpoon
-keymap.set("n", "<leader>a", ":lua require('harpoon.mark').add_file()<cr>", { desc = "Mark file with harpoon" })
-keymap.set("n", "<leader>nn", ":lua require('harpoon.ui').nav_next()<cr>", { desc = "Go to next harpoon mark" })
-keymap.set("n", "<leader>pp", ":lua require('harpoon.ui').nav_prev()<cr>", { desc = "Go to previous harpoon mark" })
-keymap.set("n", "<leader>y", ":lua require('harpoon.ui').nav_file(1)<cr>", { desc = "navigate to the 1 file" })
-keymap.set("n", "<leader>u", ":lua require('harpoon.ui').nav_file(2)<cr>", { desc = "navigate to the 2 file" })
-keymap.set("n", "<leader>i", ":lua require('harpoon.ui').nav_file(3)<cr>", { desc = "navigate to the 3 file" })
-keymap.set("n", "<leader>o", ":lua require('harpoon.ui').nav_file(4)<cr>", { desc = "navigate to the 4 file" })
-keymap.set("n", "<leader>hh", ":lua require('harpoon.ui').toggle_quick_menu()<cr>", { desc = "show harpoon menu" })
+keymap.set("n", "<leader>a", function() require("harpoon"):list():add() end, { desc = "Mark file with harpoon" })
+keymap.set("n", "<leader>nn", function() require("harpoon"):list():next() end, { desc = "Go to next harpoon mark" })
+keymap.set("n", "<leader>pp", function() require("harpoon"):list():prev() end, { desc = "Go to previous harpoon mark" })
+keymap.set("n", "<leader>y", function() require("harpoon"):list():select(1) end, { desc = "Navigate to harpoon file 1" })
+keymap.set("n", "<leader>u", function() require("harpoon"):list():select(2) end, { desc = "Navigate to harpoon file 2" })
+keymap.set("n", "<leader>i", function() require("harpoon"):list():select(3) end, { desc = "Navigate to harpoon file 3" })
+keymap.set("n", "<leader>o", function() require("harpoon"):list():select(4) end, { desc = "Navigate to harpoon file 4" })
+keymap.set("n", "<leader>hh", function() local harpoon = require("harpoon") harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Show harpoon menu" })
 
 -- flutter
 keymap.set({ "n", "v", "i" }, "<A-f>", ":FlutterOutlineToggle<CR>")

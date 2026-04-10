@@ -8,14 +8,7 @@ configuration {
 }
 
 @theme "/dev/null"
-* {
-    background:     #000000FF;
-    background-alt: #101010FF;
-    foreground:     #FFFFFFFF;
-    selected:       #1793d0;
-    active:         #98C379FF;
-    urgent:         #E06B74FF;
-}
+@import "colors.rasi"
 window {
     transparency:                "real";
     location:                    center;

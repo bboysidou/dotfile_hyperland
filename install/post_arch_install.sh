@@ -175,6 +175,11 @@ echo "============================================="
 sudo systemctl enable --now apparmor
 
 echo "============================================="
+echo "-----| CONFIGURE FAIL2BAN |-----"
+echo "============================================="
+sudo systemctl enable --now fail2ban
+
+echo "============================================="
 echo "-----| CONFIGURE FIREWALL |-----"
 echo "============================================="
 sudo systemctl enable --now ufw

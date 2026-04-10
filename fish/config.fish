@@ -1,52 +1,44 @@
 set -gx EDITOR "nvim"
 set -gx VISUAL "nvim"
+set -gx MANPAGER "nvim +Man!"
 
-set -Ux SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
-set -Ux SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
-set -Ux PATH $PATH $HOME/.fvm_flutter/bin
-set -Ux CHROME_EXECUTABLE /usr/bin/chromium
+set -gx SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
+set -gx SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
+set -gx CHROME_EXECUTABLE /usr/bin/chromium
 
-set -x JAVA_HOME /usr/lib/jvm/java-21-openjdk
-set -x PATH $JAVA_HOME/bin $PATH
+set -gx JAVA_HOME /usr/lib/jvm/java-21-openjdk
+set -gx BUN_INSTALL "$HOME/.bun"
 
+# Android SDK
+set -gx ANDROID_HOME $HOME/Android
+set -gx ANDROID_SDK_ROOT $ANDROID_HOME
+
+# Aliases
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
 alias ocr="sh ~/.config/custom_scripts/ocr.sh"
-alias sysupdate="sudo pacman -Syu && yay -Syu"
-alias sysclean="paccache -r & sudo pacman -R $(pacman -Qtdq)"
-
+alias sysupdate="sudo pacman -Syu; and yay -Syu"
+alias apply-theme="bash ~/.config/custom_scripts/theme/apply_theme.sh"
+alias switch-theme="bash ~/.config/custom_scripts/theme/switch_theme.sh"
+alias sysclean="paccache -r; and sudo pacman -R (pacman -Qtdq)"
 alias ls="eza --icons"
 alias ll="eza --icons -l"
 alias la="eza --icons -al"
-if status is-interactive
-    # Commands to run in interactive sessions can go here
-end
 
+if status is-interactive
+end
 
 if test -f "$XDG_RUNTIME_DIR/keyring.fish"
     source "$XDG_RUNTIME_DIR/keyring.fish"
 end
 
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
-set --export MANPAGER "nvim +Man!"
-set --export PATH $HOME/flutter/bin $PATH
-
-
-# FVM
-set --export PATH /home/sidouxp3/.fvm_flutter/bin $PATH
-fish_add_path "$HOME/fvm/bin"
-
-# Android SDK
-set -x ANDROID_HOME $HOME/Android
-set -x ANDROID_SDK_ROOT $ANDROID_HOME
-
+# PATH (each entry added once via fish_add_path)
+fish_add_path $JAVA_HOME/bin
+fish_add_path $BUN_INSTALL/bin
+fish_add_path $HOME/flutter/bin
+fish_add_path $HOME/fvm/bin
 fish_add_path $ANDROID_HOME/cmdline-tools/latest/bin
 fish_add_path $ANDROID_HOME/platform-tools
 fish_add_path $ANDROID_HOME/tools/bin
 fish_add_path $ANDROID_HOME/emulator
-
-
-# opencode
-fish_add_path /home/sidouxp3/.opencode/bin
-export PATH="$HOME/.local/bin:$PATH"
+fish_add_path $HOME/.opencode/bin
+fish_add_path $HOME/.local/bin
