@@ -1,12 +1,47 @@
 {
-  "custom/updates": {
-    "format": "  {}",
-    "tooltip-format": "{}",
-    "escape": true,
+  "custom/updates-icon": {
+    "format": "󰇚 {}",
     "return-type": "json",
-    "exec": "~/.config/custom_scripts/updates.sh",
+    "exec": "~/.config/custom_scripts/updates.sh icon",
     "restart-interval": 60,
     "on-click": "kitty pacseek",
     "tooltip": false
+  },
+
+  "custom/updates-pacman": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/custom_scripts/updates.sh pacman",
+    "restart-interval": 60,
+    "on-click": "kitty pacseek",
+    "tooltip": true
+  },
+
+  "custom/updates-aur": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/custom_scripts/updates.sh aur",
+    "restart-interval": 60,
+    "on-click": "kitty pacseek",
+    "tooltip": true
+  },
+
+  "custom/updates-orphans": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/custom_scripts/updates.sh orphans",
+    "restart-interval": 60,
+    "on-click": "kitty pacseek",
+    "tooltip": true
+  },
+
+  "group/updates": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "not-updates",
+      "transition-left-to-right": true
+    },
+    "modules": ["custom/updates-icon", "custom/updates-pacman", "custom/updates-aur", "custom/updates-orphans"]
   }
 }

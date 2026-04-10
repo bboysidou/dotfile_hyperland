@@ -1,33 +1,47 @@
 #!/bin/sh
 
-IMAGE_DIR="$HOME/Pictures/wallpaper/"
+IMAGE_DIR="$HOME/Pictures/wallpaper"
 HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
 
-selection=$(ls "$IMAGE_DIR" | 
-  fzf --reverse \
-  --info right \
-  --prompt "Select a Image: " \
-  --border "rounded" \
-  --border-label "WALLPAPERS" \
-  --height=100% \
-  --preview "chafa --clear -c full --color-space rgb --dither none -p on -s 50x50 $IMAGE_DIR{}" \
-  --preview-window=right:65% 
-)
+selection=$(for img in "$IMAGE_DIR"/*; do
+    name=$(basename "$img")
+    echo -en "$name\0icon\x1f$img\n"
+done | rofi -dmenu -show-icons -p "Wallpaper" -theme-str '
+    window {
+        width: 700px;
+        height: 700px;
+        location: center;
+        anchor: center;
+        border-radius: 24px;
+    }
+    listview {
+        columns: 2;
+        lines: 4;
+        spacing: 10px;
+        fixed-height: true;
+    }
+    element {
+        orientation: vertical;
+        padding: 10px;
+        border-radius: 12px;
+    }
+    element-icon {
+        size: 8em;
+        horizontal-align: 0.5;
+    }
+    element-text {
+        horizontal-align: 0.5;
+    }
+')
 
 if [ -z "$selection" ]; then
-    echo "No image selected."
-    exit 1
+    exit 0
 fi
 
-# Update only the path line in hyprpaper.conf
-sed -i "s|^    path = .*$|    path = $IMAGE_DIR$selection|" "$HYPRPAPER_CONF"
+wallpaper="$IMAGE_DIR/$selection"
 
-# Rest of your hyprpaper commands...
-hyprctl hyprpaper unload all
-hyprctl hyprpaper preload "$IMAGE_DIR$selection"
-hyprctl hyprpaper wallpaper ",\"$IMAGE_DIR$selection\""
-hyprctl hyprpaper reload
-#
-# killall hyprpaper
-# sleep 1
-# hyprpaper &
+sed -i "s|^    path = .*$|    path = $wallpaper|" "$HYPRPAPER_CONF"
+
+killall hyprpaper
+sleep 0.5
+hyprpaper &

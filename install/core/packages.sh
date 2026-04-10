@@ -94,6 +94,7 @@ general=(
   android-udev
   jdk17-openjdk
   jdk21-openjdk
+  tree-sitter-cli
 
   # Docker --------------------------------------------------------
   docker 
@@ -130,6 +131,8 @@ general=(
 
   # APPLICATION CONFINEMENT (SELINUX, APPARMOR)
   apparmor
+  fail2ban
+  arch-audit
 
   # MOUSE MX MASTER -----------------------------------------
   gnome-shell-extensions 

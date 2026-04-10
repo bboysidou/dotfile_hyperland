@@ -25,7 +25,7 @@
     "custom/distro",
     "hyprland/workspaces",
     "backlight",
-    "custom/updates",
+    "group/updates",
     "bluetooth",
     "custom/media"
   ],
