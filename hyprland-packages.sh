@@ -44,6 +44,7 @@ packagesPacman=(
     "brightnessctl"
     "gum"
     "bluetui"
+    "qt6ct"
 );
 
 packagesYay=(

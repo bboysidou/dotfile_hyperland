@@ -32,7 +32,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("udiskie -s --mount-options sync")
 
 	-- Cursor
-	hl.exec_cmd("hyprctl setcursor 'Twilight Cursors' 24")
+	hl.exec_cmd("hyprctl setcursor 'Bibata-Modern-Ice' 24")
 
 	-- Portal
 	-- hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
