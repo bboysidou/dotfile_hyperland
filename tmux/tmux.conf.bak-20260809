@@ -73,9 +73,49 @@ set -g @plugin 'tmux-plugins/tpm'
 # LIST OF PLUGINS
 set -g @plugin 'christoomey/vim-tmux-navigator'
 #
-# THEME / STATUS LINE (from devaslife, taken as-is)
-source ~/.config/tmux/theme.conf
-source ~/.config/tmux/statusline.conf
+# # TMUX LINE THEME
+# ========== STATUS CONFIGURATION ==========
+set -g status-style "bg=#{@theme_bg_dark},fg=#{@theme_fg_default}"
+set -g status-interval 60
+set -g status-justify centre
+set -g window-status-separator ''
+
+# ========== LEFT STATUS ==========
+set -g status-left-length 100
+set -g status-left "\
+#[fg=#{@theme_bg_dark},bg=#{@theme_accent_blue},bold] 󰆍 #(echo \"#S\" | awk \"{print toupper(\\\$0)}\") \
+#[fg=#{@theme_accent_blue},bg=#{@theme_bg_light}]\
+#[fg=#{@theme_bg_dark},bg=#{@theme_bg_light},bold] #(bash ~/.config/tmux/scripts/battery.sh) \
+#[fg=#{@theme_bg_light},bg=#{@theme_bg_dark}]\
+"
+
+# ========== WINDOW LIST ==========
+set-window-option -g window-status-format "\
+#[fg=#{@theme_fg_muted},bg=#{@theme_bg_dark},nobold] #I:#W \
+"
+
+set-window-option -g window-status-current-format "\
+#[fg=#{@theme_bg_dark},bg=#{@theme_accent_blue_dark}]\
+#[fg=#{@theme_accent_cyan},bg=#{@theme_accent_blue_dark},bold] #I:#W \
+#[fg=#{@theme_bg_dark},bg=#{@theme_accent_blue_dark}]\
+"
+
+# ========== RIGHT STATUS ==========
+set -g status-interval 5
+set -g status-right "\
+#[fg=#{@theme_bg_medium},bg=#{@theme_bg_dark}]\
+#[fg=#{@theme_accent_yellow},bg=#{@theme_bg_medium}] #(bash ~/.config/tmux/scripts/ram.sh) \
+#[fg=#{@theme_bg_light},bg=#{@theme_bg_medium}]\
+#[fg=#{@theme_bg_dark},bg=#{@theme_bg_light}] 󱑎 %H:%M \
+#[fg=#{@theme_bg_lighter},bg=#{@theme_bg_light}]\
+#[fg=#{@theme_bg_dark},bg=#{@theme_bg_lighter},bold] 󰃭 %Y-%m-%d \
+"
+set -g message-style "bg=#{@theme_message_bg},fg=#{@theme_bg_dark}"
+set -g message-command-style "bg=#{@theme_message_bg},fg=#{@theme_bg_dark}"
+
+# Optional: Unicode separator padding fix (may need patched Nerd Font)
+set -g status-left-style none
+set -g status-right-style none
 
 # INITIALIZE TMUX PLUGIN MANAGER (KEEP THIS LINE AT THE VERY BOTTOM OF TMUX.CONF)
 run '~/.tmux/plugins/tpm/tpm'
