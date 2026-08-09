@@ -1,0 +1,24 @@
+-- Input
+-- https://wiki.hypr.land/Configuring/Basics/Variables/
+
+hl.config({
+    input = {
+        kb_layout  = "us",
+        kb_variant = "",
+        kb_model   = "",
+        kb_options = "",
+
+        -- For United States
+        -- kb_layout  = "us",
+        -- kb_variant = "intl",
+        -- kb_model   = "pc105",
+        -- kb_options = "",
+
+        follow_mouse       = 2,
+        numlock_by_default = true,
+        touchpad = {
+            natural_scroll = false,
+        },
+        sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
+    },
+})

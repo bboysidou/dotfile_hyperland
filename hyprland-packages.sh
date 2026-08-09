@@ -43,6 +43,7 @@ packagesPacman=(
     "qalculate-gtk"
     "brightnessctl"
     "gum"
+    "bluetui"
 );
 
 packagesYay=(
@@ -55,4 +56,9 @@ packagesYay=(
     "wlogout"
     "wlr-randr"
     "pacseek"
+    "python-setuptools"
+    "zscroll"
+    "nmrs"
+    "nmrs-tui"
+    "ttf-jetbrains-mono-nerd"
 );
