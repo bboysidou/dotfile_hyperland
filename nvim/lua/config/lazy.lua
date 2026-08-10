@@ -22,20 +22,22 @@ require("lazy").setup({
     { import = "config.plugins.linting" },
     { import = "config.plugins.dap" },
   },
-  {
-    ui = {
-      border = "single",
-      size = {
-        width = 0.8,
-        height = 0.8,
-      },
+  ui = {
+    border = "single",
+    size = {
+      width = 0.8,
+      height = 0.8,
     },
-    checker = {
-      enabled = true,
-      notify = false,
-    },
-    change_detection = {
-      notify = false,
-    },
+  },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
+  change_detection = {
+    notify = false,
+  },
+  rocks = {
+    -- no plugin here needs luarocks; skip the hererocks bootstrap
+    enabled = false,
   },
 })

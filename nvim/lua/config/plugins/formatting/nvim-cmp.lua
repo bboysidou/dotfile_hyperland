@@ -25,6 +25,16 @@ return {
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
 
+    vim.diagnostic.config({
+      update_in_insert = true,
+      virtual_text = {
+        prefix = "●",
+        spacing = 2,
+      },
+      signs = true,
+      underline = true,
+    })
+
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect",
@@ -53,15 +63,6 @@ return {
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
-      }),
-      vim.diagnostic.config({
-        update_in_insert = true,
-        virtual_text = {
-          prefix = "●",
-          spacing = 2,
-        },
-        signs = true,
-        underline = true,
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {

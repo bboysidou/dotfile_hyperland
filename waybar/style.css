@@ -65,8 +65,8 @@ window#waybar > box.horizontal {
 #custom-updates,
 #bluetooth,
 #network,
-#cpu,
-#memory,
+#cpu-usage,
+#mem-usage,
 #tray,
 #volume {
   border-radius: 8px;
@@ -87,6 +87,23 @@ window#waybar > box.horizontal {
 
 #custom-mxmaster.critical {
   color: @critical;
+}
+
+/* usage thresholds — ring colour is picked in usage.sh, this tints the readout */
+#custom-cpu.warning,
+#custom-memory.warning {
+  color: @warning;
+}
+
+#custom-cpu.critical,
+#custom-memory.critical {
+  color: @critical;
+}
+
+/* ring sits just right of its readout, inside the shared pill */
+#image.cpu-ring,
+#image.mem-ring {
+  margin-left: 7px;
 }
 
 /* sits between the workspace dots and media — grouped with media, not the dots */

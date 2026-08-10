@@ -119,13 +119,13 @@ function M.generate_clean_architecture_structure()
         -- create route file
         local route_file = string.format("%s/presentation/%s.route.%s", cwd, feature, ext)
         vim.fn.writefile({ "// route for " .. feature }, route_file)
-        -- elseif choice == "flutter" then
-        --   create_files(cwd, feature, "data", flutter_data_files, ext)
-        --   create_files(cwd, feature, "presentation", flutter_presentation_files, ext)
-        --
-        --   -- create route file (Flutter style)
-        --   local route_file = string.format("%s/presentation/%s_routes.%s", cwd, feature, ext)
-        --   vim.fn.writefile({ "// routes for " .. feature }, route_file)
+      elseif choice == "flutter" then
+        create_files(cwd, feature, "data", flutter_data_files, ext)
+        create_files(cwd, feature, "presentation", flutter_presentation_files, ext)
+
+        -- create route file (Flutter style)
+        local route_file = string.format("%s/presentation/%s_routes.%s", cwd, feature, ext)
+        vim.fn.writefile({ "// routes for " .. feature }, route_file)
       end
 
       print(choice .. " folder structure created for feature: " .. feature)

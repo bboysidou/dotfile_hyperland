@@ -48,8 +48,12 @@ return {
         -- "intelephense",
         -- "jdtls",
       },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
+      -- installed servers are enabled via vim.lsp.enable() automatically.
+      -- exclude tools that mason installs as formatters/linters but that
+      -- nvim-lspconfig also ships a (non-desirable) LSP config for.
+      automatic_enable = {
+        exclude = { "stylua" },
+      },
     })
     mason_tool_installer.setup({
       ensure_installed = {

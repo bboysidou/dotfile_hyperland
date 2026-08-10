@@ -21,8 +21,8 @@
     "bluetooth",
     "tray",
     // "network",
-    "cpu",
-    "memory"
+    "group/cpu-usage",
+    "group/mem-usage"
   ],
   "hyprland/window": {
     "max-length": 50
@@ -72,22 +72,48 @@
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
     "on-click": "exec kitty --title bluetui bluetui"
   },
-  "cpu": {
+  // one script per pill: it samples once, renders the ring from that sample and
+  // prints the readout, so the number and its ring can never disagree
+  "custom/cpu": {
+    "exec": "~/.config/waybar/modules/usage.sh cpu",
+    "return-type": "json",
     "interval": 10,
-    "format": "󰍛 {usage}%",
-    "format-alt": "󰍛 {load}",
-    "states": {
-      "warning": 70,
-      "critical": 90
-    },
-    "max-length": 10,
     "on-click": "exec kitty --title btop btop"
   },
-  "memory": {
+  "image#cpu-ring": {
+    "exec": "~/.config/waybar/modules/usage.sh cpu path",
+    "size": 16,
+    "signal": 10,
+    "tooltip": false,
+    "on-click": "exec kitty --title btop btop"
+  },
+  "custom/memory": {
+    "exec": "~/.config/waybar/modules/usage.sh memory",
+    "return-type": "json",
     "interval": 30,
-    "format": " {percentage}%",
-    "tooltip-format": "USED: {used}\nTOTAL: {total}\nSWAP USED: {swapUsed}\nSWAP TOTAL: {swapTotal}",
     "on-click": "exec kitty --title htop htop"
+  },
+  "image#mem-ring": {
+    "exec": "~/.config/waybar/modules/usage.sh memory path",
+    "size": 16,
+    "signal": 11,
+    "tooltip": false,
+    "on-click": "exec kitty --title htop htop"
+  },
+  // each pairs its readout with its ring inside one pill
+  "group/cpu-usage": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/cpu",
+      "image#cpu-ring"
+    ]
+  },
+  "group/mem-usage": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/memory",
+      "image#mem-ring"
+    ]
   },
   "network": {
     "format": "",

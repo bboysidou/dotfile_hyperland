@@ -115,6 +115,7 @@ vim.keymap.set("n", "<Leader>fb", "<cmd>lua require('flutter-bloc').create_bloc(
 })
 
 -- Create Cubit quickly
-vim.keymap.set("n", "<Leader>fc", "<cmd>lua require('flutter-bloc').create_cubit()<cr>", {
-  desc = "[C]reate [F]lutter [C]ubit",
+-- NOTE: <leader>fc is taken by "Telescope grep_string" above, so cubit lives on <leader>fu.
+vim.keymap.set("n", "<Leader>fu", "<cmd>lua require('flutter-bloc').create_cubit()<cr>", {
+  desc = "[C]reate [F]lutter C[u]bit",
 })
