@@ -37,5 +37,18 @@ fi
 icon="󰍽"
 [ "$state" = "RECHARGING" ] && icon="󰠕"
 
-printf '{"text":"%s %s%%","tooltip":"%s: %s%% (%s)","class":"%s"}\n' \
-  "$icon" "$cap" "$name" "$cap" "${state,,}" "$class" | tee "$cache"
+# battery ramp, empty -> full in 10% steps; index 10 is the 100% glyph
+levels=(󰂎 󰁺 󰁻 󰁼 󰁽 󰁾 󰁿 󰂀 󰂁 󰂂 󰁹)
+charging=(󰢟 󰢜 󰂆 󰂇 󰂈 󰢝 󰂉 󰢞 󰂊 󰂋 󰂅)
+
+i=$((cap / 10))
+[ "$i" -gt 10 ] && i=10
+
+if [ "$state" = "RECHARGING" ]; then
+  batt=${charging[$i]}
+else
+  batt=${levels[$i]}
+fi
+
+printf '{"text":"%s %s%% %s","tooltip":"%s: %s%% (%s)","class":"%s"}\n' \
+  "$icon" "$cap" "$batt" "$name" "$cap" "${state,,}" "$class" | tee "$cache"

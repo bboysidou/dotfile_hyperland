@@ -12,7 +12,9 @@ return {
         HACK = { icon = " ", color = "warning" },
         WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
         PERF = { icon = " ", color = "hint" },
-        NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+        -- INFO is its own keyword above, so it must not also be an alt of NOTE
+        -- (the alt would win and render INFO with NOTE's colour).
+        NOTE = { icon = " ", color = "hint" },
       },
       highlight = {
         pattern = [[.*<(KEYWORDS)\s*:]],
