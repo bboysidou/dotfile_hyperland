@@ -3,20 +3,50 @@
 set -e
 
 # ==============================================
-# CONFIGURATION - MODIFIEZ CES VALEURS
+# CONFIGURATION - SAISIE AU LANCEMENT
+# Chaque valeur peut aussi etre pre-remplie par une variable d'environnement
 # ==============================================
-DISK="/dev/nvme0n1"      # Votre disque NVMe
-HOSTNAME="archlinux"     # Nom de la machine
-USERNAME="user"         # Nom utilisateur
-USER_PASSWORD="password" # Mot de passe utilisateur
-ROOT_PASSWORD="password" # Mot de passe root
-TIMEZONE="Africa/Algiers"
-LOCALE="en_US.UTF-8"
-KEYMAP="us"
+_prompt() {
+  local __var="$1" __label="$2" __default="$3" __input
+  read -rp "$__label [$__default]: " __input
+  printf -v "$__var" '%s' "${__input:-$__default}"
+}
+
+_promptSecret() {
+  local __var="$1" __label="$2" __first __second
+  if [[ -n "${!__var:-}" ]]; then
+    echo "$__label: (fourni par l'environnement)"
+    return
+  fi
+  while true; do
+    read -rsp "$__label: " __first
+    echo
+    read -rsp "$__label (confirmation): " __second
+    echo
+    if [[ -z "$__first" ]]; then
+      echo "  Le mot de passe ne peut pas etre vide."
+    elif [[ "$__first" != "$__second" ]]; then
+      echo "  Les mots de passe ne correspondent pas."
+    else
+      break
+    fi
+  done
+  printf -v "$__var" '%s' "$__first"
+}
 
 echo "============================================="
 echo "   INSTALLATION ARCH LINUX - Configuration"
 echo "============================================="
+_prompt DISK      "Disque"       "${DISK:-/dev/nvme0n1}"
+_prompt HOSTNAME  "Hostname"     "${HOSTNAME:-archlinux}"
+_prompt USERNAME  "Utilisateur"  "${USERNAME:-sidouxp3}"
+_prompt TIMEZONE  "Timezone"     "${TIMEZONE:-Africa/Algiers}"
+_prompt LOCALE    "Locale"       "${LOCALE:-en_US.UTF-8}"
+_prompt KEYMAP    "Clavier"      "${KEYMAP:-us}"
+_promptSecret USER_PASSWORD "Mot de passe de $USERNAME"
+_promptSecret ROOT_PASSWORD "Mot de passe root"
+
+echo ""
 echo "Disque: $DISK"
 echo "Hostname: $HOSTNAME"
 echo "Utilisateur: $USERNAME"
@@ -207,7 +237,7 @@ sudo sed -i 's/^#VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
 sudo sed -i 's/^ParallelDownloads *= *[0-9]\+/ParallelDownloads = 12/' /etc/pacman.conf
 sudo sed -i 's/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j\$(nproc)\"/' /etc/makepkg.conf
 pacman -Syu --noconfirm
-pacman -S --noconfirm \
+pacman -S --noconfirm --needed \
     networkmanager iwd wpa_supplicant \
     zram-generator \
     vim \
@@ -233,12 +263,7 @@ echo "✓ zram configuré"
 
 # Utilisateur
 useradd -m -G wheel,users,storage,power,audio,video,input -s /bin/bash $USERNAME
-echo "$USERNAME:$USER_PASSWORD" | chpasswd
 echo "✓ Utilisateur $USERNAME créé"
-
-# Root password
-echo "root:$ROOT_PASSWORD" | chpasswd
-echo "✓ Mot de passe root défini"
 
 # Sudo
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
@@ -266,16 +291,18 @@ ROOT_UUID=\$(blkid -s UUID -o value ${DISK}p2)
 cat << BOOTENTRY > /boot/loader/entries/arch.conf
 title   Arch Linux
 linux   /vmlinuz-linux
+initrd  /amd-ucode.img
 initrd  /initramfs-linux.img
-options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw loglevel=7 systemd.show_status=1
+options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw lsm=landlock,lockdown,yama,integrity,apparmor,bpf loglevel=7 systemd.show_status=1
 BOOTENTRY
 
 # Entrée fallback
 cat << BOOTFALLBACK > /boot/loader/entries/arch-fallback.conf
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
+initrd  /amd-ucode.img
 initrd  /initramfs-linux-fallback.img
-options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw
+options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw lsm=landlock,lockdown,yama,integrity,apparmor,bpf
 BOOTFALLBACK
 
 echo "✓ systemd-boot configuré"
@@ -293,6 +320,11 @@ arch-chroot /mnt ./setup.sh
 
 # Nettoyage
 rm /mnt/setup.sh
+
+# Mots de passe: transmis par stdin, jamais ecrits sur le disque ni exposes dans ps
+printf '%s:%s\n' "$USERNAME" "$USER_PASSWORD" | arch-chroot /mnt chpasswd
+printf 'root:%s\n' "$ROOT_PASSWORD" | arch-chroot /mnt chpasswd
+echo "✓ Mots de passe définis"
 
 # ==============================================
 # 9. FINALISATION
@@ -314,8 +346,8 @@ echo "• Utilisateur: $USERNAME"
 echo "• Timeshift: Snapshots manuels"
 echo ""
 echo "Identifiants:"
-echo "• Utilisateur: $USERNAME / $USER_PASSWORD"
-echo "• Root: root / $ROOT_PASSWORD"
+echo "• Utilisateur: $USERNAME (mot de passe saisi au lancement)"
+echo "• Root: root (mot de passe saisi au lancement)"
 echo ""
 echo "Prochaines étapes:"
 echo "1. umount -R /mnt"

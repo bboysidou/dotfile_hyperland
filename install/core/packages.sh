@@ -26,7 +26,6 @@ general=(
   udiskie
   acpi
   dhcpcd
-  fzf
   zip
   mpv
   scrcpy
@@ -56,7 +55,6 @@ general=(
   vi
   fish
   kitty
-  papirus-icon-theme
   rsync
   obs-studio
   evince
@@ -66,7 +64,6 @@ general=(
   gdb
   make
   valgrind
-  clang
   papirus-icon-theme
   curl
   wget
@@ -83,8 +80,11 @@ general=(
   tesseract-data-eng
 
   # DEV -----------------------------------------------------------
+  github-cli
+  opencode
   cmake 
   ninja 
+  meson
   clang 
   gtk3 
   pkg-config
@@ -104,9 +104,12 @@ general=(
   bluez-utils
   bluez-tools
   blueman
+  bluetui
 
   # AMD CPU -------------------------------------------------------
   amd-ucode
+  amdgpu_top
+  dmidecode
   
   # PERSONALIZATIONS --------------------------------------------------
   noto-fonts
@@ -122,6 +125,7 @@ general=(
   ttf-fira-sans
   otf-font-awesome
   ttf-nunito
+  qt6ct
   
   # HARDWARE ACCELERATION -----------------------------------------
   mesa-utils
@@ -187,6 +191,7 @@ window_manager=(
   qt5-wayland 
   qt6-wayland 
   polkit-kde-agent 
+  uwsm
 )
 
 quickshell=(
@@ -217,12 +222,11 @@ aur=(
   nwg-look
   nwg-displays
   zen-browser-bin
-  ninja
-  gcc
-  cmake
-  meson
   onlyoffice-bin
   bruno-bin
+  nmrs
+  nmrs-tui
+  droidcam
 
   # CURSOR THEME (hypr/config/autostart.lua sets Bibata-Modern-Ice) -
   bibata-cursor-theme
