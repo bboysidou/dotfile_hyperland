@@ -1,2 +1,4 @@
 custom_scripts/gitignore
 fish/fishd.tmp*
+fish/fish_variables*
+fish/fish_history
