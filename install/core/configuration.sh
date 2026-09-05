@@ -1,14 +1,12 @@
 folders=(
   fontconfig
   hypr
-  waybar
+  quickshell
   nvim
   kitty
-  rofi
   tmux
   fish
   custom_scripts
-  dunst
   fastfetch
   mpv
   yazi

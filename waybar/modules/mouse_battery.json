@@ -1,8 +1,0 @@
-{
-  "custom/mouse": {
-    "exec": "~/.config/custom_scripts/mouse-battery.sh",
-    "return-type": "json",
-    "format": "{}",
-    "tooltip": true
-  }
-}
