@@ -119,3 +119,7 @@ vim.keymap.set("n", "<Leader>fb", "<cmd>lua require('flutter-bloc').create_bloc(
 vim.keymap.set("n", "<Leader>fu", "<cmd>lua require('flutter-bloc').create_cubit()<cr>", {
   desc = "[C]reate [F]lutter C[u]bit",
 })
+
+-- wrapped lines: move by visual line unless a count is given
+keymap.set({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
