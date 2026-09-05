@@ -1,8 +1,7 @@
 import QtQuick.Layouts
-import Quickshell
 import qs.core.components
 import qs.core.config
-import qs.core.constants
+import qs.modules.updates
 import qs.services
 
 Pill {
@@ -14,7 +13,7 @@ Pill {
     visible: Updates.available
     interactive: true
 
-    onClicked: Quickshell.execDetached(Commands.updates)
+    onClicked: UpdatesState.toggle()
 
     Icon {
         text: Icons.updates

@@ -11,6 +11,7 @@ import qs.modules.bar
 import qs.modules.dashboard
 import qs.modules.launcher
 import qs.modules.screenshot
+import qs.modules.updates
 
 PanelWindow {
     id: root
@@ -48,6 +49,9 @@ PanelWindow {
         }
         Region {
             item: dashboard.revealed ? dashboard : null
+        }
+        Region {
+            item: updates.revealed ? updates : null
         }
     }
 
@@ -131,6 +135,16 @@ PanelWindow {
             anchors.bottom: parent.bottom
 
             revealed: root.focused && ControlState.opened
+        }
+
+        UpdatesPanel {
+            id: updates
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            revealed: root.focused && UpdatesState.opened
         }
 
         DashboardPanel {

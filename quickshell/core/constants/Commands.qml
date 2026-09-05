@@ -16,6 +16,8 @@ Singleton {
 
     readonly property string kernel: "uname -r"
     readonly property string packageCount: "pacman -Q | wc -l"
+    readonly property string repoUpdates: "timeout %1 checkupdates 2>/dev/null"
+    readonly property string aurUpdates: "timeout %1 yay -Qua 2>/dev/null"
     readonly property string brightnessQuery: "ls /sys/class/backlight/*/brightness >/dev/null 2>&1 && brightnessctl -c backlight -m 2>/dev/null | cut -d, -f4 | tr -d '%' || echo -1"
     readonly property string brightnessSet: "brightnessctl -c backlight -q s %1%"
 

@@ -9,6 +9,8 @@ Singleton {
     readonly property string workspaceActive: "\uF192"
     readonly property string workspaceDefault: "\uF111"
     readonly property string updates: "\uDB81\uDEB0"
+    readonly property string updateAur: "\uDB80\uDFD7"
+    readonly property string refresh: "\uDB81\uDC50"
     readonly property string cpu: "\uDB80\uDF5B"
     readonly property string memory: "\uF2DB"
     readonly property string mouse: "\uDB80\uDF7D"
