@@ -1,7 +1,7 @@
 //@ pragma UseQApplication
 //@ pragma DefaultEnv QS_NO_RELOAD_POPUP=1
 //@ pragma DefaultEnv QSG_RENDER_LOOP=threaded
-//@ pragma IconTheme FairyWren_black_Dark
+//@ pragma IconTheme FairyWren_Dark_black
 
 import Quickshell
 import qs.modules.background

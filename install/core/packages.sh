@@ -227,6 +227,9 @@ aur=(
   # CURSOR THEME (hypr/config/autostart.lua sets Bibata-Modern-Ice) -
   bibata-cursor-theme
 
+  # ICON THEME (quickshell/shell.qml pins FairyWren_Dark_black) ----
+  fairywren-icon-theme-git
+
   # FONTS NOT IN THE OFFICIAL REPOS -------------------------------
   otf-apple-sf-pro
   ttf-orbitron
