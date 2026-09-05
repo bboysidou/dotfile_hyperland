@@ -16,6 +16,8 @@ import qs.modules.power
 import qs.modules.power.components
 import qs.modules.screenshot
 import qs.modules.screenshot.components
+import qs.modules.updates
+import qs.modules.updates.components
 import qs.services
 
 ShellRoot {
@@ -63,7 +65,16 @@ ShellRoot {
         Appearance.power.fadeInType,
         Appearance.power.selectedScale,
         Fmt.uptime(Units.secondsPerDay),
-        Uptime.text
+        Uptime.text,
+        UpdatesState.opened,
+        Updates.repo,
+        Updates.aur,
+        Updates.refreshing,
+        Updates.parse(""),
+        Appearance.updates.repoMaxRatio,
+        Appearance.updates.versionArrow,
+        Icons.updateAur,
+        Icons.refresh
     ]
 
     readonly property Component components: Component {
@@ -84,6 +95,22 @@ ShellRoot {
             PaneHeader {}
             NotifList {}
             ControlPanel {}
+            UpdatesCenter {}
+            UpdatesPanel {}
+            UpdatesHeader {}
+            UpdateSection {
+                glyph: ""
+                title: ""
+                placeholder: ""
+                entries: []
+            }
+            UpdateRow {
+                entry: ({
+                        name: "",
+                        from: "",
+                        to: ""
+                    })
+            }
             Password {}
             Identity {}
             Connectivity {}
