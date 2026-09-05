@@ -7,9 +7,7 @@ linux=(
 
 general=(
   # APP NEEDED TO WINDOW MANAGER WORK PROPERLLY -------------------
-  dunst 
   btop
-  rofi
   firefox 
   chromium
   neovim
@@ -81,7 +79,8 @@ general=(
   trash-cli
 
   # FOR OCR ------------------------------------------------------- 
-  tesseract-data
+  tesseract
+  tesseract-data-eng
 
   # DEV -----------------------------------------------------------
   cmake 
@@ -116,6 +115,13 @@ general=(
   noto-fonts-extra
   ttf-jetbrains-mono-nerd
   ttf-fira-code
+  ttf-dejavu-nerd
+  ttf-firacode-nerd
+  ttf-iosevka-nerd
+  ttf-meslo-nerd
+  ttf-fira-sans
+  otf-font-awesome
+  ttf-nunito
   
   # HARDWARE ACCELERATION -----------------------------------------
   mesa-utils
@@ -175,13 +181,33 @@ audio=(
 window_manager=(
   hyprland
   wl-clipboard
-  waybar
   hyprpaper
   hyprlock
   xdg-desktop-portal-hyprland
   qt5-wayland 
   qt6-wayland 
   polkit-kde-agent 
+)
+
+quickshell=(
+  # SHELL (BAR, LAUNCHER, NOTIFICATIONS, LOCK, POWER MENU) ---------
+  quickshell
+
+  # NOTIFICATION CLIENT (quickshell is now the daemon) ------------
+  libnotify
+
+  # AUDIO VISUALISER ----------------------------------------------
+  cava
+
+  # BATTERY / MOUSE BATTERY (Quickshell.Services.UPower) -----------
+  upower
+
+  # NETWORK (Quickshell.Networking + control centre editor) --------
+  networkmanager
+  nm-connection-editor
+
+  # DASHBOARD MONITOR LAUNCHERS -----------------------------------
+  htop
 )
 
 aur=(
@@ -197,4 +223,12 @@ aur=(
   meson
   onlyoffice-bin
   bruno-bin
+
+  # CURSOR THEME (hypr/config/autostart.lua sets Bibata-Modern-Ice) -
+  bibata-cursor-theme
+
+  # FONTS NOT IN THE OFFICIAL REPOS -------------------------------
+  otf-apple-sf-pro
+  ttf-orbitron
+  ttf-icomoon-feather
 )
