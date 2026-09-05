@@ -15,6 +15,7 @@ import qs.modules.osd
 import qs.modules.polkit
 import qs.modules.power
 import qs.modules.screenshot
+import qs.modules.updates
 import qs.modules.wallpaper
 
 ShellRoot {
@@ -33,5 +34,6 @@ ShellRoot {
     Polkit {}
     Power {}
     Screenshot {}
+    UpdatesCenter {}
     Picker {}
 }
