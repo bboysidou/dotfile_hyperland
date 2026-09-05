@@ -53,6 +53,11 @@ echo "============================================="
 _installPackages "${window_manager[@]}"
 
 echo "============================================="
+echo "-----| INSTALL QUICKSHELL PACKAGES |-----"
+echo "============================================="
+_installPackages "${quickshell[@]}"
+
+echo "============================================="
 echo "-----| INSTALL NVIDIA |-----"
 echo "============================================="
 ./nvidia.sh
@@ -75,6 +80,13 @@ echo "============================================="
 echo "-----| CONFIGURE DOTFILES |-----"
 echo "============================================="
 _configureDotfiles "${folders[@]}"
+
+echo "============================================="
+echo "-----| INSTALL UNPACKAGED FONTS |-----"
+echo "============================================="
+mkdir -p "$HOME/.fonts"
+cp -v fonts/* "$HOME/.fonts/"
+fc-cache -f
 
 echo "============================================="
 echo "-----| CONFIGURE DOCKER |-----"
