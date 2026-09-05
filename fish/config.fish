@@ -15,14 +15,13 @@ set -gx ANDROID_SDK_ROOT $ANDROID_HOME
 
 # Aliases
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
-alias ocr="sh ~/.config/custom_scripts/ocr.sh"
+alias ocr="qs ipc call screenshot ocr"
 alias sysupdate="sudo pacman -Syu; and yay -Syu"
-alias apply-theme="bash ~/.config/custom_scripts/theme/apply_theme.sh"
-alias switch-theme="bash ~/.config/custom_scripts/theme/switch_theme.sh"
 alias sysclean="paccache -r; and sudo pacman -R (pacman -Qtdq)"
 alias ls="eza --icons"
 alias ll="eza --icons -l"
 alias la="eza --icons -al"
+alias claude-personal='env CLAUDE_CONFIG_DIR=$HOME/.claude-personal claude'
 
 if status is-interactive
 end
