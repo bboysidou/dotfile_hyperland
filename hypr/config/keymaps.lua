@@ -4,7 +4,6 @@
 -- Programs
 local terminal    = "kitty"
 local fileManager = "thunar"
-local menu        = "rofi -show drun"
 local browser     = "zen-browser"
 local browser_alt = "brave"
 
@@ -16,17 +15,18 @@ hl.bind("CTRL + SHIFT + F",       hl.dsp.exec_cmd("kitty yazi"))
 hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/tmux_resurect_session.sh"))
 hl.bind(mainMod .. " + S",        hl.dsp.exec_cmd("sh -c $HOME/.config/custom_scripts/auto_start_work.sh"))
 hl.bind(mainMod .. " + C",        hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/ssh_connection.sh"))
-hl.bind(mainMod .. " + X",        hl.dsp.exec_cmd("sh $HOME/.config/rofi/powermenu/powermenu.sh"))
-hl.bind(mainMod .. " + W",        hl.dsp.exec_cmd("sh $HOME/.config/custom_scripts/wifi_menu.sh"))
+hl.bind(mainMod .. " + X",        hl.dsp.global("quickshell:power"))
+hl.bind(mainMod .. " + W",        hl.dsp.global("quickshell:controlcenter-wifi"))
 hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/tmux_sessionizer.sh"))
-hl.bind("CTRL + SHIFT + W",       hl.dsp.exec_cmd("sh $HOME/.config/custom_scripts/hyprpaper.sh"))
-hl.bind("ALT + W",                hl.dsp.exec_cmd("sh $HOME/.config/custom_scripts/pick_wallpaper.sh"))
-hl.bind("ALT + T",                hl.dsp.exec_cmd("sh $HOME/.config/custom_scripts/theme/switch_theme.sh"))
-hl.bind(mainMod .. " + P",        hl.dsp.exec_cmd("$HOME/.config/custom_scripts/screen_shot.sh"))
-hl.bind(mainMod .. " + V",        hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/sound_output.sh"))
-hl.bind(mainMod .. " + Print",    hl.dsp.exec_cmd("~/dotfiles/hypr/scripts/screenshot.sh"))
-hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("~/.config/waybar/launch.sh"))
-hl.bind(mainMod .. " + CTRL + X", hl.dsp.exec_cmd("hyprlock"))
+hl.bind("ALT + W",                hl.dsp.global("quickshell:wallpaper-picker"))
+hl.bind(mainMod .. " + P",        hl.dsp.global("quickshell:screenshot"))
+hl.bind(mainMod .. " + V",        hl.dsp.global("quickshell:controlcenter-audio"))
+hl.bind(mainMod .. " + N",        hl.dsp.global("quickshell:controlcenter-toggle"))
+hl.bind("ALT + B",                hl.dsp.global("quickshell:controlcenter-bluetooth"))
+hl.bind(mainMod .. " + Print",    hl.dsp.global("quickshell:screenshot"))
+hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("sh -c 'qs kill; sleep 1; qs -d'"))
+hl.bind(mainMod .. " + CTRL + X", hl.dsp.global("quickshell:lock"))
+hl.bind(mainMod .. " + SHIFT + CTRL + X", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/simplemode.sh"))
 
 -- Applications --------------------------------------------------------------
@@ -34,7 +34,8 @@ hl.bind(mainMod .. " + F",        hl.dsp.exec_cmd("thunar"))
 hl.bind(mainMod .. " + Return",   hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B",        hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd(browser_alt))
-hl.bind(mainMod .. " + R",        hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + R",        hl.dsp.global("quickshell:launcher"))
+hl.bind(mainMod .. " + D",        hl.dsp.global("quickshell:dashboard"))
 
 -- Windows -------------------------------------------------------------------
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())
@@ -95,8 +96,8 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 local held   = { locked = true, repeating = true }
 local locked = { locked = true }
 
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -q s +10%"), held)
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -q s 10%-"), held)
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -c backlight -q s +10%"), held)
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -c backlight -q s 10%-"), held)
 
 -- wpctl throughout (was a pactl/wpctl mix); -l 1 caps the sink at 100%
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), held)
