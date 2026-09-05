@@ -6,30 +6,17 @@ hl.on("hyprland.start", function()
 	-- Setup XDG for screen sharing
 	hl.exec_cmd("~/.config/hypr/scripts/xdg.sh")
 
-	-- Start Polkit
-	-- hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-	hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
-
-	-- Load Dunst Notification Manager
-	hl.exec_cmd("dunst")
-
 	-- Load GTK settings
 	hl.exec_cmd("~/.config/hypr/scripts/gtk.sh")
-
-	-- Load network manager applet
-	hl.exec_cmd("nm-applet --indicator")
 
 	-- Load cliphist history
 	hl.exec_cmd("wl-paste --watch cliphist store")
 
-	-- Load waybar
-	hl.exec_cmd("~/.config/waybar/launch.sh")
-
-	-- Set wallpaper
-	hl.exec_cmd("hyprpaper")
+	-- Load Quickshell shell (replaces waybar and dunst)
+	hl.exec_cmd("qs -d -n")
 
 	-- Automount disks
-	hl.exec_cmd("udiskie -s --mount-options sync")
+	hl.exec_cmd("udiskie -s")
 
 	-- Cursor
 	hl.exec_cmd("hyprctl setcursor 'Bibata-Modern-Ice' 24")
