@@ -7,8 +7,6 @@ Flickable {
 
     default property alias content: layout.data
 
-    implicitHeight: layout.implicitHeight
-
     contentHeight: layout.implicitHeight
     clip: true
     boundsBehavior: Flickable.StopAtBounds

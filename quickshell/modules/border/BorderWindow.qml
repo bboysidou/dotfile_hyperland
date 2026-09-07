@@ -7,6 +7,7 @@ import qs.core.config
 import qs.core.enums
 import qs.core.helpers
 import qs.modules.controlcenter
+import qs.modules.controlcenter.panels
 import qs.modules.bar
 import qs.modules.dashboard
 import qs.modules.launcher
@@ -21,7 +22,7 @@ PanelWindow {
     readonly property alias inner: inner
     readonly property bool focused: Monitors.focused === root.screen.name
     readonly property bool grabbing: root.focused && BorderState.panelOpen
-    readonly property bool covered: Hyprland.monitorFor(root.screen)?.activeWorkspace?.toplevels.values.some(t => (t.lastIpcObject?.fullscreen ?? 0) > 1) ?? false
+    readonly property bool covered: Monitors.covered(root.screen)
 
     property real revealed: root.covered ? 0 : 1
 
@@ -39,13 +40,22 @@ PanelWindow {
 
     mask: Region {
         Region {
-            item: bar
+            item: bar.visible ? bar : null
         }
         Region {
             item: launcher.revealed ? launcher : null
         }
         Region {
-            item: control.revealed ? control : null
+            item: audio.revealed ? audio : null
+        }
+        Region {
+            item: network.revealed ? network : null
+        }
+        Region {
+            item: bluetooth.revealed ? bluetooth : null
+        }
+        Region {
+            item: notifications.revealed ? notifications : null
         }
         Region {
             item: dashboard.revealed ? dashboard : null
@@ -91,6 +101,9 @@ PanelWindow {
 
         implicitHeight: Appearance.bar.height
 
+        opacity: root.revealed
+        visible: root.revealed > 0
+
         panelWindow: root
     }
 
@@ -98,10 +111,10 @@ PanelWindow {
         id: inner
 
         anchors.fill: parent
-        anchors.topMargin: Appearance.bar.height
-        anchors.leftMargin: Appearance.border.thickness
-        anchors.rightMargin: Appearance.border.thickness
-        anchors.bottomMargin: Appearance.border.thickness
+        anchors.topMargin: Appearance.bar.height * root.revealed
+        anchors.leftMargin: Appearance.border.thickness * root.revealed
+        anchors.rightMargin: Appearance.border.thickness * root.revealed
+        anchors.bottomMargin: Appearance.border.thickness * root.revealed
 
         Keys.onEscapePressed: BorderState.closeAll()
 
@@ -127,14 +140,44 @@ PanelWindow {
             onDismissed: BorderState.closeAll()
         }
 
-        ControlPanel {
-            id: control
+        AudioPanel {
+            id: audio
 
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            revealed: root.focused && ControlState.opened
+            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.audio
+        }
+
+        NetworkPanel {
+            id: network
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.network
+        }
+
+        BluetoothPanel {
+            id: bluetooth
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.bluetooth
+        }
+
+        NotifPanel {
+            id: notifications
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.notifications
         }
 
         UpdatesPanel {

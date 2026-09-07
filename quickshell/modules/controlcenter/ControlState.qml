@@ -18,10 +18,6 @@ Singleton {
         root.opened = false;
     }
 
-    function togglePanel(): void {
-        root.opened = !root.opened;
-    }
-
     function toggle(target: string): void {
         if (root.opened && root.section === target)
             root.hide();

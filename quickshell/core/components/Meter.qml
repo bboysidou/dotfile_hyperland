@@ -8,8 +8,12 @@ StyledRect {
     property real value: 0
     property bool vertical: false
     property color fillColour: Colours.highlight
-    property int minFill: Appearance.bar.sliderFillMinWidth
-    property int rounding: Appearance.bar.sliderRounding
+    property int thickness: Appearance.slider.thickness
+    property int minFill: Appearance.slider.fillMin
+    property int rounding: Math.round((root.vertical ? root.width : root.height) * Appearance.slider.roundingRatio)
+
+    implicitWidth: root.vertical ? root.thickness : Appearance.slider.length
+    implicitHeight: root.vertical ? Appearance.slider.length : root.thickness
 
     color: Colours.trough
     radius: root.rounding

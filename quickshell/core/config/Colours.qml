@@ -43,6 +43,7 @@ Singleton {
     readonly property color bar: raw.bg
     readonly property color pill: shade(raw.bgAlt, 0.5)
     readonly property color trough: shade(raw.bgLight, 0.7)
+    readonly property color elevated: shade(raw.bgLight, 0.9)
     readonly property color hover: raw.bgHover
     readonly property color text: raw.fg
     readonly property color textMuted: raw.fgMuted
@@ -53,6 +54,11 @@ Singleton {
     readonly property color warning: raw.warning
     readonly property color critical: raw.critical
     readonly property color media: raw.green
+    readonly property color audioOutput: raw.accent
+    readonly property color audioInput: raw.magenta
+    readonly property color audioStream: raw.green
+    readonly property color network: raw.green
+    readonly property color bluetooth: raw.blue
     readonly property color ringTrack: raw.bgLighter
     readonly property color urgencyCritical: raw.critical
     readonly property color criticalSurface: blend(pill, raw.critical, criticalTint)

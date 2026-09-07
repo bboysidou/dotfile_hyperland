@@ -10,10 +10,13 @@ Singleton {
     readonly property var memoryMonitor: ["kitty", "--title", "htop", "htop"]
     readonly property var calendar: ["zen-browser", "https://calendar.google.com"]
     readonly property var networkEditor: ["nm-connection-editor"]
+    readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]
     readonly property var uptime: ["cat", "/proc/uptime"]
 
+    readonly property string wifiSignals: "iw dev %1 scan dump 2>/dev/null | grep -E '^BSS |signal:|SSID:'"
+    readonly property string networkDetails: "nmcli -t -f %1 dev show %2 2>/dev/null"
     readonly property string kernel: "uname -r"
     readonly property string packageCount: "pacman -Q | wc -l"
     readonly property string repoUpdates: "timeout %1 checkupdates 2>/dev/null"

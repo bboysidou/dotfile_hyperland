@@ -20,7 +20,6 @@ Variants {
 
         shown: Notifs.stack.length > 0 && !ControlState.opened
 
-        exclusionMode: ExclusionMode.Normal
         exclusiveZone: 0
 
         implicitWidth: Math.max(1, stack.implicitWidth + Appearance.border.fillet)

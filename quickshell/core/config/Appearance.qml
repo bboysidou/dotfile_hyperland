@@ -78,6 +78,8 @@ Singleton {
         readonly property int fastEffects: 150
         readonly property int defaultEffects: 200
         readonly property int slowEffects: 300
+        readonly property int orbitCore: 1400
+        readonly property int orbitMorph: 800
     }
 
     component AnimConfig: QtObject {
@@ -134,6 +136,13 @@ Singleton {
         readonly property int highFloor: 66
     }
 
+    component SliderConfig: QtObject {
+        readonly property int thickness: 12
+        readonly property int length: 75
+        readonly property int fillMin: 10
+        readonly property real roundingRatio: 0.5
+    }
+
     component MarqueeConfig: QtObject {
         readonly property int interval: 300
         readonly property int fallbackLength: 20
@@ -157,8 +166,6 @@ Singleton {
         readonly property real workspaceHoverOpacity: 0.5
         readonly property int archMarginLeft: 5
         readonly property int archMarginRight: 7
-        readonly property int sliderTroughHeight: 8
-        readonly property int sliderTroughWidth: 75
         readonly property int ringSize: 16
         readonly property real ringRadiusRatio: 0.4
         readonly property real ringThicknessRatio: 0.16
@@ -176,8 +183,6 @@ Singleton {
         readonly property int mediaGapMin: 20
         readonly property int mediaPositionInterval: 1000
         readonly property int volumeMarginLeft: 8
-        readonly property int sliderFillMinWidth: 10
-        readonly property int sliderRounding: 5
         readonly property int updatesMarginLeft: 45
         readonly property int updatesMarginRight: 12
         readonly property int trayIconSize: 16
@@ -359,7 +364,6 @@ Singleton {
         readonly property real backdropBlur: 1
         readonly property real backdropOpacity: 0.4
         readonly property real backdropScale: 1.6
-        readonly property int seekHeight: 6
         readonly property int seekSpacing: 6
         readonly property int detailTitleSize: 23
         readonly property int detailArtistSize: 15
@@ -430,11 +434,9 @@ Singleton {
         readonly property int historyMaxAgeDays: 7
         readonly property int historySaveDebounce: 1000
         readonly property int historySweepInterval: 3600000
-        readonly property int cardRounding: 12
         readonly property int cardSpacing: 6
         readonly property int cardHeaderHeight: 34
         readonly property int cardPaddingH: 10
-        readonly property int cardIconSize: 18
         readonly property int rowSpacing: 4
         readonly property int rowPaddingV: 6
         readonly property int rowPaddingH: 10
@@ -498,17 +500,13 @@ Singleton {
     }
 
     component ControlConfig: QtObject {
-        readonly property int width: 380
+        readonly property int width: 383
         readonly property int padding: 14
         readonly property real scaleFrom: 0.96
-        readonly property real topPaneMaxRatio: 0.5
-        readonly property int tabStripMargin: 10
         readonly property int paneSpacing: 8
-        readonly property int sectionSpacing: 6
         readonly property int sectionHeaderHeight: 34
         readonly property int sectionHeaderSpacing: 10
         readonly property int sectionIconSize: 18
-        readonly property int sectionRounding: 12
         readonly property int sectionContentSpacing: 4
         readonly property int rowHeight: 34
         readonly property int rowPaddingV: 6
@@ -516,7 +514,6 @@ Singleton {
         readonly property int rowSpacing: 10
         readonly property int rowRounding: 10
         readonly property int iconSize: 18
-        readonly property int sliderWidth: 90
         readonly property int toggleWidth: 36
         readonly property int toggleHeight: 18
         readonly property int togglePadding: 2
@@ -526,6 +523,8 @@ Singleton {
         readonly property int passwordPaddingH: 12
         readonly property int passwordSpacing: 8
         readonly property int forgetConfirmTimeout: 3000
+        readonly property int detailPollInterval: 15000
+        readonly property int rssiPollInterval: 5000
         readonly property int wifiSignalLow: 25
         readonly property int wifiSignalMedium: 50
         readonly property int wifiSignalHigh: 75
@@ -545,12 +544,109 @@ Singleton {
         readonly property string labelConnecting: "Connecting..."
         readonly property string labelConnected: "Connected"
         readonly property string labelSaved: "Saved"
+        readonly property string labelPairing: "Pairing..."
+        readonly property string labelAvailable: "Available"
+        readonly property string labelBattery: "Battery"
+        readonly property string labelAdapter: "Adapter"
+        readonly property string labelOpen: "Open"
+        readonly property string rssiTemplate: "%1 dBm"
+        readonly property string detailSeparator: "  \u00b7  "
         readonly property string labelForgetConfirm: "Confirm"
         readonly property string failureNoSecrets: "Wrong password"
         readonly property string failureAuthTimeout: "Authentication timed out"
         readonly property string failureNetworkLost: "Network out of range"
         readonly property string failureDisconnected: "Disconnected"
         readonly property string failureGeneric: "Connection failed"
+        readonly property string failureTimeout: "Connection timed out"
+        readonly property int connectTimeout: 20000
+    }
+
+    component SegmentConfig: QtObject {
+        readonly property int height: 34
+        readonly property int rounding: 12
+        readonly property int innerRounding: 3
+        readonly property int fontSize: 12
+        readonly property int padding: 4
+        readonly property int borderWidth: 1
+        readonly property int slideFast: 200
+        readonly property int slideSlow: 350
+        readonly property real popScale: 1.04
+        readonly property int popIn: 100
+        readonly property int popOut: 350
+        readonly property real flashOpacity: 0.18
+        readonly property int flashDuration: 350
+    }
+
+    component CardConfig: QtObject {
+        readonly property int height: 88
+        readonly property int activeHeight: 52
+        readonly property int rounding: 12
+        readonly property int paddingH: 12
+        readonly property int paddingV: 10
+        readonly property int spacing: 10
+        readonly property int textSpacing: 1
+        readonly property int borderWidth: 1
+        readonly property int activeBorderWidth: 2
+        readonly property int iconSize: 18
+        readonly property int nameSize: 13
+        readonly property int detailSize: 11
+        readonly property int muteSize: 24
+        readonly property int percentWidth: 34
+        readonly property int staggerBase: 40
+        readonly property int staggerStep: 40
+        readonly property int enterDuration: 500
+        readonly property int lift: 12
+        readonly property int detailLabelWidth: 68
+    }
+
+    component AudioPanelConfig: QtObject {
+        readonly property int orbSize: 96
+        readonly property int orbRounding: 14
+        readonly property int orbReadoutSize: 26
+        readonly property int orbRingInset: 6
+        readonly property int orbGlowInset: 10
+        readonly property int orbRingWidth: 2
+        readonly property int orbFillInset: 3
+        readonly property real orbRingOpacity: 0.55
+        readonly property real orbGlowOpacity: 0.08
+        readonly property real orbWaveAmplitude: 6
+        readonly property int orbWavePeriod: 1200
+        readonly property real orbFullRatio: 0.99
+        readonly property real orbHighlight: 1.15
+        readonly property int orbBreathePeriod: 2000
+        readonly property real orbBreatheScale: 1.02
+
+        readonly property int heroHeight: 110
+        readonly property int heroSpacing: 14
+        readonly property int heroTextSpacing: 2
+        readonly property int heroNameSize: 16
+        readonly property int heroDetailSize: 11
+        readonly property int heroControlSpacing: 10
+        readonly property int heroMuteSize: 26
+
+        readonly property int groupSpacing: 6
+        readonly property int groupTopMargin: 14
+        readonly property int groupLabelSize: 11
+
+
+        readonly property int introHeaderDelay: 100
+        readonly property int introContentDelay: 200
+        readonly property int introHeaderDuration: 700
+        readonly property int introContentDuration: 800
+        readonly property real introOvershoot: 1.2
+        readonly property int introHeaderLift: 20
+        readonly property int introContentLift: 15
+
+        readonly property int switchTopMargin: 14
+        readonly property int listTopMargin: 12
+        readonly property string labelOutputs: "Outputs"
+        readonly property string labelInputs: "Inputs"
+        readonly property string labelStreams: "Streams"
+        readonly property string labelActiveDefault: "Active default"
+        readonly property string labelMuted: "MUTE"
+        readonly property string labelNoDevice: "No device"
+        readonly property string emptyStreams: "Nothing playing"
+        readonly property string labelStreamVolume: "Stream volume"
     }
 
     component UpdatesConfig: QtObject {
@@ -664,15 +760,12 @@ Singleton {
         readonly property int columnWidth: 38
         readonly property int columnHeight: 250
         readonly property int padding: 8
-        readonly property int cardRounding: 12
         readonly property real inactiveOpacity: 0.45
         readonly property int rounding: 16
         readonly property int paddingV: 14
         readonly property int spacing: 14
         readonly property int iconSize: 22
         readonly property int labelSize: 15
-        readonly property int meterThickness: 16
-        readonly property int meterRounding: 8
         readonly property int timeout: 1600
         readonly property int primeDelay: 800
         readonly property real scaleFrom: 0.96
@@ -760,6 +853,135 @@ Singleton {
         readonly property string shutdownKey: "s"
     }
 
+    component OrbitConfig: QtObject {
+        readonly property int panelWidth: 700
+        readonly property int stageHeight: 620
+        readonly property int maxNodes: 8
+
+        readonly property int coreSize: 150
+        readonly property int coreBorderWidth: 2
+        readonly property int coreGlyphSize: 40
+        readonly property int coreLabelSize: 13
+        readonly property int coreDetailSize: 11
+        readonly property int coreTextSpacing: 4
+        readonly property real coreHighlight: 1.15
+        readonly property real coreBorderHighlight: 1.1
+
+        readonly property int glowInset: 30
+        readonly property real glowOpacity: 0.15
+        readonly property int glowPeriod: 2000
+        readonly property real glowScale: 1.1
+
+        readonly property int pulseInset: 12
+        readonly property int pulseWidth: 2
+        readonly property int pulseInterval: 45
+        readonly property real pulseBaseOpacity: 0.3
+        readonly property real pulseSwingOpacity: 0.15
+        readonly property real pulseBaseScale: 1.02
+        readonly property real pulseSwingScale: 0.02
+        readonly property real pulseOpacityRate: 2.5
+        readonly property real pulseScaleRate: 3
+
+        readonly property int rippleCount: 3
+        readonly property real rippleRatio: 0.4
+        readonly property int rippleWidth: 2
+        readonly property int ripplePeriod: 2000
+        readonly property int rippleStagger: 400
+        readonly property real rippleScaleTo: 2.5
+        readonly property real rippleOpacityFrom: 0.8
+        readonly property int glyphPulsePeriod: 1000
+        readonly property real glyphPulseOpacity: 0.5
+
+        readonly property int nodeWidth: 140
+        readonly property int nodeHeight: 48
+        readonly property int nodeSpacing: 6
+        readonly property int nodePaddingH: 10
+        readonly property int nodeGlyphSize: 18
+        readonly property int nodeLabelSize: 12
+        readonly property int nodeBadgeSize: 11
+        readonly property int nodeEntryStep: 30
+        readonly property int nodeEntryDelay: 40
+        readonly property int nodeDriftDistance: 32
+        readonly property int fillDuration: 600
+        readonly property int failFlashDuration: 500
+        readonly property real failFlashOpacity: 0.6
+        readonly property int spinPeriod: 800
+
+        readonly property int radiusX: 236
+        readonly property int radiusYInner: 176
+        readonly property int radiusYOuter: 232
+        readonly property int rings: 2
+        readonly property int swayPeriod: 9000
+        readonly property real swayAmount: 0.09
+        readonly property real pinnedAngle: Math.PI / 2
+
+        readonly property int radarCount: 3
+        readonly property int radarBase: 220
+        readonly property int radarStep: 130
+        readonly property real radarOpacity: 0.08
+        readonly property real radarFalloff: 0.02
+        readonly property real radarIdleOpacity: 0.03
+
+        readonly property real orbPrimaryRatio: 0.8
+        readonly property real orbSecondaryRatio: 0.9
+        readonly property real orbPrimaryDriftX: 120
+        readonly property real orbPrimaryDriftY: 80
+        readonly property real orbSecondaryDriftX: -120
+        readonly property real orbSecondaryDriftY: -80
+        readonly property real orbPrimaryRate: 2
+        readonly property real orbSecondaryRate: 1.5
+        readonly property real orbPrimaryOpacity: 0.03
+        readonly property real orbSecondaryOpacity: 0.02
+        readonly property real orbIdleOpacity: 0.01
+        readonly property real orbPrimaryDangerOpacity: 0.05
+        readonly property real orbSecondaryDangerOpacity: 0.04
+        readonly property real orbSecondaryShade: 1.25
+
+        readonly property int strandInterval: 25
+        readonly property int strandSteps: 22
+        readonly property int strandStartGap: 5
+        readonly property int strandEndGap: 26
+        readonly property real strandFalloff: 420
+        readonly property real strandCoreWidth: 1
+        readonly property real strandCoreGain: 1.2
+        readonly property real strandGlowWidth: 4.5
+        readonly property real strandGlowGain: 3
+        readonly property real strandBaseAlpha: 0.35
+        readonly property real strandDistanceAlpha: 0.65
+        readonly property real strandGlowAlpha: 0.22
+        readonly property real strandMidAlpha: 0.55
+        readonly property real strandCoreAlpha: 0.95
+        readonly property real strandIdleAlpha: 0.25
+        readonly property real strandMidHighlight: 1.35
+        readonly property real strandWaveFast: 3.4
+        readonly property real strandWaveMid: 2.5
+        readonly property real strandWaveSlow: -1.5
+        readonly property real strandAmpFast: 9
+        readonly property real strandAmpMid: 5.5
+        readonly property real strandAmpSlow: 7
+        readonly property real strandFreqFast: 9
+        readonly property real strandFreqMid: 6
+        readonly property real strandFreqSlow: 8
+        readonly property string strandCoreColour: "#ffffff"
+
+        readonly property int powerRestSize: 140
+        readonly property int powerDockSize: 42
+        readonly property int powerDockMargin: 24
+        readonly property int powerRestGlyphSize: 54
+        readonly property int powerDockGlyphSize: 20
+        readonly property real powerHoverScale: 1.05
+        readonly property real powerPressScale: 0.95
+
+        readonly property int holdDuration: 700
+        readonly property int wavePeriod: 800
+        readonly property real waveAmplitude: 10
+
+
+        readonly property string labelFound: "%1 found"
+        readonly property string labelOnline: "Online"
+        readonly property string labelExtra: "+%1"
+    }
+
     readonly property FontConfig font: FontConfig {}
     readonly property PaddingConfig padding: PaddingConfig {}
     readonly property SpacingConfig spacing: SpacingConfig {}
@@ -773,6 +995,7 @@ Singleton {
     readonly property StateConfig state: StateConfig {}
     readonly property ScaleConfig scale: ScaleConfig {}
     readonly property AudioConfig audio: AudioConfig {}
+    readonly property SliderConfig slider: SliderConfig {}
     readonly property MarqueeConfig marquee: MarqueeConfig {}
     readonly property BarConfig bar: BarConfig {}
     readonly property GaugeConfig gauge: GaugeConfig {}
@@ -782,6 +1005,9 @@ Singleton {
     readonly property SearchConfig search: SearchConfig {}
     readonly property LauncherConfig launcher: LauncherConfig {}
     readonly property ControlConfig control: ControlConfig {}
+    readonly property CardConfig card: CardConfig {}
+    readonly property AudioPanelConfig audioPanel: AudioPanelConfig {}
+    readonly property SegmentConfig segment: SegmentConfig {}
     readonly property UpdatesConfig updates: UpdatesConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
     readonly property LockConfig lock: LockConfig {}
@@ -789,4 +1015,5 @@ Singleton {
     readonly property PolkitConfig polkit: PolkitConfig {}
     readonly property PowerConfig power: PowerConfig {}
     readonly property ShotConfig shot: ShotConfig {}
+    readonly property OrbitConfig orbit: OrbitConfig {}
 }

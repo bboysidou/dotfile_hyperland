@@ -26,7 +26,6 @@ Scope {
 
             shown: Osd.visible
 
-            exclusionMode: ExclusionMode.Normal
             exclusiveZone: 0
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
 

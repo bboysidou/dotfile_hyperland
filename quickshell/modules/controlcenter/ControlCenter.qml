@@ -9,7 +9,7 @@ Scope {
 
     GlobalShortcut {
         appid: Ids.appid
-        name: "controlcenter-wifi"
+        name: "controlcenter-network"
 
         onPressed: ControlState.toggle(ControlSection.network)
     }
@@ -30,9 +30,9 @@ Scope {
 
     GlobalShortcut {
         appid: Ids.appid
-        name: "controlcenter-toggle"
+        name: "controlcenter-notifications"
 
-        onPressed: ControlState.togglePanel()
+        onPressed: ControlState.toggle(ControlSection.notifications)
     }
 
     IpcHandler {
