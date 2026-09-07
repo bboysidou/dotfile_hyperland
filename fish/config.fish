@@ -2,8 +2,6 @@ set -gx EDITOR "nvim"
 set -gx VISUAL "nvim"
 set -gx MANPAGER "nvim +Man!"
 
-set -gx SQLFLUFF_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sqlfluff
-set -gx SQL_FORMATTER_CONFIG $HOME/.config/nvim/lua/sidouxp3/plugins/lsp/.sql-formatter.json
 set -gx CHROME_EXECUTABLE /usr/bin/chromium
 
 set -gx JAVA_HOME /usr/lib/jvm/java-21-openjdk
