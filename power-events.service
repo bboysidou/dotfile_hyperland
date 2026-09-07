@@ -4,4 +4,4 @@ After=multi-user.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/sudo -u sidouxp3 /usr/local/bin/power_event_handler.sh
+ExecStart=/usr/bin/sudo -u __USER__ /usr/local/bin/power_event_handler.sh
