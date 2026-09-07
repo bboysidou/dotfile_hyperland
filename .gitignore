@@ -2,3 +2,7 @@ custom_scripts/gitignore
 fish/fishd.tmp*
 fish/fish_variables*
 fish/fish_history
+hypr/config/env-gpu.lua
+custom_scripts/saved_sessions.txt
+custom_scripts/tmux_sessions.txt
+custom_scripts/~
