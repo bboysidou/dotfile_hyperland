@@ -74,9 +74,9 @@ echo "============================================="
 _installPackages "${quickshell[@]}"
 
 echo "============================================="
-echo "-----| INSTALL NVIDIA |-----"
+echo "-----| INSTALL GPU / MICROCODE DRIVERS |-----"
 echo "============================================="
-"${SCRIPT_DIR}/nvidia.sh"
+"${SCRIPT_DIR}/gpu.sh"
 
 echo "============================================="
 echo "-----| INSTALL AUR PACKAGES |-----"
@@ -175,19 +175,9 @@ else
 fi
 
 echo "============================================="
-echo "-----| CONFIGURE HARDWARE ACCELERATION |-----"
+echo "-----| CONFIGURE BROWSER HARDWARE ACCELERATION |-----"
 echo "============================================="
-if lspci | grep -qi nvidia; then
-  echo "NVIDIA present - leaving VA-API to nvidia.sh"
-  grep -q MOZ_DISABLE_RDD_SANDBOX /etc/environment 2>/dev/null \
-    || echo "MOZ_DISABLE_RDD_SANDBOX=1" | sudo tee -a /etc/environment >/dev/null
-else
-  sudo tee /etc/environment >/dev/null <<'EOF'
-LIBVA_DRIVER_NAME=radeonsi
-VDPAU_DRIVER=radeonsi
-MOZ_DISABLE_RDD_SANDBOX=1
-EOF
-fi
+"${SCRIPT_DIR}/browsers.sh"
 
 echo "============================================="
 echo "-----| CONFIGURE MX MASTER |-----"

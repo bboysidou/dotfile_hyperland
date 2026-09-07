@@ -52,7 +52,7 @@ general=(
   zoxide
   imagemagick
   unrar
-  vi
+  ex-vi-compat
   fish
   kitty
   rsync
@@ -74,10 +74,11 @@ general=(
   android-tools
   exfatprogs
   trash-cli
+  xdg-user-dirs
 
   # FOR OCR ------------------------------------------------------- 
   tesseract
-  tesseract-data-eng
+  tesseract-data
 
   # DEV -----------------------------------------------------------
   github-cli
@@ -106,9 +107,7 @@ general=(
   blueman
   bluetui
 
-  # AMD CPU -------------------------------------------------------
-  amd-ucode
-  amdgpu_top
+  # HARDWARE INFO -------------------------------------------------
   dmidecode
   
   # PERSONALIZATIONS --------------------------------------------------
@@ -127,13 +126,12 @@ general=(
   ttf-nunito
   qt6ct
   
-  # HARDWARE ACCELERATION -----------------------------------------
+  # HARDWARE ACCELERATION (vendor-agnostic) -----------------------
+  mesa
   mesa-utils
-  libva-mesa-driver
+  vulkan-icd-loader
   vdpauinfo
   libva-utils
-  # libva-vdpau-driver
-  # mesa-vdpau
   
   # FIREWALL
   nftables
@@ -238,4 +236,35 @@ aur=(
   otf-apple-sf-pro
   ttf-orbitron
   ttf-icomoon-feather
+)
+
+cpu_amd=(
+  amd-ucode
+)
+
+cpu_intel=(
+  intel-ucode
+)
+
+gpu_amd=(
+  vulkan-radeon
+  lib32-vulkan-radeon
+  lib32-mesa
+  amdgpu_top
+)
+
+gpu_intel=(
+  vulkan-intel
+  lib32-vulkan-intel
+  lib32-mesa
+  intel-media-driver
+  intel-gpu-tools
+)
+
+gpu_nvidia=(
+  nvidia-utils
+  lib32-nvidia-utils
+  egl-wayland
+  libva-nvidia-driver
+  nvidia-prime
 )

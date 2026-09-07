@@ -237,6 +237,15 @@ sudo sed -i 's/^#VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
 sudo sed -i 's/^ParallelDownloads *= *[0-9]\+/ParallelDownloads = 12/' /etc/pacman.conf
 sudo sed -i 's/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j\$(nproc)\"/' /etc/makepkg.conf
 pacman -Syu --noconfirm
+
+# Microcode selon le vendeur du CPU
+if grep -q GenuineIntel /proc/cpuinfo; then
+  UCODE_PKG=intel-ucode
+else
+  UCODE_PKG=amd-ucode
+fi
+echo "✓ Microcode détecté: \$UCODE_PKG"
+
 pacman -S --noconfirm --needed \
     networkmanager iwd wpa_supplicant \
     zram-generator \
@@ -245,7 +254,7 @@ pacman -S --noconfirm --needed \
     wget curl \
     sudo gvfs \
     openssh \
-    amd-ucode
+    \$UCODE_PKG
 
 echo "✓ Packages essentiels installés"
 
@@ -291,7 +300,7 @@ ROOT_UUID=\$(blkid -s UUID -o value ${DISK}p2)
 cat << BOOTENTRY > /boot/loader/entries/arch.conf
 title   Arch Linux
 linux   /vmlinuz-linux
-initrd  /amd-ucode.img
+initrd  /\$UCODE_PKG.img
 initrd  /initramfs-linux.img
 options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw lsm=landlock,lockdown,yama,integrity,apparmor,bpf loglevel=7 systemd.show_status=1
 BOOTENTRY
@@ -300,7 +309,7 @@ BOOTENTRY
 cat << BOOTFALLBACK > /boot/loader/entries/arch-fallback.conf
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
-initrd  /amd-ucode.img
+initrd  /\$UCODE_PKG.img
 initrd  /initramfs-linux-fallback.img
 options root=UUID=\$ROOT_UUID rootflags=subvol=@ rw lsm=landlock,lockdown,yama,integrity,apparmor,bpf
 BOOTFALLBACK
