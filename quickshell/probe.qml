@@ -9,7 +9,7 @@ import qs.modules.bar.components
 import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.modules.controlcenter.notifications
-import qs.modules.controlcenter.panes
+import qs.modules.controlcenter.panels
 import qs.modules.lock.components
 import qs.modules.notifications.components
 import qs.modules.power
@@ -23,10 +23,10 @@ import qs.services
 ShellRoot {
     readonly property var probes: [
         Appearance.tab.height,
-        Appearance.control.topPaneMaxRatio,
         Appearance.notif.historyMaxEntries,
         Appearance.notif.historySaveDebounce,
         ControlSection.values,
+        AudioSection.values,
         BarEntry.network,
         BarEntry.notifications,
         Units.minutesPerHour,
@@ -71,6 +71,10 @@ ShellRoot {
         Updates.aur,
         Updates.refreshing,
         Updates.parse(""),
+        Appearance.orbit.panelWidth,
+        Appearance.orbit.maxNodes,
+        Appearance.orbit.labelMore,
+        Appearance.anim.durations.orbitMorph,
         Appearance.updates.repoMaxRatio,
         Appearance.updates.versionArrow,
         Icons.updateAur,
@@ -87,14 +91,25 @@ ShellRoot {
                 title: ""
                 subtitle: ""
             }
+            InfoCard {}
+            OrbitOrbs {}
+            OrbitCore {}
+            OrbitStrands {}
+            OrbitNode {}
+            OrbitStage {}
             NetworkPill {}
+            VolumeOrb {}
+            SegmentBar {
+                options: []
+            }
             NotifPill {}
-            AudioPane {}
-            NetworkPane {}
-            BluetoothPane {}
-            PaneHeader {}
             NotifList {}
-            ControlPanel {}
+            PanelHeader {}
+            PanelBody {}
+            AudioPanel {}
+            NetworkPanel {}
+            BluetoothPanel {}
+            NotifPanel {}
             UpdatesCenter {}
             UpdatesPanel {}
             UpdatesHeader {}

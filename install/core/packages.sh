@@ -208,6 +208,7 @@ quickshell=(
   # NETWORK (Quickshell.Networking + control centre editor) --------
   networkmanager
   nm-connection-editor
+  iw
 
   # DASHBOARD MONITOR LAUNCHERS -----------------------------------
   htop

@@ -1,6 +1,7 @@
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.modules.controlcenter
 import qs.services
 
@@ -11,7 +12,7 @@ Pill {
 
     interactive: true
 
-    onClicked: ControlState.togglePanel()
+    onClicked: ControlState.toggle(ControlSection.notifications)
 
     Icon {
         text: Icons.notifNormal

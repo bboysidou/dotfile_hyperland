@@ -56,7 +56,6 @@ Card {
         Meter {
             Layout.fillWidth: true
             Layout.topMargin: Appearance.dash.cardSpacing
-            Layout.preferredHeight: Appearance.dash.seekHeight
 
             value: Players.progress
             fillColour: Colours.media

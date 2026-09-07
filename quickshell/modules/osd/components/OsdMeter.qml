@@ -55,11 +55,8 @@ StyledRect {
         anchors.topMargin: Appearance.osd.spacing
         anchors.bottomMargin: Appearance.osd.spacing
 
-        implicitWidth: Appearance.osd.meterThickness
-
         vertical: true
         value: root.percent / Appearance.audio.max
         fillColour: root.muted ? Colours.textMuted : Colours.accent
-        rounding: Appearance.osd.meterRounding
     }
 }

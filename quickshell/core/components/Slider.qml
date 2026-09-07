@@ -6,6 +6,9 @@ MouseArea {
     id: root
 
     property real value: 0
+    property alias thickness: meter.thickness
+    property alias fillColour: meter.fillColour
+    property alias rounding: meter.rounding
 
     signal moved(real value)
 
@@ -13,8 +16,8 @@ MouseArea {
         return Num.clamp(x / root.width, 0, 1);
     }
 
-    implicitWidth: Appearance.bar.sliderTroughWidth
-    implicitHeight: Appearance.bar.sliderTroughHeight
+    implicitWidth: Appearance.slider.length
+    implicitHeight: meter.thickness
 
     cursorShape: Qt.PointingHandCursor
     preventStealing: true
@@ -26,6 +29,8 @@ MouseArea {
     }
 
     Meter {
+        id: meter
+
         anchors.fill: parent
 
         value: root.value
