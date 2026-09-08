@@ -35,6 +35,14 @@ local PARSERS = {
 return {
   src = "nvim-treesitter/nvim-treesitter",
   version = "main",
+  -- The README's :TSUpdate equivalent, and not optional: update() is what
+  -- relinks site/queries/<lang> at the plugin's runtime/queries. Those links
+  -- are absolute, so they break whenever the plugin directory moves — which is
+  -- exactly what happened when the old lazy.nvim tree was deleted, silently
+  -- disabling highlighting for every language while the parsers stayed valid.
+  build = function()
+    require("nvim-treesitter").update():wait(300000)
+  end,
   setup = function()
     local installed = require("nvim-treesitter.config").get_installed()
     local missing = vim.tbl_filter(function(parser)

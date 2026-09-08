@@ -33,12 +33,22 @@ function M.register(mods)
         return
       end
 
-      local cmd = by_name[ev.data.spec.name]
-      if not cmd then
+      local build = by_name[ev.data.spec.name]
+      if not build then
         return
       end
 
-      local result = vim.system(cmd, { cwd = ev.data.path }):wait()
+      -- A function runs in-process, for plugins whose build step is a Lua or
+      -- ex-command rather than a shell command (nvim-treesitter's :TSUpdate).
+      if type(build) == "function" then
+        local ok, err = pcall(build, ev.data.path)
+        if not ok then
+          vim.notify(("build failed for %s: %s"):format(ev.data.spec.name, err), vim.log.levels.ERROR)
+        end
+        return
+      end
+
+      local result = vim.system(build, { cwd = ev.data.path }):wait()
       if result.code ~= 0 then
         vim.notify(
           ("build failed for %s: %s"):format(ev.data.spec.name, result.stderr or ""),
