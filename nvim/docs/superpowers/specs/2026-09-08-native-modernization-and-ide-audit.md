@@ -150,3 +150,38 @@ Deleting a spec from the config is **not** enough. The lockfile keeps tracking
 the plugin and reinstalls it at the next startup, which is exactly what happened
 to `workspace-diagnostics.nvim` after Spec 2 dropped it: the directory was
 removed, then silently restored. `vim.pack.del()` clears both disk and lockfile.
+
+
+---
+
+## Postmortem: deleting the lazy.nvim directory broke all treesitter highlighting
+
+**Symptom.** After the lazy.nvim cleanup, TypeScript had no treesitter
+highlighting. It affected every language, not just TS.
+
+**Cause.** nvim-treesitter installs queries as **absolute symlinks** from
+`site/queries/<lang>` into whichever copy of the plugin installed them. Those
+links were created in April under lazy.nvim and pointed at
+`~/.local/share/nvim/lazy/nvim-treesitter/runtime/queries/<lang>`. Deleting the
+lazy directory turned all 27 into broken symlinks. Parsers were unaffected —
+they are real `.so` files — so the buffer still parsed, produced a valid tree,
+and reported an active highlighter while resolving **zero** captures.
+
+**Why the tests missed it.** The smoke check asserted
+`vim.treesitter.highlighter.active[buf] ~= nil`, which only proves a highlighter
+object exists. It passed throughout. The check now also asserts that the
+`highlights` query resolves and that iterating it yields captures — the two
+things that actually colour text.
+
+**Why `install()` could not repair it.** `needs_update()` compares the parser
+revision when one is pinned, and only falls back to comparing query symlink
+targets when there is no revision. All 24 pinned languages were therefore
+skipped; only `ecma`, `jsx` and `html_tags` relinked. The repair was to wipe
+`site/{parser,parser-info,queries}` and reinstall.
+
+**Prevention.** `build` on the treesitter module now runs
+`require('nvim-treesitter').update():wait()` — the README's `:TSUpdate`
+equivalent, dropped during Spec 1 on the incorrect reasoning that self-installing
+parsers made it redundant. It is what relinks queries after the plugin directory
+moves. The module contract's `build` accordingly accepts a Lua function as well
+as an argv table.

@@ -7,6 +7,9 @@
 --
 -- Recovery: NVIM_PACK_INSTALL_ONLY=1 skips every setup, so a config error in
 -- one plugin still leaves a usable editor to fix it from.
+--
+-- A module's `build` is either an argv table run with vim.system, or a Lua
+-- function run in-process for build steps that are ex-commands.
 local registry = require("config.pack.registry")
 
 local GITHUB = "https://github.com/"
