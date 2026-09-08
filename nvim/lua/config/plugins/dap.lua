@@ -1,18 +1,20 @@
 return {
-  "mfussenegger/nvim-dap",
-  dependencies = {
+  src = "mfussenegger/nvim-dap",
+  deps = {
     "nvim-neotest/nvim-nio",
-    "rcarriga/nvim-dap-ui", -- UI for DAP
-    "jay-babu/mason-nvim-dap.nvim", -- Manage debuggers via Mason
-    "mfussenegger/nvim-dap-vscode-js", -- Debugger for JS/TS
+    "rcarriga/nvim-dap-ui",
+    "jay-babu/mason-nvim-dap.nvim",
+    "mfussenegger/nvim-dap-vscode-js",
   },
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    require("dapui").setup()
+  setup = function()
+    local dap, dapui = require("dap"), require("dapui")
+
+    dapui.setup()
+
     require("mason-nvim-dap").setup({
       ensure_installed = { "js-debug-adapter", "dart-debug-adapter", "bash-debug-adapter" },
     })
-    local dap, dapui = require("dap"), require("dapui")
+
     dap.listeners.before.attach.dapui_config = function()
       dapui.open()
     end
