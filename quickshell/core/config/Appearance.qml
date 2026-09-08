@@ -565,6 +565,10 @@ Singleton {
         readonly property string failureGeneric: "Connection failed"
         readonly property string failureTimeout: "Connection timed out"
         readonly property int connectTimeout: 20000
+        readonly property int scanIconSize: 16
+        readonly property int scanSpinDuration: 1200
+        readonly property int scanBlip: 250
+        readonly property int scanBusy: 4000
     }
 
     component SegmentConfig: QtObject {

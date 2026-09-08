@@ -12,10 +12,13 @@ Singleton {
     id: root
 
     property bool scanning: false
+    property bool rescanning: false
     property var details: ({})
     property var connecting: null
     property var stalled: null
     property var signals: ({})
+
+    readonly property bool scannerActive: root.scanning && !scanBlip.running
 
     readonly property var devices: Networking.devices?.values ?? []
     readonly property var wifiDevices: root.devices.filter(device => device?.type === DeviceType.Wifi && device.scannerEnabled !== undefined)
@@ -214,6 +217,16 @@ Singleton {
         network?.forget();
     }
 
+    function rescan(): void {
+        if (!root.wifiDevice || !root.wifiEnabled || !root.scanning)
+            return;
+
+        root.signals = ({});
+        root.rescanning = true;
+        scanBlip.restart();
+        scanBusy.restart();
+    }
+
     function setWifiEnabled(enabled: bool): void {
         Networking.wifiEnabled = enabled;
     }
@@ -229,6 +242,20 @@ Singleton {
         root.details = ({});
         if (root.activeInterface !== "")
             detailPoller.poll();
+    }
+
+    Timer {
+        id: scanBlip
+
+        interval: Appearance.control.scanBlip
+    }
+
+    Timer {
+        id: scanBusy
+
+        interval: Appearance.control.scanBusy
+
+        onTriggered: root.rescanning = false
     }
 
     Timer {
@@ -271,6 +298,6 @@ Singleton {
         when: root.wifiDevice !== null
         target: root.wifiDevice
         property: "scannerEnabled"
-        value: root.scanning
+        value: root.scannerActive
     }
 }

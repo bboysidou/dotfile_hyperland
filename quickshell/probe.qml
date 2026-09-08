@@ -130,7 +130,13 @@ ShellRoot {
         Appearance.bar.workspacePressScale,
         Appearance.bar.workspaceStaggerStep,
         Appearance.bar.workspaceWheelThreshold,
-        Appearance.bar.workspaceWheelReset
+        Appearance.bar.workspaceWheelReset,
+        Appearance.control.scanIconSize,
+        Appearance.control.scanSpinDuration,
+        Net.scannerActive,
+        Net.rescanning,
+        Bt.discoveryActive,
+        Bt.rescanning
     ]
 
     readonly property Component components: Component {
@@ -144,6 +150,7 @@ ShellRoot {
                 subtitle: ""
             }
             InfoCard {}
+            IconButton {}
             OrbitOrbs {}
             OrbitCore {}
             OrbitStrands {}

@@ -64,6 +64,25 @@ Panel {
         PanelHeader {
             glyph: Glyphs.bluetooth(Bt.enabled, Bt.connected)
             title: Appearance.control.labelBluetooth
+
+            control: Component {
+                IconButton {
+                    icon: Icons.refresh
+                    size: Appearance.control.scanIconSize
+                    disabled: !Bt.enabled || !Bt.available
+
+                    onTriggered: Bt.rescan()
+
+                    NumberAnimation on rotation {
+                        running: Bt.rescanning
+                        loops: Animation.Infinite
+                        alwaysRunToEnd: true
+                        from: 0
+                        to: 360
+                        duration: Appearance.control.scanSpinDuration
+                    }
+                }
+            }
         }
 
         OrbitStage {

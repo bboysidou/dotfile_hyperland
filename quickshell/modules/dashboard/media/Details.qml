@@ -3,7 +3,6 @@ import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.core.helpers
-import qs.modules.dashboard.components
 import qs.services
 
 ColumnLayout {

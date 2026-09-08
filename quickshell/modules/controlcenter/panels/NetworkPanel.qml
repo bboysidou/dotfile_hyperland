@@ -188,6 +188,25 @@ Panel {
         PanelHeader {
             glyph: Net.glyph
             title: Appearance.control.labelNetwork
+
+            control: Component {
+                IconButton {
+                    icon: Icons.refresh
+                    size: Appearance.control.scanIconSize
+                    disabled: !Net.wifiEnabled || Net.wifiDevice === null
+
+                    onTriggered: Net.rescan()
+
+                    NumberAnimation on rotation {
+                        running: Net.rescanning
+                        loops: Animation.Infinite
+                        alwaysRunToEnd: true
+                        from: 0
+                        to: 360
+                        duration: Appearance.control.scanSpinDuration
+                    }
+                }
+            }
         }
 
         OrbitStage {
