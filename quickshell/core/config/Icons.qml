@@ -6,8 +6,6 @@ Singleton {
     id: root
 
     readonly property string arch: "\uDB82\uDCC7"
-    readonly property string workspaceActive: "\uF192"
-    readonly property string workspaceDefault: "\uF111"
     readonly property string updates: "\uDB81\uDEB0"
     readonly property string updateAur: "\uDB80\uDFD7"
     readonly property string refresh: "\uDB81\uDC50"

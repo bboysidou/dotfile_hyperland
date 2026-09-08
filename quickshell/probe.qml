@@ -122,7 +122,15 @@ ShellRoot {
         Appearance.updates.repoMaxRatio,
         Appearance.updates.versionArrow,
         Icons.updateAur,
-        Icons.refresh
+        Icons.refresh,
+        Appearance.bar.workspacePillActiveWidth,
+        Appearance.slider.roundingRatio,
+        Appearance.bar.workspaceExtendDuration,
+        Appearance.bar.workspaceHoverScale,
+        Appearance.bar.workspacePressScale,
+        Appearance.bar.workspaceStaggerStep,
+        Appearance.bar.workspaceWheelThreshold,
+        Appearance.bar.workspaceWheelReset
     ]
 
     readonly property Component components: Component {
@@ -141,6 +149,7 @@ ShellRoot {
             OrbitStrands {}
             OrbitNode {}
             OrbitStage {}
+            Workspaces {}
             NetworkPill {}
             VolumeOrb {}
             SegmentBar {

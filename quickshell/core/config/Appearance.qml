@@ -157,13 +157,17 @@ Singleton {
         readonly property int pillPaddingV: 2
         readonly property int pillPaddingH: 8
         readonly property int pillMarginRight: 10
-        readonly property int workspacePadding: 1
-        readonly property int workspaceMarginV: 4
         readonly property int workspaceMarginLeft: 7
-        readonly property int workspaceFontSize: 15
-        readonly property int workspaceDotSize: 16
         readonly property int workspacesMinimum: 3
-        readonly property real workspaceHoverOpacity: 0.5
+        readonly property int workspacePillActiveWidth: 30
+        readonly property int workspacePillSpacing: 6
+        readonly property int workspaceExtendDuration: 420
+        readonly property real workspaceHoverScale: 1.15
+        readonly property real workspacePressScale: 0.85
+        readonly property int workspaceStaggerStep: 50
+        readonly property int workspaceStaggerDelay: 100
+        readonly property int workspaceWheelThreshold: 120
+        readonly property int workspaceWheelReset: 200
         readonly property int archMarginLeft: 5
         readonly property int archMarginRight: 7
         readonly property int ringSize: 16
