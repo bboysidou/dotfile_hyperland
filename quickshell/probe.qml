@@ -58,6 +58,8 @@ ShellRoot {
         PowerState.screen,
         PowerState.defaultIndex,
         PowerState.indexForKey(Appearance.power.shutdownKey),
+        NotifSound.enabled,
+        NotifSound.statePath,
         Prayers.methods,
         Prayers.asrSchools,
         Prayers.highLatRules,
