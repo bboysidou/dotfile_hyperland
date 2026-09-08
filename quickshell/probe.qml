@@ -10,6 +10,7 @@ import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.modules.controlcenter.notifications
 import qs.modules.controlcenter.panels
+import qs.modules.dashboard.prayers
 import qs.modules.lock.components
 import qs.modules.notifications.components
 import qs.modules.power
@@ -57,6 +58,44 @@ ShellRoot {
         PowerState.screen,
         PowerState.defaultIndex,
         PowerState.indexForKey(Appearance.power.shutdownKey),
+        Prayers.methods,
+        Prayers.asrSchools,
+        Prayers.highLatRules,
+        Prayers.fallbackPlace,
+        Prayers.defaultIshaAngle,
+        PrayerName.values,
+        PrayerName.alerting,
+        PrayerName.labels,
+        Appearance.prayer.alertOffsets,
+        Appearance.prayer.notifyIdBase,
+        Appearance.prayer.zoneWarning,
+        Appearance.dash.labelPrayers,
+        Icons.prayersTab,
+        Icons.place,
+        Icons.pinOff,
+        Icons.sunriseMarker,
+        Solar.julianDay(2026, 9, 8),
+        Solar.riseSetAngle(0),
+        Geo.detecting,
+        Geo.error,
+        Geo.results,
+        Geo.searching,
+        Geo.offsetFor("Africa/Algiers"),
+        Prayer.place,
+        Prayer.source,
+        Prayer.zoneMismatch,
+        Prayer.today,
+        Prayer.schedule,
+        Prayer.current,
+        Prayer.next,
+        Prayer.countdown,
+        Prayer.progress,
+        Prayer.urgent,
+        Prayer.methodConfig,
+        Prayer.asrFactor,
+        PrayerAlerts.fired,
+        PrayerAlerts.queue,
+        PrayerAlerts.sameMinute(new Date(), new Date()),
         ShotAction.values,
         ShotState.actions,
         ShotState.dir,
@@ -155,6 +194,21 @@ ShellRoot {
                 icon: ""
                 label: ""
                 selected: false
+            }
+            PrayerPane {}
+            PrayerNextCard {}
+            PrayerListCard {}
+            PrayerPlaceCard {}
+            PrayerSettingsCard {}
+            PrayerPill {}
+            PrayerRow {
+                entry: Prayer.today[0]
+                active: false
+                elapsed: false
+                marker: false
+            }
+            PrayerSearchRow {
+                place: Prayers.fallbackPlace
             }
             ShotList {}
             ShotEntry {
