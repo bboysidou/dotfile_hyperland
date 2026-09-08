@@ -107,7 +107,10 @@ Singleton {
         inlineReplySupported: false
         persistenceSupported: false
 
-        onNotification: notification => root.track(notification)
+        onNotification: notification => {
+            root.track(notification);
+            NotifSound.play();
+        }
     }
 
     Component.onCompleted: {

@@ -157,6 +157,18 @@ exactly one toast.
 The `-r` flag is still sent. It is the standards-correct thing to send and costs
 nothing if the server ever starts honouring it.
 
+### Sound
+
+Prayer alerts are not silent any more. They arrive through the same
+`NotificationServer` as everything else, so they inherit the general
+notification sound added on 2026-09-08 — `services/NotifSound.qml`, muteable
+from the toggle under the All/Critical filter in the control centre's
+notifications panel.
+
+Muting silences prayer alerts too. That is deliberate: a mute that still makes
+noise is the thing people file bugs about, and the toasts stay on screen until
+dismissed regardless, so a muted alert is still impossible to miss.
+
 ### Duplicates
 
 `fired` is in-memory and keyed `yyyy-MM-dd|prayer|offset`. A shell restart loses

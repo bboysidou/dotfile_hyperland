@@ -19,7 +19,7 @@ the prayer time itself.
 | High-latitude rule | Angle-based night split. Switchable. | recommended, user did not object |
 | Alerts | 20 / 10 / 5 minutes before **and** at the time. | user |
 | Alert urgency | `critical` for all four. | user ("urgent so I can see it") |
-| Sound | None. Visual only. | user |
+| Sound | None. Visual only. **Amended 2026-09-08: superseded** — a general notification sound was added afterwards and prayer alerts inherit it, because they arrive through the same server. It is muteable in the control centre. See `docs/prayers.md`. | user |
 | Scope | Panel + settings + **bar pill**. | user |
 | Pill placement | Centre slot, beside the clock, pipe separator. | user |
 | Prayer naming | Transliterated only — Fajr, Shurūq, Dhuhr, Asr, Maghrib, Isha. | user |

@@ -429,6 +429,11 @@ Singleton {
         readonly property string faviconCacheDir: "quickshell/favicons"
         readonly property var faviconBrowsers: ["firefox", "brave", "chromium", "google-chrome"]
 
+        readonly property string soundFile: "/usr/share/sounds/freedesktop/stereo/message.oga"
+        readonly property string soundStateFile: "sound.json"
+        readonly property int soundSaveDebounce: 500
+        readonly property string labelSound: "Notification sound"
+
         readonly property string historyFile: "notifications.json"
         readonly property string transientImagePrefix: "image://qsimage/"
         readonly property int historyVersion: 1
@@ -1088,7 +1093,6 @@ Singleton {
         readonly property int dividerHeight: 14
 
         readonly property int saveDebounce: 500
-        readonly property string stateDir: "quickshell"
         readonly property string stateFile: "prayer.json"
 
         readonly property string labelToday: "Today"

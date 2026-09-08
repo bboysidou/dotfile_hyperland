@@ -201,6 +201,43 @@ Panel {
 
             onSelected: key => root.section = key
         }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: Appearance.notifPanel.switchTopMargin
+
+            opacity: root.introHeader
+            spacing: Appearance.notifPanel.heroControlSpacing
+
+            transform: Translate {
+                y: Appearance.notifPanel.introHeaderLift * (1 - root.introHeader)
+            }
+
+            Icon {
+                Layout.alignment: Qt.AlignVCenter
+
+                text: NotifSound.enabled ? Icons.volumeHigh : Icons.volumeMuted
+                color: NotifSound.enabled ? Colours.accent : Colours.textMuted
+                font.pixelSize: Appearance.card.iconSize
+            }
+
+            StyledText {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter
+
+                text: Appearance.notif.labelSound
+                color: Colours.text
+                elide: Text.ElideRight
+            }
+
+            Toggle {
+                Layout.alignment: Qt.AlignVCenter
+
+                checked: NotifSound.enabled
+
+                onToggled: NotifSound.toggle()
+            }
+        }
     }
 
     PanelBody {

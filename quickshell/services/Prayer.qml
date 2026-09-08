@@ -18,7 +18,7 @@ Singleton {
     property string asr: Prayers.defaultAsr
     property string highLat: Prayers.defaultHighLat
 
-    readonly property string stateDir: `${Paths.state}/${Appearance.prayer.stateDir}`
+    readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
     readonly property string statePath: `${root.stateDir}/${Appearance.prayer.stateFile}`
 
     readonly property var place: root.pinned ?? Geo.detected ?? root.cached ?? Prayers.fallbackPlace
