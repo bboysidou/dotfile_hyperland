@@ -8,6 +8,7 @@ import qs.modules.background
 import qs.modules.border
 import qs.modules.controlcenter
 import qs.modules.dashboard
+import qs.modules.keybinds
 import qs.modules.launcher
 import qs.modules.lock
 import qs.modules.notifications
@@ -28,6 +29,7 @@ ShellRoot {
     Border {}
     ControlCenter {}
     Dashboard {}
+    KeybindSheet {}
     Launcher {}
     Lock {}
     Notifications {}

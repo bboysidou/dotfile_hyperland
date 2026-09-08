@@ -11,6 +11,8 @@ import qs.modules.controlcenter.components
 import qs.modules.controlcenter.notifications
 import qs.modules.controlcenter.panels
 import qs.modules.dashboard.prayers
+import qs.modules.keybinds
+import qs.modules.keybinds.components
 import qs.modules.lock.components
 import qs.modules.notifications.components
 import qs.modules.power
@@ -136,7 +138,19 @@ ShellRoot {
         Net.scannerActive,
         Net.rescanning,
         Bt.discoveryActive,
-        Bt.rescanning
+        Bt.rescanning,
+        Appearance.keybinds.columnCount,
+        Appearance.keybinds.rangeSeparator,
+        Icons.keyboard,
+        KeyNames.aliases,
+        Paths.keymaps,
+        Keymap.chord("SUPER + S"),
+        Keymap.label('hl.dsp.focus({ direction = "left" })'),
+        Lua.binds(""),
+        Keybinds.count,
+        Keybinds.sections,
+        Keybinds.columns(Appearance.keybinds.columnCount),
+        KeybindsState.opened
     ]
 
     readonly property Component components: Component {
@@ -151,6 +165,10 @@ ShellRoot {
             }
             InfoCard {}
             IconButton {}
+            KeyCap {}
+            KeyChord {}
+            KeybindRow {}
+            KeybindSection {}
             OrbitOrbs {}
             OrbitCore {}
             OrbitStrands {}
