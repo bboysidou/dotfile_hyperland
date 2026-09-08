@@ -7,7 +7,7 @@ import qs.core.components
 import qs.core.config
 import qs.core.enums
 
-RowLayout {
+Item {
     id: root
 
     readonly property var slotIds: {
@@ -20,60 +20,155 @@ RowLayout {
         return ids.sort((a, b) => a - b);
     }
 
+    readonly property int pillSize: Appearance.slider.thickness
+    readonly property int pillRounding: Math.round(root.pillSize * Appearance.slider.roundingRatio)
+    readonly property int activeId: Hyprland.focusedWorkspace?.id ?? -1
+
+    property bool introDone: false
+    property real wheelDelta: 0
+
     function activate(id: int): void {
         Hyprland.dispatch(Hyprland.usingLua ? `hl.dsp.focus({ workspace = ${id} })` : `workspace ${id}`);
     }
 
-    spacing: Appearance.spacing.none
+    function step(direction: int): void {
+        const count = root.slotIds.length;
+        if (count < 2)
+            return;
 
-    Repeater {
-        model: root.slotIds
+        const from = root.slotIds.indexOf(root.activeId);
+        const next = from < 0 ? (direction > 0 ? 0 : count - 1) : (from + direction + count) % count;
 
-        MouseArea {
-            id: slot
+        root.activate(root.slotIds[next]);
+    }
 
-            required property int modelData
+    Layout.leftMargin: Appearance.bar.workspaceMarginLeft
 
-            readonly property int workspaceId: modelData
-            readonly property var workspace: Hyprland.workspaces.values.find(ws => ws.id === workspaceId) ?? null
-            readonly property bool occupied: (workspace?.lastIpcObject?.windows ?? 0) > 0
-            readonly property bool active: Hyprland.focusedWorkspace?.id === workspaceId
-            readonly property bool urgent: workspace?.urgent ?? false
+    implicitWidth: row.implicitWidth
+    implicitHeight: root.pillSize
 
-            Layout.leftMargin: Appearance.bar.workspaceMarginLeft
-            Layout.topMargin: Appearance.bar.workspaceMarginV
-            Layout.bottomMargin: Appearance.bar.workspaceMarginV
+    Timer {
+        running: true
+        interval: root.slotIds.length * Appearance.bar.workspaceStaggerStep + Appearance.bar.workspaceStaggerDelay
+        onTriggered: root.introDone = true
+    }
 
-            implicitWidth: Appearance.bar.workspaceDotSize + Appearance.bar.workspacePadding * 2
-            implicitHeight: glyph.implicitHeight + Appearance.bar.workspacePadding * 2
+    Timer {
+        id: wheelReset
 
-            cursorShape: Qt.PointingHandCursor
-            hoverEnabled: true
+        interval: Appearance.bar.workspaceWheelReset
+        onTriggered: root.wheelDelta = 0
+    }
 
-            onClicked: root.activate(slot.workspaceId)
+    MouseArea {
+        anchors.fill: parent
 
-            Icon {
-                id: glyph
+        acceptedButtons: Qt.NoButton
 
-                anchors.centerIn: parent
+        onWheel: wheel => {
+            wheelReset.restart();
+            root.wheelDelta += wheel.angleDelta.y;
 
-                text: slot.active ? Icons.workspaceActive : Icons.workspaceDefault
-                font.pixelSize: Appearance.bar.workspaceFontSize
-                opacity: slot.containsMouse ? Appearance.bar.workspaceHoverOpacity : 1
+            const threshold = Appearance.bar.workspaceWheelThreshold;
+            if (Math.abs(root.wheelDelta) < threshold)
+                return;
 
-                color: {
-                    if (slot.urgent)
-                        return Colours.critical;
-                    if (slot.containsMouse)
-                        return Colours.textBright;
-                    if (slot.active || slot.occupied)
-                        return Colours.highlight;
-                    return Colours.textMuted;
+            const steps = Math.trunc(root.wheelDelta / threshold);
+            root.wheelDelta %= threshold;
+            root.step(steps > 0 ? -1 : 1);
+        }
+    }
+
+    Row {
+        id: row
+
+        anchors.verticalCenter: parent.verticalCenter
+
+        spacing: Appearance.bar.workspacePillSpacing
+
+        Repeater {
+            model: root.slotIds
+
+            MouseArea {
+                id: slot
+
+                required property int index
+                required property var modelData
+
+                readonly property int workspaceId: modelData
+                readonly property var workspace: Hyprland.workspaces.values.find(ws => ws.id === slot.workspaceId) ?? null
+                readonly property bool occupied: (slot.workspace?.toplevels?.values?.length ?? 0) > 0
+                readonly property bool active: root.activeId === slot.workspaceId
+                readonly property bool urgent: slot.workspace?.urgent ?? false
+
+                property bool entered: false
+
+                width: slot.active ? Appearance.bar.workspacePillActiveWidth : root.pillSize
+                height: root.pillSize
+
+                cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
+                opacity: slot.entered ? 1 : 0
+
+                onClicked: root.activate(slot.workspaceId)
+
+                Component.onCompleted: {
+                    if (root.introDone)
+                        slot.entered = true;
+                    else
+                        stagger.start();
                 }
 
-                Behavior on color {
-                    CAnim {
-                        type: AnimType.fastEffects
+                Behavior on width {
+                    Anim {
+                        duration: Appearance.bar.workspaceExtendDuration
+                        type: AnimType.standard
+                    }
+                }
+
+                Behavior on opacity {
+                    Anim {
+                        type: AnimType.standardLarge
+                    }
+                }
+
+                transform: Translate {
+                    y: slot.entered ? 0 : root.pillSize
+
+                    Behavior on y {
+                        Anim {
+                            type: AnimType.standardLarge
+                        }
+                    }
+                }
+
+                Timer {
+                    id: stagger
+
+                    interval: slot.index * Appearance.bar.workspaceStaggerStep + Appearance.bar.workspaceStaggerDelay
+                    onTriggered: slot.entered = true
+                }
+
+                StyledRect {
+                    anchors.fill: parent
+
+                    radius: root.pillRounding
+                    scale: slot.pressed ? Appearance.bar.workspacePressScale : slot.containsMouse ? Appearance.bar.workspaceHoverScale : 1
+
+                    color: {
+                        if (slot.urgent)
+                            return Colours.critical;
+                        if (slot.active)
+                            return Colours.accent;
+                        if (slot.occupied)
+                            return Colours.accentMuted;
+                        return Colours.trough;
+                    }
+
+                    Behavior on scale {
+                        Anim {
+                            type: AnimType.defaultEffects
+                        }
                     }
                 }
             }

@@ -38,6 +38,7 @@ Singleton {
     property var raw: seed
 
     readonly property real criticalTint: 0.16
+    readonly property real accentMutedShade: 0.55
 
     readonly property color surface: raw.bg
     readonly property color bar: raw.bg
@@ -50,6 +51,7 @@ Singleton {
     readonly property color textBright: raw.fgBright
     readonly property color highlight: raw.accent
     readonly property color accent: raw.accent
+    readonly property color accentMuted: shade(raw.accent, accentMutedShade)
     readonly property color border: raw.border
     readonly property color warning: raw.warning
     readonly property color critical: raw.critical
