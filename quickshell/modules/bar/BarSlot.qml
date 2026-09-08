@@ -48,6 +48,11 @@ RowLayout {
                 delegate: WorldClock {}
             }
             DelegateChoice {
+                roleValue: BarEntry.prayers
+
+                delegate: PrayerPill {}
+            }
+            DelegateChoice {
                 roleValue: BarEntry.volume
 
                 delegate: VolumePill {}

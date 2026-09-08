@@ -8,6 +8,7 @@ Singleton {
     readonly property string updates: "updates"
     readonly property string media: "media"
     readonly property string worldClock: "worldClock"
+    readonly property string prayers: "prayers"
     readonly property string volume: "volume"
     readonly property string mouseBattery: "mouseBattery"
     readonly property string bluetooth: "bluetooth"

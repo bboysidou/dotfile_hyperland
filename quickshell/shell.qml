@@ -14,6 +14,7 @@ import qs.modules.notifications
 import qs.modules.osd
 import qs.modules.polkit
 import qs.modules.power
+import qs.modules.prayers
 import qs.modules.screenshot
 import qs.modules.updates
 import qs.modules.wallpaper
@@ -33,6 +34,7 @@ ShellRoot {
     Osd {}
     Polkit {}
     Power {}
+    PrayerCenter {}
     Screenshot {}
     UpdatesCenter {}
     Picker {}

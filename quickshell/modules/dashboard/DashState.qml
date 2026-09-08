@@ -9,7 +9,7 @@ import qs.core.helpers
 Singleton {
     id: root
 
-    readonly property var sections: [DashSection.dash, DashSection.performance, DashSection.media]
+    readonly property var sections: [DashSection.dash, DashSection.prayers, DashSection.performance, DashSection.media]
 
     property bool pinned: false
     property bool barHover: false

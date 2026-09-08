@@ -10,6 +10,7 @@ import qs.core.helpers
 import qs.modules.dashboard.components
 import qs.modules.dashboard.dash
 import qs.modules.dashboard.media
+import qs.modules.dashboard.prayers
 import qs.modules.dashboard.performance
 
 RevealCard {
@@ -94,6 +95,11 @@ RevealCard {
                 label: Appearance.dash.labelDash
             },
             {
+                section: DashSection.prayers,
+                icon: Icons.prayersTab,
+                label: Appearance.dash.labelPrayers
+            },
+            {
                 section: DashSection.performance,
                 icon: Icons.perfTab,
                 label: Appearance.dash.labelPerformance
@@ -145,6 +151,14 @@ RevealCard {
 
                         delegate: DashPane {
                             active: root.onDash
+                        }
+                    }
+                    DelegateChoice {
+                        roleValue: DashSection.prayers
+
+                        delegate: PrayerPane {
+                            onFocusRequested: DashState.pinned = true
+                            onFocusReleased: root.forceActiveFocus()
                         }
                     }
                     DelegateChoice {
