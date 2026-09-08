@@ -1,7 +1,6 @@
 return {
-  "stevearc/conform.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
+  src = "stevearc/conform.nvim",
+  setup = function()
     local conform = require("conform")
 
     conform.setup({
@@ -20,20 +19,11 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
-        sql = {
-          -- "sqlfluff",
-          "sql-formatter",
-        },
+        sql = { "sql-formatter" },
       },
       formatters = {
-        -- ["sqlfluff"] = {
-        --   command = "sqlfluff",
-        --   args = { "fix", "--dialect", "postgres" }, -- Change 'postgres' to your preferred SQL dialect
-        --   stdin = false, -- sqlfluff does not support stdin formatting
-        -- },
         ["sql-formatter"] = {
           command = vim.fn.expand("$HOME/.local/share/nvim/mason/bin/sql-formatter"),
-          -- args = { "--config", vim.fn.expand("~/.config/sql-formatter.json") }, -- Optional config
           stdin = true,
         },
       },

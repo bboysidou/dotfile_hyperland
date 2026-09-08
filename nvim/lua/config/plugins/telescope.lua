@@ -1,13 +1,10 @@
 return {
-  "nvim-telescope/telescope.nvim",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    "nvim-tree/nvim-web-devicons",
-    "folke/todo-comments.nvim",
+  src = "nvim-telescope/telescope.nvim",
+  deps = {
+    { src = "nvim-telescope/telescope-fzf-native.nvim", build = { "make" } },
     "ibhagwan/fzf-lua",
   },
-  config = function()
+  setup = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
     local transform_mod = require("telescope.actions.mt").transform_mod
@@ -15,14 +12,11 @@ return {
     local trouble = require("trouble")
     local trouble_telescope = require("trouble.sources.telescope")
 
-    -- or create your custom action
     local custom_actions = transform_mod({
-      open_trouble_qflist = function(prompt_bufnr)
+      open_trouble_qflist = function()
         trouble.toggle("quickfix")
       end,
     })
-
-    telescope.load_extension("fzf")
 
     telescope.setup({
       pickers = {
@@ -42,8 +36,8 @@ return {
         path_display = { "smart" },
         mappings = {
           i = {
-            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next, -- move to next result
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<C-j>"] = actions.move_selection_next,
             ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
             ["<C-t>"] = actions.select_tab,
             ["<C-x>"] = trouble_telescope.open,
@@ -65,5 +59,8 @@ return {
         },
       },
     })
+
+    -- load_extension must follow setup so the fzf extension sees its config
+    telescope.load_extension("fzf")
   end,
 }

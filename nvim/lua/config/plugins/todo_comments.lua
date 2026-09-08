@@ -1,9 +1,8 @@
 return {
-  "folke/todo-comments.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = { "nvim-lua/plenary.nvim" },
-  config = function()
+  src = "folke/todo-comments.nvim",
+  setup = function()
     local c = require("config.colors")
+
     require("todo-comments").setup({
       keywords = {
         TODO = { icon = " ", color = "info" },

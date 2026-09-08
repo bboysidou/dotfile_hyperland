@@ -1,40 +1,21 @@
+-- lazy's `keys` triggered lazy-loading; with vim.pack the plugin is always
+-- loaded, so these are plain keymaps.
+local KEYS = {
+  { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", "Diagnostics (Trouble)" },
+  { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Buffer Diagnostics (Trouble)" },
+  { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", "Symbols (Trouble)" },
+  { "<leader>xl", "<cmd>Trouble lsp toggle<cr>", "LSP Definitions / references / ... (Trouble)" },
+  { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", "Location List (Trouble)" },
+  { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", "Quickfix List (Trouble)" },
+}
+
 return {
-  "folke/trouble.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-  opts = {
-    position = "right",
-  }, -- for default options, refer to the configuration section for custom setup.
-  cmd = "Trouble",
-  keys = {
-    {
-      "<leader>xx",
-      "<cmd>Trouble diagnostics toggle<cr>",
-      desc = "Diagnostics (Trouble)",
-    },
-    {
-      "<leader>xX",
-      "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-      desc = "Buffer Diagnostics (Trouble)",
-    },
-    {
-      "<leader>cs",
-      "<cmd>Trouble symbols toggle focus=false<cr>",
-      desc = "Symbols (Trouble)",
-    },
-    {
-      "<leader>xl",
-      "<cmd>Trouble lsp toggle<cr>",
-      desc = "LSP Definitions / references / ... (Trouble)",
-    },
-    {
-      "<leader>xL",
-      "<cmd>Trouble loclist toggle<cr>",
-      desc = "Location List (Trouble)",
-    },
-    {
-      "<leader>xQ",
-      "<cmd>Trouble qflist toggle<cr>",
-      desc = "Quickfix List (Trouble)",
-    },
-  },
+  src = "folke/trouble.nvim",
+  setup = function()
+    require("trouble").setup({ position = "right" })
+
+    for _, key in ipairs(KEYS) do
+      vim.keymap.set("n", key[1], key[2], { desc = key[3] })
+    end
+  end,
 }

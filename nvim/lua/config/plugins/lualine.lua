@@ -1,12 +1,13 @@
+-- The lazy.status pending-updates segment that used to sit in lualine_x is
+-- gone with lazy.nvim: computing the same count on vim.pack means fetching
+-- every managed repo, which is not something a statusline should do. Use
+-- :PackStatus instead.
 return {
-  "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
-  config = function()
-    local lualine = require("lualine")
-    local lazy_status = require("lazy.status")
+  src = "nvim-lualine/lualine.nvim",
+  setup = function()
     local c = require("config.colors")
 
-    local my_lualine_theme = {
+    local theme = {
       normal = {
         a = { bg = c.blue, fg = c.bg, gui = "bold" },
         b = { bg = c.yellow, fg = c.bg },
@@ -45,10 +46,10 @@ return {
       },
     }
 
-    lualine.setup({
+    require("lualine").setup({
       options = {
         icons_enabled = true,
-        theme = my_lualine_theme,
+        theme = theme,
         section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
         component_separators = { left = "\u{e0b1}", right = "\u{e0b3}" },
       },
@@ -60,7 +61,9 @@ return {
             icon = "",
             color = function()
               local signs = vim.b.gitsigns_status_dict
-              if not signs then return end
+              if not signs then
+                return
+              end
               if (signs.added or 0) > 0 or (signs.changed or 0) > 0 or (signs.removed or 0) > 0 then
                 return { bg = c.yellow, fg = c.bg, gui = "bold" }
               end
@@ -78,15 +81,7 @@ return {
           },
         },
         lualine_c = { { "filename", path = 3, shorting_target = 30 } },
-        lualine_x = {
-          {
-            lazy_status.updates,
-            cond = lazy_status.has_updates,
-            color = { fg = c.orange },
-          },
-          { "fileformat" },
-          { "filetype" },
-        },
+        lualine_x = { { "fileformat" }, { "filetype" } },
         lualine_y = { "diagnostics" },
         lualine_z = { "location" },
       },

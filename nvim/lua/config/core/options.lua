@@ -42,5 +42,9 @@ opt.splitbelow = true
 -- backspace
 opt.backspace = "indent,eol,start"
 
+-- folds (treesitter foldexpr is set per-buffer in plugins/treesitter.lua)
+opt.foldlevelstart = 99
+opt.foldenable = true
+
 -- editor
 opt.scrolloff = 10
