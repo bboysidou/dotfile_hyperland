@@ -44,11 +44,12 @@ echo "============================================="
 if command -v yay &>/dev/null; then
   echo "AUR is installed"
 else
+  _installPackages git base-devel
   mkdir -p "$DOWNLOAD_DIR"
   cd "$DOWNLOAD_DIR"
-  rm -rf yay
-  git clone https://aur.archlinux.org/yay.git
-  cd yay
+  rm -rf yay-bin
+  git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin
   makepkg -si --noconfirm
   cd "$DOWNLOAD_DIR"
 fi
