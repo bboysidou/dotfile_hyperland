@@ -12,7 +12,8 @@ local mainMod = "SUPER"
 -- MY STUFF ------------------------------------------------------------------
 hl.bind("CTRL + SHIFT + F", hl.dsp.exec_cmd("kitty yazi"))
 hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/tmux_resurect_session.sh"))
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("sh -c $HOME/.config/custom_scripts/auto_start_work.sh"))
+hl.bind(mainMod .. " + S", hl.dsp.global("quickshell:keybinds"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("sh -c $HOME/.config/custom_scripts/auto_start_work.sh"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/ssh_connection.sh"))
 hl.bind(mainMod .. " + X", hl.dsp.global("quickshell:power"))
 hl.bind("ALT + C", hl.dsp.global("quickshell:controlcenter-network"))
