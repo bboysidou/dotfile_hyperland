@@ -48,7 +48,7 @@ StyledRect {
             StyledText {
                 Layout.fillWidth: true
 
-                text: root.entry.summary
+                text: Str.oneLine(root.entry.summary)
                 color: root.entry.critical ? Colours.urgencyCritical : root.entry.read ? Colours.text : Colours.textBright
                 font.weight: Appearance.font.weightActive
                 elide: Text.ElideRight

@@ -429,21 +429,17 @@ Singleton {
         readonly property var faviconBrowsers: ["firefox", "brave", "chromium", "google-chrome"]
 
         readonly property string historyFile: "notifications.json"
+        readonly property string transientImagePrefix: "image://qsimage/"
         readonly property int historyVersion: 1
         readonly property int historyMaxEntries: 200
         readonly property int historyMaxAgeDays: 7
         readonly property int historySaveDebounce: 1000
         readonly property int historySweepInterval: 3600000
-        readonly property int cardSpacing: 6
-        readonly property int cardHeaderHeight: 34
-        readonly property int cardPaddingH: 10
         readonly property int rowSpacing: 4
         readonly property int rowPaddingV: 6
         readonly property int rowPaddingH: 10
         readonly property int rowRounding: 10
         readonly property int bodyMaxLines: 2
-        readonly property int listSpacing: 6
-        readonly property int headerHeight: 28
         readonly property int badgePaddingH: 6
         readonly property int badgeRounding: 999
         readonly property int clearIconSize: 14
@@ -597,6 +593,62 @@ Singleton {
         readonly property int enterDuration: 500
         readonly property int lift: 12
         readonly property int detailLabelWidth: 68
+    }
+
+    component NotifPanelConfig: QtObject {
+        readonly property int heroHeight: 96
+        readonly property int heroSpacing: 16
+        readonly property int heroTextSpacing: 2
+        readonly property int heroControlSpacing: 10
+        readonly property int heroNameSize: 16
+        readonly property int heroDetailSize: 11
+
+        readonly property int countWidth: 84
+        readonly property int countSize: 46
+        readonly property int countLabelSize: 11
+        readonly property int countSpacing: 0
+        readonly property int countRollLift: 14
+        readonly property int countRollDuration: 420
+
+        readonly property int chipPaddingH: 12
+        readonly property int chipPaddingV: 5
+        readonly property int chipFontSize: 11
+        readonly property int chipBorderWidth: 1
+
+        readonly property int switchTopMargin: 14
+        readonly property int listTopMargin: 12
+        readonly property int groupSpacing: 8
+        readonly property int emptyTopMargin: 24
+
+        readonly property int cardRounding: 12
+        readonly property int cardBorderWidth: 1
+        readonly property int cardHeaderHeight: 40
+        readonly property int cardPaddingH: 12
+        readonly property int cardPaddingV: 8
+        readonly property int cardSpacing: 8
+        readonly property int cardIconSize: 20
+        readonly property int cardNameSize: 13
+        readonly property int dotSize: 6
+
+        readonly property int introHeaderDelay: 100
+        readonly property int introContentDelay: 200
+        readonly property int introHeaderDuration: 700
+        readonly property int introContentDuration: 800
+        readonly property real introOvershoot: 1.2
+        readonly property int introHeaderLift: 20
+        readonly property int introContentLift: 15
+
+        readonly property string labelAll: "All"
+        readonly property string labelUnread: "Unread"
+        readonly property string labelCritical: "Critical"
+        readonly property string labelTotal: "total"
+        readonly property string countTemplate: "%1 total \u00b7 %2 apps"
+        readonly property string labelMarkRead: "Mark all read"
+        readonly property string labelClearCritical: "Clear critical"
+        readonly property string emptyUnreadTitle: "Nothing new"
+        readonly property string emptyUnreadSubtitle: "You have seen everything here"
+        readonly property string emptyCriticalTitle: "No critical alerts"
+        readonly property string emptyCriticalSubtitle: "Nothing needs attention"
     }
 
     component AudioPanelConfig: QtObject {
@@ -761,7 +813,7 @@ Singleton {
         readonly property int columnHeight: 250
         readonly property int padding: 8
         readonly property real inactiveOpacity: 0.45
-        readonly property int rounding: 16
+        readonly property int cardRounding: 16
         readonly property int paddingV: 14
         readonly property int spacing: 14
         readonly property int iconSize: 22
@@ -1007,6 +1059,7 @@ Singleton {
     readonly property ControlConfig control: ControlConfig {}
     readonly property CardConfig card: CardConfig {}
     readonly property AudioPanelConfig audioPanel: AudioPanelConfig {}
+    readonly property NotifPanelConfig notifPanel: NotifPanelConfig {}
     readonly property SegmentConfig segment: SegmentConfig {}
     readonly property UpdatesConfig updates: UpdatesConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
