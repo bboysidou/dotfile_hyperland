@@ -1065,7 +1065,7 @@ Singleton {
         readonly property int optionHeight: 26
         readonly property int optionRounding: 8
 
-        readonly property int arcSize: 132
+        readonly property int arcSize: 172
         readonly property real arcThicknessRatio: 0.1
         readonly property real arcStart: -90
         readonly property real arcSpan: 360
