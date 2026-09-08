@@ -95,11 +95,6 @@ RevealCard {
                 label: Appearance.dash.labelDash
             },
             {
-                section: DashSection.prayers,
-                icon: Icons.prayersTab,
-                label: Appearance.dash.labelPrayers
-            },
-            {
                 section: DashSection.performance,
                 icon: Icons.perfTab,
                 label: Appearance.dash.labelPerformance
@@ -108,6 +103,11 @@ RevealCard {
                 section: DashSection.media,
                 icon: Icons.mediaTab,
                 label: Appearance.dash.labelMedia
+            },
+            {
+                section: DashSection.prayers,
+                icon: Icons.prayersTab,
+                label: Appearance.dash.labelPrayers
             }
         ]
 
@@ -154,14 +154,6 @@ RevealCard {
                         }
                     }
                     DelegateChoice {
-                        roleValue: DashSection.prayers
-
-                        delegate: PrayerPane {
-                            onFocusRequested: DashState.pinned = true
-                            onFocusReleased: root.forceActiveFocus()
-                        }
-                    }
-                    DelegateChoice {
                         roleValue: DashSection.performance
 
                         delegate: PerfPane {}
@@ -171,6 +163,14 @@ RevealCard {
 
                         delegate: MediaPane {
                             active: root.onMedia
+                        }
+                    }
+                    DelegateChoice {
+                        roleValue: DashSection.prayers
+
+                        delegate: PrayerPane {
+                            onFocusRequested: DashState.pinned = true
+                            onFocusReleased: root.forceActiveFocus()
                         }
                     }
                 }
