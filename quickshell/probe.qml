@@ -27,6 +27,7 @@ ShellRoot {
         Appearance.notif.historySaveDebounce,
         ControlSection.values,
         AudioSection.values,
+        NotifSection.values,
         BarEntry.network,
         BarEntry.notifications,
         Units.minutesPerHour,
@@ -48,6 +49,8 @@ ShellRoot {
         Appearance.lock.dotCollapseScale,
         NotifHistory.unread,
         NotifHistory.groups,
+        NotifHistory.criticals,
+        NotifHistory.bucket([]),
         ControlState.opened,
         PowerAction.values,
         PowerState.actions,
@@ -103,7 +106,23 @@ ShellRoot {
                 options: []
             }
             NotifPill {}
-            NotifList {}
+            NotifHero {
+                count: 0
+                label: ""
+                title: ""
+                detail: ""
+                glyph: ""
+                action: ""
+            }
+            NotifCard {
+                group: ({
+                        appName: "",
+                        desktopEntry: "",
+                        image: "",
+                        latest: 0,
+                        entries: []
+                    })
+            }
             PanelHeader {}
             PanelBody {}
             AudioPanel {}

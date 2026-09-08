@@ -17,14 +17,16 @@ Singleton {
     property list<NotifEntry> entries: []
     property int counter: 0
     property bool loaded: false
-    property bool viewing: false
 
     readonly property int unread: root.toArray().filter(entry => !entry.read).length
+    readonly property int criticals: root.toArray().filter(entry => entry.critical).length
 
-    readonly property var groups: {
+    readonly property var groups: root.bucket(root.toArray())
+
+    function bucket(entries: var): var {
         const buckets = new Map();
 
-        for (const entry of root.toArray()) {
+        for (const entry of entries) {
             const existing = buckets.get(entry.appName);
 
             if (existing)
@@ -63,7 +65,7 @@ Singleton {
             image: root.resolve(notification),
             urgency: notification.urgency,
             time: Date.now(),
-            read: root.viewing,
+            read: false,
             notification
         });
 
@@ -102,6 +104,10 @@ Singleton {
     function clear(): void {
         root.loaded = true;
         root.drop(() => []);
+    }
+
+    function clearCritical(): void {
+        root.drop(list => list.filter(entry => !entry.critical));
     }
 
     function drop(transform): void {
@@ -165,6 +171,9 @@ Singleton {
     }
 
     function adopt(payload: string): void {
+        if (root.loaded)
+            return;
+
         root.loaded = true;
 
         let parsed;
@@ -179,7 +188,9 @@ Singleton {
         if (!parsed || parsed.version !== Appearance.notif.historyVersion || !Array.isArray(parsed.entries))
             return;
 
-        const restored = parsed.entries.map(raw => component.createObject(root, raw));
+        const restored = parsed.entries.map(raw => component.createObject(root, Object.assign({}, raw, {
+            image: raw.image?.startsWith(Appearance.notif.transientImagePrefix) ? "" : raw.image
+        })));
         root.entries = root.toArray().concat(restored);
         root.sweep();
     }
