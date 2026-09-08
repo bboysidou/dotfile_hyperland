@@ -17,6 +17,7 @@ StyledRect {
     property int iconSize: Appearance.search.iconSize
     property int placeholderSize: Appearance.font.size.normal
 
+    signal activated
     signal edited(string text)
     signal navigate(int delta)
     signal navigateColumn(int delta)
@@ -39,6 +40,14 @@ StyledRect {
     radius: Appearance.rounding.full
 
     implicitHeight: input.implicitHeight + root.paddingV * 2
+
+    MouseArea {
+        anchors.fill: parent
+
+        cursorShape: Qt.IBeamCursor
+
+        onPressed: root.focusInput()
+    }
 
     Icon {
         id: glyph
@@ -72,6 +81,11 @@ StyledRect {
         font.weight: Appearance.font.weightNormal
 
         onTextChanged: root.edited(input.text)
+
+        onActiveFocusChanged: {
+            if (input.activeFocus)
+                root.activated();
+        }
 
         Keys.onPressed: event => {
             const rows = Nav.vertical(event);
