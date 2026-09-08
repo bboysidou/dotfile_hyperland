@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
-import qs.modules.dashboard.components
 import qs.services
 
 Item {

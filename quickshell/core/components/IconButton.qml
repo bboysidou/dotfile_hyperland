@@ -1,5 +1,4 @@
 import QtQuick
-import qs.core.components
 import qs.core.config
 
 Icon {

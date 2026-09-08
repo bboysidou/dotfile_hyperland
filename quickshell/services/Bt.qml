@@ -12,10 +12,13 @@ Singleton {
     id: root
 
     property bool discovering: false
+    property bool rescanning: false
     property string pendingPair: ""
     property bool pendingEnable: false
     property var connecting: null
     property var stalled: null
+
+    readonly property bool discoveryActive: root.discovering && !scanBlip.running
 
     readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
     readonly property bool available: adapter !== null
@@ -42,6 +45,15 @@ Singleton {
 
         root.pendingEnable = true;
         unblock.running = true;
+    }
+
+    function rescan(): void {
+        if (!root.adapter || !root.enabled || !root.discovering)
+            return;
+
+        root.rescanning = true;
+        scanBlip.restart();
+        scanBusy.restart();
     }
 
     function activateDevice(device): void {
@@ -129,6 +141,20 @@ Singleton {
     }
 
     Timer {
+        id: scanBlip
+
+        interval: Appearance.control.scanBlip
+    }
+
+    Timer {
+        id: scanBusy
+
+        interval: Appearance.control.scanBusy
+
+        onTriggered: root.rescanning = false
+    }
+
+    Timer {
         id: connectTimeout
 
         interval: Appearance.control.connectTimeout
@@ -194,6 +220,6 @@ Singleton {
         when: root.adapter !== null
         target: root.adapter
         property: "discovering"
-        value: root.discovering
+        value: root.discoveryActive
     }
 }
