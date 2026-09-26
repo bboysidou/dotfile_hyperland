@@ -46,5 +46,6 @@ require("config/animation")
 hl.config({
     misc = {
         force_default_wallpaper = -1, -- Set to 0 or 1 to disable the anime mascot wallpapers
+        allow_session_lock_restore = true, -- let a restarted locker reattach instead of stranding the session
     },
 })

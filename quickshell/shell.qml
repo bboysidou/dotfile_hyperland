@@ -17,6 +17,7 @@ import qs.modules.polkit
 import qs.modules.power
 import qs.modules.prayers
 import qs.modules.screenshot
+import qs.modules.theme
 import qs.modules.updates
 import qs.modules.wallpaper
 
@@ -38,6 +39,7 @@ ShellRoot {
     Power {}
     PrayerCenter {}
     Screenshot {}
+    ThemePicker {}
     UpdatesCenter {}
     Picker {}
 }

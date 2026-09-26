@@ -10,6 +10,8 @@ Item {
 
     focus: true
 
+    Component.onCompleted: root.forceActiveFocus()
+
     Keys.onPressed: event => {
         if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)
             root.accepted();

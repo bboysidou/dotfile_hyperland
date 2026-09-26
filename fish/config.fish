@@ -39,3 +39,4 @@ fish_add_path $ANDROID_HOME/tools/bin
 fish_add_path $ANDROID_HOME/emulator
 fish_add_path $HOME/.opencode/bin
 fish_add_path $HOME/.local/bin
+fish_add_path $HOME/go/bin

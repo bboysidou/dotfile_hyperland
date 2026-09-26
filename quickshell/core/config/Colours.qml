@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.core.enums
 
 Singleton {
     id: root
@@ -35,7 +36,10 @@ Singleton {
             success: "#4EC9B0"
         })
 
-    property var raw: seed
+    property var filePalette: seed
+    property string theme: ThemeName.defaultTheme
+
+    readonly property var raw: paletteFor(theme)
 
     readonly property real criticalTint: 0.16
     readonly property real accentMutedShade: 0.55
@@ -83,6 +87,17 @@ Singleton {
         return Qt.hsla(c.hslHue, c.hslSaturation, Math.min(1, c.hslLightness * factor), c.a);
     }
 
+    function paletteFor(name: string): var {
+        const sources = {
+            [ThemeName.monochrome]: Themes.monochrome,
+            [ThemeName.hacker]: Themes.hacker
+        };
+
+        return Object.assign({}, sources[name] ?? root.filePalette, {
+            bg: Themes.black
+        });
+    }
+
     function isValid(candidate): bool {
         if (!candidate || typeof candidate !== "object")
             return false;
@@ -104,7 +119,7 @@ Singleton {
             return;
         }
 
-        root.raw = parsed;
+        root.filePalette = parsed;
     }
 
     FileView {

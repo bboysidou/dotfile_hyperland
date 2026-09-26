@@ -11,12 +11,14 @@ RevealCard {
 
     signal dismissed
 
-    readonly property int wallpaperItemWidth: Appearance.launcher.wallpaperItemWidth + Appearance.launcher.wallpaperItemPadding * 2
+    readonly property int carouselItemWidth: Appearance.launcher.wallpaperItemWidth + Appearance.launcher.wallpaperItemPadding * 2
+    readonly property bool carouselMode: LauncherState.wallpaperMode || LauncherState.themeMode
+    readonly property int carouselCount: LauncherState.themeMode ? Theme.query(LauncherState.search).length : Wallpaper.query(LauncherState.search).length
 
-    readonly property int wallpaperItems: {
+    readonly property int carouselItems: {
         const available = (root.parent?.width ?? 0) - Appearance.launcher.padding * 2;
-        const fits = Math.floor(available / root.wallpaperItemWidth);
-        const shown = Math.min(fits, Appearance.launcher.wallpaperMax, Wallpaper.query(LauncherState.search).length);
+        const fits = Math.floor(available / root.carouselItemWidth);
+        const shown = Math.min(fits, Appearance.launcher.wallpaperMax, root.carouselCount);
 
         if (shown === 2)
             return 1;
@@ -25,7 +27,7 @@ RevealCard {
         return Math.max(0, shown);
     }
 
-    implicitWidth: LauncherState.wallpaperMode ? Math.max(Appearance.launcher.width, root.wallpaperItems * root.wallpaperItemWidth + Appearance.launcher.padding * 2) : Appearance.launcher.width
+    implicitWidth: root.carouselMode ? Math.max(Appearance.launcher.width, root.carouselItems * root.carouselItemWidth + Appearance.launcher.padding * 2) : Appearance.launcher.width
     implicitHeight: layout.implicitHeight + Appearance.launcher.padding * 2
 
     color: Colours.bar
@@ -93,15 +95,17 @@ RevealCard {
 
             Layout.fillWidth: true
 
-            placeholder: LauncherState.wallpaperMode ? Appearance.launcher.wallpaperPlaceholder : Appearance.launcher.placeholder
-            icon: LauncherState.wallpaperMode ? Icons.wallpaper : Icons.launcherSearch
-            gridNavigation: LauncherState.wallpaperMode
+            placeholder: LauncherState.themeMode ? Appearance.launcher.themePlaceholder : LauncherState.wallpaperMode ? Appearance.launcher.wallpaperPlaceholder : Appearance.launcher.placeholder
+            icon: LauncherState.themeMode ? Icons.palette : LauncherState.wallpaperMode ? Icons.wallpaper : Icons.launcherSearch
+            gridNavigation: root.carouselMode
 
             onEdited: text => LauncherState.edit(text)
             onNavigate: delta => content.item?.step(delta)
             onNavigateColumn: delta => content.item?.step(delta)
             onAccepted: {
-                if (LauncherState.wallpaperMode)
+                if (LauncherState.themeMode)
+                    LauncherState.activateTheme(content.item?.selected ?? "");
+                else if (LauncherState.wallpaperMode)
                     LauncherState.activateWallpaper(content.item?.selected ?? "");
                 else
                     LauncherState.activate(content.item?.current ?? null);
@@ -115,7 +119,7 @@ RevealCard {
             Layout.fillWidth: true
             Layout.preferredHeight: item?.implicitHeight ?? 0
 
-            sourceComp: LauncherState.wallpaperMode ? wallpaperComp : appsComp
+            sourceComp: LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
         }
     }
 
@@ -134,9 +138,20 @@ RevealCard {
 
         WallpaperStrip {
             search: LauncherState.search
-            visibleItems: root.wallpaperItems
+            visibleItems: root.carouselItems
 
             onActivated: path => LauncherState.activateWallpaper(path)
+        }
+    }
+
+    Component {
+        id: themeComp
+
+        ThemeStrip {
+            search: LauncherState.search
+            visibleItems: root.carouselItems
+
+            onActivated: name => LauncherState.activateTheme(name)
         }
     }
 }

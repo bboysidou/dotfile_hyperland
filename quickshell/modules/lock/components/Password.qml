@@ -9,6 +9,7 @@ import qs.services
 Column {
     id: root
 
+    property bool focused: true
     property real shakeOffset: 0
     property bool flashing: false
 
@@ -161,6 +162,16 @@ Column {
         visible: Lock.failures > 0
         text: Lock.failureText
         color: Lock.coolingDown ? Colours.critical : Colours.textMuted
+        font.family: Appearance.lock.labelFont
+        font.pixelSize: Appearance.lock.messageFontSize
+    }
+
+    StyledText {
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        visible: !root.focused
+        text: Appearance.lock.focusWarning
+        color: Colours.critical
         font.family: Appearance.lock.labelFont
         font.pixelSize: Appearance.lock.messageFontSize
     }

@@ -12,8 +12,8 @@ hl.on("hyprland.start", function()
 	-- Load cliphist history
 	hl.exec_cmd("wl-paste --watch cliphist store")
 
-	-- Load Quickshell shell (replaces waybar and dunst)
-	hl.exec_cmd("qs -d -n")
+	-- Load Quickshell shell (replaces waybar and dunst), supervised so a crash restarts it
+	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP XDG_SESSION_TYPE && systemctl --user restart quickshell.service")
 
 	-- Automount disks
 	hl.exec_cmd("udiskie -s")
