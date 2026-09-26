@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.constants
 import qs.modules.dashboard.components
 import qs.services
 
@@ -30,7 +31,7 @@ Card {
         }
 
         Repeater {
-            model: Appearance.dash.clockZones
+            model: WorldClock.zones
 
             RowLayout {
                 id: row

@@ -15,7 +15,7 @@ Singleton {
 
     property var zoneOffsets: ({})
 
-    readonly property var zones: Appearance.dash.clockZones.map(entry => {
+    readonly property var zones: WorldClock.zones.map(entry => {
         const offset = root.zoneOffsets[entry.zone];
         const known = offset !== undefined;
 
@@ -47,7 +47,7 @@ Singleton {
 
     function applyOffsets(payload: string): void {
         const lines = payload.trim().split("\n").filter(line => line.length > 0);
-        const configured = Appearance.dash.clockZones;
+        const configured = WorldClock.zones;
 
         if (lines.length !== configured.length)
             return;
@@ -73,7 +73,7 @@ Singleton {
     }
 
     Poller {
-        command: ["sh", "-c", 'for z in "$@"; do TZ="$z" date +%z; done', "sh"].concat(Appearance.dash.clockZones.map(entry => entry.zone))
+        command: ["sh", "-c", 'for z in "$@"; do TZ="$z" date +%z; done', "sh"].concat(WorldClock.zones.map(entry => entry.zone))
         interval: Appearance.dash.clockRefreshInterval
 
         onReceived: text => root.applyOffsets(text)
