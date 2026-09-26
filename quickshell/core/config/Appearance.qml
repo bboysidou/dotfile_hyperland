@@ -264,20 +264,6 @@ Singleton {
         readonly property string clockPlaceholder: "--:--"
         readonly property string clockNextDay: "+1"
         readonly property string clockPrevDay: "-1"
-        readonly property var clockZones: [
-            {
-                label: "Montreal",
-                zone: "America/Montreal"
-            },
-            {
-                label: "Alberta",
-                zone: "America/Edmonton"
-            },
-            {
-                label: "San Francisco",
-                zone: "America/Los_Angeles"
-            }
-        ]
 
         readonly property int dateTimeSize: 38
         readonly property string dateTimeFormat: "HH:mm"
