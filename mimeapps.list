@@ -12,6 +12,7 @@ application/x-extension-xht=zen.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 application/pdf=org.gnome.Evince.desktop
+image/jpeg=zen.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
@@ -25,3 +26,4 @@ application/xhtml+xml=zen.desktop;
 application/x-extension-xhtml=zen.desktop;
 application/x-extension-xht=zen.desktop;
 application/pdf=org.gnome.Evince.desktop;
+image/jpeg=org.gnome.Evince.desktop;zen.desktop;

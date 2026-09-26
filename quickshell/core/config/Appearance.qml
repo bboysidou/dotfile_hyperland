@@ -485,6 +485,8 @@ Singleton {
         readonly property string actionPrefix: ">"
         readonly property string wallpaperAction: "wallpaper"
         readonly property string wallpaperPlaceholder: "Wallpaper..."
+        readonly property string themeAction: "theme"
+        readonly property string themePlaceholder: "Theme..."
         readonly property int wallpaperItemWidth: 200
         readonly property int wallpaperItemPadding: 10
         readonly property int wallpaperItemRounding: 12
@@ -750,6 +752,25 @@ Singleton {
         readonly property string emptyAur: "No AUR updates"
     }
 
+    component ThemeConfig: QtObject {
+        readonly property string stateFile: "theme.json"
+        readonly property var labels: ({
+                "default": "Default",
+                "monochrome": "Monochrome",
+                "hacker": "Hacker"
+            })
+        readonly property int frameBorder: 1
+        readonly property int swatchSize: 10
+        readonly property int swatchSpacing: 6
+        readonly property int mockPadding: 14
+        readonly property int mockBarHeight: 14
+        readonly property int mockPillWidth: 34
+        readonly property int mockLineHeight: 6
+        readonly property int mockLineSpacing: 8
+        readonly property real mockLineLong: 0.7
+        readonly property real mockLineShort: 0.45
+    }
+
     component WallpaperConfig: QtObject {
         readonly property string dir: "Pictures/wallpaper"
         readonly property string stateFile: "wallpaper"
@@ -791,6 +812,13 @@ Singleton {
         readonly property int messageTopMargin: 12
         readonly property int mediaMaxWidth: 320
         readonly property int faillockDeny: 3
+        readonly property int faillockCooldown: 30
+        readonly property int faillockCooldownMax: 300
+        readonly property int faillockTick: 1000
+        readonly property int faillockWindow: 600000
+        readonly property int recoverTimeout: 2000
+        readonly property int pamTimeout: 20000
+        readonly property int focusPollInterval: 500
         readonly property string fadeInType: AnimType.standardLarge
         readonly property string fadeOutType: AnimType.standard
         readonly property int shakeAmplitude: 12
@@ -799,10 +827,14 @@ Singleton {
         readonly property int flashHold: 500
         readonly property real dotCollapseScale: 0.85
         readonly property string pamConfig: "hyprlock"
-        readonly property string stateFile: "lock_failures"
+        readonly property string stateFile: "lock.json"
         readonly property string greetingTemplate: "Hello, %1! %2"
         readonly property string placeholderTemplate: "Hi, %1"
         readonly property string failureSingular: "%1 failed attempt"
+        readonly property string cooldownTemplate: "Locked out, retry in %1s"
+        readonly property string pamUnavailable: "Authentication unavailable"
+        readonly property string pamTimedOut: "Authentication timed out"
+        readonly property string focusWarning: "Keyboard not captured, click to restore"
         readonly property string failurePlural: "%1 failed attempts"
         readonly property string missedTemplate: "%1 missed"
         readonly property string greetingMorning: "Good Morning"
@@ -1178,6 +1210,7 @@ Singleton {
     readonly property NotifPanelConfig notifPanel: NotifPanelConfig {}
     readonly property SegmentConfig segment: SegmentConfig {}
     readonly property UpdatesConfig updates: UpdatesConfig {}
+    readonly property ThemeConfig theme: ThemeConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
     readonly property LockConfig lock: LockConfig {}
     readonly property OsdConfig osd: OsdConfig {}

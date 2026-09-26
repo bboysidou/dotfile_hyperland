@@ -34,6 +34,16 @@ Scope {
         function status(): string {
             return Lock.locked ? "locked" : "unlocked";
         }
+
+        function state(): string {
+            return JSON.stringify({
+                locked: Lock.locked,
+                failures: Lock.failures,
+                cooldown: Lock.cooldown,
+                coolingDown: Lock.coolingDown,
+                focused: Lock.focused
+            });
+        }
     }
 
     WlSessionLock {
@@ -45,6 +55,12 @@ Scope {
             id: surface
 
             color: "transparent"
+
+            MouseArea {
+                anchors.fill: parent
+
+                onPressed: keys.forceActiveFocus()
+            }
 
             Item {
                 id: content
@@ -131,6 +147,8 @@ Scope {
 
                     Password {
                         anchors.horizontalCenter: parent.horizontalCenter
+
+                        focused: keys.activeFocus
                     }
                 }
 
@@ -158,11 +176,39 @@ Scope {
             KeyBuffer {
                 id: keys
 
+                anchors.fill: parent
+
+                onActiveFocusChanged: Lock.focusHolders += keys.activeFocus ? 1 : -1
+
                 onAccepted: Lock.authenticate()
                 onCancelled: Lock.reset()
                 onBackspaced: Lock.backspace()
                 onAppended: text => Lock.append(text)
             }
+
+            Connections {
+                target: Lock
+
+                function onLockedChanged(): void {
+                    if (Lock.locked)
+                        keys.forceActiveFocus();
+                }
+
+                function onRecoveringChanged(): void {
+                    if (!Lock.recovering)
+                        keys.forceActiveFocus();
+                }
+            }
+
+            Timer {
+                running: Lock.locked && surface.visible && !keys.activeFocus
+                interval: Appearance.lock.focusPollInterval
+                repeat: true
+
+                onTriggered: keys.forceActiveFocus()
+            }
+
+            Component.onCompleted: keys.forceActiveFocus()
 
             onVisibleChanged: {
                 if (surface.visible)
