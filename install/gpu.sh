@@ -9,6 +9,8 @@ DRY_RUN=0
 
 HYPR_ENV_FILE="${HOME}/.config/hypr/config/env-gpu.lua"
 UDEV_RULE="/etc/udev/rules.d/90-gpu-dev-path.rules"
+QS_GPU_FILE="${HOME}/.config/systemd/user/quickshell.service.d/gpu.conf"
+MESA_EGL_VENDOR="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
 
 _run() {
   if ((DRY_RUN)); then
@@ -265,6 +267,28 @@ else
   mkdir -p "$(dirname "$HYPR_ENV_FILE")"
   printf '%s' "$ENV_LUA" >"$HYPR_ENV_FILE"
   echo "wrote ${HYPR_ENV_FILE}"
+fi
+
+# ---------- QUICKSHELL ON THE IGPU ----------
+
+echo "============================================="
+echo "-----| PIN QUICKSHELL TO THE IGPU |-----"
+echo "============================================="
+if ((IS_HYBRID)) && [[ "$PRIMARY_VENDOR" != "nvidia" ]]; then
+  QS_GPU_CONF="[Service]
+Environment=__EGL_VENDOR_LIBRARY_FILENAMES=${MESA_EGL_VENDOR}
+"
+  if ((DRY_RUN)); then
+    echo "  [dry-run] would write ${QS_GPU_FILE}:"
+    sed 's/^/    /' <<<"$QS_GPU_CONF"
+  else
+    mkdir -p "$(dirname "$QS_GPU_FILE")"
+    printf '%s' "$QS_GPU_CONF" >"$QS_GPU_FILE"
+    echo "wrote ${QS_GPU_FILE}"
+  fi
+else
+  _run rm -f "$QS_GPU_FILE"
+  echo "not a hybrid with an iGPU primary - quickshell keeps the default EGL vendor"
 fi
 
 # ---------- SYSTEM ENV ----------

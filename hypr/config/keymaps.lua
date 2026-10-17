@@ -90,7 +90,9 @@ local wsMonitor = {
 for i = 1, 10 do
 	local key = i % 10 -- workspace 10 maps to key 0
 	hl.bind(mainMod .. " + " .. key, function()
-		hl.dispatch(hl.dsp.focus({ monitor = wsMonitor[i] }))
+		if hl.get_monitor(wsMonitor[i]) then
+			hl.dispatch(hl.dsp.focus({ monitor = wsMonitor[i] }))
+		end
 		hl.dispatch(hl.dsp.focus({ workspace = i }))
 	end)
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
