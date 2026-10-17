@@ -1,0 +1,23 @@
+#!/bin/sh
+set -u
+
+WAIT=300
+FALLBACK=hyprland-share-picker
+
+token=false
+[ "${1:-}" = --allow-token ] && token=true
+
+fifo="${XDG_RUNTIME_DIR:-/tmp}/qs-share-picker.$$"
+mkfifo -m 600 "$fifo" || exec "$FALLBACK" "$@"
+trap 'rm -f "$fifo"' EXIT
+
+if ! qs ipc call share pick "$fifo" "${XDPH_WINDOW_SHARING_LIST:-}" "$token" >/dev/null 2>&1; then
+    rm -f "$fifo"
+    exec "$FALLBACK" "$@"
+fi
+
+timeout "$WAIT" head -n 1 "$fifo" &
+reader=$!
+trap 'kill "$reader" 2>/dev/null; qs ipc call share cancel >/dev/null 2>&1; exit 1' INT TERM HUP
+
+wait "$reader" || qs ipc call share cancel >/dev/null 2>&1

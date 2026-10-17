@@ -113,6 +113,13 @@ Singleton {
         root.buffer = root.buffer.slice(0, -1);
     }
 
+    function clear(): void {
+        if (root.unlocking || root.recovering)
+            return;
+
+        root.buffer = "";
+    }
+
     function collect(text: string): void {
         const trimmed = text.trim();
 

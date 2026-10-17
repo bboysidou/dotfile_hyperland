@@ -22,6 +22,7 @@ yay -S solaar
 | `nm-connection-editor` | `nm-connection-editor` | enterprise Wi-Fi hand-off |
 | `brightnessctl` | `brightnessctl` | `Brightness` |
 | `grim`, `slurp` | `grim`, `slurp` | screenshot module |
+| `slurp`, `xdg-desktop-portal-hyprland` | `slurp`, `xdg-desktop-portal-hyprland` | share picker — region pick, and the portal that launches it |
 | `tesseract` | `tesseract` + a language pack | screenshot OCR |
 | `wl-copy` | `wl-clipboard` | screenshot OCR |
 | `notify-send` | `libnotify` | screenshot notifications |
@@ -41,6 +42,22 @@ yay -S solaar
 
 Everything else the shell calls (`cat`, `ls`, `uname`, `timeout`, `systemctl`,
 `pacman`, `rfkill`) ships with a base Arch install.
+
+## Share picker
+
+`system/qs-share-picker` replaces `hyprland-share-picker` for every screen share
+that goes through the portal (Zen, Firefox, Chromium, Electron). xdph runs it,
+it opens the `share` module over IPC and relays the pick back through a FIFO.
+If the shell is not running it falls back to the stock picker.
+
+```
+# ~/.config/hypr/xdph.conf
+screencopy {
+    custom_picker_binary = /home/sidouxp3/.config/quickshell/system/qs-share-picker
+}
+```
+
+Then `systemctl --user restart xdg-desktop-portal-hyprland`.
 
 ## Root helper
 

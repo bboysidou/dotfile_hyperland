@@ -19,6 +19,8 @@ import qs.modules.power
 import qs.modules.power.components
 import qs.modules.screenshot
 import qs.modules.screenshot.components
+import qs.modules.share
+import qs.modules.share.components
 import qs.modules.updates
 import qs.modules.updates.components
 import qs.services
@@ -74,6 +76,7 @@ ShellRoot {
         NotifHistory.unread,
         NotifHistory.groups,
         NotifHistory.criticals,
+        Notifs.criticals,
         NotifHistory.bucket([]),
         ControlState.opened,
         PowerAction.values,
@@ -125,6 +128,20 @@ ShellRoot {
         ShotState.actions,
         ShotState.dir,
         ShotState.results,
+        ShareState.tabs,
+        ShareState.screens,
+        ShareState.current,
+        ShareState.parse("7[HC>]kitty[HT>]fish[HE>]93824992236544[HA>]"),
+        ShareState.selection("screen:DP-1"),
+        ShareSource.values,
+        Xdph.entryEnd,
+        Commands.shareReply,
+        Commands.shareRegion,
+        Appearance.share.resolutionTemplate,
+        Icons.shareTitle,
+        Icons.shareScreen,
+        Icons.shareWindow,
+        Icons.shareRegion,
         Appearance.shot.captureDelay,
         Appearance.shot.fileFormat,
         Appearance.shot.placeholder,
@@ -242,6 +259,7 @@ ShellRoot {
                     })
             }
             Password {}
+            Criticals {}
             Identity {}
             Connectivity {}
             MediaChip {}
@@ -271,6 +289,20 @@ ShellRoot {
             ShotEntry {
                 entry: ShotState.actions[0]
                 selected: false
+            }
+            Share {}
+            SharePanel {}
+            ShareHeader {}
+            ShareKeys {}
+            ShareGrid {}
+            ShareActions {}
+            ShareButton {
+                label: ""
+            }
+            ShareTile {
+                entry: ShareState.screens[0]
+                selected: false
+                live: false
             }
         }
     }

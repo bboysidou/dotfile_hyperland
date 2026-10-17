@@ -101,6 +101,7 @@ Scope {
                     onAccepted: root.submit()
                     onCancelled: root.cancel()
                     onBackspaced: root.buffer = root.buffer.slice(0, -1)
+                    onCleared: root.buffer = ""
                     onAppended: text => root.buffer += text
                 }
             }

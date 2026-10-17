@@ -68,13 +68,26 @@ ColumnLayout {
             font.pixelSize: Appearance.polkit.bodySize
         }
 
-        DotField {
-            anchors.centerIn: parent
+        Item {
+            id: viewport
 
-            visible: root.buffer.length > 0
-            count: root.buffer.length
-            dotSize: Appearance.polkit.dotSize
-            dotSpacing: Appearance.polkit.dotSpacing
+            anchors.fill: parent
+            anchors.leftMargin: Appearance.polkit.fieldPaddingH
+            anchors.rightMargin: Appearance.polkit.fieldPaddingH
+
+            clip: true
+
+            DotField {
+                id: dots
+
+                anchors.verticalCenter: parent.verticalCenter
+                x: Math.min((viewport.width - dots.width) / 2, viewport.width - dots.width)
+
+                visible: root.buffer.length > 0
+                count: root.buffer.length
+                dotSize: Appearance.polkit.dotSize
+                dotSpacing: Appearance.polkit.dotSpacing
+            }
         }
     }
 

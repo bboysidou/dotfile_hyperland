@@ -40,4 +40,7 @@ Singleton {
     readonly property string shotFullscreen: 'mkdir -p "%1" && sleep %3 && grim "%1/%2" && %4'
     readonly property string shotNotify: 'act=$(notify-send -c "%5" -h "string:image-path:%1" -A "show=%4" -w "%2" "%3") && [ "$act" = show ] && dbus-send --session --type=method_call --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"file://%1" string:""'
     readonly property string shotOcr: 'img=$(mktemp --suffix=.png) && grim -g "$(slurp)" "$img" && text=$(tesseract "$img" - -l eng 2>/dev/null) && rm -f "$img" && printf "%s" "$text" | wl-copy && notify-send "OCR complete" "$text"'
+
+    readonly property var shareRegion: ["slurp", "-f", "%o %x %y %w %h"]
+    readonly property string shareReply: '[ -p "$2" ] && printf "%s\\n" "$1" > "$2"'
 }

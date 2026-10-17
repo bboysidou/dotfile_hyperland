@@ -6,6 +6,7 @@ Item {
     signal accepted
     signal cancelled
     signal backspaced
+    signal cleared
     signal appended(string text)
 
     focus: true
@@ -17,6 +18,8 @@ Item {
             root.accepted();
         else if (event.key === Qt.Key_Escape)
             root.cancelled();
+        else if (event.key === Qt.Key_Backspace && (event.modifiers & Qt.ControlModifier))
+            root.cleared();
         else if (event.key === Qt.Key_Backspace)
             root.backspaced();
         else if (event.text.length > 0)

@@ -13,6 +13,7 @@ Item {
     id: root
 
     required property Notif modelData
+    property bool interactive: true
 
     readonly property color tint: modelData.critical ? Colours.urgencyCritical : Colours.textMuted
     readonly property string glyph: modelData.critical ? Icons.notifCritical : Icons.notifNormal
@@ -95,6 +96,7 @@ Item {
         MouseArea {
             anchors.fill: parent
 
+            enabled: root.interactive
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
             hoverEnabled: true
 
@@ -194,7 +196,7 @@ Item {
                 }
 
                 RowLayout {
-                    visible: root.modelData.buttons.length > 0
+                    visible: root.interactive && root.modelData.buttons.length > 0
 
                     Layout.topMargin: Appearance.padding.tiny
                     spacing: Appearance.notif.actionSpacing
