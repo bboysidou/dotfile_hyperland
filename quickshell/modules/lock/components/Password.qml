@@ -136,13 +136,24 @@ Column {
             font.italic: true
         }
 
-        DotField {
-            id: dots
+        Item {
+            id: viewport
 
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.leftMargin: Appearance.lock.fieldPaddingH
+            anchors.rightMargin: Appearance.lock.fieldPaddingH
 
-            visible: Lock.buffer.length > 0
-            count: Lock.buffer.length
+            clip: true
+
+            DotField {
+                id: dots
+
+                anchors.verticalCenter: parent.verticalCenter
+                x: Math.min((viewport.width - dots.width) / 2, viewport.width - dots.width)
+
+                visible: Lock.buffer.length > 0
+                count: Lock.buffer.length
+            }
         }
     }
 

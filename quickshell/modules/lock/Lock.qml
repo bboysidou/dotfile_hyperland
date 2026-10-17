@@ -136,6 +136,13 @@ Scope {
                     anchors.leftMargin: Appearance.lock.edgeMargin
                 }
 
+                Criticals {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.topMargin: Appearance.lock.edgeMargin
+                    anchors.rightMargin: Appearance.lock.edgeMargin
+                }
+
                 Column {
                     anchors.centerIn: parent
 
@@ -183,6 +190,7 @@ Scope {
                 onAccepted: Lock.authenticate()
                 onCancelled: Lock.reset()
                 onBackspaced: Lock.backspace()
+                onCleared: Lock.clear()
                 onAppended: text => Lock.append(text)
             }
 

@@ -13,6 +13,7 @@ import qs.modules.dashboard
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
+import qs.modules.share
 import qs.modules.updates
 
 PanelWindow {
@@ -67,6 +68,9 @@ PanelWindow {
         Region {
             item: hardware.revealed ? hardware : null
         }
+        Region {
+            item: share.revealed ? share : null
+        }
     }
 
     Behavior on revealed {
@@ -84,6 +88,7 @@ PanelWindow {
             ControlState.hide();
             DashState.hide();
             HardwareState.hide();
+            ShareState.dismiss();
         }
     }
 
@@ -143,6 +148,15 @@ PanelWindow {
             revealed: root.focused && ShotState.opened
 
             onDismissed: BorderState.closeAll()
+        }
+
+        SharePanel {
+            id: share
+
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            revealed: root.focused && ShareState.opened
         }
 
         AudioPanel {
