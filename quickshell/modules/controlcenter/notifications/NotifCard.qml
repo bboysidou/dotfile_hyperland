@@ -99,6 +99,7 @@ StyledRect {
 
                     visible: root.group.image.length > 0
                     source: root.group.image
+                    asynchronous: true
                 }
 
                 Icon {

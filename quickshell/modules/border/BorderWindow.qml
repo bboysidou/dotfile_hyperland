@@ -45,31 +45,31 @@ PanelWindow {
             item: bar.visible ? bar : null
         }
         Region {
-            item: launcher.revealed ? launcher : null
+            item: launcher.item?.revealed ? launcher.item : null
         }
         Region {
-            item: audio.revealed ? audio : null
+            item: audio.item?.revealed ? audio.item : null
         }
         Region {
-            item: network.revealed ? network : null
+            item: network.item?.revealed ? network.item : null
         }
         Region {
-            item: bluetooth.revealed ? bluetooth : null
+            item: bluetooth.item?.revealed ? bluetooth.item : null
         }
         Region {
-            item: notifications.revealed ? notifications : null
+            item: notifications.item?.revealed ? notifications.item : null
         }
         Region {
-            item: dashboard.revealed ? dashboard : null
+            item: dashboard.item?.revealed ? dashboard.item : null
         }
         Region {
-            item: updates.revealed ? updates : null
+            item: updates.item?.revealed ? updates.item : null
         }
         Region {
-            item: hardware.revealed ? hardware : null
+            item: hardware.item?.revealed ? hardware.item : null
         }
         Region {
-            item: share.revealed ? share : null
+            item: share.item?.revealed ? share.item : null
         }
     }
 
@@ -128,104 +128,124 @@ PanelWindow {
 
         Keys.onEscapePressed: BorderState.closeAll()
 
-        LauncherPanel {
+        PanelSlot {
             id: launcher
 
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            open: root.focused && LauncherState.opened
 
-            revealed: root.focused && LauncherState.opened
+            LauncherPanel {
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
 
-            onDismissed: BorderState.closeAll()
+                onDismissed: BorderState.closeAll()
+            }
         }
 
-        ShotPanel {
+        PanelSlot {
             id: screenshot
 
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            open: root.focused && ShotState.opened
 
-            revealed: root.focused && ShotState.opened
+            ShotPanel {
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
 
-            onDismissed: BorderState.closeAll()
+                onDismissed: BorderState.closeAll()
+            }
         }
 
-        SharePanel {
+        PanelSlot {
             id: share
 
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            open: root.focused && ShareState.opened
 
-            revealed: root.focused && ShareState.opened
+            SharePanel {
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
 
-        AudioPanel {
+        PanelSlot {
             id: audio
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && ControlState.opened && ControlState.section === ControlSection.audio
 
-            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.audio
+            AudioPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        NetworkPanel {
+        PanelSlot {
             id: network
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && ControlState.opened && ControlState.section === ControlSection.network
 
-            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.network
+            NetworkPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        BluetoothPanel {
+        PanelSlot {
             id: bluetooth
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && ControlState.opened && ControlState.section === ControlSection.bluetooth
 
-            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.bluetooth
+            BluetoothPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        NotifPanel {
+        PanelSlot {
             id: notifications
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && ControlState.opened && ControlState.section === ControlSection.notifications
 
-            revealed: root.focused && ControlState.opened && ControlState.section === ControlSection.notifications
+            NotifPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        UpdatesPanel {
+        PanelSlot {
             id: updates
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && UpdatesState.opened
 
-            revealed: root.focused && UpdatesState.opened
+            UpdatesPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        HardwarePanel {
+        PanelSlot {
             id: hardware
 
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            open: root.focused && HardwareState.opened
 
-            revealed: root.focused && HardwareState.opened
+            HardwarePanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
         }
 
-        DashboardPanel {
+        PanelSlot {
             id: dashboard
 
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
+            open: root.focused && DashState.opened
 
-            revealed: root.focused && DashState.opened
+            DashboardPanel {
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
     }
 }

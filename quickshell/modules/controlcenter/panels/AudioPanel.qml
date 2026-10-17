@@ -6,13 +6,14 @@ import qs.core.components
 import qs.core.config
 import qs.core.enums
 import qs.core.helpers
+import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.services
 
 Panel {
     id: root
 
-    property string section: AudioSection.outputs
+    readonly property string section: ControlState.audioSection
     property real introHeader: 0
     property real introContent: 0
 
@@ -76,7 +77,7 @@ Panel {
 
     function step(delta: int): void {
         const values = AudioSection.values;
-        root.section = values[Num.wrap(values.indexOf(root.section), delta, values.length)];
+        ControlState.audioSection = values[Num.wrap(values.indexOf(root.section), delta, values.length)];
     }
 
     onRevealedChanged: {
@@ -179,7 +180,7 @@ Panel {
                 y: Appearance.audioPanel.introHeaderLift * (1 - root.introHeader)
             }
 
-            onSelected: key => root.section = key
+            onSelected: key => ControlState.audioSection = key
         }
     }
 
