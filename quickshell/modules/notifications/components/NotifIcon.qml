@@ -23,6 +23,7 @@ Item {
 
         visible: root.hasImage
         source: root.popup.iconSource
+        asynchronous: true
     }
 
     Icon {
