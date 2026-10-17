@@ -74,13 +74,17 @@ Singleton {
         capture.restart();
     }
 
+    function notify(file: string, label: string): string {
+        return Commands.shotNotify.arg(`${root.dir}/${file}`).arg(Appearance.shot.notifyTitle).arg(`${label}\n${file}`).arg(Appearance.shot.showInFolderLabel).arg(Appearance.notif.previewCategory);
+    }
+
     function run(action: string): void {
         const file = Qt.formatDateTime(new Date(), Appearance.shot.fileFormat);
 
         if (action === ShotAction.region)
-            Quickshell.execDetached(["sh", "-c", Commands.shotRegion.arg(root.dir).arg(file)]);
+            Quickshell.execDetached(["sh", "-c", Commands.shotRegion.arg(root.dir).arg(file).arg(root.notify(file, Appearance.shot.regionLabel))]);
         else if (action === ShotAction.fullscreen)
-            Quickshell.execDetached(["sh", "-c", Commands.shotFullscreen.arg(root.dir).arg(file).arg(Appearance.shot.fullscreenDelay)]);
+            Quickshell.execDetached(["sh", "-c", Commands.shotFullscreen.arg(root.dir).arg(file).arg(Appearance.shot.fullscreenDelay).arg(root.notify(file, Appearance.shot.fullscreenLabel))]);
         else if (action === ShotAction.ocr)
             Quickshell.execDetached(["sh", "-c", Commands.shotOcr]);
     }

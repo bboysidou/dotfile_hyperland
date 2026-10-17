@@ -90,6 +90,11 @@ RowLayout {
                 delegate: CpuPill {}
             }
             DelegateChoice {
+                roleValue: BarEntry.gpu
+
+                delegate: GpuPill {}
+            }
+            DelegateChoice {
                 roleValue: BarEntry.memory
 
                 delegate: MemoryPill {}

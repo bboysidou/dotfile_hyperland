@@ -7,7 +7,8 @@ makes the feature that uses it fail silently, so install them before running.
 sudo pacman -S --needed \
     networkmanager iw brightnessctl \
     grim slurp tesseract tesseract-data-eng wl-clipboard libnotify \
-    pacman-contrib btop htop kitty
+    pacman-contrib btop htop kitty \
+    curl cava libpulse
 
 # AUR
 yay -S solaar
@@ -30,9 +31,31 @@ yay -S solaar
 | `kitty` | `kitty` | terminal launcher for the above |
 | `solaar` | `solaar` (AUR) | mouse battery settings launcher |
 | `zen-browser` | `zen-browser-bin` (AUR) | calendar launcher |
+| `curl` | `curl` | `Geo` — IP location and place search; `Notif` — browser favicons |
+| `cava` | `cava` | `Cava` — media visualiser bars |
+| `paplay` | `libpulse` | `NotifSound` — notification sound |
+| `nvtop` | `nvtop` | hardware sheet — GPU monitor launcher |
+| `lspci` | `pciutils` | `GpuStats` — GPU model name |
+| `top`, `find`, `xargs`, `awk` | `procps-ng`, `findutils`, `gawk` | `CpuStats` / `GpuStats` — top processes |
+| `dmidecode` | `dmidecode` | `qs-hwinfo` helper — DIMM details (runs as root) |
 
 Everything else the shell calls (`cat`, `ls`, `uname`, `timeout`, `systemctl`,
 `pacman`, `rfkill`) ships with a base Arch install.
+
+## Root helper
+
+`system/qs-hwinfo` + `system/qs-hwinfo.service` publish two root-only readings to
+`/run/qs-hw/`: `dimms.tsv` (`dmidecode -t memory`, once at boot) and `cpu_power`
+(RAPL package energy, rounded to whole watts every 2 s — never the raw
+`energy_uj` counter, which is root-only because of CVE-2020-8694). Install:
+
+```
+sudo install -Dm755 system/qs-hwinfo /usr/local/bin/qs-hwinfo
+sudo install -Dm644 system/qs-hwinfo.service /etc/systemd/system/qs-hwinfo.service
+sudo systemctl daemon-reload && sudo systemctl enable --now qs-hwinfo
+```
+
+Without it the CPU power row shows a dash and the memory sheet lists no modules.
 
 ## Degradation
 

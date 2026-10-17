@@ -106,6 +106,7 @@ ColumnLayout {
         Layout.topMargin: Appearance.dash.cardSpacing
 
         value: Players.progress
+        thickness: Appearance.slider.largeThickness
         enabled: Players.canSeek
 
         onMoved: value => Players.seek(value)

@@ -18,6 +18,7 @@ Card {
         Layout.alignment: Qt.AlignHCenter
 
         size: Appearance.dash.resourceGaugeSize
+        strokeWidth: Appearance.dash.resourceGaugeSize * Appearance.gauge.thickStrokeRatio
         secondarySize: Appearance.dash.cardLabelSize
         value: fraction
         secondaryValue: fraction

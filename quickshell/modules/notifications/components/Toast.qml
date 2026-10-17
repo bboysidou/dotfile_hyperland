@@ -2,13 +2,14 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Widgets
 import qs.core.components
 import qs.core.config
 import qs.core.enums
 import qs.core.helpers
 import qs.services
 
-Rectangle {
+Item {
     id: root
 
     required property Notif modelData
@@ -17,14 +18,42 @@ Rectangle {
     readonly property string glyph: modelData.critical ? Icons.notifCritical : Icons.notifNormal
     readonly property bool aged: Time.now.getTime() - modelData.created >= Appearance.notif.ageThreshold * 1000
 
+    readonly property bool timed: !root.modelData.critical && root.modelData.timeout > 0
+    readonly property int timerReserve: root.timed ? Appearance.notif.timerThickness + Appearance.notif.timerMargin : 0
+
+    readonly property bool present: root.grown && !root.modelData.closing
+    readonly property bool collapsed: root.modelData.closing && card.opacity === 0
+
     property bool entered
+    property bool grown
+    property real progress: 1
+
+    function sync(): void {
+        countdown.stop();
+
+        const span = root.modelData.armedFor;
+        if (span <= 0) {
+            root.progress = 1;
+            return;
+        }
+
+        const left = Math.max(0, span - (Date.now() - root.modelData.armedAt));
+        countdown.from = left / span;
+        countdown.duration = left;
+        countdown.restart();
+    }
 
     Layout.fillWidth: true
 
     implicitWidth: Num.clamp(layout.implicitWidth + Appearance.notif.paddingH * 2, Appearance.notif.widthMin, Appearance.notif.widthMax)
-    readonly property int contentHeight: Num.clamp(layout.implicitHeight + Appearance.notif.paddingV * 2, Appearance.notif.heightMin, Appearance.notif.heightMax)
+    readonly property int contentHeight: Num.clamp(layout.implicitHeight + Appearance.notif.paddingV * 2 + root.timerReserve, Appearance.notif.heightMin, Appearance.notif.heightMax)
 
-    implicitHeight: root.entered && !root.modelData.closing ? root.contentHeight : 0
+    implicitHeight: root.entered && !root.collapsed ? root.contentHeight : 0
+
+    onImplicitHeightChanged: {
+        if (root.entered && root.implicitHeight >= root.contentHeight)
+            root.grown = true;
+    }
 
     Behavior on implicitHeight {
         Anim {
@@ -32,129 +61,196 @@ Rectangle {
         }
     }
 
-    color: root.modelData.critical ? Colours.criticalSurface : Colours.pill
-    radius: Appearance.notif.rounding
-    antialiasing: true
-    clip: true
+    Rectangle {
+        id: card
 
-    opacity: root.entered && !root.modelData.closing ? 1 : 0
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: root.contentHeight
 
-    transform: Translate {
-        x: root.entered && !root.modelData.closing ? 0 : Appearance.notif.slideDistance
+        color: root.modelData.critical ? Colours.criticalSurface : Colours.pill
+        radius: Appearance.notif.rounding
+        antialiasing: true
+        clip: true
 
-        Behavior on x {
-            Anim {
-                type: AnimType.fastSpatial
+        opacity: root.present ? 1 : 0
+
+        transform: Translate {
+            x: root.present ? 0 : Appearance.notif.slideDistance
+
+            Behavior on x {
+                Anim {
+                    type: AnimType.fastSpatial
+                }
             }
         }
-    }
 
-    Behavior on opacity {
-        Anim {
-            type: AnimType.defaultEffects
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
-        hoverEnabled: true
-
-        onEntered: root.modelData.hold(true)
-        onExited: root.modelData.hold(false)
-
-        onClicked: event => {
-            if (event.button === Qt.RightButton)
-                Notifs.dismissAll();
-            else if (event.button === Qt.MiddleButton && root.modelData.defaultAction)
-                root.modelData.invoke(root.modelData.defaultAction);
-            else
-                root.modelData.notification?.dismiss();
-        }
-    }
-
-    RowLayout {
-        id: layout
-
-        anchors.fill: parent
-        anchors.leftMargin: Appearance.notif.paddingH
-        anchors.rightMargin: Appearance.notif.paddingH
-        anchors.topMargin: Appearance.notif.paddingV
-        anchors.bottomMargin: Appearance.notif.paddingV
-
-        spacing: Appearance.notif.iconSpacing
-
-        NotifIcon {
-            Layout.alignment: Qt.AlignTop
-
-            popup: root.modelData
-            tint: root.tint
-            glyph: root.glyph
+        Behavior on opacity {
+            Anim {
+                type: AnimType.fastEffects
+            }
         }
 
-        ColumnLayout {
-            Layout.fillWidth: true
+        MouseArea {
+            anchors.fill: parent
 
-            spacing: Appearance.padding.tiny
+            acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+            hoverEnabled: true
 
-            RowLayout {
+            onEntered: root.modelData.hold(true)
+            onExited: root.modelData.hold(false)
+
+            onClicked: event => {
+                if (event.button === Qt.RightButton)
+                    Notifs.dismissAll();
+                else if (event.button === Qt.MiddleButton && root.modelData.defaultAction)
+                    root.modelData.invoke(root.modelData.defaultAction);
+                else
+                    root.modelData.notification?.dismiss();
+            }
+        }
+
+        RowLayout {
+            id: layout
+
+            anchors.fill: parent
+            anchors.leftMargin: Appearance.notif.paddingH
+            anchors.rightMargin: Appearance.notif.paddingH
+            anchors.topMargin: Appearance.notif.paddingV
+            anchors.bottomMargin: Appearance.notif.paddingV + root.timerReserve
+
+            spacing: Appearance.notif.iconSpacing
+
+            NotifIcon {
+                Layout.alignment: Qt.AlignTop
+
+                popup: root.modelData
+                tint: root.tint
+                glyph: root.glyph
+            }
+
+            ColumnLayout {
                 Layout.fillWidth: true
 
-                spacing: Appearance.spacing.small
+                spacing: Appearance.padding.tiny
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    spacing: Appearance.spacing.small
+
+                    StyledText {
+                        Layout.fillWidth: true
+
+                        text: root.modelData.summary
+                        color: root.modelData.critical ? Colours.urgencyCritical : Colours.textBright
+                        font.weight: Appearance.font.weightActive
+                        elide: Text.ElideRight
+                    }
+
+                    StyledText {
+                        visible: root.aged
+
+                        text: Fmt.age(root.modelData.created, Time.now)
+                        color: Colours.textMuted
+                        font.pixelSize: Appearance.font.size.tiny
+                        font.weight: Appearance.font.weightIcon
+                    }
+                }
 
                 StyledText {
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-                    text: root.modelData.summary
-                    color: root.modelData.critical ? Colours.urgencyCritical : Colours.textBright
-                    font.weight: Appearance.font.weightActive
+                    visible: text !== ""
+                    text: Fmt.markup(root.modelData.body)
+                    textFormat: Text.StyledText
+                    color: Colours.text
+                    font.weight: Appearance.font.weightIcon
+                    wrapMode: Text.Wrap
+                    verticalAlignment: Text.AlignTop
                     elide: Text.ElideRight
                 }
 
-                StyledText {
-                    visible: root.aged
+                ClippingRectangle {
+                    Layout.fillWidth: true
+                    Layout.topMargin: Appearance.padding.tiny
 
-                    text: Fmt.age(root.modelData.created, Time.now)
-                    color: Colours.textMuted
-                    font.pixelSize: Appearance.font.size.tiny
-                    font.weight: Appearance.font.weightIcon
+                    visible: root.modelData.preview !== ""
+                    implicitHeight: Appearance.notif.previewHeight
+
+                    color: Colours.trough
+                    radius: Appearance.notif.previewRounding
+
+                    Image {
+                        anchors.fill: parent
+
+                        source: root.modelData.preview
+                        fillMode: Image.PreserveAspectCrop
+                        asynchronous: true
+                        sourceSize.width: Appearance.notif.previewSourceWidth
+                    }
                 }
-            }
 
-            StyledText {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                RowLayout {
+                    visible: root.modelData.buttons.length > 0
 
-                visible: text !== ""
-                text: Fmt.markup(root.modelData.body)
-                textFormat: Text.StyledText
-                color: Colours.text
-                font.weight: Appearance.font.weightIcon
-                wrapMode: Text.Wrap
-                verticalAlignment: Text.AlignTop
-                elide: Text.ElideRight
-            }
+                    Layout.topMargin: Appearance.padding.tiny
+                    spacing: Appearance.notif.actionSpacing
 
-            RowLayout {
-                visible: root.modelData.buttons.length > 0
+                    Repeater {
+                        model: root.modelData.buttons
 
-                Layout.topMargin: Appearance.padding.tiny
-                spacing: Appearance.notif.actionSpacing
+                        NotifAction {
+                            required property var modelData
 
-                Repeater {
-                    model: root.modelData.buttons
-
-                    NotifAction {
-                        required property var modelData
-
-                        popup: root.modelData
-                        action: modelData
+                            popup: root.modelData
+                            action: modelData
+                        }
                     }
                 }
             }
         }
+
+        Meter {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: Appearance.notif.paddingH
+            anchors.rightMargin: Appearance.notif.paddingH
+            anchors.bottomMargin: Appearance.notif.timerMargin
+
+            visible: root.timed
+            thickness: Appearance.notif.timerThickness
+            minFill: 0
+            value: root.progress
+            fillColour: Colours.accent
+        }
     }
 
-    Component.onCompleted: root.entered = true
+    NumberAnimation {
+        id: countdown
+
+        target: root
+        property: "progress"
+        to: 0
+    }
+
+    Connections {
+        target: root.modelData
+
+        function onArmedAtChanged(): void {
+            root.sync();
+        }
+
+        function onArmedForChanged(): void {
+            root.sync();
+        }
+    }
+
+    Component.onCompleted: {
+        root.entered = true;
+        root.sync();
+    }
 }

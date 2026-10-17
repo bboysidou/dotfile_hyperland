@@ -1,0 +1,46 @@
+#!/bin/sh
+set -eu
+
+OUT="${RUNTIME_DIRECTORY:-/run/qs-hw}"
+RAPL=/sys/class/powercap/intel-rapl:0
+INTERVAL=2
+MICRO=1000000
+
+publish() {
+    printf '%s\n' "$2" > "$OUT/$1.tmp"
+    mv -f "$OUT/$1.tmp" "$OUT/$1"
+}
+
+dimms() {
+    dmidecode -t memory | awk -F': ' '
+        function flush() {
+            if (size ~ /^[0-9]/)
+                printf "%s\t%s\t%s\t%s\n", loc, size, type, (configured != "" ? configured : speed)
+            loc = size = type = speed = configured = ""
+        }
+        /^Memory Device/ { flush(); next }
+        { sub(/^[ \t]+/, "") }
+        $1 == "Locator" { loc = $2 }
+        $1 == "Size" { size = $2 }
+        $1 == "Type" { type = $2 }
+        $1 == "Speed" { speed = $2 }
+        $1 == "Configured Memory Speed" { configured = $2 }
+        END { flush() }'
+}
+
+umask 022
+mkdir -p "$OUT"
+publish dimms.tsv "$(dimms)"
+
+[ -r "$RAPL/energy_uj" ] || exit 0
+
+range=$(cat "$RAPL/max_energy_range_uj")
+prev=$(cat "$RAPL/energy_uj")
+
+while sleep "$INTERVAL"; do
+    now=$(cat "$RAPL/energy_uj")
+    delta=$((now - prev))
+    [ "$delta" -lt 0 ] && delta=$((delta + range))
+    prev=$now
+    publish cpu_power $(((delta / INTERVAL + MICRO / 2) / MICRO))
+done
