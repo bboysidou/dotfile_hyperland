@@ -7,6 +7,7 @@ import qs.core.components
 import qs.core.config
 import qs.core.enums
 import qs.modules.controlcenter
+import qs.modules.hardware
 import qs.modules.notifications.components
 import qs.services
 
@@ -18,7 +19,7 @@ Variants {
     FocusedPanel {
         id: panel
 
-        shown: Notifs.stack.length > 0 && !ControlState.opened
+        shown: Notifs.stack.length > 0 && !ControlState.opened && !HardwareState.opened
 
         exclusiveZone: 0
 
@@ -40,19 +41,22 @@ Variants {
             anchors.top: parent.top
             anchors.right: parent.right
 
+            readonly property real presence: Math.min(1, column.implicitHeight / Appearance.border.fillet)
+
             implicitWidth: column.implicitWidth + Appearance.notif.stackPadding * 2
-            implicitHeight: column.implicitHeight + Appearance.notif.stackPadding * 2
+            implicitHeight: column.implicitHeight + Appearance.notif.stackPadding * 2 * stack.presence
 
             color: Colours.bar
             topLeftRadius: 0
             topRightRadius: 0
             bottomRightRadius: 0
-            bottomLeftRadius: Appearance.border.rounding
+            bottomLeftRadius: Appearance.border.rounding * stack.presence
 
             Fillet {
                 anchors.right: parent.left
                 anchors.top: parent.top
 
+                size: Appearance.border.fillet * stack.presence
                 origin: Corner.bottomLeft
             }
 
@@ -60,6 +64,7 @@ Variants {
                 anchors.right: parent.right
                 anchors.top: parent.bottom
 
+                size: Appearance.border.fillet * stack.presence
                 origin: Corner.bottomLeft
             }
 

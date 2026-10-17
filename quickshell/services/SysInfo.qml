@@ -15,6 +15,9 @@ Singleton {
     property int memPercent: 0
     property real memUsedKb: 0
     property real memTotalKb: 0
+    property real memCachedKb: 0
+    property real memBuffersKb: 0
+    property real memFreeKb: 0
     property real swapUsedKb: 0
     property real swapTotalKb: 0
 
@@ -74,6 +77,9 @@ Singleton {
 
         root.memTotalKb = total;
         root.memUsedKb = total - read("MemAvailable");
+        root.memCachedKb = read("Cached") + read("SReclaimable");
+        root.memBuffersKb = read("Buffers");
+        root.memFreeKb = read("MemFree");
         root.swapTotalKb = read("SwapTotal");
         root.swapUsedKb = root.swapTotalKb - read("SwapFree");
         root.memPercent = Num.toPercent(Appearance.scale.percent * root.memUsedKb / total);

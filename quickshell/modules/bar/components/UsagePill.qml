@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import Quickshell
 import qs.core.components
 import qs.core.config
+import qs.core.helpers
+import qs.modules.hardware
 
 Pill {
     id: root
@@ -10,29 +12,19 @@ Pill {
     required property string glyph
     required property int percent
     required property color ringColour
+    required property string section
     property var launchCommand: []
 
-    readonly property color stateColour: {
-        if (percent >= Appearance.bar.usageCritical)
-            return Colours.critical;
-        if (percent >= Appearance.bar.usageWarning)
-            return Colours.warning;
-        return Colours.text;
-    }
-
-    readonly property color stateRingColour: {
-        if (percent >= Appearance.bar.usageCritical)
-            return Colours.critical;
-        if (percent >= Appearance.bar.usageWarning)
-            return Colours.warning;
-        return ringColour;
-    }
+    readonly property color stateColour: Tone.usage(root.percent, Colours.text)
+    readonly property color stateRingColour: Tone.usage(root.percent, root.ringColour)
 
     Layout.rightMargin: Appearance.bar.pillMarginRight
 
-    interactive: root.launchCommand.length > 0
+    interactive: true
+    secondary: root.launchCommand.length > 0
 
-    onClicked: Quickshell.execDetached(root.launchCommand)
+    onClicked: HardwareState.toggle(root.section)
+    onSecondaryClicked: Quickshell.execDetached(root.launchCommand)
 
     Icon {
         text: root.glyph

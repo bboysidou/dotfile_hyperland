@@ -9,6 +9,7 @@ import qs.core.config
 import qs.core.enums
 import qs.core.helpers
 import qs.modules.controlcenter
+import qs.modules.hardware
 import qs.modules.osd.components
 import qs.services
 
@@ -31,7 +32,11 @@ Scope {
 
             anchors.right: true
 
-            margins.right: ControlState.opened ? Appearance.control.width : 0
+            margins.right: {
+                if (HardwareState.opened)
+                    return Appearance.hardware.width;
+                return ControlState.opened ? Appearance.control.width : 0;
+            }
 
             implicitWidth: Math.max(1, card.implicitWidth)
             implicitHeight: Math.max(1, card.implicitHeight + Appearance.border.fillet * 2)

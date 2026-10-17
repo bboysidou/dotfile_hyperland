@@ -46,6 +46,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignVCenter
 
                     size: Appearance.dash.gaugeSizeSide
+                    strokeWidth: Appearance.dash.gaugeSizeSide * Appearance.gauge.thickStrokeRatio
                     value: root.memFraction
                     secondaryValue: SysInfo.memPercent / Appearance.scale.percent
                     primary: Fmt.gbFromKb(SysInfo.memUsedKb)
@@ -59,6 +60,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignVCenter
 
                     size: Appearance.dash.gaugeSizeMain
+                    strokeWidth: Appearance.dash.gaugeSizeMain * Appearance.gauge.thickStrokeRatio
                     value: Num.clamp(SysInfo.cpuTemp / Appearance.dash.cpuTempMax, 0, 1)
                     secondaryValue: SysInfo.cpuPercent / Appearance.scale.percent
                     primary: SysInfo.cpuTemp > 0 ? Appearance.dash.tempTemplate.arg(Math.round(SysInfo.cpuTemp)) : Appearance.dash.labelNoTemp
@@ -72,6 +74,7 @@ ColumnLayout {
                     Layout.alignment: Qt.AlignVCenter
 
                     size: Appearance.dash.gaugeSizeSide
+                    strokeWidth: Appearance.dash.gaugeSizeSide * Appearance.gauge.thickStrokeRatio
                     value: root.disk?.fraction ?? 0
                     secondaryValue: root.disk?.fraction ?? 0
                     primary: root.disk ? Fmt.gb(root.disk.size) : Appearance.dash.labelNoTemp

@@ -94,6 +94,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter
 
                 value: root.percent / Appearance.audio.max
+                thickness: Appearance.slider.largeThickness
                 fillColour: root.muted ? Colours.textMuted : root.accent
 
                 onMoved: value => Audio.setNodeVolume(root.node, Math.round(value * Appearance.audio.max))

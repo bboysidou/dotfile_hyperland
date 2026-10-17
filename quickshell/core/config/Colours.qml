@@ -70,6 +70,11 @@ Singleton {
     readonly property color criticalSurface: blend(pill, raw.critical, criticalTint)
     readonly property color cpu: raw.accent
     readonly property color memory: raw.green
+    readonly property color gpu: raw.magenta
+    readonly property color memoryCached: raw.yellow
+    readonly property color memoryBuffers: raw.blue
+    readonly property color substrate: raw.yellow
+    readonly property color circuit: raw.green
     readonly property color gauge: shade(raw.fg, 0.78)
     readonly property color swap: raw.magenta
     readonly property color storage: raw.yellow

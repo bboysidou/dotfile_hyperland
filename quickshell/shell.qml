@@ -1,13 +1,14 @@
 //@ pragma UseQApplication
 //@ pragma DefaultEnv QS_NO_RELOAD_POPUP=1
 //@ pragma DefaultEnv QSG_RENDER_LOOP=threaded
-//@ pragma IconTheme FairyWren_Dark_black
+//@ pragma IconTheme kora-robot
 
 import Quickshell
 import qs.modules.background
 import qs.modules.border
 import qs.modules.controlcenter
 import qs.modules.dashboard
+import qs.modules.hardware
 import qs.modules.keybinds
 import qs.modules.launcher
 import qs.modules.lock
@@ -30,6 +31,7 @@ ShellRoot {
     Border {}
     ControlCenter {}
     Dashboard {}
+    HardwareCenter {}
     KeybindSheet {}
     Launcher {}
     Lock {}

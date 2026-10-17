@@ -10,6 +10,7 @@ import qs.modules.controlcenter
 import qs.modules.controlcenter.panels
 import qs.modules.bar
 import qs.modules.dashboard
+import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
 import qs.modules.updates
@@ -63,6 +64,9 @@ PanelWindow {
         Region {
             item: updates.revealed ? updates : null
         }
+        Region {
+            item: hardware.revealed ? hardware : null
+        }
     }
 
     Behavior on revealed {
@@ -79,6 +83,7 @@ PanelWindow {
             LauncherState.hide();
             ControlState.hide();
             DashState.hide();
+            HardwareState.hide();
         }
     }
 
@@ -188,6 +193,16 @@ PanelWindow {
             anchors.bottom: parent.bottom
 
             revealed: root.focused && UpdatesState.opened
+        }
+
+        HardwarePanel {
+            id: hardware
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            revealed: root.focused && HardwareState.opened
         }
 
         DashboardPanel {

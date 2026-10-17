@@ -13,6 +13,8 @@ x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 application/pdf=org.gnome.Evince.desktop
 image/jpeg=zen.desktop
+image/png=feh.desktop
+inode/directory=thunar.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
@@ -27,3 +29,4 @@ application/x-extension-xhtml=zen.desktop;
 application/x-extension-xht=zen.desktop;
 application/pdf=org.gnome.Evince.desktop;
 image/jpeg=org.gnome.Evince.desktop;zen.desktop;
+image/png=chromium.desktop;feh.desktop;

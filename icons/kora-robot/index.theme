@@ -1,0 +1,13 @@
+[Icon Theme]
+Name=Kora Robot
+Comment=Kora with Mr. Robot style folders
+Inherits=kora,breeze,hicolor
+Example=folder
+Directories=places/scalable
+
+[places/scalable]
+Context=Places
+Size=48
+MinSize=8
+MaxSize=512
+Type=Scalable

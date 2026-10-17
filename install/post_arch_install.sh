@@ -99,6 +99,18 @@ cp -v fonts/* "$HOME/.fonts/"
 fc-cache -f
 
 echo "============================================="
+echo "-----| INSTALL D-BUS SERVICE OVERRIDES |-----"
+echo "============================================="
+mkdir -p "$HOME/.local/share/dbus-1/services"
+cp -v dbus/*.service "$HOME/.local/share/dbus-1/services/"
+
+echo "============================================="
+echo "-----| INSTALL ICON THEMES |-----"
+echo "============================================="
+mkdir -p "$HOME/.local/share/icons"
+cp -r icons/. "$HOME/.local/share/icons/"
+
+echo "============================================="
 echo "-----| CONFIGURE DOCKER |-----"
 echo "============================================="
 sudo usermod -aG docker "$USER"

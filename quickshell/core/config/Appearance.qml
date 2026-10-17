@@ -141,6 +141,12 @@ Singleton {
         readonly property int length: 75
         readonly property int fillMin: 10
         readonly property real roundingRatio: 0.5
+        readonly property int largeThickness: 20
+        readonly property real trackRoundingRatio: 0.35
+        readonly property int handleWidth: 4
+        readonly property int handlePressedWidth: 2
+        readonly property int handleGap: 4
+        readonly property int handleOverhang: 3
     }
 
     component MarqueeConfig: QtObject {
@@ -202,13 +208,14 @@ Singleton {
         readonly property string clockFormat: "ddd, dd. MMM HH:mm"
         readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.updates, BarEntry.media]
         readonly property var entriesCentre: [BarEntry.worldClock, BarEntry.prayers]
-        readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.volume]
+        readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.volume]
     }
 
     component GaugeConfig: QtObject {
         readonly property int size: 152
 
         readonly property real strokeRatio: 0.066
+        readonly property real thickStrokeRatio: 0.09
         readonly property real spacingRatio: 0.04
         readonly property real valueRatio: 0.138
         readonly property real labelRatio: 0.079
@@ -409,11 +416,17 @@ Singleton {
         readonly property int timeoutLow: 3000
         readonly property int timeoutNormal: 3000
         readonly property int timeoutCritical: 0
+        readonly property int timerThickness: 3
+        readonly property int timerMargin: 8
         readonly property int ageThreshold: 60
         readonly property int slideDistance: 32
         readonly property int actionSpacing: 8
         readonly property int actionPaddingV: 4
         readonly property int actionPaddingH: 10
+        readonly property int previewHeight: 140
+        readonly property int previewRounding: 6
+        readonly property int previewSourceWidth: 1000
+        readonly property string previewCategory: "screenshot"
         readonly property int faviconTimeout: 5
         readonly property string faviconEndpoint: "https://icons.duckduckgo.com/ip2"
         readonly property string faviconCacheDir: "quickshell/favicons"
@@ -508,9 +521,13 @@ Singleton {
         readonly property int rowSpacing: 10
         readonly property int rowRounding: 10
         readonly property int iconSize: 18
-        readonly property int toggleWidth: 36
-        readonly property int toggleHeight: 18
-        readonly property int togglePadding: 2
+        readonly property int toggleWidth: 44
+        readonly property int toggleHeight: 24
+        readonly property int togglePadding: 3
+        readonly property int toggleThumbOff: 12
+        readonly property int togglePressedGrow: 2
+        readonly property int toggleBorderWidth: 2
+        readonly property int toggleIconSize: 12
         readonly property int focusBorderWidth: 1
         readonly property real disabledOpacity: 0.4
         readonly property int passwordPaddingV: 8
@@ -738,6 +755,149 @@ Singleton {
         readonly property string emptyAur: "No AUR updates"
     }
 
+    component HardwareConfig: QtObject {
+        readonly property int width: 430
+        readonly property real scaleFrom: 0.96
+        readonly property int headerHeight: 40
+        readonly property int headerSpacing: 10
+        readonly property int headerIconSize: 20
+        readonly property int actionSize: 18
+        readonly property int switchTopMargin: 10
+        readonly property int bodyTopMargin: 14
+        readonly property int blockSpacing: 18
+        readonly property int titleSize: 15
+        readonly property int titleRuleHeight: 1
+        readonly property real ruleOpacity: 0.35
+
+        readonly property int rowHeight: 24
+        readonly property int rowSpacing: 8
+        readonly property int rowIconWidth: 18
+        readonly property int listIndent: 10
+        readonly property int procNameWidth: 150
+        readonly property int procValueWidth: 92
+        readonly property int procMax: 3
+        readonly property real procSampleDelay: 0.5
+
+        readonly property int activePollInterval: 2000
+        readonly property int idlePollInterval: 10000
+        readonly property int procPollInterval: 3000
+        readonly property int coreAverageWindow: 600000
+        readonly property int coreAverageMax: 3
+
+        readonly property int cpuTempWarning: 70
+        readonly property int cpuTempCritical: 85
+        readonly property int gpuTempWarning: 75
+        readonly property int gpuTempCritical: 88
+        readonly property int khzPerMhz: 1000
+        readonly property int mhzPerGhz: 1000
+        readonly property int microPerUnit: 1000000
+        readonly property int milliPerUnit: 1000
+        readonly property int bytesPerMb: 1048576
+        readonly property int kbPerMb: 1024
+        readonly property int nsPerMs: 1000000
+
+        readonly property int artPadding: 18
+        readonly property int pinLength: 9
+        readonly property int pinThickness: 2
+        readonly property int pinGap: 7
+        readonly property int outlineWidth: 2
+        readonly property int outlineRounding: 6
+        readonly property int dotPitch: 4
+        readonly property int dotSize: 1
+        readonly property real dotOpacity: 0.85
+        readonly property int dieRounding: 4
+        readonly property int dieInset: 16
+        readonly property int cellRounding: 4
+        readonly property int cellSpacing: 9
+        readonly property int cellBorderWidth: 1
+        readonly property real cellFillOpacity: 0.35
+        readonly property int dieBorderWidth: 1
+        readonly property int chipDivider: 2
+        readonly property int barFrame: 4
+        readonly property int gpuBanks: 2
+        readonly property int chipHalves: 2
+        readonly property real cpuActiveLoad: 0.25
+        readonly property int legendGap: 14
+
+        readonly property int cpuColumns: 4
+        readonly property int cpuCellSize: 32
+        readonly property int cpuCoreDot: 10
+        readonly property real cpuIdleFill: 0.08
+
+        readonly property int gpuBars: 5
+        readonly property int gpuBarWidth: 36
+        readonly property int gpuBarMax: 18
+        readonly property int gpuBarMin: 3
+        readonly property int gpuBarSpacing: 6
+        readonly property int gpuColumnSpacing: 12
+        readonly property int gpuChipsPerSide: 3
+        readonly property int gpuChipWidth: 30
+        readonly property int gpuChipHeight: 34
+        readonly property int gpuChipSpacing: 10
+        readonly property int gpuChipGap: 22
+        readonly property int gpuIconSize: 14
+
+        readonly property int dimmArtHeight: 130
+        readonly property int dimmNotchRadius: 7
+        readonly property int dimmNotchOffset: 30
+        readonly property int dimmPins: 40
+        readonly property int dimmPinHeight: 18
+        readonly property int dimmPinSpacing: 3
+        readonly property real dimmKeyPosition: 0.42
+        readonly property int dimmSegments: 36
+        readonly property int dimmSegmentHeight: 22
+        readonly property int dimmSegmentSpacing: 1
+        readonly property int legendSwatch: 10
+        readonly property int legendSpacing: 6
+
+        readonly property string title: "Hardware"
+        readonly property string labelCpu: "CPU"
+        readonly property string labelGpu: "GPU"
+        readonly property string labelMemory: "Memory"
+        readonly property string labelClock: "Clock Speed"
+        readonly property string labelTemp: "Temperature"
+        readonly property string labelPower: "Power"
+        readonly property string labelUtil: "Utilization"
+        readonly property string labelVram: "V-RAM"
+        readonly property string labelFan: "Fan Speed"
+        readonly property string labelUsage: "Usage"
+        readonly property string labelSwap: "Swap"
+        readonly property string labelActiveCores: "Active Cores (10 min avg)"
+        readonly property string labelTopProcs: "Top Current Processes"
+        readonly property string labelTopGpuProcs: "Top GPU Processes"
+        readonly property string labelUsed: "Used"
+        readonly property string labelCached: "Cached"
+        readonly property string labelBuffers: "Buffers"
+        readonly property string labelFree: "Free"
+        readonly property string labelModules: "Modules"
+        readonly property string emptyGpuProcs: "No GPU clients"
+        readonly property string emptyDimms: "Install qs-hwinfo to list modules"
+        readonly property string titleTemplate: "%1 — %2"
+        readonly property string rowTemplate: "%1: "
+        readonly property string separator: "|"
+        readonly property string fieldSeparator: " | "
+        readonly property string bullet: "•"
+        readonly property string placeholder: "—"
+        readonly property string clockTemplate: "%1 GHz / %2 GHz"
+        readonly property string tempTemplate: "%1°C"
+        readonly property string powerTemplate: "%1 W"
+        readonly property string powerCapTemplate: "%1 W / %2 W"
+        readonly property string vramTemplate: "%1 / %2 MB"
+        readonly property string fanTemplate: "%1% · %2 RPM"
+        readonly property string usageTemplate: "%1 used of %2"
+        readonly property string coreTemplate: "Core %1"
+        readonly property string coreUsedTemplate: "%1% used"
+        readonly property string coresTemplate: "%1% (%2 cores)"
+        readonly property string coreTemplateSingle: "%1% (1 core)"
+        readonly property string mbTemplate: "%1 MB"
+        readonly property string mhzTemplate: "%1 MHz"
+        readonly property string legendTemplate: "%1 %2%"
+        readonly property int legendPrecision: 1
+        readonly property int clockPrecision: 2
+        readonly property int powerPrecision: 1
+        readonly property int corePadding: 2
+    }
+
     component ThemeConfig: QtObject {
         readonly property string stateFile: "theme.json"
         readonly property var labels: ({
@@ -894,7 +1054,9 @@ Singleton {
         readonly property int captureDelay: 450
         readonly property int fullscreenDelay: 1
         readonly property string dir: "Pictures/screenshots"
-        readonly property string fileFormat: "'screenshot_'ddMMyyyy_HHmmss'.png'"
+        readonly property string fileFormat: "'screenshot_'yyyy-MM-dd_HH-mm-ss'.png'"
+        readonly property string notifyTitle: "Screenshot created"
+        readonly property string showInFolderLabel: "Show in folder"
         readonly property string regionLabel: "Selected area"
         readonly property string fullscreenLabel: "Fullscreen"
         readonly property string ocrLabel: "OCR"
@@ -1196,6 +1358,7 @@ Singleton {
     readonly property NotifPanelConfig notifPanel: NotifPanelConfig {}
     readonly property SegmentConfig segment: SegmentConfig {}
     readonly property UpdatesConfig updates: UpdatesConfig {}
+    readonly property HardwareConfig hardware: HardwareConfig {}
     readonly property ThemeConfig theme: ThemeConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
     readonly property LockConfig lock: LockConfig {}

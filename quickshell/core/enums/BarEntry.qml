@@ -16,5 +16,6 @@ Singleton {
     readonly property string notifications: "notifications"
     readonly property string tray: "tray"
     readonly property string cpu: "cpu"
+    readonly property string gpu: "gpu"
     readonly property string memory: "memory"
 }
