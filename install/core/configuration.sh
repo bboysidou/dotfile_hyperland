@@ -2,6 +2,7 @@ folders=(
   fontconfig
   hypr
   quickshell
+  systemd
   nvim
   kitty
   tmux

@@ -1,0 +1,12 @@
+[Unit]
+Description=Quickshell desktop shell
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/qs -n
+Restart=always
+RestartSec=1
+TimeoutStopSec=5
+Slice=session.slice
