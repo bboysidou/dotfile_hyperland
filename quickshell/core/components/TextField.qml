@@ -10,6 +10,7 @@ StyledRect {
     property string placeholder
     property string icon
     property bool gridNavigation: false
+    property bool removable: false
     property int echo: TextInput.Normal
     property int paddingV: Appearance.search.paddingV
     property int paddingH: Appearance.search.paddingH
@@ -22,6 +23,7 @@ StyledRect {
     signal navigate(int delta)
     signal navigateColumn(int delta)
     signal accepted
+    signal removed(bool all)
     signal cancelled
 
     function setText(value: string): void {
@@ -96,6 +98,9 @@ StyledRect {
                 event.accepted = true;
             } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                 root.accepted();
+                event.accepted = true;
+            } else if (root.removable && event.key === Qt.Key_Delete && (event.modifiers & Qt.ShiftModifier)) {
+                root.removed((event.modifiers & Qt.ControlModifier) !== 0);
                 event.accepted = true;
             } else if (rows !== 0) {
                 root.navigate(rows);

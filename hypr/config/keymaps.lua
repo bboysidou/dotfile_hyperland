@@ -29,6 +29,7 @@ hl.bind(mainMod .. " + Print", hl.dsp.global("quickshell:screenshot"))
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("systemctl --user restart quickshell.service"))
 hl.bind(mainMod .. " + CTRL + X", hl.dsp.global("quickshell:lock"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/simplemode.sh"))
+hl.bind(mainMod .. " + V", hl.dsp.global("quickshell:clipboard"))
 
 -- Applications --------------------------------------------------------------
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("thunar"))
@@ -36,7 +37,6 @@ hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd(browser_alt))
 hl.bind(mainMod .. " + R", hl.dsp.global("quickshell:launcher"))
-hl.bind(mainMod .. " + V", hl.dsp.global("quickshell:clipboard"))
 hl.bind("ALT + M", hl.dsp.global("quickshell:dashboard"))
 
 -- Windows -------------------------------------------------------------------

@@ -14,6 +14,7 @@ Singleton {
 
     property var entries: []
     property var thumbs: ({})
+    property var pending: []
 
     function entry(line: string): var {
         const tab = line.indexOf("\t");
@@ -69,6 +70,44 @@ Singleton {
             return;
 
         Quickshell.execDetached(["sh", "-c", Commands.clipCopy, "sh", id]);
+    }
+
+    function drain(): void {
+        if (mutator.running || root.pending.length === 0)
+            return;
+
+        mutator.command = root.pending[0];
+        root.pending = root.pending.slice(1);
+        mutator.running = true;
+    }
+
+    function mutate(command: var): void {
+        root.pending = root.pending.concat([command]);
+        root.drain();
+    }
+
+    function remove(id: string): void {
+        if (!id)
+            return;
+
+        root.entries = root.entries.filter(item => item.id !== id);
+        root.mutate(["sh", "-c", Commands.clipDelete, "sh", id]);
+    }
+
+    function wipe(): void {
+        root.entries = [];
+        root.mutate(Commands.clipWipe);
+    }
+
+    Process {
+        id: mutator
+
+        onExited: {
+            if (root.pending.length > 0)
+                root.drain();
+            else
+                root.refresh();
+        }
     }
 
     Process {

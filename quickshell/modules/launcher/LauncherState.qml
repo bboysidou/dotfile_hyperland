@@ -135,6 +135,13 @@ Singleton {
         root.hide();
     }
 
+    function removeClip(entry, all: bool): void {
+        if (all)
+            Clipboard.wipe();
+        else if (entry)
+            Clipboard.remove(entry.id);
+    }
+
     function activate(entry): void {
         if (!entry)
             return;
