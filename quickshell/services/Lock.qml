@@ -288,6 +288,7 @@ Singleton {
         id: pam
 
         config: Appearance.lock.pamConfig
+        configDirectory: `${Quickshell.shellDir}/${Appearance.lock.pamDir}`
 
         onPamMessage: {
             if (pam.responseRequired)
