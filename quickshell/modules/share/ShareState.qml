@@ -162,7 +162,7 @@ Singleton {
 
         property string target: ""
 
-        command: Commands.shareRegion
+        command: ["timeout", String(Appearance.share.regionTimeout), ...Commands.shareRegion]
 
         stdout: StdioCollector {
             id: picked

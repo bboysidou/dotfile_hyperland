@@ -1,8 +1,3 @@
-dotfile:1:config:/home/sidouxp3/.config:nvim
-dotfile:2:nvim:/home/sidouxp3/.config/nvim:nvim
-dotfile:3:post_install:/home/sidouxp3/Downloads/dotfile_hyperland:nvim
-dotfile:4:tmux:/home/sidouxp3/.config/tmux:nvim
-dotfile:5:custom_script:/home/sidouxp3/.config/custom_scripts:nvim
 project_template:1:frontend:/home/sidouxp3/Web-development/project_templates/frontend:nvim
 project_template:2:backend:/home/sidouxp3/Web-development/project_templates/backend:nvim
 project_template:3:mobile:/home/sidouxp3/Web-development/project_templates/mobile:nvim
@@ -55,8 +50,6 @@ kindergarten:3:backend:/home/sidouxp3/Web-development/Almartechs/Daycare/backend
 kindergarten:4:docker:/home/sidouxp3/Web-development/Almartechs/Daycare:
 kindergarten:5:flutter_run:/home/sidouxp3/Web-development/Almartechs/Daycare:
 kindergarten:6:nvim:/home/sidouxp3/Web-development/Almartechs/Daycare:nvim
-ines_vtc:1:nvim:/home/sidouxp3/Web-development/InesVTC:nvim
-ines_vtc:2:claude:/home/sidouxp3/Web-development/InesVTC:
 stoneslane:1:fish:/home/sidouxp3/Web-development/StonesLane:
 almartechs_medical:1:app:/home/sidouxp3/Web-development/Almartechs/Almartechs_medical/mobile:nvim
 almartechs_medical:2:frontend:/home/sidouxp3/Web-development/Almartechs/Almartechs_medical/frontend:nvim
@@ -68,6 +61,15 @@ daycare_v2:2:nvim:/home/sidouxp3/Web-development/Almartechs/Daycare_v2/frontend:
 daycare_v2:3:nvim:/home/sidouxp3/Web-development/Almartechs/Daycare_v2/backend/api:nvim
 daycare_v2:4:docker:/home/sidouxp3/Web-development/Almartechs/Daycare_v2:
 daycare_v2:5:fish:/home/sidouxp3/Web-development/Almartechs/Daycare_v2:
+dotfile:1:config:/home/sidouxp3/.config:nvim
+dotfile:2:nvim:/home/sidouxp3/.config/nvim:nvim
+dotfile:3:post_install:/home/sidouxp3/Downloads/dotfile_hyperland:nvim
+dotfile:4:tmux:/home/sidouxp3/.config/tmux:nvim
+dotfile:5:custom_script:/home/sidouxp3/.config/custom_scripts:nvim
+dotfile:6:claude:/home/sidouxp3/.config:
+ines_vtc:1:nvim:/home/sidouxp3/Web-development/InesVTC/ines_vtc_frontend:nvim
+ines_vtc:2:claude:/home/sidouxp3/Web-development/InesVTC/ines_vtc_frontend:
+ines_vtc:3:claude:/home/sidouxp3/Web-development/InesVTC:
 vetstate:1:mobile:/home/sidouxp3/Web-development/VetState/v1/mobile:nvim
 vetstate:2:frontend:/home/sidouxp3/Web-development/VetState/v1/frontend:
 vetstate:3:backend:/home/sidouxp3/Web-development/VetState/v1/backend/api:
