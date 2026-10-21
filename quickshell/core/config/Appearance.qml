@@ -1097,6 +1097,7 @@ Singleton {
         readonly property real disabledOpacity: 0.4
         readonly property real scaleFrom: 0.96
         readonly property int replyTimeout: 2
+        readonly property int regionTimeout: 15
         readonly property string title: "Share your screen"
         readonly property string subtitle: "An app wants to capture what you pick"
         readonly property string screensLabel: "Screens"
