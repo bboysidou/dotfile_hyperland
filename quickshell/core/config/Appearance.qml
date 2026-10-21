@@ -47,4 +47,5 @@ Singleton {
     readonly property ShareConfig share: ShareConfig {}
     readonly property OrbitConfig orbit: OrbitConfig {}
     readonly property KeybindsConfig keybinds: KeybindsConfig {}
+    readonly property ClipboardConfig clipboard: ClipboardConfig {}
 }

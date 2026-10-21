@@ -12,6 +12,13 @@ Scope {
         onPressed: LauncherState.toggle()
     }
 
+    GlobalShortcut {
+        appid: Ids.appid
+        name: "clipboard"
+
+        onPressed: LauncherState.toggleClipboard()
+    }
+
     IpcHandler {
         target: "launcher"
 

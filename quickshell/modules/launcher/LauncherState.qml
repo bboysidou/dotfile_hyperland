@@ -15,8 +15,10 @@ Singleton {
 
     readonly property bool wallpaperMode: root.mode === LauncherMode.wallpapers
     readonly property bool themeMode: root.mode === LauncherMode.themes
+    readonly property bool clipboardMode: root.mode === LauncherMode.clipboard
     readonly property string wallpaperTrigger: `${Appearance.launcher.actionPrefix}${Appearance.launcher.wallpaperAction} `
     readonly property string themeTrigger: `${Appearance.launcher.actionPrefix}${Appearance.launcher.themeAction} `
+    readonly property string clipboardTrigger: `${Appearance.launcher.actionPrefix}${Appearance.clipboard.action} `
 
     function edit(text: string): void {
         if (root.mode === LauncherMode.apps && text.startsWith(root.wallpaperTrigger)) {
@@ -26,6 +28,11 @@ Singleton {
 
         if (root.mode === LauncherMode.apps && text.startsWith(root.themeTrigger)) {
             root.enterThemes(text.slice(root.themeTrigger.length));
+            return;
+        }
+
+        if (root.mode === LauncherMode.apps && text.startsWith(root.clipboardTrigger)) {
+            root.enterClipboard(text.slice(root.clipboardTrigger.length));
             return;
         }
 
@@ -40,6 +47,12 @@ Singleton {
 
     function enterThemes(query: string): void {
         root.mode = LauncherMode.themes;
+        root.search = query;
+    }
+
+    function enterClipboard(query: string): void {
+        Clipboard.refresh();
+        root.mode = LauncherMode.clipboard;
         root.search = query;
     }
 
@@ -73,6 +86,18 @@ Singleton {
             root.showThemes();
     }
 
+    function showClipboard(): void {
+        root.enterClipboard("");
+        root.opened = true;
+    }
+
+    function toggleClipboard(): void {
+        if (root.opened && root.clipboardMode)
+            root.hide();
+        else
+            root.showClipboard();
+    }
+
     function hide(): void {
         Wallpaper.stopPreview();
         Theme.stopPreview();
@@ -99,6 +124,14 @@ Singleton {
             return;
 
         Theme.set(name);
+        root.hide();
+    }
+
+    function activateClip(entry): void {
+        if (!entry)
+            return;
+
+        Clipboard.copy(entry.id);
         root.hide();
     }
 
