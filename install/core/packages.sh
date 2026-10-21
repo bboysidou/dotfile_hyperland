@@ -18,7 +18,6 @@ general=(
   ripgrep
   gvfs-mtp
   net-tools
-  network-manager-applet
   mtpfs
   fastfetch
   usbutils
@@ -104,7 +103,6 @@ general=(
   bluez-utils
   bluez-tools
   blueman
-  bluetui
 
   # HARDWARE INFO -------------------------------------------------
   dmidecode
@@ -175,19 +173,16 @@ audio=(
   pipewire-alsa
   pipewire-pulse
   sof-firmware
-  pavucontrol
   pamixer
 )
 
 window_manager=(
   hyprland
   wl-clipboard
-  hyprpaper
   hyprlock
   xdg-desktop-portal-hyprland
   qt5-wayland 
   qt6-wayland 
-  polkit-kde-agent 
   uwsm
 )
 

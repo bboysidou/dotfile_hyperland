@@ -12,10 +12,9 @@ Singleton {
     readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
     readonly property string statePath: `${root.stateDir}/${Appearance.wallpaper.stateFile}`
     readonly property string imageDir: `${Paths.home}/${Appearance.wallpaper.dir}`
-    readonly property string seedPath: `${Paths.home}/${Appearance.wallpaper.hyprpaperConf}`
 
     property bool ready: false
-    property bool seeded: false
+    property bool missing: false
     property string current: ""
     property string committed: ""
     property var paths: []
@@ -55,16 +54,11 @@ Singleton {
 
     function apply(payload: string): void {
         root.paths = payload.trim().split("\n").map(line => line.trim()).filter(line => line.length > 0 && root.isImage(line)).sort();
+        root.fallback();
     }
 
-    function seed(): void {
-        root.seeded = true;
-
-        const match = seedSource.text().match(new RegExp(Appearance.wallpaper.seedPattern, "m"));
-
-        if (match)
-            root.set(match[1].trim());
-        else if (root.paths.length > 0)
+    function fallback(): void {
+        if (root.missing && !root.committed && root.paths.length > 0)
             root.set(root.paths[0]);
     }
 
@@ -110,16 +104,9 @@ Singleton {
         }
 
         onLoadFailed: {
-            if (!root.seeded)
-                root.seed();
+            root.missing = true;
+            root.fallback();
         }
-    }
-
-    FileView {
-        id: seedSource
-
-        path: root.seedPath
-        blockLoading: true
     }
 
     Component.onCompleted: root.refresh()
