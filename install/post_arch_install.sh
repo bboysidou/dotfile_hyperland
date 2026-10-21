@@ -192,7 +192,7 @@ if [[ -d "$REPO_DIR/Wallpaper" ]]; then
   cp -r "$REPO_DIR/Wallpaper/." "$HOME/Pictures/wallpaper/"
 else
   echo "No Wallpaper/ in this repo - put your own images in ~/Pictures/wallpaper"
-  echo "hypr/hyprpaper.conf and the quickshell picker both read that directory"
+  echo "the quickshell wallpaper picker reads that directory"
 fi
 
 echo "============================================="

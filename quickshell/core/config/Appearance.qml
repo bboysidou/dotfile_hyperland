@@ -921,8 +921,6 @@ Singleton {
         readonly property string dir: "Pictures/wallpaper"
         readonly property string stateFile: "wallpaper"
         readonly property var extensions: ["jpg", "jpeg", "png", "gif"]
-        readonly property string hyprpaperConf: ".config/hypr/hyprpaper.conf"
-        readonly property string seedPattern: "^\\s*path\\s*=\\s*(.+)$"
     }
 
     component LockConfig: QtObject {

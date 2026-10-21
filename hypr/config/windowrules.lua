@@ -54,12 +54,6 @@ hl.window_rule({
     float = true,
 })
 
-hl.window_rule({
-    name  = "pavucontrol",
-    match = { class = "pavucontrol" },
-    float = true,
-})
-
 -- hl.window_rule({
 --     name  = "scrcpy",
 --     match = { class = "scrcpy" },
@@ -70,13 +64,6 @@ hl.window_rule({
     name  = "nm-connection-editor",
     match = { class = "nm-connection-editor" },
     float = true,
-})
-
-hl.window_rule({
-    name         = "Rofi",
-    match        = { class = "Rofi" },
-    stay_focused = true,
-    center       = true,
 })
 
 hl.window_rule({
