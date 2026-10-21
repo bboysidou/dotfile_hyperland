@@ -41,6 +41,10 @@ Singleton {
     readonly property string shotNotify: 'act=$(notify-send -c "%5" -h "string:image-path:%1" -A "show=%4" -w "%2" "%3") && [ "$act" = show ] && dbus-send --session --type=method_call --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"file://%1" string:""'
     readonly property string shotOcr: 'img=$(mktemp --suffix=.png) && grim -g "$(slurp)" "$img" && text=$(tesseract "$img" - -l eng 2>/dev/null) && rm -f "$img" && printf "%s" "$text" | wl-copy && notify-send "OCR complete" "$text"'
 
+    readonly property var clipList: ["cliphist", "list"]
+    readonly property string clipCopy: 'printf "%s\\t\\n" "$1" | cliphist decode | wl-copy'
+    readonly property string clipThumbs: 'dir="$1"; shift; mkdir -p "$dir" || exit 1; for id; do [ -s "$dir/$id" ] || printf "%s\\t\\n" "$id" | cliphist decode > "$dir/$id"; done; for f in "$dir"/*; do [ -e "$f" ] || continue; keep=0; for id; do [ "${f##*/}" = "$id" ] && keep=1 && break; done; [ "$keep" = 1 ] || rm -f -- "$f"; done'
+
     readonly property var shareRegion: ["slurp", "-f", "%o %x %y %w %h"]
     readonly property string shareReply: '[ -p "$2" ] && printf "%s\\n" "$1" > "$2"'
 }

@@ -36,6 +36,7 @@ hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd(browser_alt))
 hl.bind(mainMod .. " + R", hl.dsp.global("quickshell:launcher"))
+hl.bind(mainMod .. " + V", hl.dsp.global("quickshell:clipboard"))
 hl.bind("ALT + M", hl.dsp.global("quickshell:dashboard"))
 
 -- Windows -------------------------------------------------------------------

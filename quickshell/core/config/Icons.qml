@@ -35,6 +35,8 @@ Singleton {
     readonly property string launcherApp: "\uDB82\uDCC6"
     readonly property string wallpaper: "\uDB80\uDEE9"
     readonly property string palette: "\uDB80\uDFD8"
+    readonly property string clipboard: "\uDB80\uDD47"
+    readonly property string clipText: "\uDB80\uDD4E"
     readonly property string shotRegion: "\uDB80\uDD9E"
     readonly property string shotFullscreen: "\uDB83\uDE51"
     readonly property string shotOcr: "\uDB84\uDD3A"

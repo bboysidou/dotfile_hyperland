@@ -95,15 +95,17 @@ RevealCard {
 
             Layout.fillWidth: true
 
-            placeholder: LauncherState.themeMode ? Appearance.launcher.themePlaceholder : LauncherState.wallpaperMode ? Appearance.launcher.wallpaperPlaceholder : Appearance.launcher.placeholder
-            icon: LauncherState.themeMode ? Icons.palette : LauncherState.wallpaperMode ? Icons.wallpaper : Icons.launcherSearch
+            placeholder: LauncherState.clipboardMode ? Appearance.clipboard.placeholder : LauncherState.themeMode ? Appearance.launcher.themePlaceholder : LauncherState.wallpaperMode ? Appearance.launcher.wallpaperPlaceholder : Appearance.launcher.placeholder
+            icon: LauncherState.clipboardMode ? Icons.clipboard : LauncherState.themeMode ? Icons.palette : LauncherState.wallpaperMode ? Icons.wallpaper : Icons.launcherSearch
             gridNavigation: root.carouselMode
 
             onEdited: text => LauncherState.edit(text)
             onNavigate: delta => content.item?.step(delta)
             onNavigateColumn: delta => content.item?.step(delta)
             onAccepted: {
-                if (LauncherState.themeMode)
+                if (LauncherState.clipboardMode)
+                    LauncherState.activateClip(content.item?.current ?? null);
+                else if (LauncherState.themeMode)
                     LauncherState.activateTheme(content.item?.selected ?? "");
                 else if (LauncherState.wallpaperMode)
                     LauncherState.activateWallpaper(content.item?.selected ?? "");
@@ -119,7 +121,7 @@ RevealCard {
             Layout.fillWidth: true
             Layout.preferredHeight: item?.implicitHeight ?? 0
 
-            sourceComp: LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
+            sourceComp: LauncherState.clipboardMode ? clipComp : LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
         }
     }
 
@@ -152,6 +154,16 @@ RevealCard {
             visibleItems: root.carouselItems
 
             onActivated: name => LauncherState.activateTheme(name)
+        }
+    }
+
+    Component {
+        id: clipComp
+
+        ClipList {
+            search: LauncherState.search
+
+            onActivated: entry => LauncherState.activateClip(entry)
         }
     }
 }
