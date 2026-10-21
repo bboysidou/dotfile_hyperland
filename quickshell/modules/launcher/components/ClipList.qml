@@ -34,7 +34,8 @@ FadeListView {
 
     implicitHeight: root.rows > 0 ? root.rows * root.rowHeight + (root.rows - 1) * root.spacing : empty.implicitHeight + Appearance.clipboard.emptyMargin * 2
 
-    onResultsChanged: root.currentIndex = 0
+    onSearchChanged: root.currentIndex = 0
+    onResultsChanged: root.currentIndex = Math.max(0, Math.min(root.currentIndex, root.results.length - 1))
     onCurrentIndexChanged: root.positionViewAtIndex(root.currentIndex, ListView.Contain)
 
     EmptyState {

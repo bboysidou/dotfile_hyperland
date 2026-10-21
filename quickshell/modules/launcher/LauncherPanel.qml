@@ -98,6 +98,7 @@ RevealCard {
             placeholder: LauncherState.clipboardMode ? Appearance.clipboard.placeholder : LauncherState.themeMode ? Appearance.launcher.themePlaceholder : LauncherState.wallpaperMode ? Appearance.launcher.wallpaperPlaceholder : Appearance.launcher.placeholder
             icon: LauncherState.clipboardMode ? Icons.clipboard : LauncherState.themeMode ? Icons.palette : LauncherState.wallpaperMode ? Icons.wallpaper : Icons.launcherSearch
             gridNavigation: root.carouselMode
+            removable: LauncherState.clipboardMode
 
             onEdited: text => LauncherState.edit(text)
             onNavigate: delta => content.item?.step(delta)
@@ -112,6 +113,7 @@ RevealCard {
                 else
                     LauncherState.activate(content.item?.current ?? null);
             }
+            onRemoved: all => LauncherState.removeClip(content.item?.current ?? null, all)
             onCancelled: root.dismissed()
         }
 
@@ -122,6 +124,16 @@ RevealCard {
             Layout.preferredHeight: item?.implicitHeight ?? 0
 
             sourceComp: LauncherState.clipboardMode ? clipComp : LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
+        }
+
+        StyledText {
+            Layout.alignment: Qt.AlignHCenter
+
+            visible: LauncherState.clipboardMode && Clipboard.entries.length > 0
+            text: Appearance.clipboard.hint
+            color: Colours.textMuted
+            opacity: Appearance.clipboard.hintOpacity
+            font.pixelSize: Appearance.clipboard.hintSize
         }
     }
 
