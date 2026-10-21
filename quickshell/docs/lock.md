@@ -1,7 +1,8 @@
 # Lock screen — reliability model
 
 The locker is `modules/lock/Lock.qml` (surface) over `services/Lock.qml` (state
-machine), authenticating through PAM with the `hyprlock` PAM config. There is no
+machine), authenticating through PAM with the shell's own config,
+`core/config/pam/lock`. There is no
 idle daemon and none is wanted: the screen locks on `SUPER + CTRL + X`, on the
 `quickshell:lock` global shortcut, or on `qs ipc call lock lock`.
 
@@ -66,8 +67,16 @@ prevent that:
 `SUPER + SHIFT + B` restarts the unit rather than respawning `qs` by hand;
 respawning by hand now races the supervisor.
 
-`hyprlock` remains installed and bound to `SUPER + SHIFT + CTRL + X` as an
-independent second locker.
+`hyprlock` was removed on 2026-10-21, so the shell is the only locker.
+
+### PAM config
+
+`services/Lock.qml` sets `PamContext.configDirectory` to `core/config/pam`, and
+PAM then resolves every `include` name inside that directory as well. The file
+therefore includes `/etc/pam.d/system-auth` by absolute path; `include login`
+finds nothing there and rejects every password. After any change, check the
+config without locking: `pam_start_confdir` with a wrong password must return
+code 7 (`Authentication failure`), not code 6.
 
 ### Escape hatch
 

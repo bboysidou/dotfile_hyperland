@@ -28,7 +28,6 @@ hl.bind("ALT + B", hl.dsp.global("quickshell:controlcenter-bluetooth"))
 hl.bind(mainMod .. " + Print", hl.dsp.global("quickshell:screenshot"))
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("systemctl --user restart quickshell.service"))
 hl.bind(mainMod .. " + CTRL + X", hl.dsp.global("quickshell:lock"))
-hl.bind(mainMod .. " + SHIFT + CTRL + X", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/simplemode.sh"))
 
 -- Applications --------------------------------------------------------------
@@ -103,7 +102,7 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Fn / media keys -----------------------------------------------------------
--- locked    = still fires while hyprlock is up
+-- locked    = still fires while the lock screen is up
 -- repeating = holding the key repeats the action
 local held = { locked = true, repeating = true }
 local locked = { locked = true }

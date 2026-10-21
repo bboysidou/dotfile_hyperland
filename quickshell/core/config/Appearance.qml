@@ -971,7 +971,8 @@ Singleton {
         readonly property real shakeDecay: 0.5
         readonly property int flashHold: 500
         readonly property real dotCollapseScale: 0.85
-        readonly property string pamConfig: "hyprlock"
+        readonly property string pamConfig: "lock"
+        readonly property string pamDir: "core/config/pam"
         readonly property string stateFile: "lock.json"
         readonly property string greetingTemplate: "Hello, %1! %2"
         readonly property string placeholderTemplate: "Hi, %1"
