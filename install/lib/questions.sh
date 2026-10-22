@@ -120,9 +120,12 @@ _bundleLabel() {
 }
 
 _fineTuneBundle() {
-  local name="$1" entries=() excluded=() kept entry
+  local name="$1" entries=() excluded=() ticked=() kept entry
   mapfile -t entries < <(bundleEntries "$name" | sed "s/^${AUR_PREFIX}//")
-  uiMulti kept "Untick what you do not want from ${name}" '*' "${entries[@]}"
+  for entry in "${entries[@]}"; do
+    packageExcluded "$entry" || ticked+=("$entry")
+  done
+  uiMulti kept "Untick what you do not want from ${name}" "$(IFS=,; echo "${ticked[*]}")" "${entries[@]}"
   read -ra excluded <<<"$A_EXCLUDE"
   for entry in "${entries[@]}"; do
     mapfile -t excluded < <(printf '%s\n' "${excluded[@]}" | grep -vxF "$entry" || true)
