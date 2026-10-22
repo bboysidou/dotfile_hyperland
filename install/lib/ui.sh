@@ -237,7 +237,7 @@ _uiFailureMenu() {
 }
 
 uiStep() {
-  local optional=0 title action
+  local optional=0 status title action
   if [[ "$1" == "--optional" ]]; then
     optional=1
     shift
@@ -249,7 +249,11 @@ uiStep() {
     if ((DRY_RUN)); then
       uiInfo "$title"
     fi
-    if _uiRunBackground "$title" "$@"; then
+    set +e
+    _uiRunBackground "$title" "$@"
+    status=$?
+    set -e
+    if ((status == 0)); then
       ((DRY_RUN)) || uiOk "$title"
       return 0
     fi
