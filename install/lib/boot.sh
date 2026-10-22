@@ -53,10 +53,13 @@ EOF
 }
 
 bootSystemdBoot() {
-  local esp cmdline
+  local esp cmdline xboot=()
   esp="$(diskEspPath)"
   cmdline="$(bootCmdline)" || return 1
-  run arch-chroot -S "$MNT" bootctl --esp-path="$esp" --boot-path=/boot install
+  if [[ -n "$L_XBOOT" ]]; then
+    xboot=(--boot-path=/boot)
+  fi
+  run arch-chroot -S "$MNT" bootctl --esp-path="$esp" "${xboot[@]}" install
   writeFile "${MNT}${esp}/loader/loader.conf" <<EOF
 default       @saved
 timeout       ${SDBOOT_TIMEOUT}
