@@ -120,10 +120,10 @@ Hyprland no longer recommends it).
 
 ### Entry and bootstrap
 
-`install.sh` at the repo root. On the ISO:
+`install/install.sh`. On the ISO:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/bboysidou/dotfile_hyperland/main/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/bboysidou/dotfile_hyperland/main/install/install.sh -o install.sh
 bash install.sh            # or: bash install.sh --dry-run
 ```
 
@@ -135,7 +135,7 @@ prompts with the same flow.
 ### Layout
 
 ```
-install.sh                  entry: parse flags, bootstrap, run stages
+install/install.sh          entry: parse flags, bootstrap, run stages
 install/lib/ui.sh           gum wrappers: header, spin, confirm, input, choose, table, error box
 install/lib/state.sh        answers file, stage markers, resume, traps, logging, retry
 install/lib/detect.sh       cpu, gpu (+ nvidia generation), disks, other OSes, laptop, vm, wifi

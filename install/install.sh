@@ -55,35 +55,35 @@ _bootstrap() {
   rm -rf "$BOOTSTRAP_DIR"
   mkdir -p "$BOOTSTRAP_DIR"
   curl -fsSL --retry 3 "$url" | tar -xz --strip-components=1 -C "$BOOTSTRAP_DIR"
-  exec bash "${BOOTSTRAP_DIR}/install.sh" "$@"
+  exec bash "${BOOTSTRAP_DIR}/install/install.sh" "$@"
 }
 
 _parseArgs "$@"
-if [[ ! -d "${SELF_DIR}/install/lib" ]]; then
+if [[ ! -f "${SELF_DIR}/lib/state.sh" ]]; then
   _bootstrap "$@"
 fi
 
-INSTALLER_DIR="$SELF_DIR"
-LIB_DIR="${INSTALLER_DIR}/install/lib"
-# shellcheck source=install/lib/state.sh
+INSTALLER_DIR="$(cd "${SELF_DIR}/.." && pwd)"
+LIB_DIR="${SELF_DIR}/lib"
+# shellcheck source=lib/state.sh
 source "${LIB_DIR}/state.sh"
-# shellcheck source=install/lib/ui.sh
+# shellcheck source=lib/ui.sh
 source "${LIB_DIR}/ui.sh"
-# shellcheck source=install/lib/detect.sh
+# shellcheck source=lib/detect.sh
 source "${LIB_DIR}/detect.sh"
-# shellcheck source=install/lib/gpu.sh
+# shellcheck source=lib/gpu.sh
 source "${LIB_DIR}/gpu.sh"
-# shellcheck source=install/lib/disk.sh
+# shellcheck source=lib/disk.sh
 source "${LIB_DIR}/disk.sh"
-# shellcheck source=install/lib/bundles.sh
+# shellcheck source=lib/bundles.sh
 source "${LIB_DIR}/bundles.sh"
-# shellcheck source=install/lib/boot.sh
+# shellcheck source=lib/boot.sh
 source "${LIB_DIR}/boot.sh"
-# shellcheck source=install/lib/base.sh
+# shellcheck source=lib/base.sh
 source "${LIB_DIR}/base.sh"
-# shellcheck source=install/lib/user.sh
+# shellcheck source=lib/user.sh
 source "${LIB_DIR}/user.sh"
-# shellcheck source=install/lib/questions.sh
+# shellcheck source=lib/questions.sh
 source "${LIB_DIR}/questions.sh"
 
 _onExit() {
