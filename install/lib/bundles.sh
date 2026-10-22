@@ -131,6 +131,10 @@ bundleUserHooks() {
   return 0
 }
 
+bundleUserStepCount() {
+  if bundleSelected browsers; then echo 1; else echo 0; fi
+}
+
 bundleNotes() {
   if bundleSelected android; then
     echo "Android: run ~/.dotfiles/install/android_dev.sh after the first login (SDK licences need you)."

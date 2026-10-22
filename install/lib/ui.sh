@@ -9,6 +9,9 @@ UI_WIDTH=72
 UI_LIST_HEIGHT=15
 UI_LOG_TAIL=20
 UI_SPIN_POLL=0.2
+UI_BAR_WIDTH=30
+UI_STEP_NUM=0
+UI_STEP_TOTAL=0
 HAS_GUM=0
 
 uiInit() {
@@ -190,8 +193,32 @@ uiTypedConfirm() {
   [[ "$typed" == "$expected" ]]
 }
 
+_uiTtyCols() {
+  local cols
+  cols="$({ stty size </dev/tty; } 2>/dev/null | awk '{print $2}')"
+  echo "${cols:-$TTY_COLS}"
+}
+
+_uiLogClean() {
+  sed -u -e 's/\r$//' -e 's/.*\r//' -e 's/\x1b\[[0-9;?]*[A-Za-z]//g'
+}
+
+_uiProgress() {
+  local finished="$1" label="$2" filled empty
+  filled=$((finished * UI_BAR_WIDTH / UI_STEP_TOTAL))
+  printf -v empty '%*s' $((UI_BAR_WIDTH - filled)) ''
+  printf -v filled '%*s' "$filled" ''
+  _uiLine "$UI_ACCENT" "${filled// /█}${empty// /░}" "$label"
+}
+
+uiProgressDone() {
+  if ((UI_STEP_TOTAL)); then
+    _uiProgress "$UI_STEP_TOTAL" "${UI_STEP_TOTAL}/${UI_STEP_TOTAL} · complete"
+  fi
+}
+
 _uiRunBackground() {
-  local title="$1" verbose="$2" pid
+  local title="$1" verbose="$2" pid cols
   shift 2
   if ((DRY_RUN)); then
     (
@@ -199,14 +226,17 @@ _uiRunBackground() {
       "$@"
     ) > >(tee -a "$LOG_FILE") 2>&1 &
   elif ((verbose)); then
+    cols="$(_uiTtyCols)"
     (
       set -o pipefail
       (
         set -Eeuo pipefail
         trap 'echo "failed (exit $?): ${BASH_COMMAND}" >&2' ERR
+        TTY_RUN=1
+        TTY_COLS="$cols"
         "$@"
-      ) 2>&1 </dev/null | tee -a "$LOG_FILE"
-    ) &
+      ) 2>&1 </dev/null | tee /dev/fd/3 | _uiLogClean >>"$LOG_FILE"
+    ) 3>&1 &
   else
     (
       set -Eeuo pipefail
@@ -256,9 +286,14 @@ uiStep() {
   done
   title="$1"
   shift
+  if ((UI_STEP_TOTAL)); then
+    UI_STEP_NUM=$((UI_STEP_NUM < UI_STEP_TOTAL ? UI_STEP_NUM + 1 : UI_STEP_TOTAL))
+  fi
   while true; do
     printf '\n[%s] ==> %s\n' "$(date '+%F %T')" "$title" >>"$LOG_FILE"
-    if ((DRY_RUN || verbose)); then
+    if ((UI_STEP_TOTAL)); then
+      _uiProgress $((UI_STEP_NUM - 1)) "${UI_STEP_NUM}/${UI_STEP_TOTAL} · ${title}"
+    elif ((DRY_RUN || verbose)); then
       uiInfo "$title"
     fi
     set +e

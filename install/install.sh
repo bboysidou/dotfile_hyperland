@@ -6,6 +6,11 @@ BOOTSTRAP_DIR="/tmp/dotfiles-src"
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIVE_TOOLS=(gum os-prober)
 NETWORK_PROBE_HOST="archlinux.org"
+STEPS_PARTITION=2
+STEPS_MOUNT=1
+STEPS_BASE=4
+STEPS_SYSTEM=2
+STEPS_USER=10
 
 DRY_RUN=0
 PRESEED=0
@@ -248,6 +253,7 @@ stageUser() {
 stageFinish() {
   local notes
   uiHeader "6 · Done"
+  uiProgressDone
   if ((!DRY_RUN)); then
     install -Dm600 "$LOG_FILE" "${MNT}/var/log/installer.log"
   fi
@@ -263,6 +269,17 @@ stageFinish() {
   fi
 }
 
+_installStepCount() {
+  local total="$STEPS_MOUNT"
+  stageDone disk || total=$((total + STEPS_PARTITION))
+  stageDone base || total=$((total + STEPS_BASE))
+  stageDone system || total=$((total + STEPS_SYSTEM))
+  if ! stageDone user; then
+    total=$((total + STEPS_USER + $(bundleUserStepCount)))
+  fi
+  echo "$total"
+}
+
 main() {
   local subtitle="interactive installer"
   if ((DRY_RUN)); then subtitle+=" · dry run"; fi
@@ -271,6 +288,7 @@ main() {
   uiBanner "Arch · Hyprland · Quickshell" "$subtitle"
   stagePreflight
   stageQuestions
+  UI_STEP_TOTAL="$(_installStepCount)"
   stageDisk
   stageBase
   stageSystem
