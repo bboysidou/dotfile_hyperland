@@ -7,6 +7,8 @@ LAYOUT_FILE="${STATE_DIR}/layout"
 DONE_FILE="${STATE_DIR}/done"
 MNT="${MNT:-/mnt}"
 DRY_RUN="${DRY_RUN:-0}"
+TTY_RUN=0
+TTY_COLS=80
 RETRY_ATTEMPTS=3
 RETRY_FIRST_DELAY=5
 SUDOERS_TEMP_NAME="99-installer"
@@ -31,6 +33,10 @@ run() {
     printf ' %q' "$@"
     printf '\n'
     return 0
+  fi
+  if ((TTY_RUN)); then
+    SHELL=/bin/bash script -qefc "stty cols ${TTY_COLS} 2>/dev/null; $(printf '%q ' "$@")" /dev/null
+    return
   fi
   "$@"
 }
