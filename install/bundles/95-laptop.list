@@ -1,4 +1,0 @@
-#: title=Laptop
-#: description=power-profiles-daemon (pre-selected when a battery is found)
-#: default=laptop
-power-profiles-daemon

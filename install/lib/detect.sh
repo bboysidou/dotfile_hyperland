@@ -10,7 +10,6 @@ NVIDIA_LEGACY_CODENAMES="GK|GF|GT|G[0-9]"
 
 D_CPU=none
 D_VIRT=none
-D_LAPTOP=0
 D_UEFI=0
 D_SECURE_BOOT=0
 D_NVIDIA=none
@@ -26,13 +25,6 @@ detectCpu() {
 detectVirt() {
   D_VIRT="$(systemd-detect-virt 2>/dev/null || true)"
   D_VIRT="${D_VIRT:-none}"
-}
-
-detectLaptop() {
-  D_LAPTOP=0
-  if compgen -G '/sys/class/power_supply/BAT*' >/dev/null; then
-    D_LAPTOP=1
-  fi
 }
 
 detectFirmware() {
@@ -72,7 +64,6 @@ detectNvidia() {
 detectAll() {
   detectCpu
   detectVirt
-  detectLaptop
   detectFirmware
   detectGpu
   detectNvidia

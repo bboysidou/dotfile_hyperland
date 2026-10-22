@@ -14,6 +14,7 @@ quickshell
 libnotify
 cava
 upower
+power-profiles-daemon
 networkmanager
 nm-connection-editor
 iw
@@ -48,6 +49,7 @@ poppler
 feh
 fastfetch
 brightnessctl
+ddcutil
 acpi
 pacman-contrib
 cronie
