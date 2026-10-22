@@ -10,6 +10,8 @@ import qs.modules.controlcenter
 import qs.modules.controlcenter.panels
 import qs.modules.bar
 import qs.modules.dashboard
+import qs.modules.display
+import qs.modules.display.components
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
@@ -58,6 +60,12 @@ PanelWindow {
         }
         Region {
             item: notifications.item?.revealed ? notifications.item : null
+        }
+        Region {
+            item: power.item?.revealed ? power.item : null
+        }
+        Region {
+            item: display.item?.revealed ? display.item : null
         }
         Region {
             item: dashboard.item?.revealed ? dashboard.item : null
@@ -214,6 +222,18 @@ PanelWindow {
         }
 
         PanelSlot {
+            id: power
+
+            open: root.focused && ControlState.opened && ControlState.section === ControlSection.power
+
+            PowerPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
+        }
+
+        PanelSlot {
             id: updates
 
             open: root.focused && UpdatesState.opened
@@ -234,6 +254,16 @@ PanelWindow {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
+            }
+        }
+
+        PanelSlot {
+            id: display
+
+            open: root.focused && DisplayState.opened
+
+            DisplayPanel {
+                anchors.centerIn: parent
             }
         }
 

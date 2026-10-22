@@ -9,6 +9,7 @@ Singleton {
     readonly property string bluetooth: "bluetooth"
     readonly property string audio: "audio"
     readonly property string notifications: "notifications"
+    readonly property string power: "power"
 
-    readonly property var values: [root.audio, root.network, root.bluetooth, root.notifications]
+    readonly property var values: [root.audio, root.network, root.bluetooth, root.notifications, root.power]
 }

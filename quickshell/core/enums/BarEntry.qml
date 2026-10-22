@@ -11,6 +11,7 @@ Singleton {
     readonly property string prayers: "prayers"
     readonly property string volume: "volume"
     readonly property string mouseBattery: "mouseBattery"
+    readonly property string battery: "battery"
     readonly property string bluetooth: "bluetooth"
     readonly property string network: "network"
     readonly property string notifications: "notifications"

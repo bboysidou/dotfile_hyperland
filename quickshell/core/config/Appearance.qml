@@ -43,6 +43,9 @@ Singleton {
     readonly property OsdConfig osd: OsdConfig {}
     readonly property PolkitConfig polkit: PolkitConfig {}
     readonly property PowerConfig power: PowerConfig {}
+    readonly property PowerPanelConfig powerPanel: PowerPanelConfig {}
+    readonly property DisplayConfig display: DisplayConfig {}
+    readonly property WeatherConfig weather: WeatherConfig {}
     readonly property ShotConfig shot: ShotConfig {}
     readonly property ShareConfig share: ShareConfig {}
     readonly property OrbitConfig orbit: OrbitConfig {}

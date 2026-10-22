@@ -12,6 +12,19 @@ Scope {
     readonly property bool onDash: DashState.tab === DashSection.dash
     readonly property bool onPerf: DashState.tab === DashSection.performance
     readonly property bool onMedia: DashState.tab === DashSection.media
+    readonly property bool onWeather: DashState.tab === DashSection.weather
+
+    Binding {
+        target: Weather
+        property: "active"
+        value: DashState.opened && root.onWeather
+    }
+
+    Binding {
+        target: Agenda
+        property: "active"
+        value: DashState.opened && root.onWeather
+    }
 
     Binding {
         target: SysInfo
@@ -58,6 +71,11 @@ Scope {
         function previous(): string {
             DashState.step(-1);
             return DashState.tab;
+        }
+
+        function agendaUrl(url: string): string {
+            Agenda.setUrl(url);
+            return Agenda.configured ? IpcStatus.open : IpcStatus.closed;
         }
 
         function status(): string {

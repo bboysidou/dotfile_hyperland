@@ -14,7 +14,14 @@ Singleton {
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]
+    readonly property var suspend: ["systemctl", "suspend"]
     readonly property var uptime: ["cat", "/proc/uptime"]
+    readonly property var monitorsQuery: ["hyprctl", "monitors", "all", "-j"]
+    readonly property var workspacesQuery: ["hyprctl", "workspaces", "-j"]
+    readonly property var hyprEval: ["hyprctl", "eval"]
+    readonly property var fetch: ["curl", "-fsSL", "--max-time", "20"]
+    readonly property var calendarNew: ["zen-browser", "https://calendar.google.com/calendar/r/eventedit"]
+    readonly property string weatherUrl: "https://api.open-meteo.com/v1/forecast?latitude=%1&longitude=%2&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,apparent_temperature_max&timezone=auto&forecast_days=7&wind_speed_unit=ms"
 
     readonly property string wifiSignals: "iw dev %1 scan dump 2>/dev/null | grep -E '^BSS |signal:|SSID:'"
     readonly property string networkDetails: "nmcli -t -f %1 dev show %2 2>/dev/null"
@@ -22,8 +29,9 @@ Singleton {
     readonly property string packageCount: "pacman -Q | wc -l"
     readonly property string repoUpdates: "timeout %1 checkupdates 2>/dev/null"
     readonly property string aurUpdates: "timeout %1 yay -Qua 2>/dev/null"
-    readonly property string brightnessQuery: "ls /sys/class/backlight/*/brightness >/dev/null 2>&1 && brightnessctl -c backlight -m 2>/dev/null | cut -d, -f4 | tr -d '%' || echo -1"
+    readonly property string brightnessQuery: "if ls /sys/class/backlight/*/brightness >/dev/null 2>&1; then echo \"backlight $(brightnessctl -c backlight -m 2>/dev/null | cut -d, -f4 | tr -d '%')\"; elif command -v ddcutil >/dev/null 2>&1; then echo \"ddc $(ddcutil getvcp 10 --brief 2>/dev/null | awk '/^VCP/ && $5 > 0 { print int($4 * 100 / $5); exit }')\"; else echo none; fi"
     readonly property string brightnessSet: "brightnessctl -c backlight -q s %1%"
+    readonly property string brightnessDdcSet: "for d in $(ddcutil detect --brief 2>/dev/null | sed -n 's/^Display //p'); do ddcutil setvcp 10 %1 --display \"$d\" --noverify & done; wait"
 
     readonly property string readEach: 'for f; do cat "$f" 2>/dev/null || echo -; done'
     readonly property string gpuProbe: 'for d in /sys/class/drm/card*/device; do [ -r "$d/gpu_busy_percent" ] || continue; echo "$d"; ls -d "$d"/hwmon/hwmon* 2>/dev/null | head -n 1; lspci -vmm -s "$(basename "$(readlink -f "$d")")" | sed -n "s/^Device:\t//p"; exit 0; done'

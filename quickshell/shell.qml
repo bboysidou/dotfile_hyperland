@@ -8,6 +8,7 @@ import qs.modules.background
 import qs.modules.border
 import qs.modules.controlcenter
 import qs.modules.dashboard
+import qs.modules.display
 import qs.modules.hardware
 import qs.modules.keybinds
 import qs.modules.launcher
@@ -32,6 +33,7 @@ ShellRoot {
     Border {}
     ControlCenter {}
     Dashboard {}
+    DisplayCenter {}
     HardwareCenter {}
     KeybindSheet {}
     Launcher {}
