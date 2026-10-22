@@ -9,6 +9,7 @@ USER_GROUPS="wheel,users,storage,power,audio,video,input"
 USER_SHELL="/usr/bin/fish"
 WHEEL_SUDOERS="/etc/sudoers.d/10-wheel"
 I2C_MODULES_LOAD="/etc/modules-load.d/i2c-dev.conf"
+GLOBAL_USER_SERVICES=(filter-chain.service)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service)
 
 baseLivePacman() {
@@ -110,6 +111,7 @@ systemFiles() {
 
 systemServices() {
   inChroot systemctl enable "${SYSTEM_SERVICES[@]}"
+  inChroot systemctl --global enable "${GLOBAL_USER_SERVICES[@]}"
   gpuEnablePowerUnits
 }
 

@@ -38,6 +38,19 @@ Scope {
         value: DashState.opened && Players.playing && (root.onMedia || root.onDash)
     }
 
+    IpcHandler {
+        target: "equalizer"
+
+        function preset(name: string): string {
+            Equalizer.usePreset(name);
+            return Equalizer.preset;
+        }
+
+        function status(): string {
+            return `available=${Equalizer.available} node=${Equalizer.node?.id ?? -1} preset=${Equalizer.preset} gains=${Equalizer.gains.join(",")}`;
+        }
+    }
+
     GlobalShortcut {
         appid: Ids.appid
         name: "dashboard"
