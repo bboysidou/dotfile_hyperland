@@ -14,6 +14,12 @@ Card {
     readonly property int cellCount: Appearance.dash.calendarColumns * Appearance.dash.calendarRows
 
     property int monthOffset: 0
+    property bool selectable: false
+    property bool addable: false
+    property date selectedDate: Time.now
+
+    signal picked(date day)
+    signal added
 
     readonly property date anchorDate: new Date(Time.now.getFullYear(), Time.now.getMonth() + root.monthOffset, 1)
 
@@ -28,9 +34,11 @@ Card {
             const cell = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
 
             out.push({
+                date: cell,
                 day: cell.getDate(),
                 inMonth: cell.getMonth() === first.getMonth(),
-                isToday: cell.getFullYear() === today.getFullYear() && cell.getMonth() === today.getMonth() && cell.getDate() === today.getDate()
+                isToday: cell.getFullYear() === today.getFullYear() && cell.getMonth() === today.getMonth() && cell.getDate() === today.getDate(),
+                isSelected: root.selectable && cell.getFullYear() === root.selectedDate.getFullYear() && cell.getMonth() === root.selectedDate.getMonth() && cell.getDate() === root.selectedDate.getDate()
             });
         }
 
@@ -106,6 +114,17 @@ Card {
 
                 onTriggered: root.shift(1)
             }
+
+            IconButton {
+                Layout.preferredWidth: Appearance.dash.calendarNavButtonSize
+                Layout.preferredHeight: Appearance.dash.calendarNavButtonSize
+
+                visible: root.addable
+                icon: Icons.calendarPlus
+                size: Appearance.dash.calendarNavSize
+
+                onTriggered: root.added()
+            }
         }
 
         GridLayout {
@@ -144,8 +163,15 @@ Card {
                     Layout.fillWidth: true
                     Layout.preferredHeight: Appearance.dash.calendarCellSize
 
-                    color: cell.cellData.isToday ? Colours.accent : "transparent"
+                    color: cell.cellData.isToday ? Colours.accent : (cell.cellData.isSelected ? Colours.accentMuted : "transparent")
                     radius: Appearance.dash.calendarCellRounding
+
+                    StateLayer {
+                        radius: parent.radius
+                        disabled: !root.selectable
+
+                        onClicked: root.picked(cell.cellData.date)
+                    }
 
                     StyledText {
                         anchors.centerIn: parent

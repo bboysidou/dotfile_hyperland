@@ -105,6 +105,11 @@ Singleton {
         return root.actions.findIndex(entry => entry.shortcut === key);
     }
 
+    function suspend(): void {
+        Lock.show();
+        Quickshell.execDetached(Commands.suspend);
+    }
+
     function run(action: string): void {
         root.hide();
 
@@ -112,6 +117,8 @@ Singleton {
             Lock.show();
         else if (action === PowerAction.logout)
             Hyprland.dispatch("exit");
+        else if (action === PowerAction.suspend)
+            root.suspend();
         else if (action === PowerAction.reboot)
             Quickshell.execDetached(Commands.reboot);
         else if (action === PowerAction.shutdown)

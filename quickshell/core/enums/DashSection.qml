@@ -7,4 +7,5 @@ Singleton {
     readonly property string prayers: "prayers"
     readonly property string performance: "performance"
     readonly property string media: "media"
+    readonly property string weather: "weather"
 }

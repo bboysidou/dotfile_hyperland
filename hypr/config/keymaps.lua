@@ -25,6 +25,8 @@ hl.bind("ALT + V", hl.dsp.global("quickshell:controlcenter-audio"))
 hl.bind("ALT + N", hl.dsp.global("quickshell:controlcenter-notifications"))
 hl.bind("ALT + U", hl.dsp.global("quickshell:updates"))
 hl.bind("ALT + B", hl.dsp.global("quickshell:controlcenter-bluetooth"))
+hl.bind("ALT + P", hl.dsp.global("quickshell:controlcenter-power"))
+hl.bind("ALT + D", hl.dsp.global("quickshell:display"))
 hl.bind(mainMod .. " + Print", hl.dsp.global("quickshell:screenshot"))
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("systemctl --user restart quickshell.service"))
 hl.bind(mainMod .. " + CTRL + X", hl.dsp.global("quickshell:lock"))
@@ -72,20 +74,9 @@ hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ direction = "down" }))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 
 -- Workspaces ----------------------------------------------------------------
--- Which monitor each workspace lives on (legacy config focused the monitor
--- AND switched to the workspace on the same key; both are preserved here).
-local wsMonitor = {
-	"HDMI-A-1",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-	"DP-3",
-}
+-- Which monitor each workspace lives on comes from workspaces.lua, which the
+-- Quickshell display panel writes (focus the monitor, then the workspace).
+local wsMonitor = require("workspaces")
 
 for i = 1, 10 do
 	local key = i % 10 -- workspace 10 maps to key 0

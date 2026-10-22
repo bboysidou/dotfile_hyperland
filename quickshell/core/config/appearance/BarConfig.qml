@@ -52,5 +52,5 @@ QtObject {
     readonly property string clockFormat: "ddd, dd. MMM HH:mm"
     readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.updates, BarEntry.media]
     readonly property var entriesCentre: [BarEntry.worldClock, BarEntry.prayers]
-    readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.volume]
+    readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.battery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.volume]
 }

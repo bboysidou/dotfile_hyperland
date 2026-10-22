@@ -35,6 +35,13 @@ Scope {
         onPressed: ControlState.toggle(ControlSection.notifications)
     }
 
+    GlobalShortcut {
+        appid: Ids.appid
+        name: "controlcenter-power"
+
+        onPressed: ControlState.toggle(ControlSection.power)
+    }
+
     IpcHandler {
         target: "controlcenter"
 

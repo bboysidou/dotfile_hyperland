@@ -1,35 +1,65 @@
 pragma Singleton
 
+import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.core.config
 import qs.core.constants
+import qs.core.enums
 
 Singleton {
     id: root
 
-    property bool available: false
+    property string backend: BrightnessBackend.none
     property int percent: 0
+    property int pending: -1
+
+    readonly property bool available: root.backend !== BrightnessBackend.none
 
     function apply(payload: string): void {
-        const value = Number(payload.trim());
+        const [backend, raw] = payload.trim().split(" ");
+        const value = Number(raw);
+        const known = (backend === BrightnessBackend.backlight || backend === BrightnessBackend.ddc) && isFinite(value) && value >= 0;
 
-        root.available = isFinite(value) && value >= 0;
-        root.percent = root.available ? value : 0;
+        root.backend = known ? backend : BrightnessBackend.none;
+        if (known && root.pending === -1)
+            root.percent = value;
     }
 
-    function step(delta: int): void {
+    function setPercent(value: int): void {
         if (!root.available)
             return;
 
-        adjust.command = ["sh", "-c", Commands.brightnessSet.arg(delta)];
+        root.percent = Math.max(Appearance.powerPanel.brightnessMin, Math.min(Appearance.scale.percent, value));
+        root.pending = root.percent;
+        debounce.restart();
+    }
+
+    function flush(): void {
+        if (root.pending === -1 || adjust.running)
+            return;
+
+        const template = root.backend === BrightnessBackend.ddc ? Commands.brightnessDdcSet : Commands.brightnessSet;
+        adjust.command = ["sh", "-c", template.arg(root.pending)];
+        root.pending = -1;
         adjust.running = true;
+    }
+
+    Timer {
+        id: debounce
+
+        interval: root.backend === BrightnessBackend.ddc ? Appearance.powerPanel.ddcDebounce : Appearance.powerPanel.backlightDebounce
+
+        onTriggered: root.flush()
     }
 
     Process {
         id: adjust
 
-        onExited: query.running = true
+        onExited: {
+            if (root.pending !== -1)
+                root.flush();
+        }
     }
 
     Process {

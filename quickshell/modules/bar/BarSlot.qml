@@ -63,6 +63,11 @@ RowLayout {
                 delegate: MouseBatteryPill {}
             }
             DelegateChoice {
+                roleValue: BarEntry.battery
+
+                delegate: BatteryPill {}
+            }
+            DelegateChoice {
                 roleValue: BarEntry.bluetooth
 
                 delegate: BluetoothPill {}

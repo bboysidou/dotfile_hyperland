@@ -12,6 +12,7 @@ import qs.modules.dashboard.dash
 import qs.modules.dashboard.media
 import qs.modules.dashboard.prayers
 import qs.modules.dashboard.performance
+import qs.modules.dashboard.weather
 
 RevealCard {
     id: root
@@ -95,6 +96,11 @@ RevealCard {
                 label: Appearance.dash.labelDash
             },
             {
+                section: DashSection.weather,
+                icon: Icons.weatherPartly,
+                label: Appearance.weather.labelWeather
+            },
+            {
                 section: DashSection.performance,
                 icon: Icons.perfTab,
                 label: Appearance.dash.labelPerformance
@@ -151,6 +157,14 @@ RevealCard {
 
                         delegate: DashPane {
                             active: root.onDash
+                        }
+                    }
+                    DelegateChoice {
+                        roleValue: DashSection.weather
+
+                        delegate: WeatherPane {
+                            onFocusRequested: DashState.pinned = true
+                            onFocusReleased: root.forceActiveFocus()
                         }
                     }
                     DelegateChoice {
