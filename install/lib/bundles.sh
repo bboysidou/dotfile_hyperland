@@ -42,7 +42,6 @@ bundleDefaults() {
     default="$(bundleMeta "$name" default)"
     case "$default" in
       on) picked+=("$name") ;;
-      laptop) if ((D_LAPTOP)); then picked+=("$name"); fi ;;
     esac
   done < <(bundleNames)
   echo "${picked[*]}"
@@ -118,7 +117,7 @@ bundleSystemHooks() {
   if packageWanted peripherals solaar; then
     writeFile "${MNT}${SOLAAR_UDEV_RULE}" <<<'KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"'
   fi
-  if packageWanted laptop power-profiles-daemon; then
+  if packageWanted core power-profiles-daemon; then
     inChroot systemctl enable power-profiles-daemon.service
   fi
   _bundleSecurity

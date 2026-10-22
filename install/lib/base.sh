@@ -8,6 +8,7 @@ MIRROR_COUNT=20
 USER_GROUPS="wheel,users,storage,power,audio,video,input"
 USER_SHELL="/usr/bin/fish"
 WHEEL_SUDOERS="/etc/sudoers.d/10-wheel"
+I2C_MODULES_LOAD="/etc/modules-load.d/i2c-dev.conf"
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service)
 
 baseLivePacman() {
@@ -101,6 +102,7 @@ systemUsers() {
 }
 
 systemFiles() {
+  writeFile "${MNT}${I2C_MODULES_LOAD}" <<<"i2c-dev"
   run install -Dm644 "${INSTALLER_DIR}/fontconfig/fonts.conf" "${MNT}/etc/fonts/local.conf"
   run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo" "${MNT}/usr/local/bin/qs-hwinfo"
   run install -Dm644 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"
