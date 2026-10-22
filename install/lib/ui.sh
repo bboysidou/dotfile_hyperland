@@ -191,13 +191,22 @@ uiTypedConfirm() {
 }
 
 _uiRunBackground() {
-  local title="$1" pid
-  shift
+  local title="$1" verbose="$2" pid
+  shift 2
   if ((DRY_RUN)); then
     (
       set -Eeuo pipefail
       "$@"
     ) > >(tee -a "$LOG_FILE") 2>&1 &
+  elif ((verbose)); then
+    (
+      set -o pipefail
+      (
+        set -Eeuo pipefail
+        trap 'echo "failed (exit $?): ${BASH_COMMAND}" >&2' ERR
+        "$@"
+      ) 2>&1 </dev/null | tee -a "$LOG_FILE"
+    ) &
   else
     (
       set -Eeuo pipefail
@@ -206,10 +215,10 @@ _uiRunBackground() {
     ) >>"$LOG_FILE" 2>&1 </dev/null &
   fi
   pid=$!
-  if ((HAS_GUM && !DRY_RUN)); then
+  if ((HAS_GUM && !DRY_RUN && !verbose)); then
     gum spin --spinner dot --spinner.foreground "$UI_ACCENT" --title "$title" -- \
       bash -c "while kill -0 ${pid} 2>/dev/null; do sleep ${UI_SPIN_POLL}; done" || true
-  elif ((!DRY_RUN)); then
+  elif ((!DRY_RUN && !verbose)); then
     printf '  … %s\n' "$title"
   fi
   wait "$pid"
@@ -237,20 +246,23 @@ _uiFailureMenu() {
 }
 
 uiStep() {
-  local optional=0 status title action
-  if [[ "$1" == "--optional" ]]; then
-    optional=1
+  local optional=0 verbose=0 status title action
+  while [[ "$1" == --* ]]; do
+    case "$1" in
+      --optional) optional=1 ;;
+      --verbose) verbose=1 ;;
+    esac
     shift
-  fi
+  done
   title="$1"
   shift
   while true; do
     printf '\n[%s] ==> %s\n' "$(date '+%F %T')" "$title" >>"$LOG_FILE"
-    if ((DRY_RUN)); then
+    if ((DRY_RUN || verbose)); then
       uiInfo "$title"
     fi
     set +e
-    _uiRunBackground "$title" "$@"
+    _uiRunBackground "$title" "$verbose" "$@"
     status=$?
     set -e
     if ((status == 0)); then
