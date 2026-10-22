@@ -119,7 +119,9 @@ uiChoose() {
   local __var="$1" header="$2" value i reply
   shift 2
   if ((HAS_GUM)); then
-    value="$(printf '%s\n' "$@" | gum choose --header "$header" --height "$UI_LIST_HEIGHT" --label-delimiter '|')" || return 1
+    value="$(for value in "$@"; do
+      [[ "$value" == *"|"* ]] && echo "$value" || echo "${value}|${value}"
+    done | gum choose --header "$header" --height "$UI_LIST_HEIGHT" --label-delimiter '|')" || return 1
   else
     echo "$header"
     i=1
