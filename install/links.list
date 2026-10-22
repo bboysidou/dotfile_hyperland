@@ -11,6 +11,7 @@ custom_scripts                      ~/.config/custom_scripts
 fastfetch                           ~/.config/fastfetch
 mpv                                 ~/.config/mpv
 yazi                                ~/.config/yazi
+pipewire/filter-chain.conf.d         ~/.config/pipewire/filter-chain.conf.d
 mimeapps.list                       ~/.config/mimeapps.list
 gtk/gtk-3.0/settings.ini            ~/.config/gtk-3.0/settings.ini
 gtk/gtk-3.0/bookmarks               ~/.config/gtk-3.0/bookmarks

@@ -46,6 +46,7 @@ Singleton {
     readonly property PowerPanelConfig powerPanel: PowerPanelConfig {}
     readonly property DisplayConfig display: DisplayConfig {}
     readonly property WeatherConfig weather: WeatherConfig {}
+    readonly property EqualizerConfig equalizer: EqualizerConfig {}
     readonly property ShotConfig shot: ShotConfig {}
     readonly property ShareConfig share: ShareConfig {}
     readonly property OrbitConfig orbit: OrbitConfig {}
