@@ -276,7 +276,7 @@ _uiFailureMenu() {
 }
 
 uiStep() {
-  local optional=0 verbose=0 status title action
+  local optional=0 verbose=0 status err_trap title action
   while [[ "$1" == --* ]]; do
     case "$1" in
       --optional) optional=1 ;;
@@ -296,10 +296,13 @@ uiStep() {
     elif ((DRY_RUN || verbose)); then
       uiInfo "$title"
     fi
+    err_trap="$(trap -p ERR)"
+    trap - ERR
     set +e
     _uiRunBackground "$title" "$verbose" "$@"
     status=$?
     set -e
+    eval "${err_trap:-trap - ERR}"
     if ((status == 0)); then
       ((DRY_RUN)) || uiOk "$title"
       return 0
