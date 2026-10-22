@@ -156,7 +156,7 @@ stagePreflight() {
   _requireFirmware
   _requireNetwork
   if ((!DRY_RUN)) && ! command -v gum >/dev/null 2>&1; then
-    uiStep "Install installer tools (gum, os-prober)" _liveTools
+    uiStep --verbose "Install installer tools (gum, os-prober)" _liveTools
     uiInit
   fi
 }
@@ -215,7 +215,7 @@ stageBase() {
   if stageDone base; then return 0; fi
   uiStep "Prepare pacman on the ISO" baseLivePacman
   uiStep --optional "Rank the fastest mirrors" baseMirrors
-  uiStep "Install packages (pacstrap, this takes a while)" basePacstrap
+  uiStep --verbose "Install packages (pacstrap, this takes a while)" basePacstrap
   uiStep "Write fstab" baseFstab
   markStage base
 }
@@ -232,8 +232,8 @@ stageUser() {
   uiHeader "5 · Your desktop"
   if stageDone user; then return 0; fi
   uiStep "Allow AUR builds for ${A_USER} (temporary)" userSudoersOn
-  uiStep "Build yay" userYay
-  uiStep "Install AUR packages" userAur
+  uiStep --verbose "Build yay" userYay
+  uiStep --verbose "Install AUR packages" userAur
   uiStep "Clone and link the dotfiles" userDotfiles
   uiStep --optional "Create home folders" userDirs
   uiStep --optional "Fish plugins and tide prompt" userFish
