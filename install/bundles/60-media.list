@@ -1,0 +1,24 @@
+#: title=Media
+#: description=OBS, Kdenlive, VLC, mpv, codecs, Discord
+#: default=on
+obs-studio
+kdenlive
+vlc
+mpv
+discord
+a52dec
+faac
+faad2
+flac
+jasper
+lame
+libdca
+libdv
+libmad
+libmpeg2
+libtheora
+libvorbis
+libxv
+wavpack
+x264
+xvidcore

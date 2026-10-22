@@ -1,0 +1,22 @@
+#: title=Development
+#: description=Compilers, build tools, node, JDK 17 + 21, GitHub CLI, opencode, Antigravity
+#: default=on
+gcc
+gdb
+make
+valgrind
+cmake
+ninja
+meson
+clang
+gtk3
+pkgconf
+nodejs
+npm
+jdk17-openjdk
+jdk21-openjdk
+tree-sitter-cli
+github-cli
+opencode
+dpkg
+aur:antigravity

@@ -1,0 +1,7 @@
+#: title=Browsers
+#: description=Firefox, Chromium, Brave, Zen + hardware video decoding flags
+#: default=on
+firefox
+chromium
+aur:brave-bin
+aur:zen-browser-bin

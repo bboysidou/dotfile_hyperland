@@ -1,0 +1,7 @@
+#: title=Android
+#: description=adb, udev rules, scrcpy, DroidCam (Flutter/SDK via install/android_dev.sh after login)
+#: default=off
+android-tools
+android-udev
+scrcpy
+aur:droidcam

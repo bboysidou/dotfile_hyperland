@@ -1,0 +1,5 @@
+#: title=Extra OCR languages
+#: description=French and Arabic for screenshot OCR (English is in core)
+#: default=on
+tesseract-data-fra
+tesseract-data-ara

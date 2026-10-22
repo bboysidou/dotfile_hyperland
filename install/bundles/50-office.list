@@ -1,0 +1,6 @@
+#: title=Office
+#: description=OnlyOffice, Evince, Bruno
+#: default=on
+evince
+aur:onlyoffice-bin
+aur:bruno-bin
