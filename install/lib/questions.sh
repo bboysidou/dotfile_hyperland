@@ -135,6 +135,7 @@ _fineTuneBundle() {
 
 askBundles() {
   local labels=() selected=() bundles=() chosen name pick
+  A_EXCLUDE="${A_EXCLUDE-}"
   _preseeded A_BUNDLES && return 0
   A_BUNDLES="${A_BUNDLES:-$(bundleDefaults)}"
   while read -r name; do
