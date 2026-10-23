@@ -10,7 +10,7 @@ STEPS_PARTITION=2
 STEPS_MOUNT=1
 STEPS_BASE=4
 STEPS_SYSTEM=2
-STEPS_USER=11
+STEPS_USER=10
 
 DRY_RUN=0
 PRESEED=0
@@ -82,6 +82,8 @@ source "${LIB_DIR}/gpu.sh"
 source "${LIB_DIR}/disk.sh"
 # shellcheck source=lib/bundles.sh
 source "${LIB_DIR}/bundles.sh"
+# shellcheck source=lib/shells.sh
+source "${LIB_DIR}/shells.sh"
 # shellcheck source=lib/boot.sh
 source "${LIB_DIR}/boot.sh"
 # shellcheck source=lib/base.sh
@@ -184,6 +186,7 @@ stageQuestions() {
   uiHeader "1 · Questions"
   if _offerResume; then
     askHardware
+    shellDefaults
     askBoot
     if ! stageDone system; then
       askPasswords
@@ -241,7 +244,9 @@ stageUser() {
   uiStep --verbose "Install AUR packages" userAur
   uiStep "Clone and link the dotfiles" userDotfiles
   uiStep --optional "Create home folders" userDirs
-  uiStep --optional "Fish plugins" userFish
+  if shellSelected fish; then
+    uiStep "Fish plugins and your tide prompt" userFish
+  fi
   uiStep --optional "Default wallpaper" userWallpaper
   uiStep --optional "tmux plugin manager" userTmux
   uiStep --optional "Graphite GTK theme" userTheme
@@ -276,7 +281,7 @@ _installStepCount() {
   stageDone base || total=$((total + STEPS_BASE))
   stageDone system || total=$((total + STEPS_SYSTEM))
   if ! stageDone user; then
-    total=$((total + STEPS_USER + $(bundleUserStepCount)))
+    total=$((total + STEPS_USER + $(bundleUserStepCount) + $(shellUserStepCount)))
   fi
   echo "$total"
 }

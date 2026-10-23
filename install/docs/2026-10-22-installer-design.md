@@ -175,7 +175,10 @@ After the confirmation in stage 1, nothing prompts again unless a step fails.
 hostname · username · user password (hidden, twice) · root password (hidden, twice) ·
 timezone (fuzzy list from `/usr/share/zoneinfo`) · locale · console keymap · target disk ·
 install mode (wipe / alongside) · bootloader (systemd-boot default / GRUB) · bundles (with
-per-package drill-down) · detected-hardware overrides.
+per-package drill-down) · shells besides bash (multi-select zsh / fish, fish preselected) and
+the login shell among the chosen ones · terminals besides kitty (multi-select alacritty /
+ghostty / foot) · detected-hardware overrides. The fisher step only runs when fish is chosen, and then it is required: it installs tide from
+`fish/fish_plugins` and fails unless `tide` loads; the prompt itself comes from `fish/conf.d/tide.fish`.
 
 Defaults match today's machine: user `sidouxp3`, timezone `Africa/Algiers`, locale
 `en_US.UTF-8`, keymap `us`.
@@ -309,7 +312,7 @@ AUR builds need a non-root user and sudo without a terminal: a temporary
 
 | Bundle | Default | Contents |
 |---|---|---|
-| core | always | base tools, hyprland, `xdg-desktop-portal-hyprland` + `-gtk`, quickshell and its deps (**cliphist** added), fish, kitty, pipewire stack, fonts, polkit, networkmanager, Graphite theme, cursor + icon themes |
+| core | always | base tools, hyprland, `xdg-desktop-portal-hyprland` + `-gtk`, quickshell and its deps (**cliphist** added), kitty, pipewire stack, fonts, polkit, networkmanager, Graphite theme, cursor + icon themes |
 | dev | on | gcc, clang, cmake, ninja, meson, node/npm, jdk17 + jdk21, github-cli, opencode, tree-sitter-cli |
 | docker | on | docker, docker-compose, group membership, service |
 | android | off | android-tools, android-udev, scrcpy, then `android_dev.sh` |
@@ -333,8 +336,7 @@ multi-select of its packages.
 ### Reliability
 
 - `set -Eeuo pipefail`; an `ERR` trap shows stage, failed command and the last 20 log lines
-  in an error box, then offers retry / skip (only for steps marked non-critical: fisher
-  plugins, Graphite theme, wallpapers, `browsers.sh`) / abort.
+  in an error box, then offers retry / skip (only for steps marked non-critical: Graphite theme, wallpapers, `browsers.sh`) / abort.
 - `EXIT` trap: always removes the temp sudoers file.
 - Full command output goes to `/tmp/install.log`; the screen shows headers and spinners.
 - Answers (no passwords) in `/tmp/install.answers`; a marker per finished stage in
