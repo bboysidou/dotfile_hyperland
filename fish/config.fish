@@ -16,9 +16,9 @@ alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
 alias ocr="qs ipc call screenshot ocr"
 alias sysupdate="sudo pacman -Syu; and yay -Syu"
 alias sysclean="paccache -r; and sudo pacman -R (pacman -Qtdq)"
-alias ls="eza --icons"
-alias ll="eza --icons -l"
-alias la="eza --icons -al"
+alias ls="eza --icons=auto"
+alias ll="eza --icons=auto -l"
+alias la="eza --icons=auto -al"
 alias claude-personal='env CLAUDE_CONFIG_DIR=$HOME/.claude-personal claude'
 
 if status is-interactive
