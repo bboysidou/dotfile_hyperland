@@ -7,8 +7,10 @@ ColumnLayout {
     id: root
 
     property string networkName: ""
+    property string draft: ""
     property string error: ""
 
+    signal edited(string text)
     signal submitted(string psk)
     signal cancelled
 
@@ -21,6 +23,8 @@ ColumnLayout {
     }
 
     spacing: Appearance.control.passwordSpacing
+
+    Component.onCompleted: field.setText(root.draft)
 
     TextField {
         id: field
@@ -36,6 +40,7 @@ ColumnLayout {
         iconSize: Appearance.control.iconSize
         placeholderSize: Appearance.font.size.small
 
+        onEdited: text => root.edited(text)
         onAccepted: root.submitted(field.text)
         onCancelled: root.cancelled()
     }

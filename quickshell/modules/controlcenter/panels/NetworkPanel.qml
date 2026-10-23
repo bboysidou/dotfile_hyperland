@@ -16,9 +16,12 @@ Panel {
     id: root
 
     property var pendingNetwork: null
-    property var promptNetwork: null
+    property string promptName: ""
+    property string draft: ""
     property var promptCard: null
     property string error: ""
+
+    readonly property var promptNetwork: root.promptName === "" ? null : Net.networks.find(network => network.name === root.promptName) ?? null
 
     readonly property var orbiting: Net.networks.slice(0, Appearance.orbit.maxNodes)
 
@@ -82,8 +85,9 @@ Panel {
     }
 
     function dismiss(): void {
-        const wasPrompting = root.promptNetwork !== null;
-        root.promptNetwork = null;
+        const wasPrompting = root.promptName !== "";
+        root.promptName = "";
+        root.draft = "";
         root.promptCard = null;
         root.error = "";
 
@@ -103,7 +107,7 @@ Panel {
         if (!network)
             return;
 
-        if (root.promptNetwork === network) {
+        if (root.prompting(network)) {
             root.dismiss();
             return;
         }
@@ -126,8 +130,13 @@ Panel {
             return;
         }
 
-        root.promptNetwork = network;
+        root.promptName = network.name;
+        root.draft = "";
         root.error = "";
+    }
+
+    function prompting(network): bool {
+        return root.promptName !== "" && network?.name === root.promptName;
     }
 
     function submit(psk: string): void {
@@ -159,7 +168,7 @@ Panel {
             root.pendingNetwork = null;
 
             if (Net.secured(network) && !network.known)
-                root.promptNetwork = network;
+                root.promptName = network.name;
         }
     }
 
@@ -168,8 +177,9 @@ Panel {
 
         function onConnectionFailed(reason: int): void {
             root.error = Net.failureText(reason);
-            root.promptNetwork = root.pendingNetwork;
+            root.promptName = root.pendingNetwork?.name ?? "";
             root.pendingNetwork = null;
+            root.draft = "";
             root.promptCard?.expansionItem?.reset();
             root.promptCard?.expansionItem?.focusInput();
         }
@@ -234,7 +244,7 @@ Panel {
                         badgeGlyph: Net.secured(network) ? Icons.networkLocked : "",
                         active: network.connected,
                         busy: Net.busy(network),
-                        failed: Net.failed(network) || (root.promptNetwork === network && root.error !== ""),
+                        failed: Net.failed(network) || (root.prompting(network) && root.error !== ""),
                         holdable: true,
                         forgettable: network.known
                     }))
@@ -350,7 +360,7 @@ Panel {
                 accent: Colours.network
                 forgettable: modelData.known
                 details: modelData.connected ? root.connectionDetails : []
-                expanded: root.promptNetwork === card.modelData
+                expanded: root.prompting(card.modelData)
 
                 onActivated: root.activate(card.modelData)
                 onForgotten: Net.forgetNetwork(card.modelData)
@@ -368,7 +378,10 @@ Panel {
                 expansion: Component {
                     PasswordPrompt {
                         networkName: card.modelData?.name ?? ""
+                        draft: root.draft
                         error: root.error
+
+                        onEdited: text => root.draft = text
 
                         onSubmitted: psk => root.submit(psk)
                         onCancelled: root.dismiss()
