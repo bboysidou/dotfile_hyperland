@@ -39,7 +39,7 @@ require("config/windowrules")
 -- Keybinds
 require("config/keymaps")
 
--- Animations (also re-enables blur)
+-- Animations
 require("config/animation")
 
 -- Misc

@@ -15,21 +15,6 @@ hl.animation({ leaf = "windowsIn",   enabled = true, speed = 6,  bezier = "smoot
 hl.animation({ leaf = "windowsOut",  enabled = true, speed = 4,  bezier = "smoothOut", style = "slidefade 30%" })
 hl.animation({ leaf = "windowsMove", enabled = true, speed = 5,  bezier = "smooth",    style = "slide" })
 hl.animation({ leaf = "border",      enabled = true, speed = 2,  bezier = "liner" })
-hl.animation({ leaf = "borderangle", enabled = true, speed = 50, bezier = "liner",     style = "loop" })
+hl.animation({ leaf = "borderangle", enabled = false })
 hl.animation({ leaf = "fade",        enabled = true, speed = 6,  bezier = "smooth" })
 hl.animation({ leaf = "workspaces",  enabled = true, speed = 6,  bezier = "smooth",    style = "slidefade 40%" })
-
--- Blur (re-enabled here, matching the legacy setup where animation.conf
--- overrode decoration.conf)
-hl.config({
-    decoration = {
-        blur = {
-            enabled           = true,
-            size              = 2,
-            passes            = 2,
-            new_optimizations = true,
-            ignore_opacity    = true,
-            xray              = true,
-        },
-    },
-})
