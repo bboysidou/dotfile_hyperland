@@ -123,7 +123,6 @@ QtObject {
     readonly property string emptyGpuProcs: "No GPU clients"
     readonly property string emptyDimms: "Install qs-hwinfo to list modules"
     readonly property string titleTemplate: "%1 — %2"
-    readonly property string kindTemplate: "%1 (%2)"
     readonly property string rowTemplate: "%1: "
     readonly property string separator: "|"
     readonly property string fieldSeparator: " | "

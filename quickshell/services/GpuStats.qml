@@ -35,7 +35,6 @@ Singleton {
     readonly property string hwmon: root.card?.hwmon ?? ""
     readonly property string pci: root.card?.pci ?? ""
     readonly property string name: root.card?.name ?? ""
-    readonly property string kind: root.cards.length > 1 ? (root.card?.dedicated ? Appearance.hardware.labelDedicated : Appearance.hardware.labelIntegrated) : ""
 
     readonly property bool available: root.cards.length > 0
     readonly property int busyPercent: isFinite(root.busy) ? Num.toPercent(root.busy * Appearance.scale.percent) : 0
@@ -58,7 +57,6 @@ Singleton {
             vram: Number(parts[3]) || 0,
             suspended: parts[4] === "suspended",
             name: name,
-            short: name.split("/")[0].trim(),
             dedicated: false
         };
     }

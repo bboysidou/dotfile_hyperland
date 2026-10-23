@@ -32,7 +32,7 @@ ColumnLayout {
             color: Colours.textBright
             font.pixelSize: Appearance.hardware.titleSize
             font.weight: Appearance.font.weightActive
-            elide: Text.ElideRight
+            wrapMode: Text.Wrap
         }
     }
 
