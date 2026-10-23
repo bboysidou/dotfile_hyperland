@@ -11,11 +11,13 @@ Pill {
     id: root
 
     readonly property color stateColour: {
+        if (MouseBattery.charging)
+            return Colours.accent;
         if (MouseBattery.percent <= Appearance.bar.mouseCritical)
             return Colours.critical;
         if (MouseBattery.percent <= Appearance.bar.mouseWarning)
             return Colours.warning;
-        return Colours.text;
+        return Colours.accent;
     }
 
     Layout.rightMargin: Appearance.bar.pillMarginRight
