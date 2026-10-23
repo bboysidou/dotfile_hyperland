@@ -79,7 +79,5 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.topMargin: Appearance.dash.spacing
-
-        accent: Colours.media
     }
 }

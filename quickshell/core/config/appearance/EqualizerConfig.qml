@@ -32,7 +32,6 @@ QtObject {
     readonly property string labelCustom: "Custom"
     readonly property string labelMissing: "Equalizer is not running. Enable it with: systemctl --user enable --now filter-chain"
     readonly property var presets: [
-        ["Flat", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
         ["Bass", [6, 5, 4, 2, 0, 0, 0, 0, 0, 0]],
         ["Treble", [0, 0, 0, 0, 0, 1, 2, 4, 5, 6]],
         ["Vocal", [-2, -2, -1, 1, 3, 4, 3, 1, 0, -1]],
