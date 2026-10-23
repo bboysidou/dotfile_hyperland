@@ -75,4 +75,27 @@ QtObject {
     readonly property string profilePerformance: "performance"
     readonly property string profileBalanced: "balanced"
     readonly property string profileSaver: "saver"
+    readonly property int batteryInfoInterval: 30000
+    readonly property int statColumns: 3
+    readonly property int statSpacing: 12
+    readonly property int statLabelSize: 10
+    readonly property real statLetterSpacing: 1.2
+    readonly property int statValueSize: 14
+    readonly property int statDecimals: 1
+    readonly property string statDraw: "DRAW"
+    readonly property string statInput: "CHARGE RATE"
+    readonly property string statEnergy: "ENERGY"
+    readonly property string statHealth: "HEALTH"
+    readonly property string statRuntime: "FULL CHARGE LASTS"
+    readonly property string statCycles: "CYCLES"
+    readonly property string statVoltage: "VOLTAGE"
+    readonly property string statTemperature: "TEMPERATURE"
+    readonly property string statLimit: "CHARGE LIMIT"
+    readonly property string statCell: "CELL"
+    readonly property string wattTemplate: "%1 W"
+    readonly property string energyTemplate: "%1 / %2 Wh"
+    readonly property string healthTemplate: "%1% of %2 Wh"
+    readonly property string percentTemplate: "%1%"
+    readonly property string voltTemplate: "%1 V"
+    readonly property string celsiusTemplate: "%1 \u00b0C"
 }
