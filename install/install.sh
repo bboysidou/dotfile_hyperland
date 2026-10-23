@@ -10,7 +10,7 @@ STEPS_PARTITION=2
 STEPS_MOUNT=1
 STEPS_BASE=4
 STEPS_SYSTEM=2
-STEPS_USER=10
+STEPS_USER=11
 
 DRY_RUN=0
 PRESEED=0
@@ -241,7 +241,8 @@ stageUser() {
   uiStep --verbose "Install AUR packages" userAur
   uiStep "Clone and link the dotfiles" userDotfiles
   uiStep --optional "Create home folders" userDirs
-  uiStep --optional "Fish plugins and tide prompt" userFish
+  uiStep --optional "Fish plugins" userFish
+  uiStep --optional "Default wallpaper" userWallpaper
   uiStep --optional "tmux plugin manager" userTmux
   uiStep --optional "Graphite GTK theme" userTheme
   bundleUserHooks

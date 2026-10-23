@@ -165,7 +165,7 @@ Removed once their logic has moved: `install/arch_install.sh`, `install/post_arc
 | 2 | disk | ISO root | partition, format, btrfs subvolumes, mount |
 | 3 | base | ISO root | reflector mirrors, `pacstrap -K`, `genfstab -U` |
 | 4 | system | chroot root | locale, time, hosts, zram, sudo, pacman/makepkg tweaks, multilib, drivers, mkinitcpio, bootloader, services, security files |
-| 5 | user | chroot, `runuser -u <user>` | yay-bin, AUR packages, clone `~/.dotfiles` with submodules, `link.sh --yes`, fisher + tide, tpm, Graphite theme, `browsers.sh`, chsh fish |
+| 5 | user | chroot, `runuser -u <user>` | yay-bin, AUR packages, clone `~/.dotfiles` with submodules, `link.sh --yes`, fisher plugins, tpm, Graphite theme, `browsers.sh`, chsh fish |
 | 6 | finish | ISO root | remove temp sudoers, copy log to `/mnt/var/log/installer.log`, summary, offer reboot |
 
 After the confirmation in stage 1, nothing prompts again unless a step fails.
@@ -333,8 +333,8 @@ multi-select of its packages.
 ### Reliability
 
 - `set -Eeuo pipefail`; an `ERR` trap shows stage, failed command and the last 20 log lines
-  in an error box, then offers retry / skip (only for steps marked non-critical: fisher,
-  tide, Graphite theme, wallpapers, `browsers.sh`) / abort.
+  in an error box, then offers retry / skip (only for steps marked non-critical: fisher
+  plugins, Graphite theme, wallpapers, `browsers.sh`) / abort.
 - `EXIT` trap: always removes the temp sudoers file.
 - Full command output goes to `/tmp/install.log`; the screen shows headers and spinners.
 - Answers (no passwords) in `/tmp/install.answers`; a marker per finished stage in
