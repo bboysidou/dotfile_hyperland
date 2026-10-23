@@ -2,11 +2,6 @@ import QtQuick
 
 QtObject {
     readonly property int sectionSpacing: 14
-    readonly property int ringSize: 196
-    readonly property real ringRadiusRatio: 0.44
-    readonly property real ringThicknessRatio: 0.055
-    readonly property var haloRatios: [1.5, 1.22]
-    readonly property real haloOpacity: 0.07
     readonly property int percentSize: 44
     readonly property int percentGlyphSize: 26
     readonly property int heroTextSpacing: 4
@@ -14,8 +9,34 @@ QtObject {
     readonly property real statusLetterSpacing: 1.5
     readonly property int warningPercent: 50
     readonly property int criticalPercent: 25
-    readonly property int ringStrandSegments: 12
+    readonly property int ringWaveSteps: 240
+    readonly property real ringWaveTaper: 0.5
+    readonly property var ringWaves: [
+        {
+            amplitude: 6,
+            rate: 1.1,
+            waves: 12,
+            width: 7,
+            alpha: 0.2
+        },
+        {
+            amplitude: 4.5,
+            rate: -0.9,
+            waves: 16,
+            width: 2.4,
+            alpha: 0.55
+        },
+        {
+            amplitude: 4,
+            rate: 0.7,
+            waves: 14,
+            width: 1.3,
+            alpha: 0.9
+        }
+    ]
     readonly property real ringStartAngle: -90
+    readonly property real coreRingScale: 1.95
+    readonly property real coreRingRadiusRatio: 0.4
     readonly property int timeTileSize: 44
     readonly property int timeTileRounding: 10
     readonly property int timeDigitSize: 18

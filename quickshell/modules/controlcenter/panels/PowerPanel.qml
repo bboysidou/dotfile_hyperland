@@ -89,6 +89,8 @@ Panel {
         PowerState.run(action);
     }
 
+    implicitWidth: Appearance.orbit.panelWidth
+
     function setProfile(key: string): void {
         const entry = root.profiles.find(candidate => candidate.key === key);
         if (entry)
@@ -126,15 +128,41 @@ Panel {
             }
         }
 
-        BatteryHero {
+        Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            hasBattery: Battery.available
-            percent: Battery.percent
-            charging: Battery.charging
-            status: root.status
-            colour: root.levelColour
+            OrbitStage {
+                id: stage
+
+                anchors.centerIn: parent
+
+                width: parent.width
+                height: Appearance.orbit.stageHeight
+
+                linked: true
+                switchable: false
+                accent: root.levelColour
+
+                coreContent: Component {
+                    BatteryCore {
+                        hasBattery: Battery.available
+                        percent: Battery.percent
+                        charging: Battery.charging
+                        status: root.status
+                    }
+                }
+            }
+
+            StrandRing {
+                anchors.centerIn: stage
+
+                width: Appearance.orbit.coreSize * root.config.coreRingScale
+                height: width
+
+                value: Battery.available ? Battery.percent / Appearance.scale.percent : 1
+                colour: root.levelColour
+            }
         }
 
         StyledRect {
