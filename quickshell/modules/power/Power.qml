@@ -17,6 +17,8 @@ import qs.services
 Scope {
     id: root
 
+    Component.onCompleted: LowPower.sync()
+
     GlobalShortcut {
         appid: Ids.appid
         name: "power"
@@ -40,6 +42,19 @@ Scope {
         function toggle(): string {
             PowerState.toggle();
             return PowerState.opened ? IpcStatus.open : IpcStatus.closed;
+        }
+    }
+
+    IpcHandler {
+        target: "lowpower"
+
+        function toggle(): bool {
+            LowPower.toggle();
+            return LowPower.enabled;
+        }
+
+        function status(): bool {
+            return LowPower.enabled;
         }
     }
 

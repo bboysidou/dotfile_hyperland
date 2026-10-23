@@ -3,6 +3,7 @@ pragma Singleton
 import Quickshell
 
 Singleton {
+    readonly property var appScope: ["systemd-run", "--user", "--scope", "--collect", "--quiet", "--slice=app.slice", "--"]
     readonly property var mouseSettings: ["solaar"]
     readonly property var updates: ({
             program: ["yay", "-Syu"],
@@ -34,6 +35,7 @@ Singleton {
     readonly property var monitorsQuery: ["hyprctl", "monitors", "all", "-j"]
     readonly property var workspacesQuery: ["hyprctl", "workspaces", "-j"]
     readonly property var hyprEval: ["hyprctl", "eval"]
+    readonly property var hyprReload: ["hyprctl", "reload"]
     readonly property var fetch: ["curl", "-fsSL", "--max-time", "20"]
     readonly property string wanAddressUrl: "https://api.ipify.org"
     readonly property var calendarNew: ["zen-browser", "https://calendar.google.com/calendar/r/eventedit"]

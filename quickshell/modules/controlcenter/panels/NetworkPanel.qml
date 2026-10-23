@@ -118,7 +118,7 @@ Panel {
         }
 
         if (Net.enterprise(network)) {
-            Quickshell.execDetached(Commands.networkEditor);
+            Launch.app(Commands.networkEditor);
             ControlState.hide();
             return;
         }

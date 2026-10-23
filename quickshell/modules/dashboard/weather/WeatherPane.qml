@@ -47,7 +47,7 @@ Item {
                 selectedDate: root.selected
 
                 onPicked: day => root.selected = day
-                onAdded: Quickshell.execDetached(Commands.calendarNew)
+                onAdded: Launch.app(Commands.calendarNew)
             }
 
             ClockOrbit {

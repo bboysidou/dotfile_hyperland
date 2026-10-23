@@ -4,6 +4,7 @@ import Quickshell
 import qs.core.config
 import qs.core.constants
 import qs.core.enums
+import qs.core.helpers
 import qs.services
 
 Singleton {
@@ -149,13 +150,13 @@ Singleton {
         Apps.register(entry.id);
 
         if (entry.runInTerminal)
-            Quickshell.execDetached(Terminal.command({
+            Launch.app(Terminal.command({
                 program: entry.command,
                 title: "",
                 hold: false
-            }));
+            }), entry.workingDirectory);
         else
-            entry.execute();
+            Launch.app(entry.command, entry.workingDirectory);
 
         root.hide();
     }

@@ -4,6 +4,7 @@ import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.constants
+import qs.core.helpers
 import qs.modules.dashboard
 import qs.services
 
@@ -19,7 +20,7 @@ MouseArea {
 
     onClicked: event => {
         if (event.button === Qt.RightButton)
-            Quickshell.execDetached(Commands.calendar);
+            Launch.app(Commands.calendar);
         else
             DashState.toggle("");
     }

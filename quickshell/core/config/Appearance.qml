@@ -44,6 +44,7 @@ Singleton {
     readonly property PolkitConfig polkit: PolkitConfig {}
     readonly property PowerConfig power: PowerConfig {}
     readonly property PowerPanelConfig powerPanel: PowerPanelConfig {}
+    readonly property LowPowerConfig lowPower: LowPowerConfig {}
     readonly property DisplayConfig display: DisplayConfig {}
     readonly property WeatherConfig weather: WeatherConfig {}
     readonly property EqualizerConfig equalizer: EqualizerConfig {}

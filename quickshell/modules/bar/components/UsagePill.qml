@@ -24,7 +24,7 @@ Pill {
     secondary: root.launchCommand.length > 0
 
     onClicked: HardwareState.toggle(root.section)
-    onSecondaryClicked: Quickshell.execDetached(root.launchCommand)
+    onSecondaryClicked: Launch.app(root.launchCommand)
 
     Icon {
         text: root.glyph
