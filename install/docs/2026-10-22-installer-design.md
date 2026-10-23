@@ -174,7 +174,7 @@ After the confirmation in stage 1, nothing prompts again unless a step fails.
 
 hostname · username · user password (hidden, twice) · root password (hidden, twice) ·
 timezone (fuzzy list from `/usr/share/zoneinfo`) · locale · console keymap · target disk ·
-install mode (wipe / alongside) · bootloader (systemd-boot default / GRUB) · bundles (with
+install mode (wipe / alongside) · bootloader (systemd-boot default / GRUB / Limine) · bundles (with
 per-package drill-down) · shells besides bash (multi-select zsh / fish, fish preselected) and
 the login shell among the chosen ones · terminals besides kitty (multi-select alacritty /
 ghostty / foot) and which of them the Hyprland terminal keybind opens, written to the
@@ -271,6 +271,27 @@ security bundle is selected. The fallback entry omits the logging parameters.
   `edk2-shell` is copied to `<esp>/shellx64.efi` and the finish screen gives the `map` →
   `windows.conf` recipe; the firmware boot menu also works.
 - Updates: automatic (`systemd-boot-update.service`, systemd ≥ 261.2); no hook needed.
+
+**Limine**
+
+- Packages `limine efibootmgr`.
+- `/usr/share/limine/BOOTX64.EFI` is copied to `<esp>/EFI/limine/`. In wipe mode it is also
+  copied to `<esp>/EFI/BOOT/` for firmware that ignores NVRAM entries; skipped in alongside
+  mode because Windows owns that path.
+- `limine.conf` sits at the ESP root, not beside the binary: Limine falls back to `/limine.conf`
+  from either binary, and `<ESP_PATH>/limine.conf` is the file `limine-entry-tool` edits.
+- NVRAM entry `Limine` via `efibootmgr --create`, skipped when one already exists.
+- `limine.conf`: `timeout: 3`, `remember_last_entry: yes`, entries `Arch Linux` and the
+  fallback initramfs. Kernels are read from `boot():` (the ESP) or, with an XBOOTLDR partition,
+  from `guid(<its PARTUUID>):`; both are FAT32, which Limine requires.
+- Windows: an `efi` chainload entry for `bootmgfw.efi` on the same ESP and on every other
+  Windows ESP (by PARTUUID), so no os-prober is needed.
+- `/etc/pacman.d/hooks/95-limine.hook`: on install or upgrade of `limine`, copy the new
+  `BOOTX64.EFI` over each deployed copy.
+- Optional `limine-scan` (question after the bootloader, default no): builds AUR
+  `limine-entry-tool` (no `-bin`; GraalVM native compile) and writes `/etc/default/limine` with
+  `ESP_PATH=<esp>` and `ENABLE_VERIFICATION=no`. It is interactive, so the finish screen says
+  to run `sudo limine-scan` after first boot.
 
 **GRUB**
 
