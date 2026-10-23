@@ -6,6 +6,7 @@ import Quickshell.Services.UPower
 import qs.core.components
 import qs.core.config
 import qs.core.enums
+import qs.core.helpers
 import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.modules.power
@@ -19,9 +20,9 @@ Panel {
     readonly property color levelColour: {
         if (!Battery.available || Battery.charging)
             return Colours.accent;
-        if (Battery.percent <= root.config.criticalPercent)
+        if (Battery.percent < root.config.criticalPercent)
             return Colours.critical;
-        if (Battery.percent <= root.config.warningPercent)
+        if (Battery.percent < root.config.warningPercent)
             return Colours.warning;
         return Colours.accent;
     }
@@ -138,7 +139,7 @@ Panel {
 
         StyledRect {
             Layout.fillWidth: true
-            visible: Brightness.available
+            visible: Brightness.available || Audio.available
             Layout.preferredHeight: sliders.implicitHeight + root.config.sliderCardPadding * 2
 
             radius: root.config.cardRounding
@@ -153,11 +154,21 @@ Panel {
                 spacing: root.config.sliderRowSpacing
 
                 SliderRow {
+                    visible: Brightness.available
                     glyph: Icons.brightness
                     value: Brightness.percent / Appearance.scale.percent
                     colour: Colours.accent
 
                     onMoved: value => Brightness.setPercent(Math.round(value * Appearance.scale.percent))
+                }
+
+                SliderRow {
+                    visible: Audio.available
+                    glyph: Glyphs.volume(Audio.percent, Audio.muted)
+                    value: Audio.percent / Appearance.audio.max
+                    colour: Colours.audioOutput
+
+                    onMoved: value => Audio.setPercent(Math.round(value * Appearance.audio.max))
                 }
             }
         }
