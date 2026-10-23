@@ -4,21 +4,26 @@
 -- Programs
 local hasTerminal, chosenTerminal = pcall(require, "config/terminal")
 local terminal = hasTerminal and chosenTerminal or "kitty"
+local terminalExecFlags = { kitty = "", foot = "", alacritty = " -e", ghostty = " -e" }
 local browser = "zen-browser"
 local browser_alt = "brave"
+
+local function inTerminal(command)
+  return terminal .. (terminalExecFlags[terminal] or " -e") .. " " .. command
+end
 
 -- Main modifier (SUPER / "Windows" key)
 local mainMod = "SUPER"
 
 -- MY STUFF ------------------------------------------------------------------
-hl.bind("CTRL + SHIFT + F", hl.dsp.exec_cmd("kitty yazi"))
-hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/tmux_resurect_session.sh"))
+hl.bind("CTRL + SHIFT + F", hl.dsp.exec_cmd(inTerminal("yazi")))
+hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/tmux_resurect_session.sh")))
 hl.bind("ALT + S", hl.dsp.global("quickshell:keybinds"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("sh -c $HOME/.config/custom_scripts/auto_start_work.sh"))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/ssh_connection.sh"))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/ssh_connection.sh")))
 hl.bind(mainMod .. " + X", hl.dsp.global("quickshell:power"))
 hl.bind("ALT + C", hl.dsp.global("quickshell:controlcenter-network"))
-hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd("kitty sh $HOME/.config/custom_scripts/tmux_sessionizer.sh"))
+hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/tmux_sessionizer.sh")))
 hl.bind("ALT + W", hl.dsp.global("quickshell:wallpaper-picker"))
 hl.bind("ALT + T", hl.dsp.global("quickshell:theme-picker"))
 hl.bind(mainMod .. " + P", hl.dsp.global("quickshell:screenshot"))
