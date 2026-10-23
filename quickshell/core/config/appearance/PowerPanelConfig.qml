@@ -81,6 +81,7 @@ QtObject {
     readonly property int statLabelSize: 10
     readonly property real statLetterSpacing: 1.2
     readonly property int statValueSize: 14
+    readonly property int statValueSizeLarge: 22
     readonly property int statDecimals: 1
     readonly property string statDraw: "DRAW"
     readonly property string statInput: "CHARGE RATE"

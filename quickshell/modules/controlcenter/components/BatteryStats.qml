@@ -10,23 +10,29 @@ import qs.services
 StyledRect {
     id: root
 
+    property bool essential: false
+
     readonly property var config: Appearance.powerPanel
 
     readonly property var stats: [
         {
             label: Battery.charging ? root.config.statInput : root.config.statDraw,
+            essential: true,
             value: root.config.wattTemplate.arg(root.fixed(Battery.rate))
         },
         {
             label: root.config.statEnergy,
+            essential: true,
             value: Battery.capacity > 0 ? root.config.energyTemplate.arg(root.fixed(Battery.energy)).arg(root.fixed(Battery.capacity)) : ""
         },
         {
             label: root.config.statHealth,
+            essential: true,
             value: Battery.health > 0 ? (Battery.design > 0 ? root.config.healthTemplate.arg(Math.round(Battery.health)).arg(root.fixed(Battery.design)) : root.config.percentTemplate.arg(Math.round(Battery.health))) : ""
         },
         {
             label: root.config.statRuntime,
+            essential: true,
             value: Battery.runtime > 0 ? Fmt.uptime(Battery.runtime) : ""
         },
         {
@@ -65,7 +71,7 @@ StyledRect {
             label: root.config.statSerial,
             value: Battery.serial
         }
-    ].filter(entry => entry.value !== "")
+    ].filter(entry => entry.value !== "" && (entry.essential ?? false) === root.essential)
 
     function fixed(value: real): string {
         return Number(value).toFixed(root.config.statDecimals);
@@ -115,7 +121,7 @@ StyledRect {
 
                     text: stat.modelData.value
                     color: Colours.textBright
-                    font.pixelSize: root.config.statValueSize
+                    font.pixelSize: root.essential ? root.config.statValueSizeLarge : root.config.statValueSize
                     font.family: Appearance.font.family.mono
                     elide: Text.ElideRight
                 }

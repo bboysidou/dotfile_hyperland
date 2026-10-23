@@ -15,7 +15,34 @@ Panel {
     id: root
 
     readonly property var config: Appearance.powerPanel
-    readonly property string section: Battery.available ? ControlState.powerSection : PowerSection.overview
+    readonly property var tabs: [
+        {
+            section: PowerSection.overview,
+            icon: Icons.power,
+            label: Appearance.batteryTab.labelOverview
+        },
+        {
+            section: PowerSection.battery,
+            icon: Glyphs.batteryRamp(Battery.percent, Battery.charging),
+            label: Appearance.batteryTab.labelBattery
+        },
+        {
+            section: PowerSection.history,
+            icon: Icons.timer,
+            label: Appearance.batteryTab.labelHistory
+        },
+        {
+            section: PowerSection.details,
+            icon: Icons.hardware,
+            label: Appearance.batteryTab.labelDetails
+        },
+        {
+            section: PowerSection.care,
+            icon: Icons.leaf,
+            label: Appearance.batteryTab.labelCare
+        }
+    ].filter(tab => tab.section !== PowerSection.care || BatteryCare.supported)
+    readonly property string section: Battery.available && root.tabs.some(tab => tab.section === ControlState.powerSection) ? ControlState.powerSection : PowerSection.overview
 
     function run(action: string): void {
         ControlState.hide();
@@ -60,18 +87,7 @@ Panel {
 
             visible: Battery.available
             current: root.section
-            tabs: [
-                {
-                    section: PowerSection.overview,
-                    icon: Icons.power,
-                    label: Appearance.batteryTab.labelOverview
-                },
-                {
-                    section: PowerSection.battery,
-                    icon: Glyphs.batteryRamp(Battery.percent, Battery.charging),
-                    label: Appearance.batteryTab.labelBattery
-                }
-            ]
+            tabs: root.tabs
 
             onSelected: section => ControlState.powerSection = section
         }
@@ -86,7 +102,53 @@ Panel {
                 onTriggered: action => root.run(action)
             }
 
-            BatteryTab {}
+            ColumnLayout {
+                spacing: Appearance.batteryTab.sectionSpacing
+
+                HealthChips {}
+
+                BatteryStats {
+                    essential: true
+                }
+
+                ChargerCard {}
+
+                Item {
+                    Layout.fillHeight: true
+                }
+            }
+
+            ColumnLayout {
+                spacing: Appearance.batteryTab.sectionSpacing
+
+                HistoryCard {}
+
+                PowerSplit {}
+
+                Item {
+                    Layout.fillHeight: true
+                }
+            }
+
+            ColumnLayout {
+                spacing: Appearance.batteryTab.sectionSpacing
+
+                BatteryStats {}
+
+                Item {
+                    Layout.fillHeight: true
+                }
+            }
+
+            ColumnLayout {
+                spacing: Appearance.batteryTab.sectionSpacing
+
+                CareCard {}
+
+                Item {
+                    Layout.fillHeight: true
+                }
+            }
         }
     }
 }
