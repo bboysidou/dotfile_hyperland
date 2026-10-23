@@ -13,9 +13,9 @@ Pill {
     readonly property color stateColour: {
         if (Battery.charging)
             return Colours.text;
-        if (Battery.percent <= Appearance.powerPanel.criticalPercent)
+        if (Battery.percent < Appearance.powerPanel.criticalPercent)
             return Colours.critical;
-        if (Battery.percent <= Appearance.powerPanel.warningPercent)
+        if (Battery.percent < Appearance.powerPanel.warningPercent)
             return Colours.warning;
         return Colours.text;
     }

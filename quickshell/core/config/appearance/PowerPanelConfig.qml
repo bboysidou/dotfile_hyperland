@@ -12,8 +12,10 @@ QtObject {
     readonly property int heroTextSpacing: 4
     readonly property int statusSize: 11
     readonly property real statusLetterSpacing: 1.5
-    readonly property int warningPercent: 20
-    readonly property int criticalPercent: 10
+    readonly property int warningPercent: 50
+    readonly property int criticalPercent: 25
+    readonly property int ringStrandSegments: 12
+    readonly property real ringStartAngle: -90
     readonly property int timeTileSize: 44
     readonly property int timeTileRounding: 10
     readonly property int timeDigitSize: 18
