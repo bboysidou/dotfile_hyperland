@@ -14,7 +14,7 @@ Singleton {
     readonly property var flags: Terminals.flags[root.name] ?? Terminals.unknown
 
     function command(job: var): var {
-        const title = job.title ? root.flags.title.map(part => part.arg(job.title)) : [];
+        const title = job.title ? root.flags.title.map(part => part.includes("%1") ? part.arg(job.title) : part) : [];
         const hold = job.hold ? root.flags.hold : [];
         return [root.name].concat(title, hold, root.flags.exec, job.program);
     }
