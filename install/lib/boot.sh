@@ -18,6 +18,9 @@ LIMINE_HOOK="/etc/pacman.d/hooks/95-limine.hook"
 LIMINE_CONF="limine.conf"
 LIMINE_DEFAULTS="/etc/default/limine"
 LIMINE_SCAN_PACKAGE="limine-entry-tool"
+LIMINE_SNAPPER_PACKAGE="limine-snapper-sync"
+SNAPPER_CONFIG="root"
+SNAPPER_UNITS=(snapper-timeline.timer snapper-cleanup.timer limine-snapper-sync.service)
 WINDOWS_LOADER="EFI/Microsoft/Boot/bootmgfw.efi"
 EDK2_SHELL_SRC="/usr/share/edk2-shell/x64/Shell.efi"
 OS_PROBE_DIR="/mnt/osprobe"
@@ -29,17 +32,37 @@ bootPackages() {
     printf '%s\n' grub efibootmgr os-prober fuse3 ntfs-3g
   elif [[ "$A_BOOT" == limine ]]; then
     printf '%s\n' limine efibootmgr
+    if bootSnapperSelected; then echo snapper; fi
   elif [[ -n "$W_OTHER_ESPS" ]]; then
     echo edk2-shell
   fi
   return 0
 }
 
+bootSnapperSelected() {
+  [[ "$A_BOOT" == limine && "${A_SNAPPER:-no}" == yes ]]
+}
+
 bootAurPackages() {
   if [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]; then
     echo "$LIMINE_SCAN_PACKAGE"
   fi
+  if bootSnapperSelected; then
+    echo "$LIMINE_SNAPPER_PACKAGE"
+  fi
   return 0
+}
+
+bootUserStepCount() {
+  if bootSnapperSelected; then echo 1; else echo 0; fi
+}
+
+bootSnapper() {
+  if ((DRY_RUN)) || ! arch-chroot "$MNT" snapper --no-dbus list-configs 2>/dev/null | grep -qw "$SNAPPER_CONFIG"; then
+    inChroot snapper --no-dbus -c "$SNAPPER_CONFIG" create-config /
+  fi
+  inChroot systemctl enable "${SNAPPER_UNITS[@]}"
+  inChroot pacman -S --noconfirm --needed snap-pac
 }
 
 bootExtraCmdline() {
@@ -192,25 +215,37 @@ _limineWindowsEntries() {
   done
 }
 
+_limineKernelEntry() {
+  local heading="$1" volume="$2" initramfs="$3" cmdline="$4"
+  cat <<EOF
+${heading}
+    protocol: linux
+    kernel_path: ${volume}:/vmlinuz-linux
+    module_path: ${volume}:/${initramfs}
+    kernel_cmdline: ${cmdline}
+EOF
+}
+
+_limineArchEntries() {
+  local volume="$1" cmdline="$2" main="/Arch Linux" fallback="/Arch Linux (fallback initramfs)"
+  if bootSnapperSelected; then
+    echo "/+Arch Linux"
+    main="//Linux"
+    fallback="//Linux (fallback initramfs)"
+  fi
+  _limineKernelEntry "$main" "$volume" initramfs-linux.img "${cmdline} ${VERBOSE_CMDLINE}"
+  echo
+  _limineKernelEntry "$fallback" "$volume" initramfs-linux-fallback.img "$cmdline"
+  if bootSnapperSelected; then
+    printf '\n//Snapshots\n'
+  fi
+}
+
 _limineConf() {
   local esp="$1" cmdline="$2" volume
   volume="$(_limineKernelVolume)" || return 1
-  cat <<EOF
-timeout: ${LIMINE_TIMEOUT}
-remember_last_entry: yes
-
-/Arch Linux
-    protocol: linux
-    path: ${volume}:/vmlinuz-linux
-    module_path: ${volume}:/initramfs-linux.img
-    cmdline: ${cmdline} ${VERBOSE_CMDLINE}
-
-/Arch Linux (fallback initramfs)
-    protocol: linux
-    path: ${volume}:/vmlinuz-linux
-    module_path: ${volume}:/initramfs-linux-fallback.img
-    cmdline: ${cmdline}
-EOF
+  printf 'timeout: %s\nremember_last_entry: yes\n\n' "$LIMINE_TIMEOUT"
+  _limineArchEntries "$volume" "$cmdline"
   _limineWindowsEntries "$esp" || return 1
 }
 
@@ -256,7 +291,7 @@ _limineNvram() {
 
 _limineScanDefaults() {
   local esp="$1"
-  [[ "${A_LIMINE_SCAN:-no}" == yes ]] || return 0
+  [[ "${A_LIMINE_SCAN:-no}" == yes ]] || bootSnapperSelected || return 0
   writeFile "${MNT}${LIMINE_DEFAULTS}" <<EOF
 ESP_PATH=${esp}
 ENABLE_VERIFICATION=no
@@ -293,6 +328,9 @@ bootNotes() {
     echo "Windows is on another disk: pick it from the firmware boot menu, or boot 'EFI Shell', run 'map',"
     echo "note the alias of the Windows ESP (e.g. HD1b) and add /boot/loader/entries/windows.conf with"
     echo "'efi /shellx64.efi' and 'options -nointerrupt -nomap -noversion <alias>:EFI\\Microsoft\\Boot\\Bootmgfw.efi'."
+  fi
+  if bootSnapperSelected; then
+    echo "Snapper: every pacman transaction now takes a snapshot (snap-pac), and limine-snapper-sync lists them under Arch Linux > Snapshots in the Limine menu."
   fi
   if [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]; then
     echo "Limine: run 'sudo limine-scan' after the first boot to add other EFI boot entries to the menu."

@@ -108,12 +108,28 @@ askMode() {
   fi
 }
 
+_askSnapper() {
+  if [[ -n "$L_XBOOT" ]]; then
+    A_SNAPPER=no
+    uiInfo "Snapshot boot entries need the kernels on the same partition as limine.conf; this layout keeps them on a separate /boot, so snapper with limine-snapper-sync is not offered."
+    return 0
+  fi
+  uiInfo "Snapper takes btrfs snapshots on every pacman transaction (snap-pac), and limine-snapper-sync adds them to the Limine menu. limine-snapper-sync is built from the AUR with GraalVM: a large download and a slow compile."
+  if uiConfirm "Add snapper with snapshot boot entries?" no; then
+    A_SNAPPER=yes
+  else
+    A_SNAPPER=no
+  fi
+}
+
 _askLimineScan() {
   if [[ "$A_BOOT" != limine ]]; then
     A_LIMINE_SCAN=no
+    A_SNAPPER=no
     return 0
   fi
   ((PRESEED)) && return 0
+  _askSnapper
   uiInfo "limine-scan adds other EFI boot entries to the Limine menu after install. It is built from the AUR with GraalVM: a large download and a slow compile."
   if uiConfirm "Build limine-scan?" no; then
     A_LIMINE_SCAN=yes
@@ -125,6 +141,7 @@ _askLimineScan() {
 askBoot() {
   W_OTHER_ESPS="$(otherWindowsEsps | paste -sd' ')"
   A_LIMINE_SCAN="${A_LIMINE_SCAN:-no}"
+  A_SNAPPER="${A_SNAPPER:-no}"
   if ! _preseeded A_BOOT; then
     if [[ -n "$W_OTHER_ESPS" ]]; then
       uiInfo "Windows was found on another disk: GRUB and Limine can add it to the menu, systemd-boot cannot."
@@ -243,7 +260,7 @@ _summaryRows() {
   uiSummary \
     "Hostname=${A_HOSTNAME}" "User=${A_USER}" "Timezone=${A_TZ}" "Locale=${A_LOCALE}" \
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
-    "Bootloader=${A_BOOT}$([[ "$A_LIMINE_SCAN" == yes ]] && echo " + limine-scan")" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
+    "Bootloader=${A_BOOT}$([[ "$A_LIMINE_SCAN" == yes ]] && echo " + limine-scan")$([[ "$A_SNAPPER" == yes ]] && echo " + snapper")" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
     "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
     "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS} · keybind ${A_DEFAULT_TERMINAL}"
 }

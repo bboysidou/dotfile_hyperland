@@ -242,6 +242,9 @@ stageUser() {
   uiStep "Allow AUR builds for ${A_USER} (temporary)" userSudoersOn
   uiStep --verbose "Build yay" userYay
   uiStep --verbose "Install AUR packages" userAur
+  if bootSnapperSelected; then
+    uiStep "Snapper and Limine snapshot entries" bootSnapper
+  fi
   uiStep "Clone and link the dotfiles" userDotfiles
   uiStep --optional "Create home folders" userDirs
   if shellSelected fish; then
@@ -281,7 +284,7 @@ _installStepCount() {
   stageDone base || total=$((total + STEPS_BASE))
   stageDone system || total=$((total + STEPS_SYSTEM))
   if ! stageDone user; then
-    total=$((total + STEPS_USER + $(bundleUserStepCount) + $(shellUserStepCount)))
+    total=$((total + STEPS_USER + $(bundleUserStepCount) + $(shellUserStepCount) + $(bootUserStepCount)))
   fi
   echo "$total"
 }
