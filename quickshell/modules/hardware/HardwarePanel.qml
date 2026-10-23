@@ -39,7 +39,7 @@ Panel {
     }
 
     function openMonitor(): void {
-        Quickshell.execDetached(Terminal.command(root.monitors[HardwareState.section]));
+        Launch.app(Terminal.command(root.monitors[HardwareState.section]));
         HardwareState.hide();
     }
 

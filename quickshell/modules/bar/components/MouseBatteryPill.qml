@@ -25,7 +25,7 @@ Pill {
     visible: MouseBattery.available
     interactive: true
 
-    onClicked: Quickshell.execDetached(Commands.mouseSettings)
+    onClicked: Launch.app(Commands.mouseSettings)
 
     Icon {
         text: Glyphs.mouse(MouseBattery.charging)

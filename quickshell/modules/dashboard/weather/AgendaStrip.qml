@@ -6,6 +6,7 @@ import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.constants
+import qs.core.helpers
 import qs.services
 
 ColumnLayout {
@@ -52,7 +53,7 @@ ColumnLayout {
             glyph: Icons.openInNew
             label: root.config.labelOpenWeb
 
-            onTriggered: Quickshell.execDetached(Commands.calendar)
+            onTriggered: Launch.app(Commands.calendar)
         }
     }
 

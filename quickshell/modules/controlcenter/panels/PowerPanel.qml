@@ -59,6 +59,8 @@ Panel {
     ]
 
     readonly property string profile: {
+        if (LowPower.enabled)
+            return root.config.profileSaver;
         if (PowerProfiles.profile === PowerProfile.Performance)
             return root.config.profilePerformance;
         if (PowerProfiles.profile === PowerProfile.PowerSaver)
@@ -93,8 +95,16 @@ Panel {
 
     function setProfile(key: string): void {
         const entry = root.profiles.find(candidate => candidate.key === key);
-        if (entry)
-            PowerProfiles.profile = entry.value;
+        if (!entry)
+            return;
+
+        if (entry.value === PowerProfile.PowerSaver) {
+            LowPower.setEnabled(true);
+            return;
+        }
+
+        PowerProfiles.profile = entry.value;
+        LowPower.setEnabled(false);
     }
 
     ColumnLayout {
@@ -215,6 +225,63 @@ Panel {
                     glyph: modelData.glyph
 
                     onTriggered: root.run(modelData.action)
+                }
+            }
+        }
+
+        StyledRect {
+            Layout.fillWidth: true
+            Layout.preferredHeight: lowPower.implicitHeight + root.config.sliderCardPadding * 2
+
+            radius: root.config.cardRounding
+            color: Colours.elevated
+
+            RowLayout {
+                id: lowPower
+
+                anchors.fill: parent
+                anchors.margins: root.config.sliderCardPadding
+
+                spacing: root.config.sliderRowSpacing
+
+                Icon {
+                    Layout.alignment: Qt.AlignVCenter
+
+                    text: Icons.leaf
+                    color: LowPower.enabled ? Colours.accent : Colours.textMuted
+                    font.pixelSize: root.config.sliderIconSize
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignVCenter
+
+                    spacing: 0
+
+                    StyledText {
+                        Layout.fillWidth: true
+
+                        text: Appearance.lowPower.label
+                        color: Colours.text
+                        elide: Text.ElideRight
+                    }
+
+                    StyledText {
+                        Layout.fillWidth: true
+
+                        text: Appearance.lowPower.detail
+                        color: Colours.textMuted
+                        font.pixelSize: Appearance.lowPower.detailSize
+                        elide: Text.ElideRight
+                    }
+                }
+
+                Toggle {
+                    Layout.alignment: Qt.AlignVCenter
+
+                    checked: LowPower.enabled
+
+                    onToggled: LowPower.toggle()
                 }
             }
         }

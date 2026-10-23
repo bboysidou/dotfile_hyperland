@@ -4,6 +4,7 @@ import qs.core.components
 import qs.core.config
 import qs.core.constants
 import qs.core.enums
+import qs.core.helpers
 import qs.modules.updates.components
 import qs.services
 
@@ -19,7 +20,7 @@ RevealCard {
     }
 
     function upgrade(): void {
-        Quickshell.execDetached(Terminal.command(Commands.updates));
+        Launch.app(Terminal.command(Commands.updates));
         UpdatesState.hide();
     }
 
