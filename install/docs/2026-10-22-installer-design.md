@@ -292,6 +292,15 @@ security bundle is selected. The fallback entry omits the logging parameters.
   `limine-entry-tool` (no `-bin`; GraalVM native compile) and writes `/etc/default/limine` with
   `ESP_PATH=<esp>` and `ENABLE_VERIFICATION=no`. It is interactive, so the finish screen says
   to run `sudo limine-scan` after first boot.
+- Optional snapper (same place, default no; not offered when an XBOOTLDR partition holds the
+  kernels, because `limine-snapper-sync` only reads `boot():` paths). `snapper` goes into
+  pacstrap, AUR `limine-snapper-sync` (GraalVM build) into the AUR step, then a user-stage step
+  runs `snapper --no-dbus -c root create-config /` (snapshots in `/@/.snapshots`, the tool's
+  default), enables `snapper-timeline.timer`, `snapper-cleanup.timer` and
+  `limine-snapper-sync.service`, and only then installs `snap-pac` so no pacman transaction runs
+  its hooks before the config exists. `limine.conf` switches to the nested layout the tool
+  expects: `/+Arch Linux` with `//Linux`, `//Linux (fallback initramfs)` and `//Snapshots`;
+  the OS name matches `PRETTY_NAME`, which is how the tool finds the entry.
 
 **GRUB**
 
