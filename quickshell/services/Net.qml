@@ -14,6 +14,7 @@ Singleton {
     property bool scanning: false
     property bool rescanning: false
     property var details: ({})
+    property string wanAddress: ""
     property var connecting: null
     property var stalled: null
     property var signals: ({})
@@ -63,6 +64,7 @@ Singleton {
     readonly property string gateway: root.details[NetFields.gateway] ?? ""
     readonly property string dns: root.details[NetFields.dns] ?? ""
     readonly property string profile: root.details[NetFields.connection] ?? ""
+    readonly property bool wanReachable: root.online && root.activeInterface !== ""
 
     readonly property string glyph: {
         if (root.activeNetwork)
@@ -240,8 +242,11 @@ Singleton {
 
     onActiveInterfaceChanged: {
         root.details = ({});
+        root.wanAddress = "";
         if (root.activeInterface !== "")
             detailPoller.poll();
+        if (root.wanReachable)
+            wanPoller.poll();
     }
 
     Timer {
@@ -282,6 +287,24 @@ Singleton {
         polling: root.scanning && root.wifiDevice !== null
 
         onReceived: text => root.signals = root.parseSignals(text)
+    }
+
+    onWanReachableChanged: {
+        if (!root.wanReachable)
+            root.wanAddress = "";
+    }
+
+    Poller {
+        id: wanPoller
+
+        command: Commands.fetch.concat([Commands.wanAddressUrl])
+        interval: Appearance.control.wanPollInterval
+        polling: root.wanReachable
+
+        onReceived: text => {
+            const value = text.trim();
+            root.wanAddress = NetFields.wanAddressPattern.test(value) ? value : "";
+        }
     }
 
     Poller {

@@ -16,6 +16,8 @@ Singleton {
     readonly property string labelMac: "MAC"
     readonly property string labelConnection: "Profile"
     readonly property string labelAddress: "IPv4"
+    readonly property string labelWanAddress: "WAN IP"
+    readonly property var wanAddressPattern: /^[0-9A-Fa-f:.]+$/
     readonly property string labelGateway: "Gateway"
     readonly property string labelDns: "DNS"
     readonly property string labelInterface: "Interface"

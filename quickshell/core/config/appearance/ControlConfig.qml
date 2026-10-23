@@ -29,6 +29,7 @@ QtObject {
     readonly property int passwordSpacing: 8
     readonly property int forgetConfirmTimeout: 3000
     readonly property int detailPollInterval: 15000
+    readonly property int wanPollInterval: 600000
     readonly property int rssiPollInterval: 5000
     readonly property int wifiSignalLow: 25
     readonly property int wifiSignalMedium: 50
