@@ -29,8 +29,6 @@ QtObject {
     readonly property int usagePollInterval: 10000
     readonly property int usagePrimeDelay: 300
     readonly property int mousePollInterval: 300000
-    readonly property int mouseWarning: 30
-    readonly property int mouseCritical: 15
     readonly property int mediaMarginLeft: 12
     readonly property int mediaMarginRight: 10
     readonly property int mediaFrameInterval: 100
