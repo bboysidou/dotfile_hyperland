@@ -26,6 +26,7 @@ QtObject {
     readonly property int activePollInterval: 2000
     readonly property int idlePollInterval: 10000
     readonly property int procPollInterval: 3000
+    readonly property int probeRetryInterval: 30000
     readonly property int coreAverageWindow: 600000
     readonly property int coreAverageMax: 3
 
@@ -105,6 +106,10 @@ QtObject {
     readonly property string labelUtil: "Utilization"
     readonly property string labelVram: "V-RAM"
     readonly property string labelFan: "Fan Speed"
+    readonly property string labelIntegrated: "Integrated"
+    readonly property string labelDedicated: "Dedicated"
+    readonly property string labelState: "State"
+    readonly property string stateSuspended: "Suspended (power saving)"
     readonly property string labelUsage: "Usage"
     readonly property string labelSwap: "Swap"
     readonly property string labelActiveCores: "Active Cores (10 min avg)"
@@ -118,6 +123,7 @@ QtObject {
     readonly property string emptyGpuProcs: "No GPU clients"
     readonly property string emptyDimms: "Install qs-hwinfo to list modules"
     readonly property string titleTemplate: "%1 — %2"
+    readonly property string kindTemplate: "%1 (%2)"
     readonly property string rowTemplate: "%1: "
     readonly property string separator: "|"
     readonly property string fieldSeparator: " | "

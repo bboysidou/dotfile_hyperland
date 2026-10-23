@@ -51,15 +51,16 @@ Singleton {
     readonly property string backlightChange: " change "
     readonly property string brightnessDdcSet: "for d in $(ddcutil detect --brief 2>/dev/null | sed -n 's/^Display //p'); do ddcutil setvcp 10 %1 --display \"$d\" --noverify & done; wait"
 
-    readonly property string readEach: 'for f; do cat "$f" 2>/dev/null || echo -; done'
-    readonly property string gpuProbe: 'for d in /sys/class/drm/card*/device; do [ -r "$d/gpu_busy_percent" ] || continue; echo "$d"; ls -d "$d"/hwmon/hwmon* 2>/dev/null | head -n 1; lspci -vmm -s "$(basename "$(readlink -f "$d")")" | sed -n "s/^Device:\t//p"; exit 0; done'
+    readonly property string gpuReadings: '[ "$(cat "$1/power/runtime_status" 2>/dev/null)" = suspended ] && { echo suspended; exit 0; }; shift; echo active; for f; do cat "$f" 2>/dev/null || echo -; done'
+    readonly property string gpuProbe: 'for d in /sys/class/drm/card*/device; do [ -r "$d/gpu_busy_percent" ] || continue; pci=$(basename "$(readlink -f "$d")"); hw=$(ls -d "$d"/hwmon/hwmon* 2>/dev/null | head -n 1); vram=$(cat "$d/mem_info_vram_total" 2>/dev/null); state=$(cat "$d/power/runtime_status" 2>/dev/null); name=$(cat "$d/product_name" 2>/dev/null); [ -n "$name" ] || name=$(lspci -vmm -s "$pci" 2>/dev/null | sed -n "s/^Device:\t//p"); printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$d" "$hw" "$pci" "$vram" "$state" "$name"; done'
     readonly property string cpuProcesses: "top -b -n 2 -d %1 -w 512 -o %CPU | awk '/^ *PID/ { frame++; next } frame == 2 && NF >= 12 && $12 != \"top\" && shown < %2 { shown++; name = $12; for (i = 13; i <= NF; i++) name = name \" \" $i; printf \"%s\\t%s\\t%s\\n\", $1, $9, name }'"
-    readonly property string gpuProcesses: `find /proc/[0-9]*/fd -lname '/dev/dri/*' 2>/dev/null | sed 's|/fd/|/fdinfo/|' | xargs -r awk '
-        FNR == 1 { flush(); split(FILENAME, part, "/"); pid = part[3]; client = ""; gfx = 0; vram = 0 }
+    readonly property string gpuProcesses: `find /proc/[0-9]*/fd -lname '/dev/dri/*' 2>/dev/null | sed 's|/fd/|/fdinfo/|' | xargs -r awk -v want="$1" '
+        FNR == 1 { flush(); split(FILENAME, part, "/"); pid = part[3]; client = ""; pdev = ""; gfx = 0; vram = 0 }
         /^drm-client-id:/ { client = $2 }
+        /^drm-pdev:/ { pdev = $2 }
         /^drm-engine-gfx:/ { gfx = $2 }
         /^drm-(memory|resident)-vram:/ { vram = $2 }
-        function flush() { if (client != "" && !seen[pid SUBSEP client]++) { busy[pid] += gfx; mem[pid] += vram } client = "" }
+        function flush() { if (client != "" && (want == "" || pdev == "" || pdev == want) && !seen[pid SUBSEP pdev SUBSEP client]++) { busy[pid] += gfx; mem[pid] += vram } client = "" }
         END { flush(); for (id in busy) { path = "/proc/" id "/comm"; name = ""; getline name < path; close(path); printf "%s\\t%d\\t%d\\t%s\\n", id, busy[id], mem[id], name } }' 2>/dev/null`
 
     readonly property string shotRegion: 'mkdir -p "%1" && grim -g "$(slurp)" "%1/%2" && %3'
