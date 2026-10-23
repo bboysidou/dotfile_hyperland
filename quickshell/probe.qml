@@ -244,7 +244,6 @@ ShellRoot {
             NotifPanel {}
             PowerPanel {}
             PowerOverview {}
-            BatteryTab {}
             BatteryStats {}
             HealthChips {}
             HistoryCard {}

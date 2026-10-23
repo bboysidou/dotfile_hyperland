@@ -9,18 +9,18 @@ import qs.services
 Scope {
     id: root
 
-    readonly property bool batteryShown: ControlState.opened && ControlState.section === ControlSection.power && ControlState.powerSection === PowerSection.battery && Battery.available
+    readonly property bool powerShown: ControlState.opened && ControlState.section === ControlSection.power && Battery.available
 
     Binding {
         target: BatteryHistory
         property: "active"
-        value: root.batteryShown
+        value: root.powerShown && ControlState.powerSection === PowerSection.history
     }
 
     Binding {
         target: Charger
         property: "active"
-        value: root.batteryShown
+        value: root.powerShown && ControlState.powerSection === PowerSection.battery
     }
 
     GlobalShortcut {
