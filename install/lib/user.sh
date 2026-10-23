@@ -47,7 +47,8 @@ userAur() {
   local packages=()
   bundleCollect
   gpuPackages
-  packages=("${B_AUR[@]}" "${G_AUR[@]}")
+  mapfile -t packages < <(bootAurPackages)
+  packages+=("${B_AUR[@]}" "${G_AUR[@]}")
   if ((${#packages[@]} == 0)); then
     echo "no AUR packages selected"
     return 0

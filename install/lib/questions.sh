@@ -108,15 +108,32 @@ askMode() {
   fi
 }
 
+_askLimineScan() {
+  if [[ "$A_BOOT" != limine ]]; then
+    A_LIMINE_SCAN=no
+    return 0
+  fi
+  ((PRESEED)) && return 0
+  uiInfo "limine-scan adds other EFI boot entries to the Limine menu after install. It is built from the AUR with GraalVM: a large download and a slow compile."
+  if uiConfirm "Build limine-scan?" no; then
+    A_LIMINE_SCAN=yes
+  else
+    A_LIMINE_SCAN=no
+  fi
+}
+
 askBoot() {
   W_OTHER_ESPS="$(otherWindowsEsps | paste -sd' ')"
-  _preseeded A_BOOT && return 0
-  if [[ -n "$W_OTHER_ESPS" ]]; then
-    uiInfo "Windows was found on another disk: GRUB can add it to the menu, systemd-boot cannot."
-    uiChoose A_BOOT "Bootloader" "GRUB (recommended here)|grub" "systemd-boot|systemd-boot"
-  else
-    uiChoose A_BOOT "Bootloader" "systemd-boot (recommended)|systemd-boot" "GRUB|grub"
+  A_LIMINE_SCAN="${A_LIMINE_SCAN:-no}"
+  if ! _preseeded A_BOOT; then
+    if [[ -n "$W_OTHER_ESPS" ]]; then
+      uiInfo "Windows was found on another disk: GRUB and Limine can add it to the menu, systemd-boot cannot."
+      uiChoose A_BOOT "Bootloader" "GRUB (recommended here)|grub" "Limine|limine" "systemd-boot|systemd-boot"
+    else
+      uiChoose A_BOOT "Bootloader" "systemd-boot (recommended)|systemd-boot" "GRUB|grub" "Limine|limine"
+    fi
   fi
+  _askLimineScan
 }
 
 _bundleLabel() {
@@ -226,7 +243,7 @@ _summaryRows() {
   uiSummary \
     "Hostname=${A_HOSTNAME}" "User=${A_USER}" "Timezone=${A_TZ}" "Locale=${A_LOCALE}" \
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
-    "Bootloader=${A_BOOT}" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
+    "Bootloader=${A_BOOT}$([[ "$A_LIMINE_SCAN" == yes ]] && echo " + limine-scan")" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
     "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
     "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS} · keybind ${A_DEFAULT_TERMINAL}"
 }
