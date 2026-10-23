@@ -14,5 +14,7 @@ Singleton {
     readonly property int minutesPerHour: 60
     readonly property int hoursPerDay: 24
     readonly property int microPerUnit: 1000000
+    readonly property int microPerMilli: 1000
+    readonly property int monthsPerYear: 12
     readonly property int tenthsPerUnit: 10
 }

@@ -107,6 +107,8 @@ systemFiles() {
   run install -Dm644 "${INSTALLER_DIR}/fontconfig/fonts.conf" "${MNT}/etc/fonts/local.conf"
   run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo" "${MNT}/usr/local/bin/qs-hwinfo"
   run install -Dm644 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"
+  run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-battery-perms" "${MNT}/usr/local/bin/qs-battery-perms"
+  run install -Dm644 "${INSTALLER_DIR}/quickshell/system/99-qs-battery.rules" "${MNT}/etc/udev/rules.d/99-qs-battery.rules"
 }
 
 systemServices() {
