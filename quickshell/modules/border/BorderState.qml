@@ -17,6 +17,8 @@ Singleton {
     readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
 
+    property real rightInset: 0
+
     function closeExcept(keep: QtObject): void {
         if (keep !== LauncherState && LauncherState.opened)
             LauncherState.hide();
