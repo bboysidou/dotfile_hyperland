@@ -7,16 +7,37 @@ Canvas {
 
     property real value: 0
     property color colour: Colours.accent
-    property real radiusRatio: Appearance.powerPanel.ringRadiusRatio
+    property real radiusRatio: Appearance.powerPanel.coreRingRadiusRatio
 
     readonly property var config: Appearance.powerPanel
 
-    function point(angle: real): var {
+    function trace(ctx, time: real, pass): void {
+        const steps = root.config.ringWaveSteps;
         const radius = root.width * root.radiusRatio;
-        return {
-            x: root.width / 2 + radius * Math.cos(angle),
-            y: root.height / 2 + radius * Math.sin(angle)
-        };
+        const origin = root.config.ringStartAngle * Math.PI / 180;
+        const sweep = Num.clamp01(root.value) * 2 * Math.PI;
+        const taper = sweep < 2 * Math.PI ? root.config.ringWaveTaper : 0;
+
+        ctx.beginPath();
+
+        for (let step = 0; step <= steps; step++) {
+            const along = sweep * step / steps;
+            const envelope = taper > 0 ? Math.min(1, along / taper, (sweep - along) / taper) : 1;
+            const angle = origin + along;
+            const offset = Math.sin(time * pass.rate + angle * pass.waves) * pass.amplitude * envelope;
+            const x = root.width / 2 + (radius + offset) * Math.cos(angle);
+            const y = root.height / 2 + (radius + offset) * Math.sin(angle);
+
+            if (step === 0)
+                ctx.moveTo(x, y);
+            else
+                ctx.lineTo(x, y);
+        }
+
+        ctx.lineWidth = pass.width;
+        ctx.strokeStyle = pass.colour;
+        ctx.globalAlpha = pass.alpha;
+        ctx.stroke();
     }
 
     onPaint: {
@@ -25,28 +46,15 @@ Canvas {
         ctx.lineJoin = "round";
         ctx.lineCap = "round";
 
-        const time = Date.now() / 1000;
-        const segments = root.config.ringStrandSegments;
-        const step = 2 * Math.PI / segments;
-        const origin = root.config.ringStartAngle * Math.PI / 180;
-        const finish = origin + Num.clamp01(root.value) * 2 * Math.PI;
+        if (root.value <= 0)
+            return;
 
-        for (let index = 0; origin + index * step < finish; index++) {
-            const start = root.point(origin + index * step);
-            const end = root.point(Math.min(origin + (index + 1) * step, finish));
-            Strand.link(ctx, {
-                time: time,
-                startX: start.x,
-                startY: start.y,
-                endX: end.x,
-                endY: end.y,
-                startInset: 0,
-                endInset: 0,
-                fade: 1,
-                tint: root.colour,
-                seed: index
-            });
-        }
+        const time = Date.now() / 1000;
+        const tints = [root.colour, Qt.lighter(root.colour, Appearance.orbit.strandMidHighlight), Appearance.orbit.strandCoreColour];
+
+        root.config.ringWaves.forEach((wave, index) => root.trace(ctx, time, Object.assign({
+                colour: tints[index]
+            }, wave)));
     }
 
     Timer {

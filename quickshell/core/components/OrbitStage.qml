@@ -15,6 +15,7 @@ Item {
     property bool available: true
     property bool linked: false
     property bool draining: false
+    property bool switchable: true
     property string glyph: ""
     property color accent: Colours.accent
 
@@ -219,7 +220,7 @@ Item {
             return rest + (dock - rest) * power.morph;
         }
 
-        visible: root.available
+        visible: root.available && root.switchable
         z: 1
 
         Behavior on morph {
