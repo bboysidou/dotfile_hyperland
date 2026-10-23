@@ -2,6 +2,8 @@ pragma Singleton
 
 import Quickshell
 import Quickshell.Services.UPower
+import qs.core.config
+import qs.core.helpers
 
 Singleton {
     id: root
@@ -12,7 +14,7 @@ Singleton {
     }
 
     readonly property bool available: root.device !== null
-    readonly property int percent: Math.round(root.device?.percentage ?? 0)
+    readonly property int percent: Num.toPercent((root.device?.percentage ?? 0) * Appearance.scale.percent)
     readonly property int state: root.device?.state ?? UPowerDeviceState.Unknown
     readonly property bool charging: root.state === UPowerDeviceState.Charging || root.state === UPowerDeviceState.FullyCharged
     readonly property bool full: root.state === UPowerDeviceState.FullyCharged
