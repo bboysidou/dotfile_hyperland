@@ -47,6 +47,8 @@ Singleton {
     readonly property string aurUpdates: "timeout %1 yay -Qua 2>/dev/null"
     readonly property string brightnessQuery: "if ls /sys/class/backlight/*/brightness >/dev/null 2>&1; then echo \"backlight $(brightnessctl -c backlight -m 2>/dev/null | cut -d, -f4 | tr -d '%')\"; elif command -v ddcutil >/dev/null 2>&1; then echo \"ddc $(ddcutil getvcp 10 --brief 2>/dev/null | awk '/^VCP/ && $5 > 0 { print int($4 * 100 / $5); exit }')\"; else echo none; fi"
     readonly property string brightnessSet: "brightnessctl -c backlight -q s %1%"
+    readonly property var backlightEvents: ["udevadm", "monitor", "--udev", "--subsystem-match=backlight"]
+    readonly property string backlightChange: " change "
     readonly property string brightnessDdcSet: "for d in $(ddcutil detect --brief 2>/dev/null | sed -n 's/^Display //p'); do ddcutil setvcp 10 %1 --display \"$d\" --noverify & done; wait"
 
     readonly property string readEach: 'for f; do cat "$f" 2>/dev/null || echo -; done'

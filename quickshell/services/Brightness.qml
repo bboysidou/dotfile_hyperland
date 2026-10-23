@@ -22,7 +22,7 @@ Singleton {
         const known = (backend === BrightnessBackend.backlight || backend === BrightnessBackend.ddc) && isFinite(value) && value >= 0;
 
         root.backend = known ? backend : BrightnessBackend.none;
-        if (known && root.pending === -1)
+        if (known && root.pending === -1 && !debounce.running && !adjust.running)
             root.percent = value;
     }
 
@@ -59,6 +59,28 @@ Singleton {
         onExited: {
             if (root.pending !== -1)
                 root.flush();
+        }
+    }
+
+    Timer {
+        id: refresh
+
+        interval: Appearance.powerPanel.backlightRefresh
+
+        onTriggered: query.running = true
+    }
+
+    Process {
+        running: root.backend === BrightnessBackend.backlight
+        command: Commands.backlightEvents
+
+        stdout: SplitParser {
+            splitMarker: "\n"
+
+            onRead: data => {
+                if (data.includes(Commands.backlightChange))
+                    refresh.restart();
+            }
         }
     }
 

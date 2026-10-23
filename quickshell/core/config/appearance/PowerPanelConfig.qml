@@ -25,6 +25,7 @@ QtObject {
     readonly property int sliderIconSize: 18
     readonly property int brightnessMin: 5
     readonly property int backlightDebounce: 30
+    readonly property int backlightRefresh: 60
     readonly property int ddcDebounce: 250
     readonly property int actionHeight: 64
     readonly property int actionRounding: 14
