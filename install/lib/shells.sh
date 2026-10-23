@@ -7,11 +7,22 @@ EXTRA_TERMINALS=(alacritty ghostty foot)
 DEFAULT_SHELLS="fish"
 DEFAULT_LOGIN_SHELL="fish"
 SHELL_BIN_DIR="/usr/bin"
+HYPR_TERMINAL_LUA="hypr/config/terminal.lua"
 
 shellDefaults() {
   A_SHELLS="${A_SHELLS-$DEFAULT_SHELLS}"
   A_TERMINALS="${A_TERMINALS-}"
   A_LOGIN_SHELL="${A_LOGIN_SHELL:-$DEFAULT_LOGIN_SHELL}"
+  A_DEFAULT_TERMINAL="${A_DEFAULT_TERMINAL:-$BASE_TERMINAL}"
+}
+
+terminalSelected() {
+  [[ "$1" == "$BASE_TERMINAL" || " ${A_TERMINALS} " == *" $1 "* ]]
+}
+
+shellConfigureUser() {
+  local repo="$1"
+  writeFile "${repo}/${HYPR_TERMINAL_LUA}" <<<"return \"${A_DEFAULT_TERMINAL}\""
 }
 
 shellSelected() {

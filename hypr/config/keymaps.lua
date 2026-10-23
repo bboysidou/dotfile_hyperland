@@ -2,7 +2,8 @@
 -- https://wiki.hypr.land/Configuring/Basics/Binds/
 
 -- Programs
-local terminal = "kitty"
+local hasTerminal, chosenTerminal = pcall(require, "config/terminal")
+local terminal = hasTerminal and chosenTerminal or "kitty"
 local browser = "zen-browser"
 local browser_alt = "brave"
 

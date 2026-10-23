@@ -170,6 +170,14 @@ _loginShellOptions() {
   done | awk '!seen[$0]++'
 }
 
+_defaultTerminalOptions() {
+  local candidates=() terminal
+  read -ra candidates <<<"${A_DEFAULT_TERMINAL} ${BASE_TERMINAL} ${A_TERMINALS}"
+  for terminal in "${candidates[@]}"; do
+    terminalSelected "$terminal" && echo "$terminal"
+  done | awk '!seen[$0]++'
+}
+
 askShells() {
   local options=()
   shellDefaults
@@ -184,6 +192,12 @@ askShells() {
   fi
   if ! _preseededAny A_TERMINALS; then
     uiMulti A_TERMINALS "Terminals besides ${BASE_TERMINAL} (space toggles, enter confirms)" "${A_TERMINALS// /,}" "${EXTRA_TERMINALS[@]}"
+  fi
+  mapfile -t options < <(_defaultTerminalOptions)
+  if ((${#options[@]} == 1)); then
+    A_DEFAULT_TERMINAL="${options[0]}"
+  elif ! _preseeded A_DEFAULT_TERMINAL || [[ "${options[0]}" != "$A_DEFAULT_TERMINAL" ]]; then
+    uiChoose A_DEFAULT_TERMINAL "Terminal for the Hyprland keybind" "${options[@]}"
   fi
   return 0
 }
@@ -214,7 +228,7 @@ _summaryRows() {
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
     "Bootloader=${A_BOOT}" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
     "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
-    "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS}"
+    "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS} · keybind ${A_DEFAULT_TERMINAL}"
 }
 
 _changeMenu() {

@@ -88,6 +88,7 @@ userDotfiles() {
   fi
   _userRewriteHome
   gpuConfigureUser "${MNT}${repo}"
+  shellConfigureUser "${MNT}${repo}"
   inChroot chown -R "${A_USER}:${A_USER}" "$repo"
   asUser bash "${repo}/install/link.sh" --yes
 }
