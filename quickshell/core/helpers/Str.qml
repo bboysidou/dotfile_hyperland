@@ -34,4 +34,15 @@ Singleton {
     function contains(haystack: string, needle: string): bool {
         return root.fold(haystack).includes(root.fold(needle));
     }
+
+    function choices(value: string): var {
+        const tokens = root.oneLine(value).split(" ").filter(token => token.length > 0);
+        const marked = tokens.find(token => token.startsWith("[") && token.endsWith("]"));
+        const options = tokens.map(token => token.replace(/^\[|\]$/g, ""));
+
+        return {
+            current: marked ? marked.slice(1, -1) : (options.length === 1 ? options[0] : ""),
+            options: options
+        };
+    }
 }

@@ -1,11 +1,27 @@
+import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 import qs.core.constants
 import qs.core.enums
+import qs.services
 
 Scope {
     id: root
+
+    readonly property bool batteryShown: ControlState.opened && ControlState.section === ControlSection.power && ControlState.powerSection === PowerSection.battery && Battery.available
+
+    Binding {
+        target: BatteryHistory
+        property: "active"
+        value: root.batteryShown
+    }
+
+    Binding {
+        target: Charger
+        property: "active"
+        value: root.batteryShown
+    }
 
     GlobalShortcut {
         appid: Ids.appid

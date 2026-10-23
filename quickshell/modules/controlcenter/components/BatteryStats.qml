@@ -42,12 +42,28 @@ StyledRect {
             value: isFinite(Battery.temperature) ? root.config.celsiusTemplate.arg(root.fixed(Battery.temperature)) : ""
         },
         {
+            label: root.config.statCurrent,
+            value: Battery.current > 0 ? root.config.ampTemplate.arg(root.fixed(Battery.current)) : ""
+        },
+        {
+            label: root.config.statVendorHealth,
+            value: Battery.vendorHealth > 0 ? root.config.percentTemplate.arg(Battery.vendorHealth) : ""
+        },
+        {
+            label: root.config.statResistance,
+            value: Battery.resistance > 0 ? root.config.milliOhmTemplate.arg(root.fixed(Battery.resistance)) : ""
+        },
+        {
             label: root.config.statLimit,
-            value: Battery.limit > 0 && Battery.limit < Appearance.scale.percent ? root.config.percentTemplate.arg(Battery.limit) : ""
+            value: Battery.limit > 0 && Battery.limit < Appearance.scale.percent ? (Battery.startLimit > 0 ? root.config.limitRangeTemplate.arg(Battery.startLimit).arg(Battery.limit) : root.config.percentTemplate.arg(Battery.limit)) : ""
         },
         {
             label: root.config.statCell,
             value: Battery.cell
+        },
+        {
+            label: root.config.statSerial,
+            value: Battery.serial
         }
     ].filter(entry => entry.value !== "")
 

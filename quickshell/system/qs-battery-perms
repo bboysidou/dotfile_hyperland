@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+DEVICE="/sys${1:?devpath required}"
+GROUP=power
+
+for attr in charge_control_start_threshold charge_control_end_threshold charge_behaviour charge_types; do
+    [ -e "$DEVICE/$attr" ] || continue
+    chgrp "$GROUP" "$DEVICE/$attr"
+    chmod g+w "$DEVICE/$attr"
+done

@@ -76,7 +76,7 @@ QtObject {
     readonly property string profileBalanced: "balanced"
     readonly property string profileSaver: "saver"
     readonly property int batteryInfoInterval: 30000
-    readonly property int statColumns: 3
+    readonly property int statColumns: 2
     readonly property int statSpacing: 12
     readonly property int statLabelSize: 10
     readonly property real statLetterSpacing: 1.2
@@ -92,6 +92,13 @@ QtObject {
     readonly property string statTemperature: "TEMPERATURE"
     readonly property string statLimit: "CHARGE LIMIT"
     readonly property string statCell: "CELL"
+    readonly property string statCurrent: "CURRENT"
+    readonly property string statVendorHealth: "VENDOR HEALTH"
+    readonly property string statResistance: "RESISTANCE"
+    readonly property string statSerial: "SERIAL"
+    readonly property string ampTemplate: "%1 A"
+    readonly property string milliOhmTemplate: "%1 mΩ"
+    readonly property string limitRangeTemplate: "%1–%2%"
     readonly property string wattTemplate: "%1 W"
     readonly property string energyTemplate: "%1 / %2 Wh"
     readonly property string healthTemplate: "%1% of %2 Wh"

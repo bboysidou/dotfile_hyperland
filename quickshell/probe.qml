@@ -242,6 +242,15 @@ ShellRoot {
             NetworkPanel {}
             BluetoothPanel {}
             NotifPanel {}
+            PowerPanel {}
+            PowerOverview {}
+            BatteryTab {}
+            BatteryStats {}
+            HealthChips {}
+            HistoryCard {}
+            PowerSplit {}
+            ChargerCard {}
+            CareCard {}
             UpdatesCenter {}
             UpdatesPanel {}
             UpdatesHeader {}

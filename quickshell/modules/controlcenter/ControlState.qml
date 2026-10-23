@@ -9,6 +9,7 @@ Singleton {
     property bool opened: false
     property string section: ControlSection.network
     property string audioSection: AudioSection.outputs
+    property string powerSection: PowerSection.overview
 
     function show(target: string): void {
         root.section = target;

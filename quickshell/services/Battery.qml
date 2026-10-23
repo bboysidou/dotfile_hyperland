@@ -58,11 +58,42 @@ Singleton {
     readonly property real voltage: root.micro(root.info.voltage_now)
     readonly property real temperature: root.info.temp !== undefined ? Number(root.info.temp) / Units.tenthsPerUnit : NaN
     readonly property int limit: Number(root.info.charge_control_end_threshold ?? 0)
+    readonly property int startLimit: Number(root.info.charge_control_start_threshold ?? 0)
     readonly property string cell: [root.info.technology, root.info.manufacturer, root.info.model_name || root.device?.model].filter(part => part && part !== "Unknown").join(" ")
+    readonly property string serial: root.known(root.info.serial_number)
+    readonly property string condition: root.known(root.info.health)
+    readonly property int vendorHealth: Number(root.info.state_of_health ?? 0)
+    readonly property int errorMargin: Number(root.info.capacity_error_margin ?? 0)
+    readonly property real resistance: Number(root.info.internal_resistance ?? 0) / Units.microPerMilli
+    readonly property real current: Math.abs(root.micro(root.info.current_now))
+    readonly property var behaviour: Str.choices(root.info.charge_behaviour ?? "")
+    readonly property var chargeTypes: Str.choices(root.info.charge_types ?? "")
+    readonly property int madeYear: Number(root.info.manufacture_year ?? 0)
+    readonly property int madeMonth: Number(root.info.manufacture_month ?? 0)
+    readonly property int ageMonths: {
+        if (root.madeYear <= 0)
+            return -1;
+        const now = new Date();
+        return Math.max(0, (now.getFullYear() - root.madeYear) * Units.monthsPerYear + now.getMonth() + 1 - Math.max(1, root.madeMonth));
+    }
+    readonly property string upowerPath: root.sysfs ? Commands.upowerBatteryPath.arg(Paths.basename(root.sysfs)) : ""
 
     function micro(raw): real {
         const value = Number(raw ?? 0);
         return isFinite(value) ? value / Units.microPerUnit : 0;
+    }
+
+    function known(raw): string {
+        const value = String(raw ?? "").trim();
+        return value === "Unknown" ? "" : value;
+    }
+
+    function writable(attribute: string): bool {
+        return root.info[`w:${attribute}`] === "1";
+    }
+
+    function refresh(): void {
+        poller.poll();
     }
 
     function adopt(text: string): void {
@@ -76,6 +107,8 @@ Singleton {
     }
 
     Poller {
+        id: poller
+
         command: ["sh", "-c", Commands.batteryInfo, "sh", root.sysfs]
         interval: Appearance.powerPanel.batteryInfoInterval
         polling: root.sysfs !== ""
