@@ -11,7 +11,8 @@ Singleton {
     id: root
 
     property var gains: root.config.frequencies.map(() => 0)
-    property string preset: root.config.presets[0][0]
+    property var custom: root.config.frequencies.map(() => 0)
+    property string preset: root.config.labelCustom
     property bool loaded: false
     property bool saved: true
     property bool dirty: false
@@ -20,6 +21,7 @@ Singleton {
     readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
     readonly property var node: (Pipewire.nodes?.values ?? []).find(candidate => candidate.name === root.config.nodeName) ?? null
     readonly property bool available: root.node !== null
+    readonly property var choices: root.config.presets.concat([[root.config.labelCustom, root.custom]])
 
     function clampGain(value: real): real {
         const step = root.config.gainStep;
@@ -30,12 +32,13 @@ Singleton {
         const next = root.gains.slice();
         next[band] = root.clampGain(value);
         root.gains = next;
+        root.custom = next;
         root.preset = root.matchingPreset();
         root.touch();
     }
 
     function usePreset(name: string): void {
-        const entry = root.config.presets.find(candidate => candidate[0] === name);
+        const entry = root.choices.find(candidate => candidate[0] === name);
         if (!entry)
             return;
         root.gains = entry[1].slice();
@@ -66,11 +69,16 @@ Singleton {
         pusher.running = true;
     }
 
+    function validGains(value: var): bool {
+        return Array.isArray(value) && value.length === root.config.frequencies.length;
+    }
+
     function adopt(payload: string): void {
         try {
             const data = JSON.parse(payload);
-            if (Array.isArray(data.gains) && data.gains.length === root.config.frequencies.length)
+            if (root.validGains(data.gains))
                 root.gains = data.gains.map(gain => root.clampGain(Number(gain)));
+            root.custom = root.validGains(data.custom) ? data.custom.map(gain => root.clampGain(Number(gain))) : root.gains.slice();
             root.preset = root.matchingPreset();
         } catch (error) {
             root.preset = root.matchingPreset();
@@ -103,7 +111,8 @@ Singleton {
 
         onTriggered: {
             store.setText(JSON.stringify({
-                gains: root.gains
+                gains: root.gains,
+                custom: root.custom
             }));
             root.saved = true;
         }

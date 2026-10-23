@@ -116,7 +116,7 @@ Card {
             columnSpacing: root.config.presetSpacing
 
             Repeater {
-                model: root.config.presets
+                model: Equalizer.choices
 
                 StyledRect {
                     id: preset
