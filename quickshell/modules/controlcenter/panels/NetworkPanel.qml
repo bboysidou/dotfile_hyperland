@@ -328,7 +328,7 @@ Panel {
             detail: Net.wiredDevice?.connected ? Appearance.control.labelConnected : Appearance.control.failureDisconnected
             active: Net.wiredDevice?.connected ?? false
             accent: Colours.network
-            details: Net.wiredDevice?.connected ? root.connectionDetails : []
+            details: Net.wiredConnected ? root.connectionDetails : []
         }
 
         StyledText {
@@ -359,7 +359,7 @@ Panel {
                 active: modelData.connected
                 accent: Colours.network
                 forgettable: modelData.known
-                details: modelData.connected ? root.connectionDetails : []
+                details: modelData.connected && Net.activeDevice === Net.wifiDevice ? root.connectionDetails : []
                 expanded: root.prompting(card.modelData)
 
                 onActivated: root.activate(card.modelData)

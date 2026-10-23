@@ -11,8 +11,8 @@ Column {
     spacing: Appearance.lock.statusSpacing
 
     Chip {
-        glyph: Net.wifiDevice?.connected ? Glyphs.wifi(Net.signalPercent(Net.activeNetwork)) : Net.wiredDevice?.connected ? Icons.ethernet : Icons.wifiOff
-        label: Net.activeNetwork?.name ?? (Net.wiredDevice?.connected ? Net.wiredDevice.name : Appearance.lock.emptyNoNetwork)
+        glyph: Net.glyph
+        label: Net.wiredConnected ? Net.wiredDevice.name : Net.activeNetwork?.name ?? Appearance.lock.emptyNoNetwork
     }
 
     Chip {

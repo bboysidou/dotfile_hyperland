@@ -28,6 +28,7 @@ Singleton {
     readonly property var wifiDevice: root.wifiDevices[0] ?? null
     readonly property var wiredDevice: root.wiredDevices.find(device => device.connected) ?? root.wiredDevices[0] ?? null
 
+    readonly property bool wiredConnected: root.wiredDevice?.connected ?? false
     readonly property bool available: root.wifiDevice !== null || root.wiredDevice !== null
     readonly property bool wifiEnabled: Networking.wifiEnabled
     readonly property bool wifiHardwareEnabled: Networking.wifiHardwareEnabled
@@ -52,9 +53,9 @@ Singleton {
     readonly property var activeNetwork: root.networks.find(network => network.connected) ?? null
 
     readonly property var activeDevice: {
-        if (root.activeNetwork)
-            return root.wifiDevice;
-        return root.wiredDevice?.connected ? root.wiredDevice : null;
+        if (root.wiredConnected)
+            return root.wiredDevice;
+        return root.activeNetwork ? root.wifiDevice : null;
     }
 
     readonly property string activeInterface: root.activeDevice?.name ?? ""
@@ -67,10 +68,10 @@ Singleton {
     readonly property bool wanReachable: root.online && root.activeInterface !== ""
 
     readonly property string glyph: {
+        if (root.wiredConnected)
+            return Icons.ethernet;
         if (root.activeNetwork)
             return Glyphs.wifi(root.signalPercent(root.activeNetwork));
-        if (root.wiredDevice?.connected)
-            return Icons.ethernet;
         if (!root.wifiEnabled)
             return Icons.wifiDisabled;
         return Icons.wifiOff;
