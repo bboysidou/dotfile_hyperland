@@ -36,10 +36,19 @@ Item {
         implicitWidth: Appearance.powerPanel.ringSize
         implicitHeight: Appearance.powerPanel.ringSize
 
-        value: root.hasBattery ? root.percent / Appearance.scale.percent : 1
-        colour: root.colour
+        value: 0
         radiusRatio: Appearance.powerPanel.ringRadiusRatio
         thicknessRatio: Appearance.powerPanel.ringThicknessRatio
+    }
+
+    StrandRing {
+        anchors.centerIn: parent
+
+        width: Appearance.powerPanel.ringSize
+        height: Appearance.powerPanel.ringSize
+
+        value: root.hasBattery ? root.percent / Appearance.scale.percent : 1
+        colour: root.colour
     }
 
     Column {
