@@ -8,7 +8,11 @@ TPM_URL="https://github.com/tmux-plugins/tpm"
 FISHER_URL="https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish"
 GRAPHITE_URL="https://github.com/vinceliuice/Graphite-gtk-theme.git"
 GRAPHITE_ARGS="-d ~/.themes -t teal -c dark -s standard -l --tweaks black rimless normal"
-TIDE_ARGS="--auto --style=Lean --prompt_colors='True color' --show_time=No --lean_prompt_height='Two lines' --prompt_connection=Disconnected --prompt_spacing=Sparse --icons='Many icons' --transient=No"
+DEFAULT_WALLPAPER=".config/quickshell/media/wallpaper/default.png"
+WALLPAPER_STATE=".local/state/quickshell/wallpaper"
+UV_ENV_FISH='if not contains "$HOME/.local/bin" $PATH
+    set -x PATH "$HOME/.local/bin" $PATH
+end'
 YAY_FLAGS=(-S --noconfirm --needed --answerclean All --answerdiff None --answeredit None --removemake)
 DEFAULT_USER="sidouxp3"
 HARDCODED_HOME_FILES=(gtk/gtk-3.0/bookmarks gtk/.gtkrc-2.0 hypr/xdph.conf)
@@ -93,8 +97,13 @@ userDirs() {
 }
 
 userFish() {
+  asUser bash -c 'mkdir -p "$HOME/.local/bin" && { [[ -e "$HOME/.local/bin/env.fish" ]] || printf "%s\n" "$1" >"$HOME/.local/bin/env.fish"; }' _ "$UV_ENV_FISH"
   asUser fish -c "curl -sL ${FISHER_URL} | source && fisher update"
-  asUser fish -c "tide configure ${TIDE_ARGS}"
+}
+
+userWallpaper() {
+  local home="/home/${A_USER}"
+  asUser bash -c '[[ -e "$2" ]] || { mkdir -p "$(dirname "$2")" && printf "%s\n" "$1" >"$2"; }' _ "${home}/${DEFAULT_WALLPAPER}" "${home}/${WALLPAPER_STATE}"
 }
 
 userTmux() {
