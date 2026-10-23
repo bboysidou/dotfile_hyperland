@@ -6,7 +6,6 @@ LIVE_MIRRORLIST="/etc/pacman.d/mirrorlist"
 PARALLEL_DOWNLOADS=12
 MIRROR_COUNT=20
 USER_GROUPS="wheel,users,storage,power,audio,video,input"
-USER_SHELL="/usr/bin/fish"
 WHEEL_SUDOERS="/etc/sudoers.d/10-wheel"
 I2C_MODULES_LOAD="/etc/modules-load.d/i2c-dev.conf"
 GLOBAL_USER_SERVICES=(filter-chain.service)
@@ -28,7 +27,7 @@ baseMirrors() {
 }
 
 basePackageList() {
-  local ucode=() boot=()
+  local ucode=() boot=() shells=()
   case "${A_CPU:-none}" in
     amd) ucode=(amd-ucode) ;;
     intel) ucode=(intel-ucode) ;;
@@ -36,7 +35,8 @@ basePackageList() {
   bundleCollect
   gpuPackages
   mapfile -t boot < <(bootPackages)
-  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" | awk 'NF && !seen[$0]++'
+  mapfile -t shells < <(shellPackages)
+  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" "${shells[@]}" | awk 'NF && !seen[$0]++'
 }
 
 basePacstrap() {
@@ -95,7 +95,7 @@ _systemSetPasswords() {
 
 systemUsers() {
   if ((DRY_RUN)) || ! arch-chroot "$MNT" id -u "$A_USER" >/dev/null 2>&1; then
-    inChroot useradd -m -G "$USER_GROUPS" -s "$USER_SHELL" "$A_USER"
+    inChroot useradd -m -G "$USER_GROUPS" -s "$(shellLoginPath)" "$A_USER"
   fi
   _systemSetPasswords
   writeFile "${MNT}${WHEEL_SUDOERS}" 440 <<<"%wheel ALL=(ALL:ALL) ALL"

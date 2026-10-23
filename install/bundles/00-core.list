@@ -1,5 +1,5 @@
 #: title=Desktop core
-#: description=Hyprland, Quickshell, fish, kitty, audio, fonts, base tools
+#: description=Hyprland, Quickshell, kitty, audio, fonts, base tools
 #: default=locked
 hyprland
 xdg-desktop-portal-hyprland
@@ -25,7 +25,6 @@ pciutils
 dmidecode
 hwinfo
 usbutils
-fish
 kitty
 neovim
 tmux

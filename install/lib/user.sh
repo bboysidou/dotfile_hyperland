@@ -99,6 +99,7 @@ userDirs() {
 userFish() {
   asUser bash -c 'mkdir -p "$HOME/.local/bin" && { [[ -e "$HOME/.local/bin/env.fish" ]] || printf "%s\n" "$1" >"$HOME/.local/bin/env.fish"; }' _ "$UV_ENV_FISH"
   asUser fish -c "curl -sL ${FISHER_URL} | source && fisher update"
+  asUser fish -c "functions -q tide"
 }
 
 userWallpaper() {

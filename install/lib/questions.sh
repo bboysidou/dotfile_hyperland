@@ -17,6 +17,10 @@ _preseeded() {
   ((PRESEED)) && [[ -n "${!1-}" ]]
 }
 
+_preseededAny() {
+  ((PRESEED)) && [[ -v "$1" ]]
+}
+
 askIdentity() {
   if ! _preseeded A_HOSTNAME; then
     while true; do
@@ -158,6 +162,32 @@ askBundles() {
   done
 }
 
+_loginShellOptions() {
+  local candidates=() shell
+  read -ra candidates <<<"${A_LOGIN_SHELL} ${DEFAULT_LOGIN_SHELL} ${A_SHELLS} ${BASE_SHELL}"
+  for shell in "${candidates[@]}"; do
+    shellSelected "$shell" && echo "$shell"
+  done | awk '!seen[$0]++'
+}
+
+askShells() {
+  local options=()
+  shellDefaults
+  if ! _preseededAny A_SHELLS; then
+    uiMulti A_SHELLS "Shells besides ${BASE_SHELL} (space toggles, enter confirms)" "${A_SHELLS// /,}" "${EXTRA_SHELLS[@]}"
+  fi
+  mapfile -t options < <(_loginShellOptions)
+  if ((${#options[@]} == 1)); then
+    A_LOGIN_SHELL="${options[0]}"
+  elif ! _preseeded A_LOGIN_SHELL || [[ "${options[0]}" != "$A_LOGIN_SHELL" ]]; then
+    uiChoose A_LOGIN_SHELL "Login shell" "${options[@]}"
+  fi
+  if ! _preseededAny A_TERMINALS; then
+    uiMulti A_TERMINALS "Terminals besides ${BASE_TERMINAL} (space toggles, enter confirms)" "${A_TERMINALS// /,}" "${EXTRA_TERMINALS[@]}"
+  fi
+  return 0
+}
+
 askHardware() {
   A_CPU="${A_CPU:-$D_CPU}"
   A_NVIDIA="${A_NVIDIA:-$D_NVIDIA}"
@@ -183,13 +213,15 @@ _summaryRows() {
     "Hostname=${A_HOSTNAME}" "User=${A_USER}" "Timezone=${A_TZ}" "Locale=${A_LOCALE}" \
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
     "Bootloader=${A_BOOT}" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
-    "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}"
+    "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
+    "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS}"
 }
 
 _changeMenu() {
   local section
   uiChoose section "Change what?" "Hostname and user|identity" "Timezone, locale, keymap|locale" \
-    "Disk and layout|disk" "Bootloader|boot" "Bundles|bundles" "CPU / GPU drivers|hardware"
+    "Disk and layout|disk" "Bootloader|boot" "Bundles|bundles" \
+    "Shells and terminals|shells" "CPU / GPU drivers|hardware"
   PRESEED=0
   case "$section" in
     identity) askIdentity ;;
@@ -201,6 +233,7 @@ _changeMenu() {
       ;;
     boot) askBoot ;;
     bundles) askBundles ;;
+    shells) askShells ;;
     hardware) _changeHardware ;;
   esac
 }
@@ -249,6 +282,7 @@ askEverything() {
   askMode
   askBoot
   askBundles
+  askShells
   askHardware
   reviewAndConfirm
   askPasswords
