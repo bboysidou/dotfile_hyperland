@@ -41,16 +41,19 @@ Item {
                 spacing: Appearance.hardware.gpuColumnSpacing
 
                 GpuMeter {
+                    visible: isFinite(GpuStats.busy)
                     glyph: Icons.speedometer
                     value: GpuStats.busy
                 }
 
                 GpuMeter {
+                    visible: isFinite(GpuStats.powerFraction)
                     glyph: Icons.flash
-                    value: GpuStats.powerCap > 0 ? GpuStats.power / GpuStats.powerCap : 0
+                    value: GpuStats.powerFraction
                 }
 
                 GpuMeter {
+                    visible: isFinite(GpuStats.fan)
                     glyph: Icons.fan
                     value: GpuStats.fan
                 }
