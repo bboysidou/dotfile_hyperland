@@ -13,9 +13,9 @@ Pill {
     readonly property color stateColour: {
         if (MouseBattery.charging)
             return Colours.accent;
-        if (MouseBattery.percent <= Appearance.bar.mouseCritical)
+        if (MouseBattery.percent < Appearance.powerPanel.criticalPercent)
             return Colours.critical;
-        if (MouseBattery.percent <= Appearance.bar.mouseWarning)
+        if (MouseBattery.percent < Appearance.powerPanel.warningPercent)
             return Colours.warning;
         return Colours.accent;
     }
