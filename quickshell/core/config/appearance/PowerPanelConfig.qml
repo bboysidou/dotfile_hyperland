@@ -37,12 +37,6 @@ QtObject {
     readonly property real ringStartAngle: -90
     readonly property real coreRingScale: 1.95
     readonly property real coreRingRadiusRatio: 0.4
-    readonly property int timeTileSize: 44
-    readonly property int timeTileRounding: 10
-    readonly property int timeDigitSize: 18
-    readonly property int timeUnitSize: 8
-    readonly property int timeSeparatorSize: 16
-    readonly property int timeSpacing: 8
     readonly property int sliderCardPadding: 14
     readonly property int sliderRowSpacing: 14
     readonly property int sliderIconSize: 18
@@ -55,13 +49,6 @@ QtObject {
     readonly property int actionIconSize: 22
     readonly property int actionSpacing: 8
     readonly property int cardRounding: 14
-    readonly property int secondsPerHour: 3600
-    readonly property int secondsPerMinute: 60
-    readonly property int timeDigits: 2
-    readonly property string timeUnknown: "--"
-    readonly property string hoursLabel: "HR"
-    readonly property string minutesLabel: "MIN"
-    readonly property string timeSeparator: ":"
     readonly property string labelCharging: "CHARGING"
     readonly property string labelDischarging: "ON BATTERY"
     readonly property string labelFull: "FULLY CHARGED"
@@ -92,6 +79,8 @@ QtObject {
     readonly property string statVoltage: "VOLTAGE"
     readonly property string statTemperature: "TEMPERATURE"
     readonly property string statLimit: "CHARGE LIMIT"
+    readonly property string statTimeLeft: "TIME LEFT"
+    readonly property string statTimeToFull: "TIME TO FULL"
     readonly property string statCell: "CELL"
     readonly property string statCurrent: "CURRENT"
     readonly property string statVendorHealth: "VENDOR HEALTH"

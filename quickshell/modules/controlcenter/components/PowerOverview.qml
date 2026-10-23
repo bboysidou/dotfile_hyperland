@@ -138,6 +138,17 @@ ColumnLayout {
         }
     }
 
+    HealthChips {}
+
+    BatteryStats {
+        visible: Battery.available
+        essential: true
+    }
+
+    ChargerCard {
+        visible: Battery.available
+    }
+
     StyledRect {
         Layout.fillWidth: true
         visible: Brightness.available || Audio.available
