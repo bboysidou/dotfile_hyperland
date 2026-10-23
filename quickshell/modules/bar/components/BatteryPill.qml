@@ -12,12 +12,12 @@ Pill {
 
     readonly property color stateColour: {
         if (Battery.charging)
-            return Colours.text;
+            return Colours.accent;
         if (Battery.percent < Appearance.powerPanel.criticalPercent)
             return Colours.critical;
         if (Battery.percent < Appearance.powerPanel.warningPercent)
             return Colours.warning;
-        return Colours.text;
+        return Colours.accent;
     }
 
     Layout.rightMargin: Appearance.bar.pillMarginRight
