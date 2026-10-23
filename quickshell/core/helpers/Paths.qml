@@ -14,6 +14,7 @@ Singleton {
     readonly property string monitors: `${root.config}/hypr/monitors.lua`
     readonly property string workspaces: `${root.config}/hypr/workspaces.lua`
     readonly property string hwinfo: "/run/qs-hw"
+    readonly property string powerSupply: "/sys/class/power_supply"
     readonly property string dimms: `${root.hwinfo}/dimms.tsv`
     readonly property string cpuPower: `${root.hwinfo}/cpu_power`
 

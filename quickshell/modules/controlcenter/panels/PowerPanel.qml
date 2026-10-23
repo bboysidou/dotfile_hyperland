@@ -148,7 +148,7 @@ Panel {
                 anchors.centerIn: parent
 
                 width: parent.width
-                height: Appearance.orbit.stageHeight
+                height: Math.min(Appearance.orbit.stageHeight, parent.height)
 
                 linked: true
                 switchable: false
@@ -173,6 +173,10 @@ Panel {
                 value: Battery.available ? Battery.percent / Appearance.scale.percent : 1
                 colour: root.levelColour
             }
+        }
+
+        BatteryStats {
+            visible: Battery.available
         }
 
         StyledRect {
