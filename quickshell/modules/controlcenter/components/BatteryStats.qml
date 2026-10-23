@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Services.UPower
 import qs.core.components
 import qs.core.config
 import qs.core.helpers
@@ -34,6 +35,11 @@ StyledRect {
             label: root.config.statRuntime,
             essential: true,
             value: Battery.runtime > 0 ? Fmt.uptime(Battery.runtime) : ""
+        },
+        {
+            label: Battery.state === UPowerDeviceState.Charging ? root.config.statTimeToFull : root.config.statTimeLeft,
+            essential: true,
+            value: Battery.secondsLeft > 0 ? Fmt.uptime(Battery.secondsLeft) : ""
         },
         {
             label: root.config.statCycles,

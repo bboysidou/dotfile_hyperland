@@ -5,7 +5,6 @@ import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.core.enums
-import qs.core.helpers
 import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.modules.power
@@ -20,11 +19,6 @@ Panel {
             section: PowerSection.overview,
             icon: Icons.power,
             label: Appearance.batteryTab.labelOverview
-        },
-        {
-            section: PowerSection.battery,
-            icon: Glyphs.batteryRamp(Battery.percent, Battery.charging),
-            label: Appearance.batteryTab.labelBattery
         },
         {
             section: PowerSection.history,
@@ -59,13 +53,7 @@ Panel {
         RowLayout {
             Layout.fillWidth: true
 
-            TimeLeft {
-                visible: Battery.available
-                seconds: Battery.secondsLeft
-            }
-
             StyledText {
-                visible: !Battery.available
                 text: root.config.labelTitle
                 color: Colours.textBright
             }
@@ -100,22 +88,6 @@ Panel {
 
             PowerOverview {
                 onTriggered: action => root.run(action)
-            }
-
-            ColumnLayout {
-                spacing: Appearance.batteryTab.sectionSpacing
-
-                HealthChips {}
-
-                BatteryStats {
-                    essential: true
-                }
-
-                ChargerCard {}
-
-                Item {
-                    Layout.fillHeight: true
-                }
             }
 
             ColumnLayout {

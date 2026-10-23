@@ -20,7 +20,7 @@ Scope {
     Binding {
         target: Charger
         property: "active"
-        value: root.powerShown && ControlState.powerSection === PowerSection.battery
+        value: root.powerShown && ControlState.powerSection === PowerSection.overview
     }
 
     GlobalShortcut {

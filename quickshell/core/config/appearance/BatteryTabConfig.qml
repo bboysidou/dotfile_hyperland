@@ -2,7 +2,6 @@ import QtQuick
 
 QtObject {
     readonly property string labelOverview: "Overview"
-    readonly property string labelBattery: "Battery"
     readonly property string labelHistory: "History"
     readonly property string labelDetails: "Details"
     readonly property string labelCare: "Care"
