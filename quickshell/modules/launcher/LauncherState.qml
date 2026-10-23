@@ -149,7 +149,11 @@ Singleton {
         Apps.register(entry.id);
 
         if (entry.runInTerminal)
-            Quickshell.execDetached(Commands.terminal.concat(entry.command));
+            Quickshell.execDetached(Terminal.command({
+                program: entry.command,
+                title: "",
+                hold: false
+            }));
         else
             entry.execute();
 

@@ -46,7 +46,7 @@ Singleton {
     }
 
     function program(argument: string): string {
-        const bare = argument.replace(/^"(.*)"$/, "$1").replace(/^sh\s+-c\s+/, "").replace(/^'(.*)'$/, "$1").trim();
+        const bare = argument.replace(/^inTerminal\(\s*(.*?)\s*\)$/, "$1").replace(/^"(.*)"$/, "$1").replace(/^sh\s+-c\s+/, "").replace(/^'(.*)'$/, "$1").trim();
         const script = bare.match(/([\w-]+)\.sh\b/);
 
         if (script)

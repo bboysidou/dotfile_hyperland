@@ -8,5 +8,5 @@ UsagePill {
     percent: SysInfo.cpuPercent
     ringColour: Colours.cpu
     section: HardwareSection.cpu
-    launchCommand: Commands.cpuMonitor
+    launchCommand: Terminal.command(Commands.cpuMonitor)
 }

@@ -8,5 +8,5 @@ UsagePill {
     percent: SysInfo.memPercent
     ringColour: Colours.memory
     section: HardwareSection.memory
-    launchCommand: Commands.memoryMonitor
+    launchCommand: Terminal.command(Commands.memoryMonitor)
 }

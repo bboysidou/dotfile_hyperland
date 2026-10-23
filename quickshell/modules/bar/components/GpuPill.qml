@@ -9,5 +9,5 @@ UsagePill {
     percent: GpuStats.busyPercent
     ringColour: Colours.gpu
     section: HardwareSection.gpu
-    launchCommand: Commands.gpuMonitor
+    launchCommand: Terminal.command(Commands.gpuMonitor)
 }

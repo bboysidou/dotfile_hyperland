@@ -10,6 +10,7 @@ import qs.core.enums
 import qs.core.helpers
 import qs.modules.controlcenter.panels
 import qs.modules.hardware.components
+import qs.services
 
 Panel {
     id: root
@@ -38,7 +39,7 @@ Panel {
     }
 
     function openMonitor(): void {
-        Quickshell.execDetached(root.monitors[HardwareState.section]);
+        Quickshell.execDetached(Terminal.command(root.monitors[HardwareState.section]));
         HardwareState.hide();
     }
 
