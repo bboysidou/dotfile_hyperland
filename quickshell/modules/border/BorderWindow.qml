@@ -27,6 +27,7 @@ PanelWindow {
     readonly property bool focused: Monitors.focused === root.screen.name
     readonly property bool grabbing: root.focused && BorderState.panelOpen
     readonly property bool covered: Monitors.covered(root.screen)
+    readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware].find(slot => slot.open)?.item?.width ?? 0
 
     property real revealed: root.covered ? 0 : 1
 
@@ -41,6 +42,14 @@ PanelWindow {
     anchors.bottom: true
     anchors.left: true
     anchors.right: true
+
+    Binding {
+        when: root.focused
+        target: BorderState
+        property: "rightInset"
+        value: root.rightInset
+        restoreMode: Binding.RestoreNone
+    }
 
     mask: Region {
         Region {

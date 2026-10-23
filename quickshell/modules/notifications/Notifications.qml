@@ -6,8 +6,7 @@ import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.enums
-import qs.modules.controlcenter
-import qs.modules.hardware
+import qs.modules.border
 import qs.modules.notifications.components
 import qs.services
 
@@ -19,7 +18,7 @@ Variants {
     FocusedPanel {
         id: panel
 
-        shown: Notifs.stack.length > 0 && !ControlState.opened && !HardwareState.opened
+        shown: Notifs.stack.length > 0 && BorderState.rightInset === 0
 
         exclusiveZone: 0
 
