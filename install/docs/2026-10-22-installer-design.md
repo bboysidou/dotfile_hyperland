@@ -177,7 +177,8 @@ timezone (fuzzy list from `/usr/share/zoneinfo`) · locale · console keymap · 
 install mode (wipe / alongside) · bootloader (systemd-boot default / GRUB) · bundles (with
 per-package drill-down) · shells besides bash (multi-select zsh / fish, fish preselected) and
 the login shell among the chosen ones · terminals besides kitty (multi-select alacritty /
-ghostty / foot) · detected-hardware overrides. The fisher step only runs when fish is chosen, and then it is required: it installs tide from
+ghostty / foot) and which of them the Hyprland terminal keybind opens, written to the
+gitignored `hypr/config/terminal.lua` · detected-hardware overrides. The fisher step only runs when fish is chosen, and then it is required: it installs tide from
 `fish/fish_plugins` and fails unless `tide` loads; the prompt itself comes from `fish/conf.d/tide.fish`.
 
 Defaults match today's machine: user `sidouxp3`, timezone `Africa/Algiers`, locale
