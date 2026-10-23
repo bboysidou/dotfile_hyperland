@@ -44,6 +44,9 @@ PanelWindow {
 
     mask: Region {
         Region {
+            item: scrim.enabled ? scrim : null
+        }
+        Region {
             item: bar.visible ? bar : null
         }
         Region {
@@ -98,6 +101,17 @@ PanelWindow {
             HardwareState.hide();
             ShareState.dismiss();
         }
+    }
+
+    MouseArea {
+        id: scrim
+
+        anchors.fill: parent
+
+        enabled: root.grabbing
+        acceptedButtons: Qt.AllButtons
+
+        onPressed: BorderState.closeAll()
     }
 
     BorderFrame {

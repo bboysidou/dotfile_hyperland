@@ -15,10 +15,11 @@ Singleton {
     property bool barHover: false
     property bool panelHover: false
     property bool lingering: false
+    property bool blocked: false
     property string tab: DashSection.dash
 
     readonly property bool hovering: root.barHover || root.panelHover
-    readonly property bool opened: root.pinned || root.lingering
+    readonly property bool opened: root.pinned || (root.lingering && !root.blocked)
     readonly property int index: Math.max(0, root.sections.indexOf(root.tab))
 
     function show(section: string): void {

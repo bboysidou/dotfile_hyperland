@@ -26,4 +26,14 @@ Item {
 
     onOpenChanged: root.sync()
     onShownChanged: Qt.callLater(root.sync)
+
+    MouseArea {
+        x: root.item?.x ?? 0
+        y: root.item?.y ?? 0
+        width: root.item?.width ?? 0
+        height: root.item?.height ?? 0
+
+        enabled: root.item !== null
+        acceptedButtons: Qt.AllButtons
+    }
 }
