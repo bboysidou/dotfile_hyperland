@@ -80,6 +80,7 @@ Singleton {
             return;
         }
 
+        device.trusted = true;
         root.beginConnect(device);
         device.connect();
     }
@@ -210,6 +211,7 @@ Singleton {
 
                 root.pendingPair = "";
                 root.setPairable(false);
+                modelData.trusted = true;
                 root.beginConnect(modelData);
                 modelData.connect();
             }
