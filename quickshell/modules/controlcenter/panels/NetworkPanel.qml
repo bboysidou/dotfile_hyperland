@@ -40,6 +40,11 @@ Panel {
                 label: NetFields.labelAddress,
                 value: Net.address
             });
+        if (Net.wanAddress !== "")
+            rows.push({
+                label: NetFields.labelWanAddress,
+                value: Net.wanAddress
+            });
         if (Net.gateway !== "")
             rows.push({
                 label: NetFields.labelGateway,

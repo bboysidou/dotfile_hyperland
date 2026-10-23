@@ -35,6 +35,7 @@ Singleton {
     readonly property var workspacesQuery: ["hyprctl", "workspaces", "-j"]
     readonly property var hyprEval: ["hyprctl", "eval"]
     readonly property var fetch: ["curl", "-fsSL", "--max-time", "20"]
+    readonly property string wanAddressUrl: "https://api.ipify.org"
     readonly property var calendarNew: ["zen-browser", "https://calendar.google.com/calendar/r/eventedit"]
     readonly property string weatherUrl: "https://api.open-meteo.com/v1/forecast?latitude=%1&longitude=%2&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,apparent_temperature_max&timezone=auto&forecast_days=7&wind_speed_unit=ms"
 
