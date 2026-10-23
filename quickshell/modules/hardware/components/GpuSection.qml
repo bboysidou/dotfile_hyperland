@@ -51,7 +51,7 @@ ColumnLayout {
         accent: Colours.gpu
         options: GpuStats.cards.map((card, index) => ({
                     key: String(index),
-                    label: card.short || (card.dedicated ? Appearance.hardware.labelDedicated : Appearance.hardware.labelIntegrated)
+                    label: card.dedicated ? Appearance.hardware.labelDedicated : Appearance.hardware.labelIntegrated
                 }))
 
         onSelected: key => GpuStats.select(Number(key))
@@ -59,7 +59,7 @@ ColumnLayout {
 
     SectionTitle {
         glyph: Icons.gpu
-        title: Appearance.hardware.titleTemplate.arg(Appearance.hardware.labelGpu).arg(GpuStats.kind.length > 0 ? Appearance.hardware.kindTemplate.arg(GpuStats.name).arg(GpuStats.kind) : GpuStats.name)
+        title: Appearance.hardware.titleTemplate.arg(Appearance.hardware.labelGpu).arg(GpuStats.name)
         accent: Colours.gpu
     }
 
