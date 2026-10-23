@@ -1,6 +1,5 @@
 -- Decoration
 -- https://wiki.hypr.land/Configuring/Basics/Variables/
--- Note: blur is (re-)enabled later in config/animation.lua.
 
 hl.config({
     decoration = {
@@ -9,7 +8,12 @@ hl.config({
             enabled = false,
         },
         blur = {
-            enabled = false,
+            enabled           = true,
+            size              = 2,
+            passes            = 2,
+            new_optimizations = true,
+            ignore_opacity    = true,
+            xray              = true,
         },
         active_opacity     = 1.0,
         inactive_opacity   = 0.95,
