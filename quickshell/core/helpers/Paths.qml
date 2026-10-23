@@ -10,6 +10,7 @@ Singleton {
     readonly property string state: Quickshell.env("XDG_STATE_HOME") || `${root.home}/.local/state`
     readonly property string config: Quickshell.env("XDG_CONFIG_HOME") || `${root.home}/.config`
     readonly property string keymaps: `${root.config}/hypr/config/keymaps.lua`
+    readonly property string terminal: `${root.config}/hypr/config/terminal.lua`
     readonly property string monitors: `${root.config}/hypr/monitors.lua`
     readonly property string workspaces: `${root.config}/hypr/workspaces.lua`
     readonly property string hwinfo: "/run/qs-hw"

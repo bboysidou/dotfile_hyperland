@@ -19,7 +19,7 @@ RevealCard {
     }
 
     function upgrade(): void {
-        Quickshell.execDetached(Commands.updates);
+        Quickshell.execDetached(Terminal.command(Commands.updates));
         UpdatesState.hide();
     }
 

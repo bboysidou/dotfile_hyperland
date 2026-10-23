@@ -3,12 +3,27 @@ pragma Singleton
 import Quickshell
 
 Singleton {
-    readonly property var terminal: ["kitty", "-e"]
     readonly property var mouseSettings: ["solaar"]
-    readonly property var updates: ["kitty", "--hold", "--title", "updates", "yay", "-Syu"]
-    readonly property var cpuMonitor: ["kitty", "--title", "btop", "btop"]
-    readonly property var memoryMonitor: ["kitty", "--title", "htop", "htop"]
-    readonly property var gpuMonitor: ["kitty", "--title", "nvtop", "nvtop"]
+    readonly property var updates: ({
+            program: ["yay", "-Syu"],
+            title: "updates",
+            hold: true
+        })
+    readonly property var cpuMonitor: ({
+            program: ["btop"],
+            title: "btop",
+            hold: false
+        })
+    readonly property var memoryMonitor: ({
+            program: ["htop"],
+            title: "htop",
+            hold: false
+        })
+    readonly property var gpuMonitor: ({
+            program: ["nvtop"],
+            title: "nvtop",
+            hold: false
+        })
     readonly property var calendar: ["zen-browser", "https://calendar.google.com"]
     readonly property var networkEditor: ["nm-connection-editor"]
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
