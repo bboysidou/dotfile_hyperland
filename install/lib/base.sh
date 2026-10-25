@@ -8,6 +8,8 @@ MIRROR_COUNT=20
 USER_GROUPS="wheel,users,storage,power,audio,video,input"
 WHEEL_SUDOERS="/etc/sudoers.d/10-wheel"
 I2C_MODULES_LOAD="/etc/modules-load.d/i2c-dev.conf"
+PAM_LOGIN="/etc/pam.d/login"
+PAM_PASSWD="/etc/pam.d/passwd"
 GLOBAL_USER_SERVICES=(filter-chain.service)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service)
 
@@ -104,6 +106,24 @@ systemUsers() {
 
 systemFiles() {
   writeFile "${MNT}${I2C_MODULES_LOAD}" <<<"i2c-dev"
+  writeFile "${MNT}${PAM_LOGIN}" <<'EOF'
+#%PAM-1.0
+
+auth       requisite    pam_nologin.so
+auth       include      system-local-login
+auth       optional     pam_gnome_keyring.so
+account    include      system-local-login
+session    include      system-local-login
+session    optional     pam_gnome_keyring.so auto_start
+password   include      system-local-login
+EOF
+  writeFile "${MNT}${PAM_PASSWD}" <<'EOF'
+#%PAM-1.0
+auth		include		system-auth
+account		include		system-auth
+password	include		system-auth
+password	optional	pam_gnome_keyring.so
+EOF
   run install -Dm644 "${INSTALLER_DIR}/fontconfig/fonts.conf" "${MNT}/etc/fonts/local.conf"
   run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo" "${MNT}/usr/local/bin/qs-hwinfo"
   run install -Dm644 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"

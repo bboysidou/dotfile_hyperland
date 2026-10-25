@@ -13,6 +13,7 @@ mpv                                 ~/.config/mpv
 yazi                                ~/.config/yazi
 pipewire/filter-chain.conf.d         ~/.config/pipewire/filter-chain.conf.d
 mimeapps.list                       ~/.config/mimeapps.list
+xdg-desktop-portal                  ~/.config/xdg-desktop-portal
 gtk/gtk-3.0/settings.ini            ~/.config/gtk-3.0/settings.ini
 gtk/gtk-4.0/settings.ini            ~/.config/gtk-4.0/settings.ini
 gtk/.gtkrc-2.0                      ~/.gtkrc-2.0

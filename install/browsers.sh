@@ -12,6 +12,7 @@ CHROMIUM_FLAGS=(
   "--enable-gpu-rasterization"
   "--enable-zero-copy"
   "--ignore-gpu-blocklist"
+  "--password-store=gnome-libsecret"
 )
 
 _writeFlagsFile() {
@@ -44,9 +45,10 @@ user_pref("gfx.webrender.all", true);
 user_pref("widget.dmabuf.force-enabled", true);
 EOF
 
-ZEN_ROOT="${CONFIG_HOME}/zen"
-if [[ -d "$ZEN_ROOT" ]]; then
-  found=0
+ZEN_ROOTS=("${HOME}/.zen" "${CONFIG_HOME}/zen")
+found=0
+for zen_root in "${ZEN_ROOTS[@]}"; do
+  [[ -d "$zen_root" ]] || continue
   while IFS= read -r profile; do
     [[ -z "$profile" ]] && continue
     found=1
@@ -57,8 +59,6 @@ if [[ -d "$ZEN_ROOT" ]]; then
       printf '%s\n' "$ZEN_USER_JS" >"$target"
       echo "wrote ${target}"
     fi
-  done < <(find "$ZEN_ROOT" -maxdepth 1 -mindepth 1 -type d -name '*.*' 2>/dev/null)
-  ((found)) || echo "no Zen profile found - launch Zen once, then re-run this script"
-else
-  echo "Zen not installed yet - re-run this script after installing zen-browser-bin"
-fi
+  done < <(find "$zen_root" -maxdepth 1 -mindepth 1 -type d -name '*.*' 2>/dev/null)
+done
+((found)) || echo "no Zen profile found - install zen-browser-bin and launch it once, then re-run this script"

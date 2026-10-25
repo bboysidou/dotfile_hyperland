@@ -4,6 +4,7 @@
 hyprland
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-gtk
+gnome-keyring
 qt5-wayland
 qt6-wayland
 qt6ct
