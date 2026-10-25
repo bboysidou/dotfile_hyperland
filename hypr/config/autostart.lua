@@ -3,8 +3,8 @@
 -- hl.exec_cmd() spawns an async process (no need for "& disown").
 
 hl.on("hyprland.start", function()
-	-- Setup XDG for screen sharing
-	hl.exec_cmd("~/.config/hypr/scripts/xdg.sh")
+	-- Give D-Bus activated services (portals) the session environment
+	hl.exec_cmd("dbus-update-activation-environment --systemd --all")
 
 	-- Load GTK settings
 	hl.exec_cmd("~/.config/hypr/scripts/gtk.sh")
