@@ -8,22 +8,27 @@ local terminalExecFlags = { kitty = "", foot = "", alacritty = " -e", ghostty = 
 local browser = "zen-browser"
 local browser_alt = "brave"
 
+local appScope = "systemd-run --user --scope --collect --quiet --slice=app.slice -- "
+
 local function inTerminal(command)
   return terminal .. (terminalExecFlags[terminal] or " -e") .. " " .. command
+end
+
+local function launchApp(command)
+  return hl.dsp.exec_cmd(appScope .. command)
 end
 
 -- Main modifier (SUPER / "Windows" key)
 local mainMod = "SUPER"
 
 -- MY STUFF ------------------------------------------------------------------
-hl.bind("CTRL + SHIFT + F", hl.dsp.exec_cmd(inTerminal("yazi")))
-hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/tmux_resurect_session.sh")))
+hl.bind("CTRL + SHIFT + F", launchApp(inTerminal("yazi")))
+hl.bind(mainMod .. " + CTRL + F", launchApp(inTerminal("sh $HOME/.config/custom_scripts/tmux_resurect_session.sh")))
 hl.bind("ALT + S", hl.dsp.global("quickshell:keybinds"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("sh -c $HOME/.config/custom_scripts/auto_start_work.sh"))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/ssh_connection.sh")))
+hl.bind(mainMod .. " + C", launchApp(inTerminal("sh $HOME/.config/custom_scripts/ssh_connection.sh")))
 hl.bind(mainMod .. " + X", hl.dsp.global("quickshell:power"))
 hl.bind("ALT + C", hl.dsp.global("quickshell:controlcenter-network"))
-hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd(inTerminal("sh $HOME/.config/custom_scripts/tmux_sessionizer.sh")))
+hl.bind(mainMod .. " + CTRL + W", launchApp(inTerminal("sh $HOME/.config/custom_scripts/tmux_sessionizer.sh")))
 hl.bind("ALT + W", hl.dsp.global("quickshell:wallpaper-picker"))
 hl.bind("ALT + T", hl.dsp.global("quickshell:theme-picker"))
 hl.bind(mainMod .. " + P", hl.dsp.global("quickshell:screenshot"))
@@ -40,10 +45,10 @@ hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/si
 hl.bind(mainMod .. " + V", hl.dsp.global("quickshell:clipboard"))
 
 -- Applications --------------------------------------------------------------
-hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("thunar"))
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd(browser_alt))
+hl.bind(mainMod .. " + F", launchApp("thunar"))
+hl.bind(mainMod .. " + Return", launchApp(terminal))
+hl.bind(mainMod .. " + B", launchApp(browser))
+hl.bind(mainMod .. " + CTRL + B", launchApp(browser_alt))
 hl.bind(mainMod .. " + R", hl.dsp.global("quickshell:launcher"))
 hl.bind("ALT + M", hl.dsp.global("quickshell:dashboard"))
 
@@ -118,4 +123,4 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), locked)
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl pause"), locked)
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), locked)
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), locked)
-hl.bind("XF86Calculator", hl.dsp.exec_cmd("qalculate-gtk"))
+hl.bind("XF86Calculator", launchApp("qalculate-gtk"))
