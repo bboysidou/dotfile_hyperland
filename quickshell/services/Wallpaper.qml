@@ -85,7 +85,7 @@ Singleton {
     Process {
         id: scan
 
-        command: ["find", root.imageDir, "-maxdepth", "1", "-type", "f"]
+        command: ["find", "-L", root.imageDir, "-maxdepth", "1", "-type", "f"]
 
         stdout: StdioCollector {
             onStreamFinished: root.apply(text)
