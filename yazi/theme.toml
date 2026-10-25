@@ -1,2 +1,40 @@
 [flavor]
 dark = "vscode-dark-plus"
+light = "vscode-dark-plus"
+
+[indicator]
+parent = { fg = "#D4D4D4", bg = "#3A3D41" }
+current = { fg = "#D4D4D4", bg = "#3A3D41" }
+preview = { underline = true }
+
+[icon]
+prepend_dirs = [
+    { name = ".config", text = "", fg = "#2472C8" },
+    { name = ".git", text = "", fg = "#2472C8" },
+    { name = ".github", text = "", fg = "#2472C8" },
+    { name = ".npm", text = "", fg = "#2472C8" },
+    { name = "Desktop", text = "", fg = "#2472C8" },
+    { name = "Development", text = "", fg = "#2472C8" },
+    { name = "Documents", text = "", fg = "#2472C8" },
+    { name = "Downloads", text = "", fg = "#2472C8" },
+    { name = "Library", text = "", fg = "#2472C8" },
+    { name = "Movies", text = "", fg = "#2472C8" },
+    { name = "Music", text = "", fg = "#2472C8" },
+    { name = "Pictures", text = "", fg = "#2472C8" },
+    { name = "Public", text = "", fg = "#2472C8" },
+    { name = "Videos", text = "", fg = "#2472C8" },
+]
+prepend_conds = [
+    { if = "orphan", text = "", fg = "#D4D4D4" },
+    { if = "link", text = "", fg = "#0DBC79" },
+    { if = "block", text = "", fg = "#E5E510" },
+    { if = "char", text = "", fg = "#E5E510" },
+    { if = "fifo", text = "", fg = "#E5E510" },
+    { if = "sock", text = "", fg = "#E5E510" },
+    { if = "sticky", text = "", fg = "#E5E510" },
+    { if = "dummy", text = "", fg = "#CD3131" },
+    { if = "dir & hovered", text = "", fg = "#2472C8" },
+    { if = "dir", text = "", fg = "#2472C8" },
+    { if = "exec", text = "", fg = "#0DBC79" },
+    { if = "!dir", text = "", fg = "#D4D4D4" },
+]
