@@ -29,6 +29,12 @@ HIBERNATE_DELAY="2h"
 HIBERNATE_SLEEP_CONF="/etc/systemd/sleep.conf.d/10-hibernate.conf"
 HIBERNATE_LOGIND_CONF="/etc/systemd/logind.conf.d/20-hibernate.conf"
 KIB_PER_GIB=1048576
+NM_WIFI_POWERSAVE_CONF="/etc/NetworkManager/conf.d/20-wifi-powersave.conf"
+NM_WIFI_POWERSAVE_OFF=2
+AC_ONLY_UNITS=(paccache.service plocate-updatedb.service man-db.service)
+AC_ONLY_DROPIN="10-ac-only.conf"
+INTEL_THERMALD_MIN_MODEL=42
+INTEL_LPMD_MODELS=" 151 154 170 172 183 186 189 191 204 "
 GLOBAL_USER_SERVICES=(filter-chain.service)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service systemd-oomd.service)
 
@@ -49,7 +55,7 @@ baseMirrors() {
 }
 
 basePackageList() {
-  local ucode=() boot=() shells=()
+  local ucode=() boot=() shells=() power=()
   case "${A_CPU:-none}" in
     amd) ucode=(amd-ucode) ;;
     intel) ucode=(intel-ucode) ;;
@@ -58,7 +64,22 @@ basePackageList() {
   gpuPackages
   mapfile -t boot < <(bootPackages)
   mapfile -t shells < <(shellPackages)
-  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" "${shells[@]}" | awk 'NF && !seen[$0]++'
+  mapfile -t power < <(basePowerPackages)
+  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" "${shells[@]}" "${power[@]}" | awk 'NF && !seen[$0]++'
+}
+
+basePowerPackages() {
+  [[ "${A_CPU:-none}" == intel ]] && ((D_LAPTOP)) || return 0
+  if ((D_CPU_MODEL >= INTEL_THERMALD_MIN_MODEL)); then echo thermald; fi
+  if [[ "$INTEL_LPMD_MODELS" == *" ${D_CPU_MODEL} "* ]]; then echo intel-lpmd; fi
+  return 0
+}
+
+_basePowerService() {
+  case "$1" in
+    thermald) echo thermald.service ;;
+    intel-lpmd) echo intel_lpmd.service ;;
+  esac
 }
 
 basePacstrap() {
@@ -140,6 +161,10 @@ _systemRegdom() {
 
 systemNetwork() {
   _systemRegdom
+  writeFile "${MNT}${NM_WIFI_POWERSAVE_CONF}" <<EOF
+[connection]
+wifi.powersave = ${NM_WIFI_POWERSAVE_OFF}
+EOF
   if ((D_LAPTOP)); then
     writeFile "${MNT}${SYSCTL_ARP}" <<'EOF'
 net.ipv4.conf.all.arp_ignore=1
@@ -241,10 +266,24 @@ esac
 EOF
 }
 
+systemAcOnly() {
+  local unit
+  ((D_LAPTOP)) || return 0
+  for unit in "${AC_ONLY_UNITS[@]}"; do
+    ((DRY_RUN)) || [[ -e "${MNT}/usr/lib/systemd/system/${unit}" ]] || continue
+    printf '[Unit]\nConditionACPower=true\n' | writeFile "${MNT}/etc/systemd/system/${unit}.d/${AC_ONLY_DROPIN}"
+  done
+  return 0
+}
+
 systemServices() {
+  local package
   inChroot systemctl enable "${SYSTEM_SERVICES[@]}"
   inChroot systemctl --global enable "${GLOBAL_USER_SERVICES[@]}"
   gpuEnablePowerUnits
+  for package in $(basePowerPackages); do
+    inChroot systemctl enable "$(_basePowerService "$package")"
+  done
 }
 
 systemConfigure() {
@@ -254,6 +293,7 @@ systemConfigure() {
   systemNetwork
   systemSleep
   systemHibernate
+  systemAcOnly
   systemUsers
   gpuConfigureSystem
   systemFiles

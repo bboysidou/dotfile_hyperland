@@ -11,6 +11,7 @@ NVIDIA_580XX_CODENAMES="GM|GP|GV"
 NVIDIA_LEGACY_CODENAMES="GK|GF|GT|G[0-9]"
 
 D_CPU=none
+D_CPU_MODEL=0
 D_VIRT=none
 D_UEFI=0
 D_SECURE_BOOT=0
@@ -24,6 +25,8 @@ detectCpu() {
     AuthenticAMD) D_CPU=amd ;;
     *) D_CPU=none ;;
   esac
+  D_CPU_MODEL="$(awk -F: '/^model[[:space:]]*:/ { print $2 + 0; exit }' /proc/cpuinfo)"
+  D_CPU_MODEL="${D_CPU_MODEL:-0}"
 }
 
 detectVirt() {

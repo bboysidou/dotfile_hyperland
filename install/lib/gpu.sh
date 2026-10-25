@@ -6,7 +6,10 @@ GPU_MKINITCPIO_DROPIN="/etc/mkinitcpio.conf.d/10-installer.conf"
 GPU_DEFAULT_HOOKS="base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems fsck"
 MESA_EGL_VENDOR="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
 NVIDIA_MODULES="nvidia nvidia_modeset nvidia_uvm nvidia_drm"
-NVIDIA_POWER_UNITS=(nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service)
+NVIDIA_POWER_UNITS=(nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service nvidia-suspend-then-hibernate.service)
+NVIDIA_RTD3_CODENAMES="TU"
+NVIDIA_RTD3_OPTION="options nvidia NVreg_DynamicPowerManagement=0x02"
+NVIDIA_RTD3_UDEV_RULE="/etc/udev/rules.d/80-nvidia-rtd3.rules"
 OLD_INTEL_PATTERN='HD Graphics (2|3|4)[0-9]{3}|Ironlake|Sandybridge|Ivybridge|Haswell'
 
 G_LIST=""
@@ -185,13 +188,29 @@ _gpuInitcpioHooks() {
   echo "$hooks"
 }
 
+gpuNvidiaManualRtd3() {
+  ((G_HYBRID)) && gpuNvidiaProprietary &&
+    [[ "$(_gpuEntry "$G_DGPU")" =~ NVIDIA\ Corporation\ (${NVIDIA_RTD3_CODENAMES})[0-9] ]]
+}
+
+_gpuRtd3Udev() {
+  echo 'ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", TEST=="power/control", ATTR{power/control}="auto"'
+  echo 'ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", TEST=="power/control", ATTR{power/control}="on"'
+}
+
 gpuConfigureSystem() {
   writeFile "${MNT}${GPU_MKINITCPIO_DROPIN}" <<EOF
 MODULES=($(_gpuInitcpioModules))
 HOOKS=($(_gpuInitcpioHooks))
 EOF
   if gpuNvidiaProprietary; then
-    writeFile "${MNT}${GPU_MODPROBE}" <<<"options nvidia_drm modeset=1"
+    {
+      echo "options nvidia_drm modeset=1"
+      if gpuNvidiaManualRtd3; then echo "$NVIDIA_RTD3_OPTION"; fi
+    } | writeFile "${MNT}${GPU_MODPROBE}"
+  fi
+  if gpuNvidiaManualRtd3; then
+    _gpuRtd3Udev | writeFile "${MNT}${NVIDIA_RTD3_UDEV_RULE}"
   fi
   if ((G_HYBRID)); then
     {
@@ -210,9 +229,13 @@ EOF
 }
 
 gpuEnablePowerUnits() {
-  if gpuNvidiaProprietary; then
-    inChroot systemctl enable "${NVIDIA_POWER_UNITS[@]}"
-  fi
+  local unit
+  gpuNvidiaProprietary || return 0
+  for unit in "${NVIDIA_POWER_UNITS[@]}"; do
+    if ((DRY_RUN)) || [[ -e "${MNT}/usr/lib/systemd/system/${unit}" ]]; then
+      inChroot systemctl enable "$unit"
+    fi
+  done
   return 0
 }
 
