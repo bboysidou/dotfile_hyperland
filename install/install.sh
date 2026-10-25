@@ -247,6 +247,7 @@ stageUser() {
   fi
   uiStep "Clone and link the dotfiles" userDotfiles
   uiStep --optional "Create home folders" userDirs
+  uiStep --optional "File manager bookmarks" userBookmarks
   if shellSelected fish; then
     uiStep "Fish plugins and your tide prompt" userFish
   fi

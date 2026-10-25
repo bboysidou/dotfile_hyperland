@@ -1,7 +1,6 @@
 # DO NOT EDIT! This file will be overwritten by nwg-look.
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
-include "/home/sidouxp3/.gtkrc-2.0.mine"
 gtk-theme-name="Graphite-teal-Dark"
 gtk-icon-theme-name="kora-robot"
 gtk-font-name="Adwaita Sans 11"

@@ -14,8 +14,8 @@ UV_ENV_FISH='if not contains "$HOME/.local/bin" $PATH
     set -x PATH "$HOME/.local/bin" $PATH
 end'
 YAY_FLAGS=(-S --noconfirm --needed --answerclean All --answerdiff None --answeredit None --removemake)
-DEFAULT_USER="sidouxp3"
-HARDCODED_HOME_FILES=(gtk/gtk-3.0/bookmarks gtk/.gtkrc-2.0 hypr/xdph.conf)
+GTK_BOOKMARKS=".config/gtk-3.0/bookmarks"
+BOOKMARK_DIRS=(Documents Pictures Downloads Web-development)
 SOURCE_COPY="/tmp/installer-src"
 
 userRepo() {
@@ -71,23 +71,12 @@ _userClone() {
   asUser git -C "$repo" remote set-url --push origin "$DOTFILES_PUSH_URL"
 }
 
-_userRewriteHome() {
-  local repo file
-  repo="$(userRepo)"
-  [[ "$A_USER" == "$DEFAULT_USER" ]] && return 0
-  for file in "${HARDCODED_HOME_FILES[@]}"; do
-    asUser sed -i "s|/home/${DEFAULT_USER}|/home/${A_USER}|g" "${repo}/${file}"
-  done
-  return 0
-}
-
 userDotfiles() {
   local repo
   repo="$(userRepo)"
   if ((DRY_RUN)) || [[ ! -d "${MNT}${repo}/.git" ]]; then
     _userClone
   fi
-  _userRewriteHome
   gpuConfigureUser "${MNT}${repo}"
   shellConfigureUser "${MNT}${repo}"
   inChroot chown -R "${A_USER}:${A_USER}" "$repo"
@@ -96,6 +85,11 @@ userDotfiles() {
 
 userDirs() {
   asUser xdg-user-dirs-update
+}
+
+userBookmarks() {
+  local home="/home/${A_USER}"
+  asUser bash -c 'home="$1" file="$2"; shift 2; [[ -L "$file" && ! -e "$file" ]] && rm "$file"; [[ -e "$file" ]] && exit 0; mkdir -p "$(dirname "$file")"; for dir in "$@"; do if [[ -d "${home}/${dir}" ]]; then printf "file://%s/%s %s\n" "$home" "$dir" "$dir"; fi; done >"$file"' _ "$home" "${home}/${GTK_BOOKMARKS}" "${BOOKMARK_DIRS[@]}"
 }
 
 userFish() {
