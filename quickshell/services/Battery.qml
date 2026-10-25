@@ -110,7 +110,7 @@ Singleton {
         id: poller
 
         command: ["sh", "-c", Commands.batteryInfo, "sh", root.sysfs]
-        interval: Appearance.powerPanel.batteryInfoInterval
+        interval: PowerSource.poll(Appearance.powerPanel.batteryInfoInterval)
         polling: root.sysfs !== ""
 
         onReceived: text => root.adopt(text)

@@ -30,7 +30,7 @@ Singleton {
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]
-    readonly property var suspend: ["systemctl", "suspend"]
+    readonly property var suspend: ["sh", "-c", "[ -f /etc/systemd/sleep.conf.d/10-hibernate.conf ] && exec systemctl suspend-then-hibernate; exec systemctl suspend"]
     readonly property var sleepInhibitor: ["systemd-inhibit", "--what=sleep", "--mode=delay", "--who=quickshell", "--why=Lock the screen before sleep", "sleep", "infinity"]
     readonly property var sleepMonitor: ["gdbus", "monitor", "--system", "--dest", "org.freedesktop.login1", "--object-path", "/org/freedesktop/login1"]
     readonly property string sleepSignal: "PrepareForSleep"
@@ -64,7 +64,7 @@ Singleton {
     readonly property string upowerBatteryPath: "/org/freedesktop/UPower/devices/battery_%1"
 
     readonly property string gpuReadings: '[ "$(cat "$1/power/runtime_status" 2>/dev/null)" = suspended ] && { echo suspended; exit 0; }; shift; echo active; for f; do cat "$f" 2>/dev/null || echo -; done'
-    readonly property string gpuProbe: 'for d in /sys/class/drm/card*/device; do [ -r "$d/gpu_busy_percent" ] || continue; pci=$(basename "$(readlink -f "$d")"); hw=$(ls -d "$d"/hwmon/hwmon* 2>/dev/null | head -n 1); vram=$(cat "$d/mem_info_vram_total" 2>/dev/null); state=$(cat "$d/power/runtime_status" 2>/dev/null); name=$(cat "$d/product_name" 2>/dev/null); [ -n "$name" ] || name=$(lspci -vmm -s "$pci" 2>/dev/null | sed -n "s/^Device:\t//p"); printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$d" "$hw" "$pci" "$vram" "$state" "$name"; done'
+    readonly property string gpuProbe: 'for d in /sys/class/drm/card*/device; do [ -r "$d/gpu_busy_percent" ] || continue; pci=$(basename "$(readlink -f "$d")"); hw=$(ls -d "$d"/hwmon/hwmon* 2>/dev/null | head -n 1); vram=$(cat "$d/mem_info_vram_total" 2>/dev/null); state=$(cat "$d/power/runtime_status" 2>/dev/null); name=$(cat "$d/product_name" 2>/dev/null); [ -n "$name" ] || { v=$(cut -c3- "$d/vendor" 2>/dev/null); id=$(cut -c3- "$d/device" 2>/dev/null); name=$(sed -n "/^$v  /,/^[0-9a-f]/s/^\t$id  //p" /usr/share/hwdata/pci.ids 2>/dev/null | head -n 1); }; printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$d" "$hw" "$pci" "$vram" "$state" "$name"; done'
     readonly property string cpuProcesses: "top -b -n 2 -d %1 -w 512 -o %CPU | awk '/^ *PID/ { frame++; next } frame == 2 && NF >= 12 && $12 != \"top\" && shown < %2 { shown++; name = $12; for (i = 13; i <= NF; i++) name = name \" \" $i; printf \"%s\\t%s\\t%s\\n\", $1, $9, name }'"
     readonly property string gpuProcesses: `find /proc/[0-9]*/fd -lname '/dev/dri/*' 2>/dev/null | sed 's|/fd/|/fdinfo/|' | xargs -r awk -v want="$1" '
         FNR == 1 { flush(); split(FILENAME, part, "/"); pid = part[3]; client = ""; pdev = ""; gfx = 0; vram = 0 }

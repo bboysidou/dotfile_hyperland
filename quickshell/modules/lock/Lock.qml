@@ -23,6 +23,16 @@ Scope {
         onPressed: Lock.show()
     }
 
+    GlobalShortcut {
+        appid: Ids.appid
+        name: "lid"
+
+        onPressed: {
+            if (!Lock.locked && !Quickshell.screens.some(screen => !LowPower.internal(screen.name)))
+                Lock.show();
+        }
+    }
+
     IpcHandler {
         target: "lock"
 

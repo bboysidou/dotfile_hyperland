@@ -17,7 +17,10 @@ import qs.services
 Scope {
     id: root
 
-    Component.onCompleted: LowPower.sync()
+    Component.onCompleted: {
+        LowPower.sync();
+        PowerSource.sync();
+    }
 
     GlobalShortcut {
         appid: Ids.appid

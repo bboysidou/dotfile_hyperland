@@ -96,7 +96,7 @@ MouseArea {
 
     Timer {
         interval: Appearance.bar.mediaFrameInterval
-        running: Players.playing
+        running: Players.playing && !PowerSource.onBattery
         repeat: true
 
         onTriggered: root.frameIndex = (root.frameIndex + 1) % Icons.mediaFrames.length

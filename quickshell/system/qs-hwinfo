@@ -3,7 +3,9 @@ set -eu
 
 OUT="${RUNTIME_DIRECTORY:-/run/qs-hw}"
 RAPL=/sys/class/powercap/intel-rapl:0
-INTERVAL=2
+SUPPLIES=/sys/class/power_supply
+INTERVAL_AC=2
+INTERVAL_BATTERY=6
 MICRO=1000000
 
 publish() {
@@ -28,19 +30,34 @@ dimms() {
         END { flush() }'
 }
 
+on_battery() {
+    mains=0
+    for supply in "$SUPPLIES"/*; do
+        read -r kind 2>/dev/null < "$supply/type" || continue
+        [ "$kind" = Mains ] || continue
+        read -r online 2>/dev/null < "$supply/online" || continue
+        [ "$online" = 1 ] && return 1
+        mains=1
+    done
+    [ "$mains" = 1 ]
+}
+
 umask 022
 mkdir -p "$OUT"
 publish dimms.tsv "$(dimms)"
 
 [ -r "$RAPL/energy_uj" ] || exit 0
 
-range=$(cat "$RAPL/max_energy_range_uj")
-prev=$(cat "$RAPL/energy_uj")
+read -r range < "$RAPL/max_energy_range_uj"
+read -r prev < "$RAPL/energy_uj"
 
-while sleep "$INTERVAL"; do
-    now=$(cat "$RAPL/energy_uj")
+while :; do
+    step=$INTERVAL_AC
+    if on_battery; then step=$INTERVAL_BATTERY; fi
+    sleep "$step"
+    read -r now < "$RAPL/energy_uj"
     delta=$((now - prev))
     [ "$delta" -lt 0 ] && delta=$((delta + range))
     prev=$now
-    publish cpu_power $(((delta / INTERVAL + MICRO / 2) / MICRO))
+    publish cpu_power $(((delta / step + MICRO / 2) / MICRO))
 done

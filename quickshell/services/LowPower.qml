@@ -21,10 +21,13 @@ Singleton {
 
     readonly property var config: Appearance.lowPower
     readonly property bool low: Battery.discharging && Battery.percent > 0 && Battery.percent <= root.config.autoPercent
+    readonly property bool decorated: root.enabled || UPower.onBattery
 
     function sync(): void {
         if (PowerProfiles.profile === PowerProfile.PowerSaver)
             root.setEnabled(true);
+        else if (UPower.onBattery)
+            root.decorate();
     }
 
     function toggle(): void {
@@ -101,7 +104,8 @@ Singleton {
 
     function script(): string {
         const panels = Displays.monitors.filter(monitor => !monitor.settings.disabled && root.internal(monitor.name));
-        return [root.config.hyprScript].concat(panels.map(monitor => root.slowed(monitor)).filter(line => line !== "")).join("\n");
+        const base = root.enabled ? root.config.hyprScript : Appearance.powerSource.batteryScript;
+        return [base].concat(panels.map(monitor => root.slowed(monitor)).filter(line => line !== "")).join("\n");
     }
 
     onLowChanged: {
@@ -151,8 +155,19 @@ Singleton {
         target: Hyprland
 
         function onRawEvent(event): void {
-            if (event.name === root.config.reloadEvent && root.enabled && !reloader.running)
+            if (event.name === root.config.reloadEvent && root.decorated)
                 root.decorate();
+        }
+    }
+
+    Connections {
+        target: UPower
+
+        function onOnBatteryChanged(): void {
+            if (UPower.onBattery)
+                root.decorate();
+            else if (!root.enabled)
+                reloader.running = true;
         }
     }
 

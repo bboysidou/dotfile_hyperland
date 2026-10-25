@@ -108,7 +108,7 @@ Singleton {
     }
 
     Timer {
-        interval: root.active ? Appearance.hardware.activePollInterval : Appearance.hardware.idlePollInterval
+        interval: root.active ? Appearance.hardware.activePollInterval : PowerSource.poll(Appearance.hardware.idlePollInterval)
         running: true
         repeat: true
         triggeredOnStart: true
