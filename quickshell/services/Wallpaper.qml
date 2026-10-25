@@ -62,6 +62,13 @@ Singleton {
             root.set(root.paths[0]);
     }
 
+    function discard(): void {
+        root.missing = true;
+        root.committed = "";
+        root.current = "";
+        root.fallback();
+    }
+
     function refresh(): void {
         scan.running = true;
     }
@@ -85,6 +92,17 @@ Singleton {
         }
     }
 
+    Process {
+        id: verify
+
+        command: ["test", "-f", root.committed]
+
+        onExited: code => {
+            if (code !== 0)
+                root.discard();
+        }
+    }
+
     FileView {
         id: state
 
@@ -100,6 +118,7 @@ Singleton {
             if (value) {
                 root.committed = value;
                 root.current = value;
+                verify.running = true;
             }
         }
 
