@@ -6,7 +6,7 @@ Singleton {
     readonly property var appScope: ["systemd-run", "--user", "--scope", "--collect", "--quiet", "--slice=app.slice", "--"]
     readonly property var mouseSettings: ["solaar"]
     readonly property var updates: ({
-            program: ["yay", "-Syu"],
+            program: ["sh", "-c", "exec \"$HOME/.config/custom_scripts/sys_update.sh\""],
             title: "updates",
             hold: true
         })
