@@ -10,8 +10,13 @@ WHEEL_SUDOERS="/etc/sudoers.d/10-wheel"
 I2C_MODULES_LOAD="/etc/modules-load.d/i2c-dev.conf"
 PAM_LOGIN="/etc/pam.d/login"
 PAM_PASSWD="/etc/pam.d/passwd"
+ZSWAP_TMPFILES="/etc/tmpfiles.d/zswap-off.conf"
+SYSCTL_LOCAL="/etc/sysctl.d/90-local.conf"
+OOMD_CONF="/etc/systemd/oomd.conf.d/10-local.conf"
+OOMD_APP_SLICE="/etc/systemd/user/app.slice.d/10-oomd.conf"
+USER_STOP_TIMEOUT="/etc/systemd/user.conf.d/10-stop-timeout.conf"
 GLOBAL_USER_SERVICES=(filter-chain.service)
-SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service)
+SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service systemd-oomd.service)
 
 baseLivePacman() {
   run sed -i -E \
@@ -82,6 +87,30 @@ zram-size = ram
 compression-algorithm = zstd
 swap-priority = 100
 fs-type = swap
+EOF
+  writeFile "${MNT}${ZSWAP_TMPFILES}" <<<"w! /sys/module/zswap/parameters/enabled - - - - N"
+  writeFile "${MNT}${SYSCTL_LOCAL}" <<'EOF'
+vm.swappiness=150
+vm.vfs_cache_pressure=50
+vm.page-cluster=0
+vm.watermark_boost_factor=0
+vm.watermark_scale_factor=125
+vm.dirty_background_bytes=67108864
+vm.dirty_bytes=268435456
+vm.dirty_writeback_centisecs=1500
+EOF
+  writeFile "${MNT}${OOMD_CONF}" <<'EOF'
+[OOM]
+DefaultMemoryPressureLimit=50%
+DefaultMemoryPressureDurationSec=20s
+EOF
+  writeFile "${MNT}${OOMD_APP_SLICE}" <<'EOF'
+[Slice]
+ManagedOOMMemoryPressure=kill
+EOF
+  writeFile "${MNT}${USER_STOP_TIMEOUT}" <<'EOF'
+[Manager]
+DefaultTimeoutStopSec=10s
 EOF
   run sed -i -E 's/^#?MAKEFLAGS=.*/MAKEFLAGS="-j$(nproc)"/' "${MNT}/etc/makepkg.conf"
 }
