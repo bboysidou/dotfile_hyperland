@@ -4,6 +4,10 @@ AUR_PREFIX="aur:"
 SOLAAR_UDEV_RULE="/etc/udev/rules.d/99-solaar.rules"
 FAIL2BAN_JAIL="/etc/fail2ban/jail.local"
 UFW_CONF="/etc/ufw/ufw.conf"
+DOCKER_ROOTLESS_PACKAGE="docker-rootless-extras"
+DOCKER_ROOTLESS_SOCKET="docker.socket"
+DOCKER_ROOTLESS_CONTEXT="rootless"
+DEFAULT_UID=1000
 
 B_PKGS=()
 B_AUR=()
@@ -102,15 +106,43 @@ EOF
   return 0
 }
 
+bundleDockerRootless() {
+  packageWanted docker docker && [[ "${A_DOCKER_MODE:-rootless}" == rootless ]]
+}
+
+bundleAurPackages() {
+  if bundleDockerRootless; then
+    echo "$DOCKER_ROOTLESS_PACKAGE"
+  fi
+  return 0
+}
+
+_bundleDockerSystem() {
+  packageWanted docker docker || return 0
+  case "${A_DOCKER_MODE:-rootless}" in
+    rootless) return 0 ;;
+    group)
+      inChroot usermod -aG docker "$A_USER"
+      inChroot systemctl enable docker.service
+      ;;
+    *) inChroot systemctl enable docker.service ;;
+  esac
+}
+
+_bundleDockerUser() {
+  local uid
+  uid="$(arch-chroot "$MNT" id -u "$A_USER" 2>/dev/null || echo "$DEFAULT_UID")"
+  inChroot systemctl --global enable "$DOCKER_ROOTLESS_SOCKET"
+  asUser docker context create "$DOCKER_ROOTLESS_CONTEXT" --docker "host=unix:///run/user/${uid}/docker.sock"
+  asUser docker context use "$DOCKER_ROOTLESS_CONTEXT"
+}
+
 bundleSecurityLsm() {
   packageWanted security apparmor
 }
 
 bundleSystemHooks() {
-  if packageWanted docker docker; then
-    inChroot usermod -aG docker "$A_USER"
-    inChroot systemctl enable docker.service
-  fi
+  _bundleDockerSystem
   if packageWanted android android-udev; then
     inChroot usermod -aG adbusers "$A_USER"
   fi
@@ -128,11 +160,17 @@ bundleUserHooks() {
   if bundleSelected browsers; then
     uiStep --optional "Browser hardware acceleration flags" asUser bash "${repo}/install/browsers.sh"
   fi
+  if bundleDockerRootless; then
+    uiStep "Rootless Docker socket and CLI context" _bundleDockerUser
+  fi
   return 0
 }
 
 bundleUserStepCount() {
-  if bundleSelected browsers; then echo 1; else echo 0; fi
+  local count=0
+  if bundleSelected browsers; then count=$((count + 1)); fi
+  if bundleDockerRootless; then count=$((count + 1)); fi
+  echo "$count"
 }
 
 bundleNotes() {

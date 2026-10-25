@@ -19,6 +19,16 @@ SYSCTL_ARP="/etc/sysctl.d/90-arp.conf"
 WIRELESS_REGDOM_CONF="/etc/conf.d/wireless-regdom"
 ZONE_TAB="/usr/share/zoneinfo/zone.tab"
 LAPTOP_MASKED_SERVICES=(NetworkManager-wait-online.service)
+LOGIND_CONF="/etc/systemd/logind.conf.d/10-local.conf"
+GVFS_SLEEP_HOOK="/usr/lib/systemd/system-sleep/gvfs-fuse"
+FAILLOCK_CONF="/etc/security/faillock.conf"
+FAILLOCK_DENY=10
+FAILLOCK_UNLOCK_SECONDS=120
+HIBERNATE_SWAPFILE="/swap/swapfile"
+HIBERNATE_DELAY="2h"
+HIBERNATE_SLEEP_CONF="/etc/systemd/sleep.conf.d/10-hibernate.conf"
+HIBERNATE_LOGIND_CONF="/etc/systemd/logind.conf.d/20-hibernate.conf"
+KIB_PER_GIB=1048576
 GLOBAL_USER_SERVICES=(filter-chain.service)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service systemd-oomd.service)
 
@@ -184,6 +194,51 @@ EOF
   run install -Dm644 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"
   run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-battery-perms" "${MNT}/usr/local/bin/qs-battery-perms"
   run install -Dm644 "${INSTALLER_DIR}/quickshell/system/99-qs-battery.rules" "${MNT}/etc/udev/rules.d/99-qs-battery.rules"
+  run sed -i -E \
+    -e "s/^#? *deny *=.*/deny = ${FAILLOCK_DENY}/" \
+    -e "s/^#? *unlock_time *=.*/unlock_time = ${FAILLOCK_UNLOCK_SECONDS}/" \
+    "${MNT}${FAILLOCK_CONF}"
+}
+
+_systemRamGib() {
+  awk -v kib="$KIB_PER_GIB" '/^MemTotal:/ { print int(($2 + kib - 1) / kib) }' /proc/meminfo
+}
+
+systemHibernate() {
+  [[ "${A_HIBERNATE:-no}" == yes ]] || return 0
+  inChroot btrfs filesystem mkswapfile --size "$(_systemRamGib)g" --uuid clear "$HIBERNATE_SWAPFILE"
+  inChroot sh -c 'grep -qF "$1" /etc/fstab || printf "%s\n" "$1" >>/etc/fstab' _ "${HIBERNATE_SWAPFILE} none swap defaults,pri=0 0 0"
+  writeFile "${MNT}${HIBERNATE_SLEEP_CONF}" <<EOF
+[Sleep]
+HibernateDelaySec=${HIBERNATE_DELAY}
+EOF
+  writeFile "${MNT}${HIBERNATE_LOGIND_CONF}" <<'EOF'
+[Login]
+HandleLidSwitch=suspend-then-hibernate
+EOF
+}
+
+systemSleep() {
+  writeFile "${MNT}${LOGIND_CONF}" <<'EOF'
+[Login]
+InhibitDelayMaxSec=15
+HandlePowerKey=ignore
+EOF
+  writeFile "${MNT}${GVFS_SLEEP_HOOK}" 755 <<'EOF'
+#!/bin/sh
+case "$1" in
+  pre)
+    findmnt -rn -t fuse.gvfsd-fuse -o TARGET | while read -r target; do
+      umount -l "$target"
+    done
+    ;;
+  post)
+    for user in $(loginctl list-users --no-legend | awk '{print $2}'); do
+      systemctl --user -M "${user}@" --no-block restart gvfs-daemon.service
+    done &
+    ;;
+esac
+EOF
 }
 
 systemServices() {
@@ -197,6 +252,8 @@ systemConfigure() {
   systemHost
   systemTuning
   systemNetwork
+  systemSleep
+  systemHibernate
   systemUsers
   gpuConfigureSystem
   systemFiles

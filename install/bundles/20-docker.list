@@ -1,5 +1,5 @@
 #: title=Docker
-#: description=Docker engine + compose, your user in the docker group
+#: description=Docker engine + compose (rootless by default)
 #: default=on
 docker
 docker-compose

@@ -11,6 +11,7 @@ MIN_ROOT_MIB=40960
 BTRFS_OPTS="noatime,compress=zstd:3,space_cache=v2,discard=async"
 ESP_MOUNT_OPTS="fmask=0077,dmask=0077"
 BTRFS_SUBVOLS=("@:" "@home:home" "@log:var/log" "@pkg:var/cache/pacman/pkg" "@docker:var/lib/docker" "@tmp:tmp")
+BTRFS_SWAP_SUBVOL="@swap:swap"
 PROBE_DIR="/tmp/installer-probe"
 
 OS_PROBER_OUT=""
@@ -263,12 +264,19 @@ diskApplyAlongside() {
   saveLayout
 }
 
+diskSubvolumes() {
+  printf '%s\n' "${BTRFS_SUBVOLS[@]}"
+  if [[ "${A_HIBERNATE:-no}" == yes ]]; then
+    echo "$BTRFS_SWAP_SUBVOL"
+  fi
+}
+
 diskCreateSubvolumes() {
   local entry
   run mount "$L_ROOT" "$MNT"
-  for entry in "${BTRFS_SUBVOLS[@]}"; do
+  while read -r entry; do
     run btrfs subvolume create "${MNT}/${entry%%:*}"
-  done
+  done < <(diskSubvolumes)
   run umount "$MNT"
 }
 
@@ -277,12 +285,12 @@ diskMount() {
   if mountpoint -q "$MNT"; then
     return 0
   fi
-  for entry in "${BTRFS_SUBVOLS[@]}"; do
+  while read -r entry; do
     name="${entry%%:*}"
     target="${MNT}/${entry#*:}"
     run mkdir -p "$target"
     run mount -o "${BTRFS_OPTS},subvol=${name}" "$L_ROOT" "$target"
-  done
+  done < <(diskSubvolumes)
   if [[ -n "$L_XBOOT" ]]; then
     run mkdir -p "${MNT}/boot" "${MNT}/efi"
     run mount -o "$ESP_MOUNT_OPTS" "$L_XBOOT" "${MNT}/boot"

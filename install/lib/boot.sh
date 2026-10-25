@@ -2,6 +2,7 @@
 
 VERBOSE_CMDLINE="loglevel=7 systemd.show_status=1"
 LSM_CMDLINE="lsm=landlock,lockdown,yama,integrity,apparmor,bpf"
+S2IDLE_HIBERNATE_CMDLINE="rtc_cmos.use_acpi_alarm=1"
 SDBOOT_TIMEOUT=3
 GRUB_TIMEOUT_SECONDS=5
 GRUB_DEFAULTS="/etc/default/grub"
@@ -68,8 +69,15 @@ bootSnapper() {
 }
 
 bootExtraCmdline() {
+  local extra=()
   if bundleSecurityLsm; then
-    echo "$LSM_CMDLINE"
+    extra+=("$LSM_CMDLINE")
+  fi
+  if [[ "${A_HIBERNATE:-no}" == yes ]] && ((D_S2IDLE)); then
+    extra+=("$S2IDLE_HIBERNATE_CMDLINE")
+  fi
+  if ((${#extra[@]})); then
+    echo "${extra[*]}"
   fi
   return 0
 }

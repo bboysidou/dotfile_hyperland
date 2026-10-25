@@ -17,6 +17,8 @@ YAY_FLAGS=(-S --noconfirm --needed --answerclean All --answerdiff None --answere
 GTK_BOOKMARKS=".config/gtk-3.0/bookmarks"
 BOOKMARK_DIRS=(Documents Pictures Downloads Web-development)
 SOURCE_COPY="/tmp/installer-src"
+QS_IDLE_DROPIN="systemd/user/quickshell.service.d/idle.conf"
+QS_IDLE_ENV="QS_IDLE"
 
 userRepo() {
   echo "/home/${A_USER}/.dotfiles"
@@ -47,7 +49,7 @@ userAur() {
   local packages=()
   bundleCollect
   gpuPackages
-  mapfile -t packages < <(bootAurPackages)
+  mapfile -t packages < <(bootAurPackages; bundleAurPackages)
   packages+=("${B_AUR[@]}" "${G_AUR[@]}")
   if ((${#packages[@]} == 0)); then
     echo "no AUR packages selected"
@@ -71,6 +73,14 @@ _userClone() {
   asUser git -C "$repo" remote set-url --push origin "$DOTFILES_PUSH_URL"
 }
 
+_userIdleConfig() {
+  [[ "${A_IDLE:-no}" == yes ]] || return 0
+  writeFile "$1/${QS_IDLE_DROPIN}" <<EOF
+[Service]
+Environment=${QS_IDLE_ENV}=1
+EOF
+}
+
 userDotfiles() {
   local repo
   repo="$(userRepo)"
@@ -79,6 +89,7 @@ userDotfiles() {
   fi
   gpuConfigureUser "${MNT}${repo}"
   shellConfigureUser "${MNT}${repo}"
+  _userIdleConfig "${MNT}${repo}"
   inChroot chown -R "${A_USER}:${A_USER}" "$repo"
   asUser bash "${repo}/install/link.sh" --yes
 }

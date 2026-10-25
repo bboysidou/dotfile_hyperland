@@ -262,13 +262,14 @@ _summaryRows() {
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
     "Bootloader=${A_BOOT}$([[ "$A_LIMINE_SCAN" == yes ]] && echo " + limine-scan")$([[ "$A_SNAPPER" == yes ]] && echo " + snapper")" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
     "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
+    "System=docker ${A_DOCKER_MODE} · idle ${A_IDLE} · hibernate ${A_HIBERNATE}" \
     "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS} · keybind ${A_DEFAULT_TERMINAL}"
 }
 
 _changeMenu() {
   local section
   uiChoose section "Change what?" "Hostname and user|identity" "Timezone, locale, keymap|locale" \
-    "Disk and layout|disk" "Bootloader|boot" "Bundles|bundles" \
+    "Disk and layout|disk" "Bootloader|boot" "Bundles|bundles" "Docker, idle, hibernation|system" \
     "Shells and terminals|shells" "CPU / GPU drivers|hardware"
   PRESEED=0
   case "$section" in
@@ -280,7 +281,11 @@ _changeMenu() {
       askBoot
       ;;
     boot) askBoot ;;
-    bundles) askBundles ;;
+    bundles)
+      askBundles
+      askSystem
+      ;;
+    system) askSystem ;;
     shells) askShells ;;
     hardware) _changeHardware ;;
   esac
@@ -323,6 +328,45 @@ reviewAndConfirm() {
   done
 }
 
+_askDocker() {
+  A_DOCKER_MODE="${A_DOCKER_MODE:-rootless}"
+  bundleSelected docker || return 0
+  _preseeded A_DOCKER_MODE && return 0
+  uiChoose A_DOCKER_MODE "Docker mode" \
+    "Rootless: the daemon runs as your user, a container escape stays your user (recommended)|rootless" \
+    "Rootful: system daemon, used with sudo docker|sudo" \
+    "Rootful + docker group: no sudo, but the group is equivalent to root|group"
+}
+
+_askIdle() {
+  local default=no
+  _preseeded A_IDLE && return 0
+  if ((D_LAPTOP)); then default=yes; fi
+  if uiConfirm "Lock and turn off the screen when idle (lock at 5 min, screen off at 5.5 min, suspend at 15 min on battery)?" "$default"; then
+    A_IDLE=yes
+  else
+    A_IDLE=no
+  fi
+}
+
+_askHibernate() {
+  A_HIBERNATE="${A_HIBERNATE:-no}"
+  ((D_LAPTOP)) || return 0
+  _preseeded A_HIBERNATE && return 0
+  uiInfo "Hibernation writes RAM to a swapfile the size of RAM and powers off. A suspended laptop hibernates after ${HIBERNATE_DELAY} and stops draining the battery."
+  if uiConfirm "Set up hibernation?" no; then
+    A_HIBERNATE=yes
+  else
+    A_HIBERNATE=no
+  fi
+}
+
+askSystem() {
+  _askDocker
+  _askIdle
+  _askHibernate
+}
+
 askEverything() {
   askIdentity
   askLocale
@@ -330,6 +374,7 @@ askEverything() {
   askMode
   askBoot
   askBundles
+  askSystem
   askShells
   askHardware
   reviewAndConfirm

@@ -4,6 +4,7 @@ EFIVARS_DIR="/sys/firmware/efi/efivars"
 SECURE_BOOT_VAR="${EFIVARS_DIR}/SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c"
 SECURE_BOOT_VALUE_OFFSET=4
 POWER_SUPPLY_DIR="/sys/class/power_supply"
+MEM_SLEEP="/sys/power/mem_sleep"
 
 NVIDIA_OPEN_CODENAMES="TU|GA|AD|GB|GH"
 NVIDIA_580XX_CODENAMES="GM|GP|GV"
@@ -15,6 +16,7 @@ D_UEFI=0
 D_SECURE_BOOT=0
 D_NVIDIA=none
 D_LAPTOP=0
+D_S2IDLE=0
 
 detectCpu() {
   case "$(grep -m1 '^vendor_id' /proc/cpuinfo | awk '{print $3}')" in
@@ -33,6 +35,10 @@ detectLaptop() {
   D_LAPTOP=0
   if compgen -G "${POWER_SUPPLY_DIR}/BAT*" >/dev/null; then
     D_LAPTOP=1
+  fi
+  D_S2IDLE=0
+  if grep -qF '[s2idle]' "$MEM_SLEEP" 2>/dev/null; then
+    D_S2IDLE=1
   fi
 }
 
