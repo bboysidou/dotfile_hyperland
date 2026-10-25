@@ -20,7 +20,9 @@ LIMINE_DEFAULTS="/etc/default/limine"
 LIMINE_SCAN_PACKAGE="limine-entry-tool"
 LIMINE_SNAPPER_PACKAGE="limine-snapper-sync"
 SNAPPER_CONFIG="root"
-SNAPPER_UNITS=(snapper-timeline.timer snapper-cleanup.timer limine-snapper-sync.service)
+SNAPPER_UNITS=(snapper-cleanup.timer limine-snapper-sync.service)
+SNAPPER_RETENTION=(NUMBER_LIMIT=5 NUMBER_LIMIT_IMPORTANT=5 NUMBER_MIN_AGE=0 TIMELINE_CREATE=no)
+LIMINE_MAX_SNAPSHOT_ENTRIES=6
 WINDOWS_LOADER="EFI/Microsoft/Boot/bootmgfw.efi"
 EDK2_SHELL_SRC="/usr/share/edk2-shell/x64/Shell.efi"
 OS_PROBE_DIR="/mnt/osprobe"
@@ -61,8 +63,8 @@ bootSnapper() {
   if ((DRY_RUN)) || ! arch-chroot "$MNT" snapper --no-dbus list-configs 2>/dev/null | grep -qw "$SNAPPER_CONFIG"; then
     inChroot snapper --no-dbus -c "$SNAPPER_CONFIG" create-config /
   fi
+  inChroot snapper --no-dbus -c "$SNAPPER_CONFIG" set-config "${SNAPPER_RETENTION[@]}"
   inChroot systemctl enable "${SNAPPER_UNITS[@]}"
-  inChroot pacman -S --noconfirm --needed snap-pac
 }
 
 bootExtraCmdline() {
@@ -290,11 +292,15 @@ _limineNvram() {
 }
 
 _limineScanDefaults() {
-  local esp="$1"
+  local esp="$1" snapshots=""
   [[ "${A_LIMINE_SCAN:-no}" == yes ]] || bootSnapperSelected || return 0
+  if bootSnapperSelected; then
+    snapshots="MAX_SNAPSHOT_ENTRIES=${LIMINE_MAX_SNAPSHOT_ENTRIES}"
+  fi
   writeFile "${MNT}${LIMINE_DEFAULTS}" <<EOF
 ESP_PATH=${esp}
 ENABLE_VERIFICATION=no
+${snapshots}
 EOF
 }
 
@@ -330,7 +336,7 @@ bootNotes() {
     echo "'efi /shellx64.efi' and 'options -nointerrupt -nomap -noversion <alias>:EFI\\Microsoft\\Boot\\Bootmgfw.efi'."
   fi
   if bootSnapperSelected; then
-    echo "Snapper: every pacman transaction now takes a snapshot (snap-pac), and limine-snapper-sync lists them under Arch Linux > Snapshots in the Limine menu."
+    echo "Snapper: sys_update.sh (the bar's update button) takes a snapshot before each update, and limine-snapper-sync lists them under Arch Linux > Snapshots in the Limine menu."
   fi
   if [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]; then
     echo "Limine: run 'sudo limine-scan' after the first boot to add other EFI boot entries to the menu."

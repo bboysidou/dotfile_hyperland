@@ -114,7 +114,7 @@ _askSnapper() {
     uiInfo "Snapshot boot entries need the kernels on the same partition as limine.conf; this layout keeps them on a separate /boot, so snapper with limine-snapper-sync is not offered."
     return 0
   fi
-  uiInfo "Snapper takes btrfs snapshots on every pacman transaction (snap-pac), and limine-snapper-sync adds them to the Limine menu. limine-snapper-sync is built from the AUR with GraalVM: a large download and a slow compile."
+  uiInfo "Snapper takes a btrfs snapshot before each sys_update.sh run (5 kept), and limine-snapper-sync adds them to the Limine menu. limine-snapper-sync is built from the AUR with GraalVM: a large download and a slow compile."
   if uiConfirm "Add snapper with snapshot boot entries?" no; then
     A_SNAPPER=yes
   else

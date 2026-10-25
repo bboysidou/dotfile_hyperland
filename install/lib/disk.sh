@@ -10,7 +10,7 @@ ESP_MIN_FREE_MIB=500
 MIN_ROOT_MIB=40960
 BTRFS_OPTS="noatime,compress=zstd:3,space_cache=v2,discard=async"
 ESP_MOUNT_OPTS="fmask=0077,dmask=0077"
-BTRFS_SUBVOLS=("@:" "@home:home" "@var:var" "@tmp:tmp")
+BTRFS_SUBVOLS=("@:" "@home:home" "@log:var/log" "@pkg:var/cache/pacman/pkg" "@docker:var/lib/docker" "@tmp:tmp")
 PROBE_DIR="/tmp/installer-probe"
 
 OS_PROBER_OUT=""
