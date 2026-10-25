@@ -364,73 +364,79 @@ Panel {
 
     }
 
-    ColumnLayout {
+    PanelBody {
+        visible: !root.listing
+
         anchors.top: header.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.topMargin: Appearance.control.paneSpacing
 
-        visible: !root.listing
-        spacing: Appearance.speedTest.dialSpacing
+        ColumnLayout {
+            Layout.fillWidth: true
 
-        StyledText {
-            Layout.alignment: Qt.AlignHCenter
+            spacing: Appearance.speedTest.dialSpacing
 
-            text: root.speedStatus
-            color: SpeedTest.error !== "" ? Colours.critical : Colours.textMuted
-            font.pixelSize: Appearance.font.size.small
-        }
+            StyledText {
+                Layout.alignment: Qt.AlignHCenter
 
-        PillButton {
-            id: trigger
-
-            readonly property bool fresh: SpeedTest.phase === SpeedPhase.idle && SpeedTest.error === ""
-
-            Layout.alignment: Qt.AlignHCenter
-
-            accent: !SpeedTest.running
-            glyph: SpeedTest.running ? Icons.close : (trigger.fresh ? Icons.play : Icons.refresh)
-            label: {
-                const config = Appearance.speedTest;
-                if (SpeedTest.running)
-                    return config.labelStop;
-                return trigger.fresh ? config.labelStart : config.labelAgain;
+                text: root.speedStatus
+                color: SpeedTest.error !== "" ? Colours.critical : Colours.textMuted
+                font.pixelSize: Appearance.font.size.small
             }
 
-            onTriggered: {
-                if (SpeedTest.running)
-                    SpeedTest.stop();
-                else
-                    SpeedTest.start();
+            PillButton {
+                id: trigger
+
+                readonly property bool fresh: SpeedTest.phase === SpeedPhase.idle && SpeedTest.error === ""
+
+                Layout.alignment: Qt.AlignHCenter
+
+                accent: !SpeedTest.running
+                glyph: SpeedTest.running ? Icons.close : (trigger.fresh ? Icons.play : Icons.refresh)
+                label: {
+                    const config = Appearance.speedTest;
+                    if (SpeedTest.running)
+                        return config.labelStop;
+                    return trigger.fresh ? config.labelStart : config.labelAgain;
+                }
+
+                onTriggered: {
+                    if (SpeedTest.running)
+                        SpeedTest.stop();
+                    else
+                        SpeedTest.start();
+                }
             }
-        }
 
-        SpeedDial {
-            Layout.alignment: Qt.AlignHCenter
+            SpeedDial {
+                Layout.alignment: Qt.AlignHCenter
 
-            value: SpeedTest.download
-            accent: Colours.audioStream
-            hueShift: Appearance.speedTest.downloadHueShift
-            glyph: Icons.download
-            live: SpeedTest.phase === SpeedPhase.down
-        }
+                value: SpeedTest.download
+                accent: Colours.audioStream
+                hueShift: Appearance.speedTest.downloadHueShift
+                glyph: Icons.download
+                live: SpeedTest.phase === SpeedPhase.down
+            }
 
-        SpeedDial {
-            Layout.alignment: Qt.AlignHCenter
+            SpeedDial {
+                Layout.alignment: Qt.AlignHCenter
 
-            value: SpeedTest.upload
-            accent: Colours.audioInput
-            hueShift: Appearance.speedTest.uploadHueShift
-            glyph: Icons.upload
-            live: SpeedTest.phase === SpeedPhase.up
-        }
+                value: SpeedTest.upload
+                accent: Colours.audioInput
+                hueShift: Appearance.speedTest.uploadHueShift
+                glyph: Icons.upload
+                live: SpeedTest.phase === SpeedPhase.up
+            }
 
-        SpeedResult {
-            visible: opacity > 0
-            opacity: SpeedTest.phase === SpeedPhase.done ? 1 : 0
+            SpeedResult {
+                visible: opacity > 0
+                opacity: SpeedTest.phase === SpeedPhase.done ? 1 : 0
 
-            Behavior on opacity {
-                Anim {}
+                Behavior on opacity {
+                    Anim {}
+                }
             }
         }
     }
