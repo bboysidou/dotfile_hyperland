@@ -4,6 +4,7 @@ import Quickshell
 
 Singleton {
     readonly property int bytesPerKb: 1024
+    readonly property int bitsPerKilo: 1000
     readonly property int bytesPerGb: 1073741824
     readonly property int kbPerGb: 1048576
     readonly property int msPerMinute: 60000

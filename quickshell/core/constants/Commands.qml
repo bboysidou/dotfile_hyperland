@@ -27,6 +27,7 @@ Singleton {
         })
     readonly property var calendar: ["zen-browser", "https://calendar.google.com"]
     readonly property var networkEditor: ["nm-connection-editor"]
+    readonly property var speedTest: ["sh", "-c", "exec \"$HOME/.config/custom_scripts/net_speedtest.sh\" \"$@\"", "net_speedtest"]
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]

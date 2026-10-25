@@ -25,6 +25,32 @@ Panel {
 
     readonly property var orbiting: Net.networks.slice(0, Appearance.orbit.maxNodes)
 
+    readonly property var tabs: [
+        {
+            key: NetworkSection.networks,
+            label: Appearance.speedTest.labelNetworks
+        },
+        {
+            key: NetworkSection.speedTest,
+            label: Appearance.speedTest.labelSpeedTest
+        }
+    ]
+    readonly property bool listing: ControlState.networkSection === NetworkSection.networks
+    readonly property bool testing: root.revealed && ControlState.networkSection === NetworkSection.speedTest
+
+    readonly property string speedStatus: {
+        const config = Appearance.speedTest;
+        if (SpeedTest.error !== "")
+            return SpeedTest.error;
+        if (SpeedTest.phase === SpeedPhase.down)
+            return config.labelMeasuring.arg(config.labelDownload.toLowerCase());
+        if (SpeedTest.phase === SpeedPhase.up)
+            return config.labelMeasuring.arg(config.labelUpload.toLowerCase());
+        if (SpeedTest.phase === SpeedPhase.done)
+            return config.labelSource;
+        return config.labelIdle;
+    }
+
     readonly property var connectionDetails: {
         const rows = [];
 
@@ -157,6 +183,21 @@ Panel {
             root.dismiss();
     }
 
+    Keys.onPressed: event => {
+        const sections = Nav.horizontal(event);
+        if (sections === 0 || root.promptName !== "")
+            return;
+
+        const values = NetworkSection.values;
+        ControlState.networkSection = values[Num.wrap(values.indexOf(ControlState.networkSection), sections, values.length)];
+        event.accepted = true;
+    }
+
+    onTestingChanged: {
+        if (!root.testing)
+            SpeedTest.stop();
+    }
+
     Connections {
         target: Net
 
@@ -188,7 +229,7 @@ Panel {
     Binding {
         target: Net
         property: "scanning"
-        value: ControlState.opened && ControlState.section === ControlSection.network
+        value: ControlState.opened && ControlState.section === ControlSection.network && root.listing
     }
 
     ColumnLayout {
@@ -206,6 +247,7 @@ Panel {
 
             control: Component {
                 IconButton {
+                    visible: root.listing
                     icon: Icons.refresh
                     size: Appearance.control.scanIconSize
                     disabled: !Net.wifiEnabled || Net.wifiDevice === null
@@ -224,8 +266,20 @@ Panel {
             }
         }
 
+        SegmentBar {
+            Layout.fillWidth: true
+
+            current: ControlState.networkSection
+            accent: Colours.network
+            options: root.tabs
+
+            onSelected: key => ControlState.networkSection = key
+        }
+
         OrbitStage {
             id: stage
+
+            visible: root.listing
 
             Layout.fillWidth: true
             Layout.preferredHeight: Appearance.orbit.stageHeight
@@ -310,8 +364,81 @@ Panel {
 
     }
 
+    ColumnLayout {
+        anchors.top: header.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.topMargin: Appearance.control.paneSpacing
+
+        visible: !root.listing
+        spacing: Appearance.speedTest.dialSpacing
+
+        StyledText {
+            Layout.alignment: Qt.AlignHCenter
+
+            text: root.speedStatus
+            color: SpeedTest.error !== "" ? Colours.critical : Colours.textMuted
+            font.pixelSize: Appearance.font.size.small
+        }
+
+        PillButton {
+            id: trigger
+
+            readonly property bool fresh: SpeedTest.phase === SpeedPhase.idle && SpeedTest.error === ""
+
+            Layout.alignment: Qt.AlignHCenter
+
+            accent: !SpeedTest.running
+            glyph: SpeedTest.running ? Icons.close : (trigger.fresh ? Icons.play : Icons.refresh)
+            label: {
+                const config = Appearance.speedTest;
+                if (SpeedTest.running)
+                    return config.labelStop;
+                return trigger.fresh ? config.labelStart : config.labelAgain;
+            }
+
+            onTriggered: {
+                if (SpeedTest.running)
+                    SpeedTest.stop();
+                else
+                    SpeedTest.start();
+            }
+        }
+
+        SpeedDial {
+            Layout.alignment: Qt.AlignHCenter
+
+            value: SpeedTest.download
+            accent: Colours.audioStream
+            hueShift: Appearance.speedTest.downloadHueShift
+            glyph: Icons.download
+            live: SpeedTest.phase === SpeedPhase.down
+        }
+
+        SpeedDial {
+            Layout.alignment: Qt.AlignHCenter
+
+            value: SpeedTest.upload
+            accent: Colours.audioInput
+            hueShift: Appearance.speedTest.uploadHueShift
+            glyph: Icons.upload
+            live: SpeedTest.phase === SpeedPhase.up
+        }
+
+        SpeedResult {
+            visible: opacity > 0
+            opacity: SpeedTest.phase === SpeedPhase.done ? 1 : 0
+
+            Behavior on opacity {
+                Anim {}
+            }
+        }
+    }
+
     PanelBody {
         id: body
+
+        visible: root.listing
 
         anchors.top: header.bottom
         anchors.left: parent.left

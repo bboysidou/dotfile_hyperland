@@ -10,6 +10,7 @@ Singleton {
     property string section: ControlSection.network
     property string audioSection: AudioSection.outputs
     property string powerSection: PowerSection.overview
+    property string networkSection: NetworkSection.networks
 
     function show(target: string): void {
         root.section = target;

@@ -81,6 +81,26 @@ Singleton {
         return `${value.toFixed(unit === 0 ? 0 : 1)} ${units[unit]}`;
     }
 
+    function bitrate(mbps: real, decimals: int): var {
+        const units = Appearance.speedTest.units;
+        const value = Math.max(0, mbps);
+
+        if (value > 0 && value < 1)
+            return {
+                value: (value * Units.bitsPerKilo).toFixed(0),
+                unit: units[0]
+            };
+        if (value >= Units.bitsPerKilo)
+            return {
+                value: (value / Units.bitsPerKilo).toFixed(decimals),
+                unit: units[2]
+            };
+        return {
+            value: value.toFixed(decimals),
+            unit: units[1]
+        };
+    }
+
     function age(fromMs: real, now: date): string {
         const minutes = Math.floor((now.getTime() - fromMs) / Units.msPerMinute);
 

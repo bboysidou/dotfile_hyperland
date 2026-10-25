@@ -145,29 +145,13 @@ Item {
             }
         }
 
-        Item {
-            id: submerged
+        StyledText {
+            anchors.centerIn: liquid
 
-            anchors.left: liquid.left
-            anchors.right: liquid.right
-            anchors.bottom: liquid.bottom
-
-            readonly property real amplitude: root.ratio < Appearance.audioPanel.orbFullRatio ? Appearance.audioPanel.orbWaveAmplitude * Math.sin(root.ratio * Math.PI) : 0
-            readonly property real centreOffset: 0.375 * amplitude * (Math.sin(liquid.phase) - Math.cos(liquid.phase))
-
-            height: Num.clamp(liquid.height * root.ratio - centreOffset, 0, liquid.height)
-            visible: root.ratio > 0
-            clip: true
-
-            StyledText {
-                x: (liquid.width - width) / 2
-                y: (liquid.height - height) / 2 - (liquid.height - submerged.height)
-
-                text: root.readout
-                color: Colours.surface
-                font.pixelSize: Appearance.audioPanel.orbReadoutSize
-                font.weight: Appearance.font.weightActive
-            }
+            text: root.readout
+            color: Colours.textBright
+            font.pixelSize: Appearance.audioPanel.orbReadoutSize
+            font.weight: Appearance.font.weightActive
         }
 
         MouseArea {

@@ -92,6 +92,10 @@ Singleton {
         return Qt.hsla(c.hslHue, c.hslSaturation, Math.min(1, c.hslLightness * factor), c.a);
     }
 
+    function hueShift(c: color, delta: real): color {
+        return Qt.hsla((c.hslHue + delta + 1) % 1, c.hslSaturation, c.hslLightness, c.a);
+    }
+
     function paletteFor(name: string): var {
         const sources = {
             [ThemeName.monochrome]: Themes.monochrome,

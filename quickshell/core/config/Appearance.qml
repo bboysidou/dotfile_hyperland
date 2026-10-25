@@ -55,4 +55,5 @@ Singleton {
     readonly property OrbitConfig orbit: OrbitConfig {}
     readonly property KeybindsConfig keybinds: KeybindsConfig {}
     readonly property ClipboardConfig clipboard: ClipboardConfig {}
+    readonly property SpeedTestConfig speedTest: SpeedTestConfig {}
 }
