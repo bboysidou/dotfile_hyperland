@@ -15,12 +15,17 @@ SYSCTL_LOCAL="/etc/sysctl.d/90-local.conf"
 OOMD_CONF="/etc/systemd/oomd.conf.d/10-local.conf"
 OOMD_APP_SLICE="/etc/systemd/user/app.slice.d/10-oomd.conf"
 USER_STOP_TIMEOUT="/etc/systemd/user.conf.d/10-stop-timeout.conf"
+SYSCTL_ARP="/etc/sysctl.d/90-arp.conf"
+WIRELESS_REGDOM_CONF="/etc/conf.d/wireless-regdom"
+ZONE_TAB="/usr/share/zoneinfo/zone.tab"
+LAPTOP_MASKED_SERVICES=(NetworkManager-wait-online.service)
 GLOBAL_USER_SERVICES=(filter-chain.service)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service systemd-oomd.service)
 
 baseLivePacman() {
   run sed -i -E \
     -e 's/^#Color$/Color/' \
+    -e 's/^#VerbosePkgLists$/VerbosePkgLists/' \
     -e "s/^#?ParallelDownloads.*/ParallelDownloads = ${PARALLEL_DOWNLOADS}/" \
     "$LIVE_PACMAN_CONF"
   if ! grep -q '^\[multilib\]' "$LIVE_PACMAN_CONF"; then
@@ -115,6 +120,27 @@ EOF
   run sed -i -E 's/^#?MAKEFLAGS=.*/MAKEFLAGS="-j$(nproc)"/' "${MNT}/etc/makepkg.conf"
 }
 
+_systemRegdom() {
+  local country
+  country="$(awk -v tz="$A_TZ" '$3 == tz { print $1 }' "$ZONE_TAB")"
+  if [[ -n "$country" ]]; then
+    run sed -i "s/^#WIRELESS_REGDOM=\"${country}\"/WIRELESS_REGDOM=\"${country}\"/" "${MNT}${WIRELESS_REGDOM_CONF}"
+  fi
+}
+
+systemNetwork() {
+  _systemRegdom
+  if ((D_LAPTOP)); then
+    writeFile "${MNT}${SYSCTL_ARP}" <<'EOF'
+net.ipv4.conf.all.arp_ignore=1
+net.ipv4.conf.default.arp_ignore=1
+net.ipv4.conf.all.arp_announce=2
+net.ipv4.conf.default.arp_announce=2
+EOF
+    inChroot systemctl mask "${LAPTOP_MASKED_SERVICES[@]}"
+  fi
+}
+
 _systemSetPasswords() {
   if ((DRY_RUN)); then
     echo "  [dry-run] chpasswd for ${A_USER} and root (passwords via stdin)"
@@ -170,6 +196,7 @@ systemConfigure() {
   systemLocale
   systemHost
   systemTuning
+  systemNetwork
   systemUsers
   gpuConfigureSystem
   systemFiles

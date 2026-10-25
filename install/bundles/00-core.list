@@ -19,6 +19,7 @@ power-profiles-daemon
 networkmanager
 nm-connection-editor
 iw
+wireless-regdb
 htop
 btop
 nvtop
