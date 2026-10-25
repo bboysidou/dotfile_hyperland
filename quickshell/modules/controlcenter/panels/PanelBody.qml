@@ -6,6 +6,7 @@ Flickable {
     id: root
 
     default property alias content: layout.data
+    property alias spacing: layout.spacing
 
     contentHeight: layout.implicitHeight
     clip: true

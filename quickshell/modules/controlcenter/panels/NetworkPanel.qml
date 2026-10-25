@@ -373,70 +373,66 @@ Panel {
         anchors.bottom: parent.bottom
         anchors.topMargin: Appearance.control.paneSpacing
 
-        ColumnLayout {
-            Layout.fillWidth: true
+        spacing: Appearance.speedTest.dialSpacing
 
-            spacing: Appearance.speedTest.dialSpacing
+        StyledText {
+            Layout.alignment: Qt.AlignHCenter
 
-            StyledText {
-                Layout.alignment: Qt.AlignHCenter
+            text: root.speedStatus
+            color: SpeedTest.error !== "" ? Colours.critical : Colours.textMuted
+            font.pixelSize: Appearance.font.size.small
+        }
 
-                text: root.speedStatus
-                color: SpeedTest.error !== "" ? Colours.critical : Colours.textMuted
-                font.pixelSize: Appearance.font.size.small
+        PillButton {
+            id: trigger
+
+            readonly property bool fresh: SpeedTest.phase === SpeedPhase.idle && SpeedTest.error === ""
+
+            Layout.alignment: Qt.AlignHCenter
+
+            accent: !SpeedTest.running
+            glyph: SpeedTest.running ? Icons.close : (trigger.fresh ? Icons.play : Icons.refresh)
+            label: {
+                const config = Appearance.speedTest;
+                if (SpeedTest.running)
+                    return config.labelStop;
+                return trigger.fresh ? config.labelStart : config.labelAgain;
             }
 
-            PillButton {
-                id: trigger
-
-                readonly property bool fresh: SpeedTest.phase === SpeedPhase.idle && SpeedTest.error === ""
-
-                Layout.alignment: Qt.AlignHCenter
-
-                accent: !SpeedTest.running
-                glyph: SpeedTest.running ? Icons.close : (trigger.fresh ? Icons.play : Icons.refresh)
-                label: {
-                    const config = Appearance.speedTest;
-                    if (SpeedTest.running)
-                        return config.labelStop;
-                    return trigger.fresh ? config.labelStart : config.labelAgain;
-                }
-
-                onTriggered: {
-                    if (SpeedTest.running)
-                        SpeedTest.stop();
-                    else
-                        SpeedTest.start();
-                }
+            onTriggered: {
+                if (SpeedTest.running)
+                    SpeedTest.stop();
+                else
+                    SpeedTest.start();
             }
+        }
 
-            SpeedDial {
-                Layout.alignment: Qt.AlignHCenter
+        SpeedDial {
+            Layout.alignment: Qt.AlignHCenter
 
-                value: SpeedTest.download
-                accent: Colours.audioStream
-                hueShift: Appearance.speedTest.downloadHueShift
-                glyph: Icons.download
-                live: SpeedTest.phase === SpeedPhase.down
-            }
+            value: SpeedTest.download
+            accent: Colours.audioStream
+            hueShift: Appearance.speedTest.downloadHueShift
+            glyph: Icons.download
+            live: SpeedTest.phase === SpeedPhase.down
+        }
 
-            SpeedDial {
-                Layout.alignment: Qt.AlignHCenter
+        SpeedDial {
+            Layout.alignment: Qt.AlignHCenter
 
-                value: SpeedTest.upload
-                accent: Colours.audioInput
-                hueShift: Appearance.speedTest.uploadHueShift
-                glyph: Icons.upload
-                live: SpeedTest.phase === SpeedPhase.up
-            }
+            value: SpeedTest.upload
+            accent: Colours.audioInput
+            hueShift: Appearance.speedTest.uploadHueShift
+            glyph: Icons.upload
+            live: SpeedTest.phase === SpeedPhase.up
+        }
 
-            SpeedResult {
-                visible: opacity > 0
-                opacity: SpeedTest.phase === SpeedPhase.done ? 1 : 0
+        SpeedResult {
+            visible: opacity > 0
+            opacity: SpeedTest.phase === SpeedPhase.done ? 1 : 0
 
-                Behavior on opacity {
-                    Anim {}
-                }
+            Behavior on opacity {
+                Anim {}
             }
         }
     }
