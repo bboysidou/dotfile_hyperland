@@ -3,6 +3,7 @@ hypr                                ~/.config/hypr
 quickshell                          ~/.config/quickshell
 systemd/user/quickshell.service     ~/.config/systemd/user/quickshell.service
 systemd/user/quickshell.service.d   ~/.config/systemd/user/quickshell.service.d
+systemd/user/tmux.service           ~/.config/systemd/user/tmux.service
 nvim                                ~/.config/nvim
 kitty                               ~/.config/kitty
 tmux                                ~/.config/tmux

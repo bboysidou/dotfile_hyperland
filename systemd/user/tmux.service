@@ -1,0 +1,8 @@
+[Unit]
+Description=tmux server
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tmux -D
+ExecStop=/usr/bin/tmux kill-server
+Restart=on-failure
