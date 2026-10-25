@@ -3,5 +3,5 @@ deps = []
 
 [[flavor.deps]]
 use = "956MB/vscode-dark-plus"
-rev = "113cc48"
-hash = "d4dc43eadf8e39d7948f58ba5f88e53b"
+rev = "e9f118a"
+hash = "e317dae3ab774e6e2cb69a6e181a810f"
