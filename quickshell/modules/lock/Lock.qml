@@ -46,6 +46,12 @@ Scope {
         }
     }
 
+    SleepGuard {
+        secure: session.secure
+    }
+
+    IdleGuard {}
+
     WlSessionLock {
         id: session
 

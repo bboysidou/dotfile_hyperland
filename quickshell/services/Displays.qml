@@ -224,6 +224,10 @@ Singleton {
         root.evaluate(root.config.dpmsTemplate.arg(name).arg(on ? "on" : "off"));
     }
 
+    function setAllDpms(on: bool): void {
+        root.evaluate(root.monitors.map(monitor => root.config.dpmsTemplate.arg(monitor.name).arg(on ? "on" : "off")).join("\n"));
+    }
+
     function evaluate(code: string): void {
         evaluator.command = Commands.hyprEval.concat([code]);
         evaluator.running = true;

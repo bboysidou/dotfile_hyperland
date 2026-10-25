@@ -31,6 +31,10 @@ Singleton {
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]
     readonly property var suspend: ["systemctl", "suspend"]
+    readonly property var sleepInhibitor: ["systemd-inhibit", "--what=sleep", "--mode=delay", "--who=quickshell", "--why=Lock the screen before sleep", "sleep", "infinity"]
+    readonly property var sleepMonitor: ["gdbus", "monitor", "--system", "--dest", "org.freedesktop.login1", "--object-path", "/org/freedesktop/login1"]
+    readonly property string sleepSignal: "PrepareForSleep"
+    readonly property string sleepStarting: "(true"
     readonly property var uptime: ["cat", "/proc/uptime"]
     readonly property var monitorsQuery: ["hyprctl", "monitors", "all", "-j"]
     readonly property var workspacesQuery: ["hyprctl", "workspaces", "-j"]
