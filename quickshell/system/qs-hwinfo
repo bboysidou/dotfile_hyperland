@@ -65,7 +65,7 @@ delta_of() {
 read -r range < "$RAPL/max_energy_range_uj"
 read -r prev < "$RAPL/energy_uj"
 
-UNCORE=$(uncore_zone)
+UNCORE=$(uncore_zone || true)
 if [ -n "$UNCORE" ]; then
     read -r gpu_range < "$UNCORE/max_energy_range_uj"
     read -r gpu_prev < "$UNCORE/energy_uj"
