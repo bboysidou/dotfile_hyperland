@@ -7,6 +7,7 @@ SUPPLIES=/sys/class/power_supply
 INTERVAL_AC=2
 INTERVAL_BATTERY=6
 MICRO=1000000
+TENTH_WATT=100000
 
 publish() {
     printf '%s\n' "$2" > "$OUT/$1.tmp"
@@ -46,18 +47,41 @@ umask 022
 mkdir -p "$OUT"
 publish dimms.tsv "$(dimms)"
 
+uncore_zone() {
+    for zone in "$RAPL"/intel-rapl:0:*; do
+        read -r name 2>/dev/null < "$zone/name" || continue
+        [ "$name" = uncore ] && { echo "$zone"; return; }
+    done
+}
+
+delta_of() {
+    delta=$(($2 - $1))
+    [ "$delta" -lt 0 ] && delta=$((delta + $3))
+    echo "$delta"
+}
+
 [ -r "$RAPL/energy_uj" ] || exit 0
 
 read -r range < "$RAPL/max_energy_range_uj"
 read -r prev < "$RAPL/energy_uj"
+
+UNCORE=$(uncore_zone)
+if [ -n "$UNCORE" ]; then
+    read -r gpu_range < "$UNCORE/max_energy_range_uj"
+    read -r gpu_prev < "$UNCORE/energy_uj"
+fi
 
 while :; do
     step=$INTERVAL_AC
     if on_battery; then step=$INTERVAL_BATTERY; fi
     sleep "$step"
     read -r now < "$RAPL/energy_uj"
-    delta=$((now - prev))
-    [ "$delta" -lt 0 ] && delta=$((delta + range))
+    delta=$(delta_of "$prev" "$now" "$range")
     prev=$now
     publish cpu_power $(((delta / step + MICRO / 2) / MICRO))
+    [ -n "$UNCORE" ] || continue
+    read -r gpu_now < "$UNCORE/energy_uj"
+    delta=$(delta_of "$gpu_prev" "$gpu_now" "$gpu_range")
+    gpu_prev=$gpu_now
+    publish gpu_power $(((delta / step + TENTH_WATT / 2) / TENTH_WATT * TENTH_WATT))
 done

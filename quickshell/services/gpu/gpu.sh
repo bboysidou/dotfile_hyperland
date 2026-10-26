@@ -3,6 +3,7 @@ set -u
 
 SYS="${QS_GPU_SYSFS:-/sys}"
 PROC="${QS_GPU_PROCFS:-/proc}"
+HWINFO="${QS_GPU_HWINFO:-/run/qs-hw}"
 PCI_IDS=/usr/share/hwdata/pci.ids
 MIB=1048576
 MICRO=1000000
@@ -64,14 +65,17 @@ probe() {
         vendor=$(cat "$dev/vendor" 2>/dev/null)
         state=$(state_of "$dev")
         vram=""
+        name=""
         case "$driver" in
             amdgpu)
                 vram=$(cat "$dev/mem_info_vram_total" 2>/dev/null)
                 ;;
             nvidia)
                 if [ "$state" != suspended ] && has_smi; then
-                    mib=$(nvidia-smi -i "${dev##*/}" --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null | head -n 1 | tr -d ' ')
+                    info=$(nvidia-smi -i "${dev##*/}" --query-gpu=memory.total,name --format=csv,noheader,nounits 2>/dev/null | head -n 1)
+                    mib=$(printf '%s' "${info%%,*}" | tr -d ' ')
                     case "$mib" in *[!0-9]* | "") ;; *) vram=$((mib * MIB)) ;; esac
+                    case "$info" in *,*) name=$(printf '%s' "${info#*,}" | sed 's/^ *//; s/^NVIDIA //') ;; esac
                 fi
                 ;;
             i915 | xe | nouveau | radeon) ;;
@@ -79,7 +83,7 @@ probe() {
             *) continue ;;
         esac
         hwmon=$(ls -d "$dev"/hwmon/hwmon* 2>/dev/null | head -n 1)
-        name=$(cat "$dev/product_name" 2>/dev/null)
+        [ -n "$name" ] || name=$(cat "$dev/product_name" 2>/dev/null)
         [ -n "$name" ] || name=$(pci_name "$dev")
         printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$dev" "$hwmon" "${dev##*/}" "$vram" "$state" "$name" "${driver:-none}" "$(missing_for "$driver")" "$(discrete_of "$driver" "${dev##*/}")"
     done
@@ -161,7 +165,7 @@ intel_clock() {
 
 hwmon_readings() {
     first_value "$1" temp1_input temp2_input
-    first_value "$1" power1_input
+    if [ -n "${2:-}" ]; then first_value "$HWINFO" "$2"; else first_value "$1" power1_input; fi
     first_value "$1" power1_average
     first_value "$1" power1_cap power1_max
     first_value "$1" pwm1
@@ -196,9 +200,15 @@ read_card() {
         i915 | xe)
             scan=$(fdinfo_scan "$pci")
             echo -
-            if intel_integrated "$pci"; then echo -; else printf '%s' "$scan" | local_vram; fi
-            echo -
-            hwmon_readings "$hwmon"
+            if intel_integrated "$pci"; then
+                echo -
+                echo -
+                hwmon_readings "$hwmon" gpu_power
+            else
+                printf '%s' "$scan" | local_vram
+                echo -
+                hwmon_readings "$hwmon"
+            fi
             intel_clock "$dev"
             printf '%s' "$scan" | counters
             first_value "$hwmon" energy1_input
