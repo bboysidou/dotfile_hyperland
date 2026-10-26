@@ -12,6 +12,7 @@ RowLayout {
 
     ColumnLayout {
         Layout.preferredWidth: Appearance.prayer.listWidth
+        Layout.fillWidth: true
         Layout.fillHeight: true
 
         spacing: Appearance.dash.spacing
@@ -28,6 +29,7 @@ RowLayout {
 
     ColumnLayout {
         Layout.preferredWidth: Appearance.prayer.placeWidth
+        Layout.fillWidth: true
         Layout.fillHeight: true
 
         spacing: Appearance.dash.spacing

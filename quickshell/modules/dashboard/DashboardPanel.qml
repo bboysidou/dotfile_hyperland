@@ -18,10 +18,11 @@ RevealCard {
     id: root
 
     readonly property Item pane: repeater.count > DashState.index ? repeater.itemAt(DashState.index) : null
-    readonly property real paneWidth: root.pane?.implicitWidth ?? 0
+    readonly property real minPaneWidth: repeater.count > 0 ? repeater.itemAt(DashState.sections.indexOf(DashSection.dash))?.implicitWidth ?? 0 : 0
+    readonly property real paneWidth: root.pane?.width ?? 0
     readonly property real paneHeight: root.pane?.implicitHeight ?? 0
 
-    implicitWidth: root.paneWidth + Appearance.dash.padding * 2
+    implicitWidth: Math.max(root.paneWidth, tabs.implicitWidth || 0) + Appearance.dash.padding * 2
     implicitHeight: (tabs.implicitHeight || 0) + root.paneHeight + Appearance.dash.padding * 3
 
     color: Colours.bar
@@ -170,7 +171,9 @@ RevealCard {
                     DelegateChoice {
                         roleValue: DashSection.performance
 
-                        delegate: PerfPane {}
+                        delegate: PerfPane {
+                            width: Math.max(implicitWidth, root.minPaneWidth)
+                        }
                     }
                     DelegateChoice {
                         roleValue: DashSection.media
@@ -183,6 +186,7 @@ RevealCard {
                         roleValue: DashSection.prayers
 
                         delegate: PrayerPane {
+                            width: Math.max(implicitWidth, root.minPaneWidth)
                             onFocusRequested: DashState.pinned = true
                             onFocusReleased: root.forceActiveFocus()
                         }

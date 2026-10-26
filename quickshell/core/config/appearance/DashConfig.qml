@@ -94,7 +94,7 @@ QtObject {
     readonly property int sourceChipPaddingH: 12
     readonly property int sourceChipRounding: 14
 
-    readonly property int netRateWidth: 78
+    readonly property int netRateWidth: 104
     readonly property int perfCardMinWidth: 210
     readonly property int perfHeroRingSize: 104
     readonly property int perfHeroValueSize: 24
