@@ -24,13 +24,10 @@ Item {
 
         height: Appearance.dash.mediaTabHeight
 
-        EmptyState {
+        RowLayout {
             anchors.centerIn: parent
 
-            accent: root.accent
-            glyph: Icons.mediaTab
-            title: Appearance.dash.emptyTitle
-            subtitle: Appearance.dash.emptySubtitle
+            spacing: Appearance.dash.spacing * 2
             opacity: Players.available ? 0 : 1
             visible: opacity > 0
 
@@ -38,6 +35,21 @@ Item {
                 Anim {
                     type: AnimType.defaultEffects
                 }
+            }
+
+            Vinyl {
+                Layout.alignment: Qt.AlignVCenter
+
+                active: false
+                accent: root.accent
+            }
+
+            EmptyState {
+                Layout.alignment: Qt.AlignVCenter
+
+                glyph: ""
+                title: Appearance.dash.emptyTitle
+                subtitle: Appearance.dash.emptySubtitle
             }
         }
 

@@ -28,10 +28,10 @@ Card {
             Layout.alignment: Qt.AlignHCenter
 
             active: root.active
+            accent: Colours.tabDash
 
             coverSize: Appearance.dash.vinylSizeSmall
             magnitude: Appearance.dash.visualiserMagnitudeSmall
-            labelSize: Appearance.dash.vinylLabelSizeSmall
         }
 
         Marquee {
@@ -53,12 +53,16 @@ Card {
             font.pixelSize: Appearance.dash.cardLabelSize
         }
 
-        Meter {
+        Slider {
             Layout.fillWidth: true
             Layout.topMargin: Appearance.dash.cardSpacing
 
             value: Players.progress
-            fillColour: Colours.media
+            thickness: Appearance.slider.largeThickness
+            fillColour: Colours.tabDash
+            enabled: Players.canSeek
+
+            onMoved: value => Players.seek(value)
         }
 
         RowLayout {

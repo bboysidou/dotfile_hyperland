@@ -19,6 +19,7 @@ ColumnLayout {
     Icon {
         Layout.alignment: Qt.AlignHCenter
 
+        visible: root.glyph !== ""
         text: root.glyph
         color: root.accent
         font.pixelSize: root.glyphSize

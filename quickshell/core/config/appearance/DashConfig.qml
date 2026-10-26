@@ -79,9 +79,11 @@ QtObject {
     readonly property int vinylSize: 168
     readonly property int vinylSizeSmall: 96
     readonly property int visualiserMagnitudeSmall: 20
-    readonly property int vinylLabelSizeSmall: 26
     readonly property int vinylSpinDuration: 12000
-    readonly property int vinylLabelSize: 44
+    readonly property real vinylDiscRatio: 0.95
+    readonly property real vinylLabelRatio: 0.35
+    readonly property real vinylLabelX: 0.5095
+    readonly property real vinylLabelY: 0.512
     readonly property int visualiserGap: 9
     readonly property int visualiserMagnitude: 30
     readonly property int visualiserMinBar: 3

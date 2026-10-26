@@ -3,6 +3,7 @@ import Quickshell.Widgets
 import qs.core.components
 import qs.core.config
 import qs.core.enums
+import qs.core.helpers
 import qs.services
 
 Item {
@@ -13,9 +14,10 @@ Item {
 
     property int coverSize: Appearance.dash.vinylSize
     property real magnitude: Appearance.dash.visualiserMagnitude
-    property int labelSize: Appearance.dash.vinylLabelSize
 
     readonly property real ringRadius: root.coverSize / 2 + Appearance.dash.visualiserGap
+    readonly property real discSize: root.coverSize / Appearance.dash.vinylDiscRatio
+    readonly property real labelSize: root.discSize * Appearance.dash.vinylLabelRatio
 
     implicitWidth: (root.ringRadius + Appearance.dash.visualiserMinBar + root.magnitude) * 2
     implicitHeight: root.implicitWidth
@@ -29,41 +31,53 @@ Item {
         colour: root.accent
     }
 
-    ClippingRectangle {
+    Item {
         id: cover
 
         anchors.centerIn: parent
 
         width: root.coverSize
         height: root.coverSize
-        radius: width / 2
-        color: Colours.trough
-
-        Icon {
-            anchors.centerIn: parent
-
-            text: Icons.album
-            color: Colours.textMuted
-            font.pixelSize: root.labelSize
-            visible: art.status !== Image.Ready
-        }
 
         Image {
-            id: art
+            x: cover.width / 2 - root.discSize * Appearance.dash.vinylLabelX
+            y: cover.height / 2 - root.discSize * Appearance.dash.vinylLabelY
+            width: root.discSize
+            height: root.discSize
 
-            anchors.fill: parent
-
-            source: Players.artUrl
-            fillMode: Image.PreserveAspectCrop
+            source: Paths.vinyl
+            fillMode: Image.PreserveAspectFit
             asynchronous: true
-            sourceSize.width: root.coverSize * 2
-            sourceSize.height: root.coverSize * 2
-            opacity: art.status === Image.Ready ? 1 : 0
+            mipmap: true
+            sourceSize.width: root.discSize * 2
+            sourceSize.height: root.discSize * 2
+        }
+
+        ClippingRectangle {
+            anchors.centerIn: parent
+
+            width: root.labelSize
+            height: root.labelSize
+            radius: width / 2
+            color: "transparent"
+            opacity: Players.available && art.status === Image.Ready ? 1 : 0
 
             Behavior on opacity {
                 Anim {
                     type: AnimType.defaultEffects
                 }
+            }
+
+            Image {
+                id: art
+
+                anchors.fill: parent
+
+                source: Players.artUrl
+                fillMode: Image.PreserveAspectCrop
+                asynchronous: true
+                sourceSize.width: root.labelSize * 2
+                sourceSize.height: root.labelSize * 2
             }
         }
 
