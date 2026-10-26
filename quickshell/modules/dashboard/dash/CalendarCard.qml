@@ -72,13 +72,12 @@ Card {
 
             spacing: Appearance.dash.calendarNavSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: Qt.formatDateTime(root.anchorDate, Appearance.dash.calendarMonthFormat)
                 color: Colours.textBright
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
             IconButton {

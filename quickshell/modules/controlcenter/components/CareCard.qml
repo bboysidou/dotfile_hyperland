@@ -58,21 +58,19 @@ DetailCard {
 
             spacing: 0
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.config.labelHold
                 color: Colours.text
-                elide: Text.ElideRight
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.config.detailHold
                 color: Colours.textMuted
                 font.pixelSize: root.config.detailSize
-                elide: Text.ElideRight
             }
         }
 

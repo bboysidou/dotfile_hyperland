@@ -221,13 +221,12 @@ Panel {
                 font.pixelSize: Appearance.card.iconSize
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
 
                 text: Appearance.notif.labelSound
                 color: Colours.text
-                elide: Text.ElideRight
             }
 
             Toggle {

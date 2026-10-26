@@ -122,14 +122,13 @@ StyledRect {
                 color: Colours.textBright
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.group.appName
                 color: Colours.textBright
                 font.pixelSize: Appearance.notifPanel.cardNameSize
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
             StyledRect {

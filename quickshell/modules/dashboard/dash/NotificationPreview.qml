@@ -12,13 +12,12 @@ RowLayout {
 
     spacing: Appearance.dash.cardSpacing
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         text: Str.oneLine(root.entry.summary)
         color: root.entry.critical ? Colours.urgencyCritical : root.entry.read ? Colours.text : Colours.textBright
         font.pixelSize: Appearance.dash.cardLabelSize
-        elide: Text.ElideRight
     }
 
     StyledText {

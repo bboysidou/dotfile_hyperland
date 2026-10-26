@@ -112,24 +112,22 @@ StyledRect {
 
                 spacing: 0
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: stat.modelData.label
                     color: Colours.textMuted
                     font.pixelSize: root.config.statLabelSize
                     font.letterSpacing: root.config.statLetterSpacing
-                    elide: Text.ElideRight
                 }
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: stat.modelData.value
                     color: Colours.textBright
                     font.pixelSize: root.essential ? root.config.statValueSizeLarge : root.config.statValueSize
                     font.family: Appearance.font.family.mono
-                    elide: Text.ElideRight
                 }
             }
         }

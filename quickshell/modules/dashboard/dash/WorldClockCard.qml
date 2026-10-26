@@ -45,12 +45,11 @@ Card {
 
                 spacing: Appearance.dash.cardSpacing
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: row.zone?.label ?? ""
                     color: Colours.text
-                    elide: Text.ElideRight
                 }
 
                 StyledText {

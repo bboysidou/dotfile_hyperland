@@ -121,12 +121,11 @@ RevealCard {
             visible: Displays.monitors.length > 0
             spacing: root.config.buttonSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: Displays.confirming ? root.config.keepTemplate.arg(Displays.countdown) : DisplayState.monitor + (DisplayState.current ? `  ·  ${DisplayState.current.description}` : "")
                 color: Displays.confirming ? Colours.warning : Colours.textMuted
-                elide: Text.ElideRight
             }
 
             PillButton {

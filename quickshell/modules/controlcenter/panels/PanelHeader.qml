@@ -28,12 +28,11 @@ StyledRect {
             color: Colours.textBright
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.title
             color: Colours.textBright
-            elide: Text.ElideRight
         }
 
         Loader {

@@ -149,16 +149,15 @@ StyledRect {
 
                 spacing: Appearance.card.textSpacing
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: root.title
                     color: root.onCard
                     font.pixelSize: Appearance.card.nameSize
-                    elide: Text.ElideRight
                 }
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     visible: root.detail !== ""
@@ -166,7 +165,6 @@ StyledRect {
                     color: root.onCardMuted
                     font.pixelSize: Appearance.card.detailSize
                     font.weight: Appearance.font.weightIcon
-                    elide: Text.ElideMiddle
                 }
             }
 
@@ -252,14 +250,13 @@ StyledRect {
                         font.weight: Appearance.font.weightIcon
                     }
 
-                    StyledText {
+                    ScrollText {
                         Layout.fillWidth: true
 
                         text: entry.modelData.value
                         color: root.onCard
                         font.pixelSize: Appearance.card.detailSize
                         font.family: Appearance.font.family.mono
-                        elide: Text.ElideRight
                     }
                 }
             }

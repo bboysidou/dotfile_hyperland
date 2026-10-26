@@ -37,13 +37,12 @@ Card {
 
             spacing: Appearance.dash.cardSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: Prayer.place.country ? `${Prayer.place.city}, ${Prayer.place.country}` : Prayer.place.city
                 color: Colours.textBright
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
             StyledText {
@@ -151,13 +150,12 @@ Card {
                 onTriggered: Geo.detect()
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: Geo.detecting ? Appearance.prayer.labelDetecting : Appearance.prayer.labelDetect
                 color: Colours.textMuted
                 font.pixelSize: Appearance.dash.cardLabelSize
-                elide: Text.ElideRight
             }
 
             IconButton {

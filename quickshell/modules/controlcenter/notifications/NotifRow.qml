@@ -45,13 +45,12 @@ StyledRect {
 
             spacing: Appearance.notif.rowSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: Str.oneLine(root.entry.summary)
                 color: root.entry.critical ? Colours.urgencyCritical : root.entry.read ? Colours.text : Colours.textBright
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
             StyledText {

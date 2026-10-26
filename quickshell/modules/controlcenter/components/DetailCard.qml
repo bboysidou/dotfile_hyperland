@@ -39,14 +39,13 @@ StyledRect {
                 font.pixelSize: root.config.iconSize
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.title
                 color: Colours.textMuted
                 font.pixelSize: root.config.titleSize
                 font.letterSpacing: root.config.titleLetterSpacing
-                elide: Text.ElideRight
             }
 
             RowLayout {

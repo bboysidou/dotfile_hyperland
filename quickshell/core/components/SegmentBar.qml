@@ -138,7 +138,7 @@ Item {
                         }
                     }
 
-                    StyledText {
+                    ScrollText {
                         anchors.fill: parent
                         anchors.leftMargin: Appearance.segment.padding
                         anchors.rightMargin: Appearance.segment.padding
@@ -149,7 +149,6 @@ Item {
                         color: segment.active ? Colours.surface : Colours.textMuted
                         font.pixelSize: Appearance.segment.fontSize
                         font.weight: segment.active ? Appearance.font.weightActive : Appearance.font.weightNormal
-                        elide: Text.ElideRight
 
                         Behavior on color {
                             CAnim {}

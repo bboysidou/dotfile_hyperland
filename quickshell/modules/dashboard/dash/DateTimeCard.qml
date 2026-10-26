@@ -62,14 +62,13 @@ Card {
                 }
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.user
                 color: Colours.textBright
                 font.pixelSize: Appearance.dash.userNameSize
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
         }
 
@@ -80,21 +79,19 @@ Card {
             font.weight: Appearance.font.weightActive
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: Qt.formatDateTime(Time.now, Appearance.dash.dateDayFormat)
             color: Colours.accent
-            elide: Text.ElideRight
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: Qt.formatDateTime(Time.now, Appearance.dash.dateRestFormat)
             color: Colours.textMuted
             font.pixelSize: Appearance.dash.cardLabelSize
-            elide: Text.ElideRight
         }
     }
 }

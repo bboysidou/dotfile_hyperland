@@ -36,12 +36,11 @@ RowLayout {
         color: Colours.text
     }
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         text: root.value
         color: root.valueColour
         font.family: Appearance.font.family.mono
-        elide: Text.ElideRight
     }
 }

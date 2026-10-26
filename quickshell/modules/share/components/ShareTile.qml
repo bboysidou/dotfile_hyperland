@@ -78,13 +78,12 @@ StyledRect {
                 source: root.entry.icon
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.entry.title
                 color: root.selected ? Colours.textBright : Colours.text
                 font.pixelSize: Appearance.share.bodySize
-                elide: Text.ElideRight
             }
 
             StyledText {

@@ -65,15 +65,14 @@ StyledRect {
 
             spacing: Appearance.spacing.none
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.entry.name
                 color: root.selected ? Colours.textBright : Colours.text
-                elide: Text.ElideRight
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 visible: root.subtitle !== ""
@@ -81,7 +80,6 @@ StyledRect {
                 color: Colours.textMuted
                 opacity: Appearance.launcher.subtitleOpacity
                 font.pixelSize: Appearance.font.size.small
-                elide: Text.ElideRight
             }
         }
     }

@@ -16,14 +16,13 @@ RowLayout {
 
     spacing: Appearance.dash.cardSpacing
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         text: root.entry.label
         color: root.active ? Colours.textBright : root.elapsed || root.marker ? Colours.textMuted : Colours.text
         font.weight: root.active ? Appearance.font.weightActive : Appearance.font.weightNormal
         font.pixelSize: root.marker ? Appearance.dash.cardLabelSize : Appearance.font.size.normal
-        elide: Text.ElideRight
     }
 
     StyledText {

@@ -132,7 +132,7 @@ Item {
         }
     }
 
-    StyledText {
+    ScrollText {
         anchors.top: frame.bottom
         anchors.topMargin: Appearance.launcher.wallpaperLabelSpacing
         anchors.horizontalCenter: parent.horizontalCenter
@@ -141,7 +141,6 @@ Item {
         text: Theme.label(root.modelData)
         color: root.current ? Colours.textBright : Colours.textMuted
         font.pixelSize: Appearance.font.size.tiny
-        elide: Text.ElideMiddle
         horizontalAlignment: Text.AlignHCenter
     }
 

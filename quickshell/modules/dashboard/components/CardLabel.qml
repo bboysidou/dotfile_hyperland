@@ -18,13 +18,12 @@ RowLayout {
         font.pixelSize: Appearance.dash.cardLabelSize
     }
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         text: root.label
         color: Colours.textMuted
         opacity: Appearance.dash.cardLabelOpacity
         font.pixelSize: Appearance.dash.cardLabelSize
-        elide: Text.ElideRight
     }
 }

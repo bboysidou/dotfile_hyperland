@@ -118,13 +118,12 @@ Item {
             }
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.label
             color: content.tint
             font.pixelSize: Appearance.orbit.nodeLabelSize
-            elide: Text.ElideRight
         }
 
         StyledText {

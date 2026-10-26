@@ -20,7 +20,7 @@ StyledRect {
         onClicked: root.picked()
     }
 
-    StyledText {
+    ScrollText {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
@@ -29,6 +29,5 @@ StyledRect {
 
         text: root.place.country ? `${root.place.city}, ${root.place.country}` : root.place.city
         color: Colours.text
-        elide: Text.ElideRight
     }
 }

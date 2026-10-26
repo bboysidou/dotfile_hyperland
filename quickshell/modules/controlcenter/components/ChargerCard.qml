@@ -34,7 +34,7 @@ DetailCard {
             font.family: Appearance.font.family.mono
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             visible: Charger.connected
@@ -42,7 +42,6 @@ DetailCard {
             color: Colours.textMuted
             font.pixelSize: root.config.detailSize
             horizontalAlignment: Text.AlignRight
-            elide: Text.ElideRight
         }
     }
 }

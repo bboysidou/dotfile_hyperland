@@ -52,7 +52,7 @@ Card {
                     onClicked: Prayer.setMethod(option.modelData.id)
                 }
 
-                StyledText {
+                ScrollText {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -62,7 +62,6 @@ Card {
                     text: option.modelData.label
                     color: option.active ? Colours.accent : Colours.text
                     font.weight: option.active ? Appearance.font.weightActive : Appearance.font.weightNormal
-                    elide: Text.ElideRight
                 }
             }
         }

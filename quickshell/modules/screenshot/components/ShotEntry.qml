@@ -52,22 +52,20 @@ StyledRect {
 
             spacing: Appearance.spacing.none
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.entry.label
                 color: root.selected ? Colours.textBright : Colours.text
-                elide: Text.ElideRight
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.entry.subtitle
                 color: Colours.textMuted
                 opacity: Appearance.shot.subtitleOpacity
                 font.pixelSize: Appearance.font.size.small
-                elide: Text.ElideRight
             }
         }
     }

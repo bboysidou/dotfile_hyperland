@@ -27,14 +27,13 @@ Item {
 
         spacing: root.config.agendaSpacing
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.title
             color: Colours.textBright
             font.pixelSize: root.config.agendaTitleSize
             font.bold: true
-            elide: Text.ElideRight
         }
 
         RowLayout {
@@ -65,13 +64,12 @@ Item {
                 font.pixelSize: root.config.agendaDetailSize
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.place
                 color: Colours.textMuted
                 font.pixelSize: root.config.agendaDetailSize
-                elide: Text.ElideRight
             }
         }
 

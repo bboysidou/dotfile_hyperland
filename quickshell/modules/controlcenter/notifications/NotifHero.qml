@@ -59,14 +59,13 @@ RowLayout {
             }
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.label
             color: Colours.textMuted
             font.pixelSize: Appearance.notifPanel.countLabelSize
             font.weight: Appearance.font.weightIcon
-            elide: Text.ElideRight
         }
     }
 
@@ -81,24 +80,22 @@ RowLayout {
 
             spacing: Appearance.notifPanel.heroTextSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.title
                 color: Colours.textBright
                 font.pixelSize: Appearance.notifPanel.heroNameSize
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.detail
                 color: Colours.textMuted
                 font.pixelSize: Appearance.notifPanel.heroDetailSize
                 font.weight: Appearance.font.weightIcon
-                elide: Text.ElideRight
             }
         }
 

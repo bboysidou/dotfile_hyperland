@@ -57,13 +57,12 @@ ColumnLayout {
             font.pixelSize: Appearance.control.iconSize
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.error
             color: Colours.critical
             font.pixelSize: Appearance.font.size.small
-            elide: Text.ElideRight
         }
     }
 }

@@ -25,12 +25,11 @@ RowLayout {
         color: Colours.textMuted
     }
 
-    StyledText {
+    ScrollText {
         Layout.preferredWidth: Appearance.hardware.procNameWidth
 
         text: root.name
         color: Colours.text
-        elide: Text.ElideRight
     }
 
     Icon {
@@ -38,14 +37,13 @@ RowLayout {
         color: root.valueColour
     }
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: root.extra.length === 0
         Layout.preferredWidth: Appearance.hardware.procValueWidth
 
         text: root.value
         color: root.valueColour
         font.family: Appearance.font.family.mono
-        elide: Text.ElideRight
     }
 
     Icon {
@@ -55,13 +53,12 @@ RowLayout {
         color: root.extraColour
     }
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         visible: root.extra.length > 0
         text: root.extra
         color: root.extraColour
         font.family: Appearance.font.family.mono
-        elide: Text.ElideRight
     }
 }

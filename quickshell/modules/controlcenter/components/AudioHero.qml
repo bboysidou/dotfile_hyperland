@@ -46,17 +46,16 @@ RowLayout {
 
             spacing: Appearance.audioPanel.heroTextSpacing
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 text: root.title
                 color: Colours.textBright
                 font.pixelSize: Appearance.audioPanel.heroNameSize
                 font.weight: Appearance.font.weightActive
-                elide: Text.ElideRight
             }
 
-            StyledText {
+            ScrollText {
                 Layout.fillWidth: true
 
                 visible: root.subtitle !== ""
@@ -64,7 +63,6 @@ RowLayout {
                 color: Colours.textMuted
                 font.pixelSize: Appearance.audioPanel.heroDetailSize
                 font.weight: Appearance.font.weightIcon
-                elide: Text.ElideMiddle
             }
         }
 

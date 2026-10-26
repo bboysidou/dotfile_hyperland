@@ -31,14 +31,13 @@ Card {
             label: Appearance.dash.labelNotifications
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             visible: root.recent.length === 0
             text: Appearance.dash.labelNoNotifications
             color: Colours.textMuted
             font.pixelSize: Appearance.dash.cardLabelSize
-            elide: Text.ElideRight
         }
 
         Repeater {

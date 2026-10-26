@@ -142,13 +142,12 @@ Item {
 
                     spacing: Appearance.spacing.small
 
-                    StyledText {
+                    ScrollText {
                         Layout.fillWidth: true
 
                         text: root.modelData.summary
                         color: root.modelData.critical ? Colours.urgencyCritical : Colours.textBright
                         font.weight: Appearance.font.weightActive
-                        elide: Text.ElideRight
                     }
 
                     StyledText {

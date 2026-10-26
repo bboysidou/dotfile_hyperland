@@ -232,21 +232,19 @@ ColumnLayout {
 
                 spacing: 0
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: Appearance.lowPower.label
                     color: Colours.text
-                    elide: Text.ElideRight
                 }
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: Appearance.lowPower.detail
                     color: Colours.textMuted
                     font.pixelSize: Appearance.lowPower.detailSize
-                    elide: Text.ElideRight
                 }
             }
 

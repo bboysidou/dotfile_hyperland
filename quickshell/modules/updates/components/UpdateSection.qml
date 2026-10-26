@@ -37,13 +37,12 @@ StyledRect {
             font.pixelSize: Appearance.updates.sectionIconSize
         }
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.title
             color: Colours.textBright
             font.weight: Appearance.font.weightActive
-            elide: Text.ElideRight
         }
 
         StyledText {

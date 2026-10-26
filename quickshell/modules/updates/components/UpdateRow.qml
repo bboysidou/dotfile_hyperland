@@ -20,21 +20,19 @@ StyledRect {
 
         spacing: Appearance.updates.rowSpacing
 
-        StyledText {
+        ScrollText {
             Layout.fillWidth: true
 
             text: root.entry.name
             color: Colours.text
-            elide: Text.ElideRight
         }
 
-        StyledText {
+        ScrollText {
             Layout.maximumWidth: Appearance.updates.versionMaxWidth
 
             text: root.entry.from
             color: Colours.textMuted
             font.pixelSize: Appearance.font.size.small
-            elide: Text.ElideLeft
         }
 
         StyledText {
@@ -43,13 +41,12 @@ StyledRect {
             font.pixelSize: Appearance.font.size.small
         }
 
-        StyledText {
+        ScrollText {
             Layout.maximumWidth: Appearance.updates.versionMaxWidth
 
             text: root.entry.to
             color: Colours.accent
             font.pixelSize: Appearance.font.size.small
-            elide: Text.ElideLeft
         }
     }
 }

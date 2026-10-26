@@ -24,12 +24,11 @@ RowLayout {
         through: root.through
     }
 
-    StyledText {
+    ScrollText {
         Layout.fillWidth: true
 
         text: root.label
         color: Colours.text
         font.pixelSize: Appearance.keybinds.labelSize
-        elide: Text.ElideRight
     }
 }

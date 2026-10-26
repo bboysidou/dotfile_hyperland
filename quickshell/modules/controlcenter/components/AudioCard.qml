@@ -132,16 +132,15 @@ StyledRect {
 
                 spacing: Appearance.card.textSpacing
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     text: root.title
                     color: root.active ? Colours.surface : Colours.textBright
                     font.pixelSize: Appearance.card.nameSize
-                    elide: Text.ElideRight
                 }
 
-                StyledText {
+                ScrollText {
                     Layout.fillWidth: true
 
                     visible: root.detail !== ""
@@ -150,7 +149,6 @@ StyledRect {
                     font.pixelSize: Appearance.card.detailSize
                     font.weight: Appearance.font.weightIcon
                     opacity: root.active ? Appearance.audioPanel.orbRingOpacity : 1
-                    elide: Text.ElideMiddle
                 }
             }
         }

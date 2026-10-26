@@ -129,14 +129,13 @@ Panel {
                             font.pixelSize: Appearance.orbit.nodeGlyphSize
                         }
 
-                        StyledText {
+                        ScrollText {
                             Layout.fillWidth: true
 
                             text: root.activeDevice?.name ?? ""
                             color: Colours.surface
                             font.pixelSize: Appearance.orbit.coreLabelSize
                             horizontalAlignment: Text.AlignHCenter
-                            elide: Text.ElideRight
                         }
 
                         StyledText {
