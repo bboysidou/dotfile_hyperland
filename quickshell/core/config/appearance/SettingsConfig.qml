@@ -53,6 +53,18 @@ QtObject {
     readonly property string labelMouse: "Mouse"
     readonly property string labelTouchpad: "Touchpad"
     readonly property string labelNever: "Never"
+    readonly property string labelOff: "Off"
+    readonly property string labelWeather: "Weather"
+    readonly property string labelSystem: "System"
+    readonly property string labelHistoryDays: "Keep history for"
+    readonly property string labelHistoryMax: "History holds up to"
+    readonly property string labelMaxPopups: "Popups at once"
+    readonly property string labelBarClock: "Bar clock"
+    readonly property string labelTempUnit: "Temperature"
+    readonly property string labelWindUnit: "Wind speed"
+    readonly property string labelUpdateCheck: "Check for updates"
+    readonly property string labelMouseWarn: "Warn when mouse is at"
+    readonly property string daysTemplate: "%1 d"
     readonly property string labelFont: "UI font"
     readonly property string labelTextSize: "Text size"
     readonly property string labelReset: "Reset"
@@ -84,6 +96,54 @@ QtObject {
     readonly property real sensitivityStep: 0.1
     readonly property int sensitivityDecimals: 1
     readonly property int maxClocks: 5
+    readonly property int countStep: 1
+    readonly property int historyDaysMin: 1
+    readonly property int historyDaysMax: 30
+    readonly property int historyMaxMin: 20
+    readonly property int historyMaxMax: 500
+    readonly property int historyMaxStep: 20
+    readonly property int popupsMin: 1
+    readonly property int popupsMax: 6
+    readonly property int mouseWarnMin: 0
+    readonly property int mouseWarnMax: 50
+    readonly property int mouseWarnStep: 5
+    readonly property int segmentWidth: 210
+    readonly property var barClockFormats: [
+        {
+            key: "ddd, dd. MMM HH:mm",
+            label: "Full"
+        },
+        {
+            key: "dd/MM HH:mm",
+            label: "Short"
+        },
+        {
+            key: "HH:mm",
+            label: "Time"
+        }
+    ]
+    readonly property var updateChoices: [
+        {
+            key: "0",
+            label: "Off"
+        },
+        {
+            key: "15",
+            label: "15m"
+        },
+        {
+            key: "30",
+            label: "30m"
+        },
+        {
+            key: "60",
+            label: "1h"
+        },
+        {
+            key: "180",
+            label: "3h"
+        }
+    ]
     readonly property int maxLayouts: 4
     readonly property string flatProfile: "flat"
     readonly property string touchpadMatch: "touchpad"

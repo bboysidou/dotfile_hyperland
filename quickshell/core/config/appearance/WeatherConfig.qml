@@ -67,7 +67,7 @@ QtObject {
     readonly property string eventTimeFormat: "HH:mm"
     readonly property string tempTemplate: "%1°"
     readonly property string tempDecimalTemplate: "%1°"
-    readonly property string windTemplate: "%1m/s"
+    readonly property string windTemplate: "%1%2"
     readonly property string percentTemplate: "%1%"
     readonly property string rangeTemplate: "%1-%2"
     readonly property string todayTemplate: "%1 (Today)"

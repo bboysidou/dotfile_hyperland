@@ -24,6 +24,10 @@ Flickable {
 
         ClockSection {}
 
+        WeatherSection {}
+
+        SystemSection {}
+
         KeyboardSection {}
 
         PointerSection {}

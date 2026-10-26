@@ -29,6 +29,9 @@ QtObject {
     readonly property int usagePollInterval: 10000
     readonly property int usagePrimeDelay: 300
     readonly property int mousePollInterval: 300000
+    readonly property string mouseLowIcon: "input-mouse"
+    readonly property string mouseLowSummary: "Mouse battery low"
+    readonly property string mouseLowBody: "%1% left"
     readonly property int mediaMarginLeft: 12
     readonly property int mediaMarginRight: 10
     readonly property int mediaFrameInterval: 100

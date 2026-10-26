@@ -35,4 +35,17 @@ SettingsSection {
             }
         }
     }
+
+    SettingRow {
+        label: Appearance.settings.labelBarClock
+
+        SegmentBar {
+            width: Appearance.settings.segmentWidth
+
+            options: Appearance.settings.barClockFormats
+            current: Prefs.barClock
+
+            onSelected: key => Prefs.set("barClock", key)
+        }
+    }
 }

@@ -11,7 +11,7 @@ Singleton {
     id: root
 
     readonly property date now: clock.date
-    readonly property string barText: Qt.formatDateTime(clock.date, Appearance.bar.clockFormat)
+    readonly property string barText: Qt.formatDateTime(clock.date, Prefs.barClock)
 
     property var zoneOffsets: ({})
 

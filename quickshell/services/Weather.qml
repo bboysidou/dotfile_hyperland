@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import qs.core.config
 import qs.core.constants
+import qs.core.enums
 import qs.core.helpers
 
 Singleton {
@@ -61,6 +62,14 @@ Singleton {
         }
         root.loaded = true;
         root.refreshIfStale();
+    }
+
+    function temp(celsius: real): real {
+        return celsius * TempUnit.scales[Prefs.tempUnit] + TempUnit.offsets[Prefs.tempUnit];
+    }
+
+    function wind(metresPerSecond: real): real {
+        return metresPerSecond * WindUnit.factors[Prefs.windUnit];
     }
 
     function kind(code: int): string {

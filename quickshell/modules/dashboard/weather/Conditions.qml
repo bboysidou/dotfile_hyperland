@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.services
 
 ColumnLayout {
@@ -49,7 +50,7 @@ ColumnLayout {
     StyledText {
         Layout.alignment: Qt.AlignRight
 
-        text: root.day ? root.config.tempTemplate.arg(Math.round(root.day.temp)) : root.config.labelNoWeather
+        text: root.day ? root.config.tempTemplate.arg(Math.round(Weather.temp(root.day.temp))) : root.config.labelNoWeather
         color: Colours.textBright
         font.pixelSize: root.day ? root.config.tempSize : root.config.conditionSize
         font.bold: true
@@ -76,7 +77,7 @@ ColumnLayout {
 
         StatRing {
             value: (root.day?.wind ?? 0) / root.config.windScaleMax
-            text: root.config.windTemplate.arg(Math.round(root.day?.wind ?? 0))
+            text: root.config.windTemplate.arg(Math.round(Weather.wind(root.day?.wind ?? 0))).arg(WindUnit.labels[Prefs.windUnit])
             glyph: Icons.weatherWind
             label: root.config.labelWind
         }
@@ -97,7 +98,7 @@ ColumnLayout {
 
         StatRing {
             value: ((root.day?.feels ?? 0) - root.config.feelsScaleMin) / (root.config.feelsScaleMax - root.config.feelsScaleMin)
-            text: root.config.tempTemplate.arg((root.day?.feels ?? 0).toFixed(1))
+            text: root.config.tempTemplate.arg(Weather.temp(root.day?.feels ?? 0).toFixed(1))
             glyph: Icons.thermometer
             label: root.config.labelFeels
         }

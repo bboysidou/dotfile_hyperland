@@ -4,7 +4,7 @@ QtObject {
     readonly property int width: 380
     readonly property int padding: 14
     readonly property real scaleFrom: 0.96
-    readonly property int pollInterval: 1800000
+    readonly property int pollMinutes: 30
     readonly property int timeout: 120
     readonly property int headerHeight: 40
     readonly property int headerSpacing: 10

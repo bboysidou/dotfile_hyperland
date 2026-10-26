@@ -140,9 +140,9 @@ Singleton {
     }
 
     function sweep(): void {
-        const oldest = Date.now() - Appearance.notif.historyMaxAgeDays * Units.msPerDay;
+        const oldest = Date.now() - Prefs.historyDays * Units.msPerDay;
         const fresh = root.toArray().filter(entry => entry.time >= oldest);
-        const capped = fresh.slice(0, Appearance.notif.historyMaxEntries);
+        const capped = fresh.slice(0, Prefs.historyMax);
 
         if (capped.length === root.entries.length)
             return;
@@ -211,6 +211,20 @@ Singleton {
         repeat: true
 
         onTriggered: root.sweep()
+    }
+
+    readonly property Connections limits: Connections {
+        target: Prefs
+
+        function onHistoryDaysChanged(): void {
+            root.sweep();
+            root.save();
+        }
+
+        function onHistoryMaxChanged(): void {
+            root.sweep();
+            root.save();
+        }
     }
 
     readonly property Process ensureDir: Process {

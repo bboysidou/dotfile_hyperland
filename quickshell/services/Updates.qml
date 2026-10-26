@@ -37,7 +37,7 @@ Singleton {
         id: repoPoller
 
         command: ["sh", "-c", Commands.repoUpdates.arg(Appearance.updates.timeout)]
-        interval: Appearance.updates.pollInterval
+        interval: Prefs.updateMinutes * Units.msPerMinute
 
         onReceived: text => {
             root.repo = root.parse(text);
@@ -49,7 +49,7 @@ Singleton {
         id: aurPoller
 
         command: ["sh", "-c", Commands.aurUpdates.arg(Appearance.updates.timeout)]
-        interval: Appearance.updates.pollInterval
+        interval: Prefs.updateMinutes * Units.msPerMinute
 
         onReceived: text => {
             root.aur = root.parse(text);

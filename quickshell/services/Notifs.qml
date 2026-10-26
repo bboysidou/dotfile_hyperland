@@ -16,8 +16,8 @@ Singleton {
 
     readonly property string faviconDir: `${Paths.cache}/${Appearance.notif.faviconCacheDir}`
 
-    readonly property var stack: root.toArray().slice(0, Appearance.notif.maxVisible)
-    readonly property var criticals: root.toArray().filter(popup => popup.critical).slice(0, Appearance.notif.maxVisible)
+    readonly property var stack: root.toArray().slice(0, Prefs.maxPopups)
+    readonly property var criticals: root.toArray().filter(popup => popup.critical).slice(0, Prefs.maxPopups)
 
     function track(notification: Notification): void {
         notification.tracked = true;

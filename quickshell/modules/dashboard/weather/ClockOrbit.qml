@@ -7,6 +7,7 @@ import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.enums
+import qs.services
 
 Item {
     id: root
@@ -35,7 +36,7 @@ Item {
         })
 
     function temperature(value: real): string {
-        return isNaN(value) ? "" : root.config.tempTemplate.arg(value.toFixed(1));
+        return isNaN(value) ? "" : root.config.tempTemplate.arg(Weather.temp(value).toFixed(1));
     }
 
     SystemClock {

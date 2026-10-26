@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import qs.core.config
 import qs.core.constants
+import qs.core.enums
 import qs.core.helpers
 
 Singleton {
@@ -20,6 +21,14 @@ Singleton {
     property string font: ""
     property real textScale: 1
     property var worldClocks: WorldClock.zones
+    property int historyDays: Appearance.notif.historyMaxAgeDays
+    property int historyMax: Appearance.notif.historyMaxEntries
+    property int maxPopups: Appearance.notif.maxVisible
+    property string barClock: Appearance.bar.clockFormat
+    property string tempUnit: TempUnit.celsius
+    property string windUnit: WindUnit.ms
+    property int updateMinutes: Appearance.updates.pollMinutes
+    property int mouseWarn: Appearance.powerPanel.warningPercent
     property var timezones: []
 
     function set(key: string, value: var): void {
@@ -44,6 +53,10 @@ Singleton {
         const next = root.notifTimeouts.slice();
         next[urgency] = Num.clamp(next[urgency] + delta * root.config.timeoutStep, root.config.timeoutMin, root.config.timeoutMax);
         root.set("notifTimeouts", next);
+    }
+
+    function stepValue(key: string, delta: int, step: int, min: int, max: int): void {
+        root.set(key, Num.clamp(root[key] + delta * step, min, max));
     }
 
     function stepScale(delta: int): void {
@@ -86,6 +99,14 @@ Singleton {
             root.font = state.font ?? root.font;
             root.textScale = state.textScale ?? root.textScale;
             root.worldClocks = state.worldClocks ?? root.worldClocks;
+            root.historyDays = state.historyDays ?? root.historyDays;
+            root.historyMax = state.historyMax ?? root.historyMax;
+            root.maxPopups = state.maxPopups ?? root.maxPopups;
+            root.barClock = state.barClock ?? root.barClock;
+            root.tempUnit = state.tempUnit ?? root.tempUnit;
+            root.windUnit = state.windUnit ?? root.windUnit;
+            root.updateMinutes = state.updateMinutes ?? root.updateMinutes;
+            root.mouseWarn = state.mouseWarn ?? root.mouseWarn;
         } catch (parseError) {}
 
         root.loaded = true;
@@ -102,7 +123,15 @@ Singleton {
             notifTimeouts: root.notifTimeouts,
             font: root.font,
             textScale: root.textScale,
-            worldClocks: root.worldClocks
+            worldClocks: root.worldClocks,
+            historyDays: root.historyDays,
+            historyMax: root.historyMax,
+            maxPopups: root.maxPopups,
+            barClock: root.barClock,
+            tempUnit: root.tempUnit,
+            windUnit: root.windUnit,
+            updateMinutes: root.updateMinutes,
+            mouseWarn: root.mouseWarn
         }));
     }
 

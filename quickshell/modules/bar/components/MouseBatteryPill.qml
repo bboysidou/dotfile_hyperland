@@ -15,7 +15,7 @@ Pill {
             return Colours.accent;
         if (MouseBattery.percent < Appearance.powerPanel.criticalPercent)
             return Colours.critical;
-        if (MouseBattery.percent < Appearance.powerPanel.warningPercent)
+        if (MouseBattery.percent < Prefs.mouseWarn)
             return Colours.warning;
         return Colours.accent;
     }
