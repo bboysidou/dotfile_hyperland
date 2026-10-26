@@ -9,6 +9,7 @@ RowLayout {
     property string value
     property bool canDecrease: true
     property bool canIncrease: true
+    property int stepperWidth: Appearance.display.stepperWidth
 
     signal stepped(int delta)
 
@@ -22,7 +23,7 @@ RowLayout {
     }
 
     StyledText {
-        Layout.preferredWidth: Appearance.display.stepperWidth
+        Layout.preferredWidth: root.stepperWidth
 
         text: root.value
         color: Colours.textBright

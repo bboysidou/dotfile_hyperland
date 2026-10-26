@@ -342,7 +342,7 @@ _askIdle() {
   local default=no
   _preseeded A_IDLE && return 0
   if ((D_LAPTOP)); then default=yes; fi
-  if uiConfirm "Lock and turn off the screen when idle (lock at 5 min, screen off at 5.5 min, suspend at 15 min on battery)?" "$default"; then
+  if uiConfirm "Lock and turn off the screen when idle (lock at 5 min, screen off at 5.5 min, suspend at 15 min on battery; editable later in the display panel Idle tab)?" "$default"; then
     A_IDLE=yes
   else
     A_IDLE=no

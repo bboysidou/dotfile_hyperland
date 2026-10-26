@@ -43,11 +43,6 @@ QtObject {
     readonly property int pamTimeout: 20000
     readonly property int focusPollInterval: 500
     readonly property int sleepMonitorRetry: 2000
-    readonly property string idleEnv: "QS_IDLE"
-    readonly property string idleEnabled: "1"
-    readonly property int idleLockSeconds: 300
-    readonly property int idleScreenOffSeconds: 330
-    readonly property int idleSuspendSeconds: 900
     readonly property string fadeInType: AnimType.standardLarge
     readonly property string fadeOutType: AnimType.standard
     readonly property int shakeAmplitude: 12

@@ -40,6 +40,7 @@ Singleton {
     readonly property ThemeConfig theme: ThemeConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
     readonly property LockConfig lock: LockConfig {}
+    readonly property IdleConfig idle: IdleConfig {}
     readonly property OsdConfig osd: OsdConfig {}
     readonly property PolkitConfig polkit: PolkitConfig {}
     readonly property PowerConfig power: PowerConfig {}

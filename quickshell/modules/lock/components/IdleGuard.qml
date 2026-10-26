@@ -2,18 +2,13 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-import qs.core.config
 import qs.core.constants
 import qs.services
 
 Scope {
-    id: root
-
-    readonly property bool enabled: Quickshell.env(Appearance.lock.idleEnv) === Appearance.lock.idleEnabled
-
     IdleMonitor {
-        enabled: root.enabled
-        timeout: Appearance.lock.idleLockSeconds
+        enabled: Idle.enabled && Idle.lockOn
+        timeout: Idle.lockSeconds
 
         onIsIdleChanged: {
             if (isIdle)
@@ -22,15 +17,15 @@ Scope {
     }
 
     IdleMonitor {
-        enabled: root.enabled
-        timeout: Appearance.lock.idleScreenOffSeconds
+        enabled: Idle.enabled && Idle.screenOffOn
+        timeout: Idle.screenOffSeconds
 
         onIsIdleChanged: Displays.setAllDpms(!isIdle)
     }
 
     IdleMonitor {
-        enabled: root.enabled && UPower.onBattery
-        timeout: Appearance.lock.idleSuspendSeconds
+        enabled: Idle.enabled && Idle.suspendOn && (UPower.onBattery || !Idle.batteryOnly)
+        timeout: Idle.suspendSeconds
 
         onIsIdleChanged: {
             if (isIdle)
