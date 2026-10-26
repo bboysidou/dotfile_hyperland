@@ -19,6 +19,7 @@ import qs.modules.settings
 import qs.modules.settings.components
 import qs.modules.share
 import qs.modules.updates
+import qs.services
 
 PanelWindow {
     id: root
@@ -30,8 +31,11 @@ PanelWindow {
     readonly property bool grabbing: root.focused && BorderState.panelOpen
     readonly property bool covered: Monitors.covered(root.screen)
     readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
+    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, updates, hardware, display, settings, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
+    property real outline: root.openPanel !== null && Prefs.panelOutline !== OutlineMode.off ? 1 : 0
+    property color outlineColour: Colours.accent
 
     screen: root.modelData
     color: "transparent"
@@ -98,9 +102,29 @@ PanelWindow {
         }
     }
 
+    Binding {
+        when: root.openPanel !== null
+        target: root
+        property: "outlineColour"
+        value: Prefs.panelOutline === OutlineMode.grey ? Colours.outlineMuted : root.openPanel?.outlineColour ?? Colours.accent
+        restoreMode: Binding.RestoreNone
+    }
+
     Behavior on revealed {
         Anim {
             type: AnimType.standard
+        }
+    }
+
+    Behavior on outline {
+        Anim {
+            type: AnimType.fastEffects
+        }
+    }
+
+    Behavior on outlineColour {
+        CAnim {
+            type: AnimType.fastEffects
         }
     }
 
@@ -129,193 +153,212 @@ PanelWindow {
         onPressed: BorderState.closeAll()
     }
 
-    BorderFrame {
-        anchors.fill: parent
-
-        thickness: Appearance.border.thickness * root.revealed
-        topThickness: Appearance.bar.height * root.revealed
-        opacity: root.revealed
-    }
-
-    BarContent {
-        id: bar
-
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: Appearance.border.thickness
-        anchors.rightMargin: Appearance.border.thickness
-
-        implicitHeight: Appearance.bar.height
-
-        opacity: root.revealed
-        visible: root.revealed > 0
-
-        panelWindow: root
-    }
-
     Item {
-        id: inner
+        id: silhouette
 
         anchors.fill: parent
-        anchors.topMargin: Appearance.bar.height * root.revealed
-        anchors.leftMargin: Appearance.border.thickness * root.revealed
-        anchors.rightMargin: Appearance.border.thickness * root.revealed
-        anchors.bottomMargin: Appearance.border.thickness * root.revealed
 
-        Keys.onEscapePressed: BorderState.closeAll()
+        layer.enabled: root.outline > 0
+        layer.smooth: true
+        layer.effect: ShaderEffect {
+            readonly property vector2d texel: Qt.vector2d(1 / Math.max(1, width), 1 / Math.max(1, height))
+            readonly property color outlineColour: root.outlineColour
+            readonly property real stroke: Appearance.border.outline
+            readonly property real strength: root.outline
+            readonly property real solidFrom: Appearance.border.outlineSolidFrom
+            readonly property real solidTo: Appearance.border.outlineSolidTo
 
-        PanelSlot {
-            id: launcher
-
-            open: root.focused && LauncherState.opened
-
-            LauncherPanel {
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                onDismissed: BorderState.closeAll()
-            }
+            fragmentShader: Quickshell.shellPath(Appearance.border.outlineShader)
         }
 
-        PanelSlot {
-            id: screenshot
+        BorderFrame {
+            anchors.fill: parent
 
-            open: root.focused && ShotState.opened
-
-            ShotPanel {
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                onDismissed: BorderState.closeAll()
-            }
+            thickness: Appearance.border.thickness * root.revealed
+            topThickness: Appearance.bar.height * root.revealed
+            opacity: root.revealed
         }
 
-        PanelSlot {
-            id: share
+        BarContent {
+            id: bar
 
-            open: root.focused && ShareState.opened
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: Appearance.border.thickness
+            anchors.rightMargin: Appearance.border.thickness
 
-            SharePanel {
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
+            implicitHeight: Appearance.bar.height
+
+            opacity: root.revealed
+            visible: root.revealed > 0
+
+            panelWindow: root
         }
 
-        PanelSlot {
-            id: audio
+        Item {
+            id: inner
 
-            open: root.focused && ControlState.opened && ControlState.section === ControlSection.audio
+            anchors.fill: parent
+            anchors.topMargin: Appearance.bar.height * root.revealed
+            anchors.leftMargin: Appearance.border.thickness * root.revealed
+            anchors.rightMargin: Appearance.border.thickness * root.revealed
+            anchors.bottomMargin: Appearance.border.thickness * root.revealed
 
-            AudioPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+            Keys.onEscapePressed: BorderState.closeAll()
+
+            PanelSlot {
+                id: launcher
+
+                open: root.focused && LauncherState.opened
+
+                LauncherPanel {
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    onDismissed: BorderState.closeAll()
+                }
             }
-        }
 
-        PanelSlot {
-            id: network
+            PanelSlot {
+                id: screenshot
 
-            open: root.focused && ControlState.opened && ControlState.section === ControlSection.network
+                open: root.focused && ShotState.opened
 
-            NetworkPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                ShotPanel {
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    onDismissed: BorderState.closeAll()
+                }
             }
-        }
 
-        PanelSlot {
-            id: bluetooth
+            PanelSlot {
+                id: share
 
-            open: root.focused && ControlState.opened && ControlState.section === ControlSection.bluetooth
+                open: root.focused && ShareState.opened
 
-            BluetoothPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                SharePanel {
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
             }
-        }
 
-        PanelSlot {
-            id: notifications
+            PanelSlot {
+                id: audio
 
-            open: root.focused && ControlState.opened && ControlState.section === ControlSection.notifications
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.audio
 
-            NotifPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                AudioPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: power
+            PanelSlot {
+                id: network
 
-            open: root.focused && ControlState.opened && ControlState.section === ControlSection.power
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.network
 
-            PowerPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                NetworkPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: updates
+            PanelSlot {
+                id: bluetooth
 
-            open: root.focused && UpdatesState.opened
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.bluetooth
 
-            UpdatesPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                BluetoothPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: hardware
+            PanelSlot {
+                id: notifications
 
-            open: root.focused && HardwareState.opened
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.notifications
 
-            HardwarePanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                NotifPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: display
+            PanelSlot {
+                id: power
 
-            open: root.focused && DisplayState.opened
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.power
 
-            DisplayPanel {
-                anchors.centerIn: parent
+                PowerPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: settings
+            PanelSlot {
+                id: updates
 
-            open: root.focused && SettingsState.opened
+                open: root.focused && UpdatesState.opened
 
-            SettingsPanel {
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                UpdatesPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
             }
-        }
 
-        PanelSlot {
-            id: dashboard
+            PanelSlot {
+                id: hardware
 
-            open: root.focused && DashState.opened
+                open: root.focused && HardwareState.opened
 
-            DashboardPanel {
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
+                HardwarePanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
+            }
+
+            PanelSlot {
+                id: display
+
+                open: root.focused && DisplayState.opened
+
+                DisplayPanel {
+                    anchors.centerIn: parent
+                }
+            }
+
+            PanelSlot {
+                id: settings
+
+                open: root.focused && SettingsState.opened
+
+                SettingsPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
+            }
+
+            PanelSlot {
+                id: dashboard
+
+                open: root.focused && DashState.opened
+
+                DashboardPanel {
+                    anchors.top: parent.top
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
             }
         }
     }

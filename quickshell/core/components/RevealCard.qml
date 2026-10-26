@@ -8,6 +8,7 @@ StyledRect {
     property bool revealed: false
     property real scaleFrom: 1
     property int elevation: Appearance.elevation.panel
+    property color outlineColour: Colours.accent
 
     color: Colours.surface
     border.width: 0

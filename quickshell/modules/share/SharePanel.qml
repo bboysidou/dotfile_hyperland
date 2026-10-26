@@ -10,6 +10,7 @@ RevealCard {
 
     readonly property color accent: ShareState.section === ShareSource.window ? Colours.tabWindows : Colours.tabScreens
 
+    outlineColour: tabBar.fill
     implicitWidth: Appearance.share.width
     implicitHeight: layout.implicitHeight + Appearance.share.padding * 2
 
@@ -61,6 +62,8 @@ RevealCard {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
 
             options: ShareState.tabs

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.modules.display.components
 import qs.services
 
@@ -50,6 +51,22 @@ SettingsSection {
             canIncrease: Prefs.textScale < root.config.scaleMax
 
             onStepped: delta => Prefs.stepScale(delta)
+        }
+    }
+
+    SettingRow {
+        label: root.config.labelPanelOutline
+
+        SegmentBar {
+            width: root.config.segmentWidth
+
+            options: OutlineMode.values.map(mode => ({
+                        key: mode,
+                        label: OutlineMode.labels[mode]
+                    }))
+            current: Prefs.panelOutline
+
+            onSelected: key => Prefs.set("panelOutline", key)
         }
     }
 }

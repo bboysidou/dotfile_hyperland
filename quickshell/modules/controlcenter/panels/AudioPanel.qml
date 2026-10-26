@@ -80,6 +80,8 @@ Panel {
         ControlState.audioSection = values[Num.wrap(values.indexOf(root.section), delta, values.length)];
     }
 
+    outlineColour: tabBar.fill
+
     onRevealedChanged: {
         if (root.revealed) {
             intro.restart();
@@ -155,6 +157,8 @@ Panel {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
             Layout.topMargin: Appearance.audioPanel.switchTopMargin
 

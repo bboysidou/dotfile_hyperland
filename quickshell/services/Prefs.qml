@@ -29,6 +29,7 @@ Singleton {
     property string windUnit: WindUnit.ms
     property int updateMinutes: Appearance.updates.pollMinutes
     property int mouseWarn: Appearance.powerPanel.warningPercent
+    property string panelOutline: OutlineMode.tab
     property var timezones: []
 
     function set(key: string, value: var): void {
@@ -107,6 +108,7 @@ Singleton {
             root.windUnit = state.windUnit ?? root.windUnit;
             root.updateMinutes = state.updateMinutes ?? root.updateMinutes;
             root.mouseWarn = state.mouseWarn ?? root.mouseWarn;
+            root.panelOutline = state.panelOutline ?? root.panelOutline;
         } catch (parseError) {}
 
         root.loaded = true;
@@ -131,7 +133,8 @@ Singleton {
             tempUnit: root.tempUnit,
             windUnit: root.windUnit,
             updateMinutes: root.updateMinutes,
-            mouseWarn: root.mouseWarn
+            mouseWarn: root.mouseWarn,
+            panelOutline: root.panelOutline
         }));
     }
 

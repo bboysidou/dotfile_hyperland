@@ -12,6 +12,7 @@ RevealCard {
 
     readonly property var config: Appearance.display
 
+    outlineColour: tabBar.fill
     implicitWidth: root.config.width
     implicitHeight: layout.implicitHeight + root.config.padding * 2
 
@@ -69,6 +70,8 @@ RevealCard {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
 
             visible: Displays.monitors.length > 0

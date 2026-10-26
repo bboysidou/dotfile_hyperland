@@ -52,6 +52,7 @@ Singleton {
     readonly property color hover: raw.bgHover
     readonly property color text: raw.fg
     readonly property color textMuted: raw.fgMuted
+    readonly property color outlineMuted: raw.fgMuted
     readonly property color textBright: raw.fgBright
     readonly property color highlight: raw.accent
     readonly property color accent: raw.accent

@@ -178,6 +178,7 @@ Panel {
         root.dismiss();
     }
 
+    outlineColour: tabBar.fill
     implicitWidth: Appearance.orbit.panelWidth
 
     onRevealedChanged: {
@@ -269,6 +270,8 @@ Panel {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
 
             current: ControlState.networkSection

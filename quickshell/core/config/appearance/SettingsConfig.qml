@@ -67,6 +67,7 @@ QtObject {
     readonly property string daysTemplate: "%1 d"
     readonly property string labelFont: "UI font"
     readonly property string labelTextSize: "Text size"
+    readonly property string labelPanelOutline: "Panel outline"
     readonly property string labelReset: "Reset"
     readonly property string labelLayouts: "Layouts"
     readonly property string labelVariant: "Variant"

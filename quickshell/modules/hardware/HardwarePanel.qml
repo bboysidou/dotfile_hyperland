@@ -38,6 +38,7 @@ Panel {
         HardwareState.hide();
     }
 
+    outlineColour: tabBar.fill
     implicitWidth: Appearance.hardware.width
     scaleFrom: Appearance.hardware.scaleFrom
 
@@ -65,6 +66,8 @@ Panel {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
             Layout.topMargin: Appearance.hardware.switchTopMargin
 

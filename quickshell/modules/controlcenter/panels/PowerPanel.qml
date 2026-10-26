@@ -47,6 +47,7 @@ Panel {
         PowerState.run(action);
     }
 
+    outlineColour: tabBar.fill
     implicitWidth: Appearance.orbit.panelWidth
 
     ColumnLayout {
@@ -75,6 +76,8 @@ Panel {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
 
             visible: Battery.available

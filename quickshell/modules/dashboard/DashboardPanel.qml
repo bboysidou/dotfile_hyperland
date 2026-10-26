@@ -22,6 +22,7 @@ RevealCard {
     readonly property real paneWidth: root.pane?.width ?? 0
     readonly property real paneHeight: root.pane?.implicitHeight ?? 0
 
+    outlineColour: tabs.fill
     implicitWidth: root.paneWidth + Appearance.dash.padding * 2
     implicitHeight: (tabs.implicitHeight || 0) + root.paneHeight + Appearance.dash.padding * 3
 

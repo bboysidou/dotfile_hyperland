@@ -24,6 +24,7 @@ Panel {
         }
     ]
 
+    outlineColour: tabBar.fill
     implicitWidth: root.config.width
 
     Keys.onEscapePressed: SettingsState.hide()
@@ -43,6 +44,8 @@ Panel {
         }
 
         SegmentBar {
+            id: tabBar
+
             Layout.fillWidth: true
 
             current: SettingsState.tab
