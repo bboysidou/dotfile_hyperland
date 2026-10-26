@@ -130,6 +130,11 @@ Singleton {
     readonly property string repeatOnce: "\uDB81\uDC58"
     readonly property string musicNote: "\uDB80\uDF87"
     readonly property string album: "\uDB80\uDCA1"
+    readonly property string settings: "\uDB81\uDC93"
+    readonly property string copy: "\uDB80\uDD8F"
+    readonly property string equalizer: "\uDB81\uDE6A"
+    readonly property string terminal: "\uDB80\uDD8D"
+    readonly property string key: "\uDB80\uDF06"
 
     readonly property var mediaFrames: ["\u2582\u2584\u2586", "\u2584\u2582\u2586", "\u2584\u2586\u2582", "\u2586\u2584\u2582", "\u2586\u2582\u2584"]
 

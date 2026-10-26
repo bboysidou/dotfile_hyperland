@@ -8,13 +8,14 @@ import qs.modules.display
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
+import qs.modules.settings
 import qs.modules.share
 import qs.modules.updates
 
 Singleton {
     id: root
 
-    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened
+    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
 
     property real rightInset: 0
@@ -36,6 +37,8 @@ Singleton {
             DashState.hide();
         if (keep !== DisplayState && DisplayState.opened)
             DisplayState.hide();
+        if (keep !== SettingsState && SettingsState.opened)
+            SettingsState.hide();
     }
 
     function closeAll(): void {
@@ -117,6 +120,15 @@ Singleton {
         function onOpenedChanged(): void {
             if (DisplayState.opened)
                 root.closeExcept(DisplayState);
+        }
+    }
+
+    Connections {
+        target: SettingsState
+
+        function onOpenedChanged(): void {
+            if (SettingsState.opened)
+                root.closeExcept(SettingsState);
         }
     }
 }

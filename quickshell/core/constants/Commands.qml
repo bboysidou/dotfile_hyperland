@@ -85,4 +85,17 @@ Singleton {
 
     readonly property var shareRegion: ["slurp", "-f", "%o %x %y %w %h"]
     readonly property string shareReply: '[ -p "$2" ] && printf "%s\\n" "$1" > "$2"'
+
+    readonly property string serviceStatus: 'for spec; do id=${spec%%|*}; rest=${spec#*|}; kind=${rest%%|*}; unit=${rest#*|}; case $kind in system) state=$(systemctl show -p LoadState,ActiveState,UnitFileState "$unit" | tr "\\n" " ") ;; user) state=$(systemctl --user show -p LoadState,ActiveState,UnitFileState "$unit" | tr "\\n" " ") ;; flag) if [ -e "$unit" ]; then state="LoadState=loaded ActiveState=inactive UnitFileState=disabled"; else state="LoadState=loaded ActiveState=active UnitFileState=enabled"; fi ;; esac; printf "%s\\t%s\\n" "$id" "$state"; done'
+    readonly property string serviceInstall: 'name=${2%.service}; install -Dm755 "$1/system/$name" "/usr/local/bin/$name" && install -Dm644 "$1/system/$2" "/etc/systemd/system/$2" && systemctl daemon-reload && systemctl enable --now "$2"'
+    readonly property string serviceFlagOff: 'mkdir -p "${1%/*}" && touch "$1"'
+    readonly property string serviceSystem: "sudo systemctl %1 %2"
+    readonly property string serviceSystemInstall: "sudo install -Dm755 %1/system/%2 /usr/local/bin/%2 && sudo install -Dm644 %1/system/%3 /etc/systemd/system/%3 && sudo systemctl daemon-reload && sudo systemctl enable --now %3"
+    readonly property string serviceUser: "systemctl --user %1 %2"
+    readonly property var serviceOn: ["enable", "--now"]
+    readonly property var serviceOff: ["disable", "--now"]
+    readonly property var serviceStart: ["start"]
+    readonly property var serviceStop: ["stop"]
+    readonly property string serviceFlagEnable: "rm -f %1"
+    readonly property string serviceFlagKill: "touch %1"
 }

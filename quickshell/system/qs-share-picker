@@ -3,6 +3,9 @@ set -u
 
 WAIT=300
 FALLBACK=hyprland-share-picker
+OFF_FLAG="${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/share-picker.off"
+
+[ -e "$OFF_FLAG" ] && exec "$FALLBACK" "$@"
 
 token=false
 [ "${1:-}" = --allow-token ] && token=true

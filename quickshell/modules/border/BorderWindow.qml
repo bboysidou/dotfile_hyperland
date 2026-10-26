@@ -15,6 +15,8 @@ import qs.modules.display.components
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
+import qs.modules.settings
+import qs.modules.settings.components
 import qs.modules.share
 import qs.modules.updates
 
@@ -27,7 +29,7 @@ PanelWindow {
     readonly property bool focused: Monitors.focused === root.screen.name
     readonly property bool grabbing: root.focused && BorderState.panelOpen
     readonly property bool covered: Monitors.covered(root.screen)
-    readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware].find(slot => slot.open)?.item?.width ?? 0
+    readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
 
     property real revealed: root.covered ? 0 : 1
 
@@ -80,6 +82,9 @@ PanelWindow {
             item: display.item?.revealed ? display.item : null
         }
         Region {
+            item: settings.item?.revealed ? settings.item : null
+        }
+        Region {
             item: dashboard.item?.revealed ? dashboard.item : null
         }
         Region {
@@ -108,6 +113,7 @@ PanelWindow {
             ControlState.hide();
             DashState.hide();
             HardwareState.hide();
+            SettingsState.hide();
             ShareState.dismiss();
         }
     }
@@ -287,6 +293,18 @@ PanelWindow {
 
             DisplayPanel {
                 anchors.centerIn: parent
+            }
+        }
+
+        PanelSlot {
+            id: settings
+
+            open: root.focused && SettingsState.opened
+
+            SettingsPanel {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
             }
         }
 

@@ -57,4 +57,5 @@ Singleton {
     readonly property KeybindsConfig keybinds: KeybindsConfig {}
     readonly property ClipboardConfig clipboard: ClipboardConfig {}
     readonly property SpeedTestConfig speedTest: SpeedTestConfig {}
+    readonly property SettingsConfig settings: SettingsConfig {}
 }
