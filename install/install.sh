@@ -242,6 +242,9 @@ stageUser() {
   uiStep "Allow AUR builds for ${A_USER} (temporary)" userSudoersOn
   uiStep --verbose "Build yay" userYay
   uiStep --verbose "Install AUR packages" userAur
+  if bootLimineScanSelected; then
+    uiStep --optional --verbose "Build limine-scan" bootLimineScan
+  fi
   if bootSnapperSelected; then
     uiStep "Snapper and Limine snapshot entries" bootSnapper
   fi

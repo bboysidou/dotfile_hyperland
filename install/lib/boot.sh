@@ -46,18 +46,30 @@ bootSnapperSelected() {
   [[ "$A_BOOT" == limine && "${A_SNAPPER:-no}" == yes ]]
 }
 
+bootLimineScanSelected() {
+  [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]
+}
+
 bootAurPackages() {
-  if [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]; then
-    echo "$LIMINE_SCAN_PACKAGE"
-  fi
   if bootSnapperSelected; then
     echo "$LIMINE_SNAPPER_PACKAGE"
   fi
   return 0
 }
 
+bootLimineScan() {
+  asUser yay "${YAY_FLAGS[@]}" "$LIMINE_SCAN_PACKAGE"
+}
+
+bootLimineScanInstalled() {
+  ((DRY_RUN)) || [[ -x "${MNT}/usr/bin/limine-scan" ]]
+}
+
 bootUserStepCount() {
-  if bootSnapperSelected; then echo 1; else echo 0; fi
+  local count=0
+  if bootSnapperSelected; then count=$((count + 1)); fi
+  if bootLimineScanSelected; then count=$((count + 1)); fi
+  echo "$count"
 }
 
 bootSnapper() {
@@ -346,7 +358,7 @@ bootNotes() {
   if bootSnapperSelected; then
     echo "Snapper: sys_update.sh (the bar's update button) takes a snapshot before each update, and limine-snapper-sync lists them under Arch Linux > Snapshots in the Limine menu."
   fi
-  if [[ "$A_BOOT" == limine && "${A_LIMINE_SCAN:-no}" == yes ]]; then
+  if bootLimineScanSelected && bootLimineScanInstalled; then
     echo "Limine: run 'sudo limine-scan' after the first boot to add other EFI boot entries to the menu."
   fi
   if [[ "$A_MODE" == alongside ]]; then
