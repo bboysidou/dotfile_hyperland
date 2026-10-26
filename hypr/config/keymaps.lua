@@ -24,7 +24,8 @@ local mainMod = "SUPER"
 -- MY STUFF ------------------------------------------------------------------
 hl.bind("CTRL + SHIFT + F", launchApp(inTerminal("yazi")))
 hl.bind(mainMod .. " + CTRL + F", launchApp(inTerminal("sh $HOME/.config/custom_scripts/tmux_resurect_session.sh")))
-hl.bind("ALT + S", hl.dsp.global("quickshell:keybinds"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.global("quickshell:keybinds"))
+hl.bind("ALT + S", hl.dsp.global("quickshell:settings"))
 hl.bind(mainMod .. " + C", launchApp(inTerminal("sh $HOME/.config/custom_scripts/ssh_connection.sh")))
 hl.bind(mainMod .. " + X", hl.dsp.global("quickshell:power"))
 hl.bind("ALT + C", hl.dsp.global("quickshell:controlcenter-network"))
