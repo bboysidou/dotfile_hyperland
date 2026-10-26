@@ -6,4 +6,6 @@ QtObject {
     readonly property int minLength: 10
     readonly property int maxLength: 20
     readonly property string separator: "   "
+    readonly property int scrollHold: 1500
+    readonly property int scrollPixelDuration: 30
 }

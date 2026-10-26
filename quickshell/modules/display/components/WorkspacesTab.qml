@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.modules.display
+import qs.services
 
 ColumnLayout {
     id: root
@@ -19,6 +20,8 @@ ColumnLayout {
     }
 
     GridLayout {
+        Layout.fillWidth: true
+
         columns: root.config.workspaceColumns
         rowSpacing: root.config.gridSpacing
         columnSpacing: root.config.gridSpacing
@@ -31,9 +34,10 @@ ColumnLayout {
 
                 required property int index
 
-                readonly property string output: DisplayState.assignment[tile.index] ?? ""
+                readonly property string output: Displays.resolve(DisplayState.assignment[tile.index] ?? "")
                 readonly property bool mine: tile.output === DisplayState.monitor
 
+                Layout.fillWidth: true
                 Layout.preferredWidth: root.config.workspaceTileSize * 2
                 Layout.preferredHeight: root.config.workspaceTileSize
 
@@ -52,10 +56,11 @@ ColumnLayout {
                         font.bold: true
                     }
 
-                    StyledText {
-                        anchors.horizontalCenter: parent.horizontalCenter
+                    ScrollText {
+                        width: tile.width - root.config.tilePadding
 
                         text: tile.output
+                        horizontalAlignment: Text.AlignHCenter
                         color: tile.mine ? Colours.surface : Colours.textMuted
                         font.pixelSize: root.config.tileSizeSize
                     }

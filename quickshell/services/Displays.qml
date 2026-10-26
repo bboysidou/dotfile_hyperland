@@ -126,6 +126,13 @@ Singleton {
         return root.monitors.find(entry => entry.name === name) ?? null;
     }
 
+    function resolve(output: string): string {
+        const selector = output.startsWith("desc:") ? output.slice(5).trim() : output;
+        if (selector === "")
+            return output;
+        return root.monitors.find(entry => entry.name === selector || entry.description.startsWith(selector))?.name ?? output;
+    }
+
     function line(name: string, settings): string {
         if (settings.disabled)
             return `hl.monitor({ output = "${name}", disabled = true })`;
@@ -162,7 +169,7 @@ Singleton {
     function moves(assignment): var {
         return assignment.map((output, index) => {
             const current = root.occupied[index + 1];
-            if (!output || !current || current === output)
+            if (!output || !current || current === root.resolve(output))
                 return "";
             return `hl.dispatch(hl.dsp.workspace.move({ workspace = ${index + 1}, monitor = "${output}" }))`;
         }).filter(move => move !== "");
