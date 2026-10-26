@@ -110,6 +110,8 @@ QtObject {
     readonly property string labelDedicated: "Dedicated"
     readonly property string labelState: "State"
     readonly property string stateSuspended: "Suspended (power saving)"
+    readonly property string labelDriver: "Driver"
+    readonly property string missingTemplate: "%1 missing · press rescan"
     readonly property string labelUsage: "Usage"
     readonly property string labelSwap: "Swap"
     readonly property string labelActiveCores: "Active Cores (10 min avg)"

@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import qs.core.config
 import qs.core.constants
+import qs.core.enums
 import qs.core.helpers
 
 Singleton {
@@ -29,20 +30,21 @@ Singleton {
 
     property var previousGfx: ({})
     property real previousMs: 0
+    property var previousCounter: null
+    property var previousEnergy: null
 
     readonly property var card: root.cards[root.selected] ?? null
     readonly property string device: root.card?.device ?? ""
     readonly property string hwmon: root.card?.hwmon ?? ""
     readonly property string pci: root.card?.pci ?? ""
     readonly property string name: root.card?.name ?? ""
+    readonly property string driver: root.card?.driver ?? ""
+    readonly property string missing: root.card?.missing ?? ""
 
     readonly property bool available: root.cards.length > 0
     readonly property int busyPercent: isFinite(root.busy) ? Num.toPercent(root.busy * Appearance.scale.percent) : 0
     readonly property real vramFraction: root.vramTotal > 0 ? Num.clamp01(root.vramUsed / root.vramTotal) : 0
     readonly property real powerFraction: root.powerCap > 0 ? Num.clamp01(root.power / root.powerCap) : NaN
-
-    readonly property var deviceFiles: ["gpu_busy_percent", "mem_info_vram_used", "mem_info_vram_total"]
-    readonly property var hwmonFiles: ["temp1_input", "power1_input", "power1_average", "power1_cap", "pwm1", "pwm1_max", "fan1_input", "freq1_input"]
 
     function parseCard(line: string): var {
         const parts = line.split("\t");
@@ -57,17 +59,23 @@ Singleton {
             vram: Number(parts[3]) || 0,
             suspended: parts[4] === "suspended",
             name: name,
+            driver: parts[6] ?? GpuDriver.none,
+            missing: parts[7] ?? "",
+            discrete: (parts[8] ?? "").trim(),
             dedicated: false
         };
     }
 
     function applyProbe(payload: string): void {
         const found = payload.trim().split("\n").filter(line => line.length > 0).map(line => root.parseCard(line));
-        if (found.length === 0)
+        if (found.length === 0) {
+            root.cards = [];
             return;
+        }
 
         if (found.length > 1) {
-            const largest = found.reduce((best, card) => card.vram > best.vram ? card : best, found[0]);
+            const rank = card => card.discrete === "1" ? Infinity : card.discrete === "0" ? -1 : card.vram;
+            const largest = found.reduce((best, card) => rank(card) > rank(best) ? card : best, found[0]);
             largest.dedicated = true;
             found.sort((a, b) => a.dedicated - b.dedicated);
         }
@@ -85,6 +93,8 @@ Singleton {
         root.clearReadings();
         root.processes = [];
         root.previousGfx = {};
+        root.previousCounter = null;
+        root.previousEnergy = null;
 
         if (!root.available)
             return;
@@ -135,6 +145,65 @@ Singleton {
         root.fan = pwmMax > 0 ? Num.clamp01(read(7) / pwmMax) : NaN;
         root.fanRpm = read(9);
         root.clockMhz = read(10) / config.microPerUnit;
+
+        if (!isFinite(root.busy))
+            root.busy = root.counterBusy(lines[11] ?? "");
+        if (!isFinite(root.power))
+            root.power = root.energyPower(Number(lines[12]));
+    }
+
+    function energyPower(microJoules: real): real {
+        const now = Date.now();
+        const before = root.previousEnergy;
+
+        if (!isFinite(microJoules)) {
+            root.previousEnergy = null;
+            return NaN;
+        }
+
+        root.previousEnergy = {
+            value: microJoules,
+            time: now
+        };
+        if (!before || microJoules < before.value || now <= before.time)
+            return NaN;
+
+        return (microJoules - before.value) / ((now - before.time) * Appearance.hardware.milliPerUnit);
+    }
+
+    function counterBusy(line: string): real {
+        const parts = line.split("\t");
+        const now = Date.now();
+        const current = {
+            kind: parts[0],
+            work: Number(parts[1]),
+            total: Number(parts[2]),
+            time: now
+        };
+        const before = root.previousCounter;
+
+        if (!GpuBusyKind.values.includes(current.kind) || !isFinite(current.work)) {
+            root.previousCounter = null;
+        root.previousEnergy = null;
+            return NaN;
+        }
+
+        root.previousCounter = current;
+        if (!before || before.kind !== current.kind)
+            return NaN;
+
+        const work = current.work - before.work;
+        const span = current.kind === GpuBusyKind.cycles ? current.total - before.total : (now - before.time) * Appearance.hardware.nsPerMs;
+
+        return work >= 0 && span > 0 ? Num.clamp01(work / span) : NaN;
+    }
+
+    function rescan(): void {
+        root.cards = [];
+        root.selected = 0;
+        root.clearReadings();
+        root.processes = [];
+        probeProc.running = true;
     }
 
     function applyProcesses(payload: string): void {
@@ -145,22 +214,38 @@ Singleton {
 
         const entries = payload.trim().split("\n").filter(line => line.length > 0).map(line => {
             const parts = line.split("\t");
-            const gfx = Number(parts[1]);
+            const kind = parts[1];
+            const work = Number(parts[2]);
+            const total = Number(parts[3]);
             const before = previous[parts[0]];
 
-            next[parts[0]] = gfx;
+            next[parts[0]] = {
+                work: work,
+                total: total
+            };
 
             return {
                 pid: parts[0],
-                busy: before !== undefined && elapsedNs > 0 ? Num.clamp01((gfx - before) / elapsedNs) : 0,
-                vramKb: Number(parts[2]),
-                name: parts[3] ?? ""
+                busy: root.processBusy(kind, work, total, before, elapsedNs),
+                vramKb: Number(parts[4]),
+                name: parts[6] ?? ""
             };
         });
 
         root.previousGfx = next;
         root.previousMs = now;
         root.processes = entries.sort((a, b) => b.busy - a.busy || b.vramKb - a.vramKb).slice(0, Appearance.hardware.procMax);
+    }
+
+    function processBusy(kind: string, work: real, total: real, before: var, elapsedNs: real): real {
+        if (kind === GpuBusyKind.pct)
+            return Num.clamp01(work / Appearance.scale.percent);
+
+        if (!before)
+            return 0;
+
+        const span = kind === GpuBusyKind.cycles ? total - before.total : elapsedNs;
+        return span > 0 ? Num.clamp01((work - before.work) / span) : 0;
     }
 
     onActiveChanged: {
@@ -180,7 +265,7 @@ Singleton {
         id: probeProc
 
         running: true
-        command: ["sh", "-c", Commands.gpuProbe]
+        command: Commands.gpu.concat(["probe"])
 
         stdout: StdioCollector {
             onStreamFinished: root.applyProbe(text)
@@ -215,7 +300,7 @@ Singleton {
     Process {
         id: readProc
 
-        command: ["sh", "-c", Commands.gpuReadings, "sh", root.device].concat(root.deviceFiles.map(file => `${root.device}/${file}`), root.hwmonFiles.map(file => `${root.hwmon}/${file}`))
+        command: Commands.gpu.concat(["read", root.driver, root.device, root.hwmon, root.pci])
 
         stdout: StdioCollector {
             onStreamFinished: root.applyReadings(text)
@@ -225,7 +310,7 @@ Singleton {
     Process {
         id: processProc
 
-        command: ["sh", "-c", Commands.gpuProcesses, "sh", root.pci]
+        command: Commands.gpu.concat(["procs", root.driver, root.device, root.pci])
 
         stdout: StdioCollector {
             onStreamFinished: root.applyProcesses(text)

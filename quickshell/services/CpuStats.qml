@@ -102,6 +102,10 @@ Singleton {
         });
     }
 
+    function reloadPower(): void {
+        power.reload();
+    }
+
     onActiveChanged: {
         if (root.active)
             processProc.running = true;

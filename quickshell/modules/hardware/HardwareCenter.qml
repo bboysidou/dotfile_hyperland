@@ -54,6 +54,11 @@ Scope {
             return HardwareState.opened ? HardwareState.section : IpcStatus.closed;
         }
 
+        function rescan(): string {
+            HardwareState.rescan();
+            return IpcStatus.rescanning;
+        }
+
         function status(): string {
             return `opened=${HardwareState.opened} section=${HardwareState.section}`;
         }

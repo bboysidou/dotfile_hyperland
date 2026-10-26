@@ -40,6 +40,10 @@ Singleton {
     property real previousTx: 0
     property real previousNetMs: 0
 
+    function rescan(): void {
+        tempProc.running = true;
+    }
+
     function applyCpu(payload: string): void {
         const fields = payload.split("\n")[0].split(" ").filter(part => part.length > 0).slice(1).map(Number);
         if (fields.length < 8)
@@ -224,6 +228,8 @@ Singleton {
     }
 
     Process {
+        id: tempProc
+
         running: true
         command: ["sh", "-c", 'for h in /sys/class/hwmon/*/; do n=$(cat "$h/name" 2>/dev/null); case "$n" in k10temp|coretemp|zenpower) echo "${h}temp1_input"; exit 0;; esac; done']
 

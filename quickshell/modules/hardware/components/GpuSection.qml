@@ -30,6 +30,15 @@ ColumnLayout {
         return GpuStats.powerCap > 0 ? config.powerCapTemplate.arg(watts).arg(Math.round(GpuStats.powerCap)) : config.powerTemplate.arg(watts);
     }
 
+    function vram(): string {
+        const config = Appearance.hardware;
+
+        if (isFinite(GpuStats.vramTotal))
+            return root.shown(GpuStats.vramUsed, config.vramTemplate.arg(root.mb(GpuStats.vramUsed)).arg(root.mb(GpuStats.vramTotal)));
+
+        return root.shown(GpuStats.vramUsed, config.mbTemplate.arg(root.mb(GpuStats.vramUsed)));
+    }
+
     function fan(): string {
         const config = Appearance.hardware;
 
@@ -77,6 +86,14 @@ ColumnLayout {
         }
 
         StatRow {
+            visible: GpuStats.missing.length > 0
+            glyph: Icons.download
+            label: Appearance.hardware.labelDriver
+            value: Appearance.hardware.missingTemplate.arg(GpuStats.missing)
+            valueColour: Colours.warning
+        }
+
+        StatRow {
             glyph: Icons.thermometer
             label: Appearance.hardware.labelTemp
             value: root.shown(GpuStats.temp, Appearance.hardware.tempTemplate.arg(Math.round(GpuStats.temp)))
@@ -86,7 +103,7 @@ ColumnLayout {
         StatRow {
             glyph: Icons.memory
             label: Appearance.hardware.labelVram
-            value: root.shown(GpuStats.vramUsed + GpuStats.vramTotal, Appearance.hardware.vramTemplate.arg(root.mb(GpuStats.vramUsed)).arg(root.mb(GpuStats.vramTotal)))
+            value: root.vram()
             valueColour: Tone.usage(GpuStats.vramFraction * Appearance.scale.percent, Colours.text)
         }
 

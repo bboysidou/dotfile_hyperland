@@ -1,0 +1,375 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+SHELL_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+SYSTEM_DIR="$SHELL_DIR/system"
+GPU_SCRIPT="$SHELL_DIR/services/gpu/gpu.sh"
+SYS="${QS_GPU_SYSFS:-/sys}"
+SUPPLIES="$SYS/class/power_supply"
+RAPL="$SYS/class/powercap/intel-rapl:0"
+MKINITCPIO=/etc/mkinitcpio.conf
+I2C_CONF=/etc/modules-load.d/i2c-dev.conf
+BIN_DIR=/usr/local/bin
+UNIT_DIR=/etc/systemd/system
+RULES_DIR=/etc/udev/rules.d
+HWINFO_UNIT=qs-hwinfo.service
+PPD_UNIT=power-profiles-daemon.service
+BATTERY_GROUP=power
+NVIDIA_OPEN='^(TU|GA|AD|GB|GH)[0-9]'
+NVIDIA_580XX='^(GM|GP|GV)[0-9]'
+
+BOLD=$'\e[1m' DIM=$'\e[2m' RED=$'\e[31m' GREEN=$'\e[32m' YELLOW=$'\e[33m' BLUE=$'\e[34m' RESET=$'\e[0m'
+
+CHECK_ONLY=0
+[[ "${1:-}" == --check ]] && CHECK_ONLY=1
+
+CPU_VENDOR=none
+CPU_NAME=""
+LAPTOP=0
+VIRTUAL=none
+GPU_LINES=()
+HAS_NVIDIA=0
+HAS_OTHER_GPU=0
+REBOOT=0
+
+PKG_NAMES=()
+PKG_WHY=()
+AUR_NAMES=()
+AUR_WHY=()
+STEP_NAMES=()
+STEP_WHY=()
+
+title() { printf '\n%s%s::%s %s%s\n' "$BOLD" "$BLUE" "$RESET$BOLD" "$1" "$RESET"; }
+row() { printf '   %-20s %s\n' "$1" "$2"; }
+ok() { printf '   %s✓%s %s\n' "$GREEN" "$RESET" "$1"; }
+warn() { printf '   %s!%s %s\n' "$YELLOW" "$RESET" "$1"; }
+fail() { printf '   %s✗%s %s\n' "$RED" "$RESET" "$1"; }
+
+ask() {
+  local reply
+  read -r -p "   $1 [Y/n] " reply || return 1
+  [[ -z "$reply" || "$reply" =~ ^[Yy] ]]
+}
+
+pause() {
+  printf '\n%sPress Enter to close.%s' "$DIM" "$RESET"
+  read -r _ || true
+}
+
+missing_pkg() {
+  ! pacman -T "$1" >/dev/null 2>&1
+}
+
+want_pkg() {
+  local pkg=$1 why=$2 known
+  missing_pkg "$pkg" || return 0
+  for known in "${PKG_NAMES[@]}"; do [[ "$known" == "$pkg" ]] && return 0; done
+  PKG_NAMES+=("$pkg")
+  PKG_WHY+=("$why")
+}
+
+want_aur() {
+  missing_pkg "$1" || return 0
+  AUR_NAMES+=("$1")
+  AUR_WHY+=("$2")
+}
+
+want_step() {
+  STEP_NAMES+=("$1")
+  STEP_WHY+=("$2")
+}
+
+detect_cpu() {
+  case "$(awk -F': ' '/^vendor_id/ { print $2; exit }' /proc/cpuinfo)" in
+    GenuineIntel) CPU_VENDOR=intel ;;
+    AuthenticAMD) CPU_VENDOR=amd ;;
+  esac
+  CPU_NAME="$(awk -F': ' '/^model name/ { print $2; exit }' /proc/cpuinfo)"
+}
+
+detect_laptop() {
+  local supply
+  for supply in "$SUPPLIES"/*; do
+    [[ "$(cat "$supply/type" 2>/dev/null)" == Battery && "$(cat "$supply/scope" 2>/dev/null)" != Device ]] && LAPTOP=1
+  done
+  return 0
+}
+
+detect_gpus() {
+  local line
+  mapfile -t GPU_LINES < <(sh "$GPU_SCRIPT" probe)
+  for line in "${GPU_LINES[@]}"; do
+    case "$(cut -f7 <<<"$line")" in
+      nvidia | nouveau | none) HAS_NVIDIA=1 ;;
+      *) HAS_OTHER_GPU=1 ;;
+    esac
+  done
+}
+
+report() {
+  local line name driver pci state missing
+  title "Detected hardware"
+  row "CPU" "${CPU_NAME:-unknown} ($CPU_VENDOR)"
+  row "Form factor" "$( ((LAPTOP)) && echo laptop || echo desktop)"
+  [[ "$VIRTUAL" != none ]] && row "Virtual machine" "$VIRTUAL"
+  [[ -r "$RAPL/max_energy_range_uj" ]] && row "CPU power" "RAPL available"
+  ((${#GPU_LINES[@]})) || row "GPU" "none the panel can read"
+  for line in "${GPU_LINES[@]}"; do
+    IFS=$'\x1f' read -r _ _ pci _ state name driver missing _ <<<"${line//$'\t'/$'\x1f'}"
+    row "GPU $pci" "${name:-unknown} · driver ${driver} · ${state:-active}${missing:+ · ${YELLOW}needs ${missing}${RESET}}"
+  done
+}
+
+plan_base() {
+  want_pkg pciutils "lspci, GPU detection"
+  want_pkg hwdata "GPU names"
+  want_pkg dmidecode "memory modules (qs-hwinfo)"
+  want_pkg btop "CPU monitor (bar pill)"
+  want_pkg htop "memory monitor (bar pill)"
+  want_pkg nvtop "GPU monitor (bar pill)"
+  case "$CPU_VENDOR" in
+    intel) want_pkg intel-ucode "CPU microcode" ;;
+    amd) want_pkg amd-ucode "CPU microcode" ;;
+  esac
+}
+
+plan_headers() {
+  local base
+  for base in /usr/lib/modules/*/pkgbase; do
+    [[ -r "$base" ]] && want_pkg "$(cat "$base")-headers" "kernel headers for the DKMS driver"
+  done
+}
+
+plan_nvidia_driver() {
+  local name=$1
+  if [[ "$name" =~ $NVIDIA_580XX ]]; then
+    want_aur nvidia-580xx-dkms "NVIDIA driver (Maxwell, Pascal, Volta)"
+    want_aur nvidia-580xx-utils "nvidia-smi for the GPU tab"
+  elif [[ -z "$name" || "$name" =~ $NVIDIA_OPEN ]]; then
+    want_pkg nvidia-open-dkms "NVIDIA driver (Turing and newer)"
+    want_pkg nvidia-utils "nvidia-smi for the GPU tab"
+  else
+    warn "NVIDIA ${name} is too old for the proprietary driver; nouveau stays and the GPU tab cannot read it"
+    return
+  fi
+  want_pkg egl-wayland "NVIDIA on Wayland"
+  plan_headers
+  grep -qE '^HOOKS=.*\bkms\b' "$MKINITCPIO" 2>/dev/null && want_step step_kms "drop the kms hook so nouveau stays out of the initramfs"
+  return 0
+}
+
+plan_gpus() {
+  local line name driver
+  [[ "$VIRTUAL" != none ]] && return
+  for line in "${GPU_LINES[@]}"; do
+    IFS=$'\x1f' read -r _ _ _ _ _ name driver _ _ <<<"${line//$'\t'/$'\x1f'}"
+    case "$driver" in
+      amdgpu)
+        want_pkg vulkan-radeon "Vulkan for AMD"
+        ;;
+      i915 | xe)
+        want_pkg vulkan-intel "Vulkan for Intel"
+        want_pkg intel-media-driver "video decode for Intel"
+        want_pkg intel-gpu-tools "intel_gpu_top"
+        ;;
+      nvidia)
+        want_pkg nvidia-utils "nvidia-smi for the GPU tab"
+        want_pkg egl-wayland "NVIDIA on Wayland"
+        want_pkg libva-nvidia-driver "video decode for NVIDIA"
+        ;;
+      nouveau | none)
+        plan_nvidia_driver "$name"
+        ;;
+      radeon)
+        warn "${name:-AMD GPU} runs on the legacy radeon driver: no Vulkan, and the GPU tab shows temperature, fan and clock only"
+        ;;
+    esac
+  done
+  ((HAS_NVIDIA && HAS_OTHER_GPU)) || return 0
+  if [[ " ${AUR_NAMES[*]} " == *" nvidia-580xx-utils "* ]]; then
+    want_aur nvidia-prime "prime-run for the hybrid GPU"
+  else
+    want_pkg nvidia-prime "prime-run for the hybrid GPU"
+  fi
+}
+
+helper_current() {
+  cmp -s "$SYSTEM_DIR/$1" "$2/$1"
+}
+
+plan_power() {
+  if ((LAPTOP)); then
+    want_pkg power-profiles-daemon "power profiles"
+    want_pkg brightnessctl "screen brightness"
+    want_pkg upower "battery history"
+    systemctl is-enabled --quiet "$PPD_UNIT" 2>/dev/null || want_step step_ppd "enable $PPD_UNIT"
+    { helper_current qs-battery-perms "$BIN_DIR" && helper_current 99-qs-battery.rules "$RULES_DIR"; } ||
+      want_step step_battery "install battery charge-limit permissions"
+    id -nG "$USER" | grep -qw "$BATTERY_GROUP" || want_step step_group "add $USER to the $BATTERY_GROUP group"
+  else
+    want_pkg ddcutil "external monitor brightness"
+    [[ -f "$I2C_CONF" ]] || want_step step_i2c "load i2c-dev at boot (ddcutil)"
+  fi
+}
+
+plan_hwinfo() {
+  helper_current qs-hwinfo "$BIN_DIR" && helper_current "$HWINFO_UNIT" "$UNIT_DIR" &&
+    systemctl is-active --quiet "$HWINFO_UNIT" 2>/dev/null && return
+  want_step step_hwinfo "install and start qs-hwinfo (memory modules, CPU power)"
+}
+
+show_plan() {
+  local i
+  title "Missing"
+  if ((${#PKG_NAMES[@]} + ${#AUR_NAMES[@]} + ${#STEP_NAMES[@]} == 0)); then
+    ok "nothing, everything is in place"
+    return 1
+  fi
+  for i in "${!PKG_NAMES[@]}"; do row "${PKG_NAMES[i]}" "${DIM}${PKG_WHY[i]}${RESET}"; done
+  for i in "${!AUR_NAMES[@]}"; do row "${AUR_NAMES[i]}" "${DIM}AUR · ${AUR_WHY[i]}${RESET}"; done
+  for i in "${!STEP_NAMES[@]}"; do row "setup" "${DIM}${STEP_WHY[i]}${RESET}"; done
+  return 0
+}
+
+choose() {
+  local -n names=$1 whys=$2
+  local keep_names=() keep_whys=() i
+  for i in "${!names[@]}"; do
+    if ask "${names[i]} (${whys[i]})?"; then
+      keep_names+=("${names[i]}")
+      keep_whys+=("${whys[i]}")
+    fi
+  done
+  names=("${keep_names[@]}")
+  whys=("${keep_whys[@]}")
+}
+
+confirm_plan() {
+  local reply
+  printf '\n'
+  read -r -p "   Install everything? [Y]es / [c]hoose / [n]o " reply || return 1
+  case "$reply" in
+    "" | [Yy]*) return 0 ;;
+    [Cc]*)
+      choose PKG_NAMES PKG_WHY
+      choose AUR_NAMES AUR_WHY
+      choose STEP_NAMES STEP_WHY
+      return 0
+      ;;
+    *) return 1 ;;
+  esac
+}
+
+install_packages() {
+  local helper
+  [[ " ${PKG_NAMES[*]} ${AUR_NAMES[*]} " == *-dkms\ * ]] && REBOOT=1
+  if ((${#PKG_NAMES[@]})); then
+    title "Installing packages"
+    sudo pacman -S --needed "${PKG_NAMES[@]}" || fail "pacman failed"
+  fi
+  ((${#AUR_NAMES[@]})) || return 0
+  title "Installing AUR packages"
+  helper="$(command -v paru || command -v yay || true)"
+  if [[ -z "$helper" ]]; then
+    fail "no AUR helper (paru or yay); install by hand: ${AUR_NAMES[*]}"
+    return
+  fi
+  "$helper" -S --needed "${AUR_NAMES[@]}" || fail "$(basename "$helper") failed"
+}
+
+install_helper() {
+  sudo install -Dm"$1" "$SYSTEM_DIR/$2" "$3/$2"
+}
+
+step_hwinfo() {
+  install_helper 755 qs-hwinfo "$BIN_DIR" &&
+    install_helper 644 "$HWINFO_UNIT" "$UNIT_DIR" &&
+    sudo systemctl daemon-reload &&
+    sudo systemctl enable "$HWINFO_UNIT" &&
+    sudo systemctl restart "$HWINFO_UNIT"
+}
+
+step_battery() {
+  install_helper 755 qs-battery-perms "$BIN_DIR" &&
+    install_helper 644 99-qs-battery.rules "$RULES_DIR" &&
+    sudo udevadm control --reload &&
+    sudo udevadm trigger --subsystem-match=power_supply --action=add
+}
+
+step_group() {
+  sudo usermod -aG "$BATTERY_GROUP" "$USER" && warn "log out and back in for the $BATTERY_GROUP group"
+}
+
+step_ppd() {
+  sudo systemctl enable --now "$PPD_UNIT"
+}
+
+step_i2c() {
+  echo i2c-dev | sudo tee "$I2C_CONF" >/dev/null && sudo modprobe i2c-dev
+}
+
+step_kms() {
+  sudo cp "$MKINITCPIO" "$MKINITCPIO.qs-hwsetup.bak" &&
+    sudo sed -i -E '/^HOOKS=/ s/ kms\b//' "$MKINITCPIO" &&
+    sudo mkinitcpio -P &&
+    warn "backup kept at $MKINITCPIO.qs-hwsetup.bak"
+}
+
+run_steps() {
+  local i
+  ((${#STEP_NAMES[@]})) || return 0
+  title "Setting up"
+  for i in "${!STEP_NAMES[@]}"; do
+    if "${STEP_NAMES[i]}"; then ok "${STEP_WHY[i]}"; else fail "${STEP_WHY[i]}"; fi
+  done
+}
+
+rescan_shell() {
+  title "Rescanning"
+  if qs ipc -p "$SHELL_DIR" call hardware rescan >/dev/null 2>&1; then
+    ok "hardware panel refreshed"
+  else
+    warn "shell not reachable; press rescan in the hardware panel"
+  fi
+}
+
+main() {
+  detect_cpu
+  detect_laptop
+  VIRTUAL="$(systemd-detect-virt --vm 2>/dev/null || true)"
+  VIRTUAL="${VIRTUAL:-none}"
+  detect_gpus
+  report
+
+  if ! command -v pacman >/dev/null 2>&1; then
+    fail "pacman not found; this script installs on Arch only"
+    ((CHECK_ONLY)) || pause
+    return 1
+  fi
+
+  plan_base
+  plan_gpus
+  plan_power
+  plan_hwinfo
+
+  if ! show_plan; then
+    ((CHECK_ONLY)) && return 0
+    rescan_shell
+    pause
+    return 0
+  fi
+  ((CHECK_ONLY)) && return 0
+
+  if confirm_plan; then
+    install_packages
+    run_steps
+  else
+    warn "nothing installed"
+  fi
+
+  rescan_shell
+  ((REBOOT)) && warn "reboot to load the new NVIDIA driver"
+  pause
+}
+
+main "$@"

@@ -15,12 +15,6 @@ import qs.services
 Panel {
     id: root
 
-    readonly property var monitors: ({
-            [HardwareSection.cpu]: Commands.cpuMonitor,
-            [HardwareSection.gpu]: Commands.gpuMonitor,
-            [HardwareSection.memory]: Commands.memoryMonitor
-        })
-
     readonly property var accents: ({
             [HardwareSection.cpu]: Colours.cpu,
             [HardwareSection.gpu]: Colours.gpu,
@@ -38,8 +32,9 @@ Panel {
         HardwareState.show(values[Num.wrap(values.indexOf(HardwareState.section), delta, values.length)]);
     }
 
-    function openMonitor(): void {
-        Launch.app(Terminal.command(root.monitors[HardwareState.section]));
+    function rescan(): void {
+        HardwareState.rescan();
+        Launch.app(Terminal.command(Commands.hardwareSetup));
         HardwareState.hide();
     }
 
@@ -66,7 +61,7 @@ Panel {
         HardwareHeader {
             Layout.fillWidth: true
 
-            onMonitorRequested: root.openMonitor()
+            onRescanRequested: root.rescan()
         }
 
         SegmentBar {

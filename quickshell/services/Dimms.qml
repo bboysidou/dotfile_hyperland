@@ -24,6 +24,10 @@ Singleton {
         });
     }
 
+    function reload(): void {
+        file.reload();
+    }
+
     onActiveChanged: {
         if (root.active)
             file.reload();

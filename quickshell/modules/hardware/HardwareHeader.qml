@@ -6,7 +6,7 @@ import qs.core.config
 Item {
     id: root
 
-    signal monitorRequested
+    signal rescanRequested
 
     implicitHeight: Appearance.hardware.headerHeight
 
@@ -30,10 +30,10 @@ Item {
         }
 
         IconButton {
-            icon: Icons.openExternal
+            icon: Icons.refresh
             size: Appearance.hardware.actionSize
 
-            onTriggered: root.monitorRequested()
+            onTriggered: root.rescanRequested()
         }
     }
 }

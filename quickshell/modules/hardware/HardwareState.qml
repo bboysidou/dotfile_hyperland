@@ -2,6 +2,7 @@ pragma Singleton
 
 import Quickshell
 import qs.core.enums
+import qs.services
 
 Singleton {
     id: root
@@ -16,6 +17,13 @@ Singleton {
 
     function hide(): void {
         root.opened = false;
+    }
+
+    function rescan(): void {
+        GpuStats.rescan();
+        SysInfo.rescan();
+        Dimms.reload();
+        CpuStats.reloadPower();
     }
 
     function toggle(target: string): void {
