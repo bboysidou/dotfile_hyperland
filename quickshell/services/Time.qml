@@ -15,7 +15,7 @@ Singleton {
 
     property var zoneOffsets: ({})
 
-    readonly property var zones: WorldClock.zones.map(entry => {
+    readonly property var zones: Prefs.worldClocks.map(entry => {
         const offset = root.zoneOffsets[entry.zone];
         const known = offset !== undefined;
 
@@ -47,7 +47,7 @@ Singleton {
 
     function applyOffsets(payload: string): void {
         const lines = payload.trim().split("\n").filter(line => line.length > 0);
-        const configured = WorldClock.zones;
+        const configured = Prefs.worldClocks;
 
         if (lines.length !== configured.length)
             return;
@@ -72,8 +72,18 @@ Singleton {
         precision: SystemClock.Minutes
     }
 
+    Connections {
+        target: Prefs
+
+        function onWorldClocksChanged(): void {
+            Qt.callLater(offsets.poll);
+        }
+    }
+
     Poller {
-        command: ["sh", "-c", 'for z in "$@"; do TZ="$z" date +%z; done', "sh"].concat(WorldClock.zones.map(entry => entry.zone))
+        id: offsets
+
+        command: ["sh", "-c", 'for z in "$@"; do TZ="$z" date +%z; done', "sh"].concat(Prefs.worldClocks.map(entry => entry.zone))
         interval: Appearance.dash.clockRefreshInterval
 
         onReceived: text => root.applyOffsets(text)

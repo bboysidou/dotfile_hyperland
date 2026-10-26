@@ -98,4 +98,11 @@ Singleton {
     readonly property var serviceStop: ["stop"]
     readonly property string serviceFlagEnable: "rm -f %1"
     readonly property string serviceFlagKill: "touch %1"
+
+    readonly property var timezones: ["timedatectl", "list-timezones"]
+    readonly property var keymapLayouts: ["localectl", "list-x11-keymap-layouts"]
+    readonly property var keymapVariants: ["localectl", "list-x11-keymap-variants"]
+    readonly property var inputDevices: ["hyprctl", "-j", "devices"]
+    readonly property string inputQuery: 'for o; do hyprctl -j getoption "$o" | tr -d "\\n"; echo; done'
+    readonly property var inputOptions: ["input:kb_layout", "input:kb_variant", "input:kb_options", "input:sensitivity", "input:accel_profile", "input:natural_scroll", "input:touchpad:natural_scroll", "input:touchpad:tap_to_click", "input:touchpad:disable_while_typing"]
 }

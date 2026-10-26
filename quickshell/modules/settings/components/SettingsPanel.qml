@@ -11,6 +11,10 @@ Panel {
     readonly property var config: Appearance.settings
     readonly property var tabs: [
         {
+            key: root.config.tabGeneral,
+            label: root.config.labelGeneralTab
+        },
+        {
             key: root.config.tabServices,
             label: root.config.labelServicesTab
         }
@@ -52,6 +56,8 @@ Panel {
         anchors.topMargin: Appearance.control.paneSpacing
 
         currentIndex: Math.max(0, root.tabs.findIndex(tab => tab.key === SettingsState.tab))
+
+        GeneralTab {}
 
         ServicesTab {}
     }

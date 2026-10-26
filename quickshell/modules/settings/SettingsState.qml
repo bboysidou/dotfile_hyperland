@@ -8,10 +8,12 @@ Singleton {
     id: root
 
     property bool opened: false
-    property string tab: Appearance.settings.tabServices
+    property string tab: Appearance.settings.tabGeneral
 
     function show(): void {
+        root.tab = Appearance.settings.tabGeneral;
         Daemons.refresh();
+        InputPrefs.refresh();
         root.opened = true;
     }
 

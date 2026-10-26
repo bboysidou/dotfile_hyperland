@@ -1,6 +1,7 @@
 import QtQuick
 import qs.core.components
 import qs.core.config
+import qs.services
 
 Item {
     id: root
@@ -20,7 +21,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: Appearance.bar.paddingSide
 
-            entries: Appearance.bar.entriesLeft
+            entries: Prefs.visibleEntries(Appearance.bar.entriesLeft)
             panelWindow: root.panelWindow
             mediaBudget: centreSlot.x - leftSlot.x - Appearance.bar.mediaGapMin
         }
@@ -30,7 +31,7 @@ Item {
 
             anchors.centerIn: parent
 
-            entries: Appearance.bar.entriesCentre
+            entries: Prefs.visibleEntries(Appearance.bar.entriesCentre)
             panelWindow: root.panelWindow
         }
 
@@ -39,7 +40,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: Appearance.bar.paddingSide
 
-            entries: Appearance.bar.entriesRight
+            entries: Prefs.visibleEntries(Appearance.bar.entriesRight)
             panelWindow: root.panelWindow
         }
     }

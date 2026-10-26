@@ -25,8 +25,7 @@ QtObject {
 
     readonly property int urgency: notification?.urgency ?? NotificationUrgency.Normal
     readonly property bool critical: urgency === NotificationUrgency.Critical
-    readonly property bool low: urgency === NotificationUrgency.Low
-    readonly property int defaultTimeout: critical ? Appearance.notif.timeoutCritical : low ? Appearance.notif.timeoutLow : Appearance.notif.timeoutNormal
+    readonly property int defaultTimeout: Prefs.notifTimeouts[urgency] ?? Appearance.notif.timeoutNormal
     readonly property int timeout: !notification || notification.expireTimeout < 0 ? defaultTimeout : notification.expireTimeout
 
     readonly property string preview: notification?.hints?.category === Appearance.notif.previewCategory ? Fmt.icon(notification.hints["image-path"] ?? "") : ""

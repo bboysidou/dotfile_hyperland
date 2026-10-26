@@ -7,6 +7,7 @@ Singleton {
     readonly property int bitsPerKilo: 1000
     readonly property int bytesPerGb: 1073741824
     readonly property int kbPerGb: 1048576
+    readonly property int msPerSecond: 1000
     readonly property int msPerMinute: 60000
     readonly property int msPerDay: 86400000
     readonly property int secondsPerHour: 3600
