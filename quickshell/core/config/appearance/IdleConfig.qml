@@ -5,6 +5,7 @@ QtObject {
     readonly property string envEnabled: "1"
     readonly property string stateFile: "idle.json"
     readonly property int saveDebounce: 400
+    readonly property int rearmDelay: 100
     readonly property int lockSeconds: 300
     readonly property int screenOffSeconds: 330
     readonly property int suspendSeconds: 900
