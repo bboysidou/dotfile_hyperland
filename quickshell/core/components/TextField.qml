@@ -25,6 +25,7 @@ StyledRect {
     signal accepted
     signal removed(bool all)
     signal cancelled
+    signal chord(var event)
 
     function setText(value: string): void {
         input.text = value;
@@ -108,6 +109,8 @@ StyledRect {
             } else if (root.gridNavigation && columns !== 0) {
                 root.navigateColumn(columns);
                 event.accepted = true;
+            } else if (event.modifiers & Qt.ControlModifier) {
+                root.chord(event);
             }
         }
 

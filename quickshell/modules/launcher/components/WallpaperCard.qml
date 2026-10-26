@@ -16,6 +16,8 @@ Item {
     readonly property bool onPath: root.PathView.onPath
     readonly property int thumbWidth: Appearance.launcher.wallpaperItemWidth
     readonly property int thumbHeight: Math.round(root.thumbWidth * Appearance.launcher.wallpaperAspect)
+    readonly property bool unscaled: Wallpaper.isUnscaled(root.modelData)
+    readonly property real ratio: root.unscaled ? root.thumbWidth / Math.max(1, Screen.width) : 1
 
     signal clicked
 
@@ -63,16 +65,20 @@ Item {
         implicitWidth: root.thumbWidth
         implicitHeight: root.thumbHeight
 
-        color: Colours.trough
+        color: Colours.surface
         radius: Appearance.launcher.wallpaperItemRounding
 
         Image {
-            anchors.fill: parent
+            anchors.centerIn: parent
+
+            width: parent.width / root.ratio
+            height: parent.height / root.ratio
+            scale: root.ratio
 
             source: `file://${root.modelData}`
-            fillMode: Image.PreserveAspectCrop
+            fillMode: Wallpaper.fillModeFor(root.modelData)
             asynchronous: true
-            sourceSize: Qt.size(root.thumbWidth, root.thumbHeight)
+            sourceSize: root.unscaled ? undefined : Qt.size(root.thumbWidth, root.thumbHeight)
         }
     }
 

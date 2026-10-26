@@ -116,16 +116,20 @@ Scope {
                     }
                 }
 
-                Image {
+                Rectangle {
                     id: shot
 
                     anchors.fill: parent
 
-                    source: Wallpaper.current ? `file://${Wallpaper.current}` : ""
-                    fillMode: Image.PreserveAspectCrop
-                    asynchronous: true
-                    sourceSize: Qt.size(surface.width, surface.height)
+                    color: Colours.surface
                     visible: false
+                    clip: true
+
+                    WallpaperImage {
+                        screen: surface.screen
+                        path: Wallpaper.current
+                        playing: false
+                    }
                 }
 
                 MultiEffect {

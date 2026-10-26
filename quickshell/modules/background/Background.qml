@@ -20,18 +20,14 @@ Scope {
 
             required property var modelData
 
-            function url(path: string): string {
-                return path ? `file://${path}` : "";
-            }
-
             function swap(): void {
                 if (current.status === Image.Ready) {
-                    previous.source = current.source;
+                    previous.path = current.path;
                     previous.opacity = 1;
                 }
 
                 current.opacity = 0;
-                current.source = panel.url(Wallpaper.current);
+                current.path = Wallpaper.current;
             }
 
             screen: panel.modelData
@@ -45,7 +41,7 @@ Scope {
             anchors.left: true
             anchors.right: true
 
-            Component.onCompleted: current.source = panel.url(Wallpaper.current)
+            Component.onCompleted: current.path = Wallpaper.current
 
             Connections {
                 target: Wallpaper
@@ -55,24 +51,16 @@ Scope {
                 }
             }
 
-            AnimatedImage {
+            WallpaperImage {
                 id: previous
 
-                anchors.fill: parent
-
-                fillMode: Image.PreserveAspectCrop
-                asynchronous: true
-                sourceSize: Qt.size(panel.width, panel.height)
+                screen: panel.modelData
             }
 
-            AnimatedImage {
+            WallpaperImage {
                 id: current
 
-                anchors.fill: parent
-
-                fillMode: Image.PreserveAspectCrop
-                asynchronous: true
-                sourceSize: Qt.size(panel.width, panel.height)
+                screen: panel.modelData
                 opacity: 0
 
                 onStatusChanged: {
@@ -86,7 +74,7 @@ Scope {
 
                         onFinished: {
                             if (current.opacity === 1)
-                                previous.source = "";
+                                previous.path = "";
                         }
                     }
                 }

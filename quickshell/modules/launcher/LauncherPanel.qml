@@ -114,6 +114,7 @@ RevealCard {
                     LauncherState.activate(content.item?.current ?? null);
             }
             onRemoved: all => LauncherState.removeClip(content.item?.current ?? null, all)
+            onChord: event => event.accepted = LauncherState.chordWallpaper(event.key, content.item?.selected ?? "")
             onCancelled: root.dismissed()
         }
 
@@ -124,6 +125,13 @@ RevealCard {
             Layout.preferredHeight: item?.implicitHeight ?? 0
 
             sourceComp: LauncherState.clipboardMode ? clipComp : LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
+        }
+
+        FitBar {
+            Layout.alignment: Qt.AlignHCenter
+
+            visible: LauncherState.wallpaperMode && path !== ""
+            path: LauncherState.wallpaperMode ? content.item?.selected ?? "" : ""
         }
 
         StyledText {

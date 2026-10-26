@@ -28,6 +28,13 @@ QtObject {
     readonly property int wallpaperElevation: 4
     readonly property real wallpaperSideScale: 0.8
     readonly property real wallpaperAspect: 0.5625
+    readonly property int fitSpacing: 8
+    readonly property int fitChipHeight: 30
+    readonly property int fitChipPadding: 14
+    readonly property int fitChipGap: 6
+    readonly property int fitChipSize: 12
+    readonly property real fitKeyOpacity: 0.6
+    readonly property string fitKeyTemplate: "^%1"
     readonly property string usageCacheDir: "quickshell/launcher"
     readonly property string usageCacheFile: "usage.json"
     readonly property int scoreExact: 100

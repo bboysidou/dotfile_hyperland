@@ -120,6 +120,15 @@ Singleton {
         root.hide();
     }
 
+    function chordWallpaper(key: int, path: string): bool {
+        const fit = WallpaperFit.fromKey(key);
+        if (!root.wallpaperMode || !fit || !path)
+            return false;
+
+        Wallpaper.setFit(path, fit);
+        return true;
+    }
+
     function activateTheme(name: string): void {
         if (!name)
             return;

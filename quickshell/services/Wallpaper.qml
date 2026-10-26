@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.core.config
+import qs.core.enums
 import qs.core.helpers
 
 Singleton {
@@ -11,6 +12,7 @@ Singleton {
 
     readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
     readonly property string statePath: `${root.stateDir}/${Appearance.wallpaper.stateFile}`
+    readonly property string fitPath: `${root.stateDir}/${Appearance.wallpaper.fitStateFile}`
     readonly property string imageDir: `${Paths.home}/${Appearance.wallpaper.dir}`
 
     property bool ready: false
@@ -18,6 +20,8 @@ Singleton {
     property string current: ""
     property string committed: ""
     property var paths: []
+    property var fits: ({})
+    property bool fitsLoaded: false
 
     function set(path: string): void {
         if (!path || path === root.committed)
@@ -35,6 +39,64 @@ Singleton {
 
     function stopPreview(): void {
         root.current = root.committed;
+    }
+
+    function fitFor(path: string): string {
+        return root.fits[path] ?? WallpaperFit.fill;
+    }
+
+    function fillModeFor(path: string): int {
+        return WallpaperFit.fillModes[root.fitFor(path)];
+    }
+
+    function isUnscaled(path: string): bool {
+        return WallpaperFit.unscaled.includes(root.fitFor(path));
+    }
+
+    function spans(path: string): bool {
+        return root.fitFor(path) === WallpaperFit.span;
+    }
+
+    function desktop(): var {
+        const screens = Quickshell.screens;
+        if (screens.length === 0)
+            return Qt.rect(0, 0, 0, 0);
+
+        const left = Math.min(...screens.map(screen => screen.x));
+        const top = Math.min(...screens.map(screen => screen.y));
+        const right = Math.max(...screens.map(screen => screen.x + screen.width));
+        const bottom = Math.max(...screens.map(screen => screen.y + screen.height));
+
+        return Qt.rect(left, top, right - left, bottom - top);
+    }
+
+    function setFit(path: string, fit: string): void {
+        if (!path || !WallpaperFit.values.includes(fit) || root.fitFor(path) === fit)
+            return;
+
+        const next = Object.assign({}, root.fits);
+        if (fit === WallpaperFit.fill)
+            delete next[path];
+        else
+            next[path] = fit;
+
+        root.fits = next;
+
+        if (root.fitsLoaded)
+            fitDebounce.restart();
+    }
+
+    function adoptFits(payload: string): void {
+        if (root.fitsLoaded)
+            return;
+
+        try {
+            root.fits = JSON.parse(payload) ?? {};
+        } catch (parseError) {
+            root.fits = {};
+        }
+
+        root.fitsLoaded = true;
     }
 
     function name(path: string): string {
@@ -126,6 +188,25 @@ Singleton {
             root.missing = true;
             root.fallback();
         }
+    }
+
+    Timer {
+        id: fitDebounce
+
+        interval: Appearance.wallpaper.fitSaveDebounce
+
+        onTriggered: fitStore.setText(JSON.stringify(root.fits))
+    }
+
+    FileView {
+        id: fitStore
+
+        path: root.ready ? root.fitPath : ""
+        atomicWrites: true
+        printErrors: false
+
+        onLoaded: root.adoptFits(text())
+        onLoadFailed: root.fitsLoaded = true
     }
 
     Component.onCompleted: root.refresh()
