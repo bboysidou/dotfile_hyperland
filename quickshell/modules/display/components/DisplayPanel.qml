@@ -68,40 +68,45 @@ RevealCard {
             visible: Displays.monitors.length > 0
         }
 
-        TabStrip {
-            Layout.alignment: Qt.AlignHCenter
+        SegmentBar {
+            Layout.fillWidth: true
 
             visible: Displays.monitors.length > 0
             current: DisplayState.tab
-            tabs: [
+            options: [
                 {
-                    section: root.config.tabMode,
+                    key: root.config.tabMode,
                     icon: Icons.monitor,
-                    label: root.config.labelModeTab
+                    label: root.config.labelModeTab,
+                    accent: Colours.tabMode
                 },
                 {
-                    section: root.config.tabLayout,
+                    key: root.config.tabLayout,
                     icon: Icons.scaleBalance,
-                    label: root.config.labelLayoutTab
+                    label: root.config.labelLayoutTab,
+                    accent: Colours.tabLayout
                 },
                 {
-                    section: root.config.tabColor,
+                    key: root.config.tabColor,
                     icon: Icons.brightness,
-                    label: root.config.labelColorTab
+                    label: root.config.labelColorTab,
+                    accent: Colours.tabColor
                 },
                 {
-                    section: root.config.tabWorkspaces,
+                    key: root.config.tabWorkspaces,
                     icon: Icons.dashTab,
-                    label: root.config.labelWorkspacesTab
+                    label: root.config.labelWorkspacesTab,
+                    accent: Colours.tabWorkspaces
                 },
                 {
-                    section: root.config.tabIdle,
+                    key: root.config.tabIdle,
                     icon: Icons.timer,
-                    label: root.config.labelIdleTab
+                    label: root.config.labelIdleTab,
+                    accent: Colours.tabIdle
                 }
             ]
 
-            onSelected: section => DisplayState.tab = section
+            onSelected: key => DisplayState.tab = key
         }
 
         StackLayout {
@@ -113,13 +118,21 @@ RevealCard {
 
             ModeTab {}
 
-            LayoutTab {}
+            LayoutTab {
+                accent: Colours.tabLayout
+            }
 
-            ColorTab {}
+            ColorTab {
+                accent: Colours.tabColor
+            }
 
-            WorkspacesTab {}
+            WorkspacesTab {
+                accent: Colours.tabWorkspaces
+            }
 
-            IdleTab {}
+            IdleTab {
+                accent: Colours.tabIdle
+            }
         }
 
         RowLayout {

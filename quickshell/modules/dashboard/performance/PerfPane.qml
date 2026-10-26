@@ -9,6 +9,8 @@ import qs.services
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var disk: SysInfo.storage.length > 0 ? SysInfo.storage[0] : null
     readonly property real memFraction: SysInfo.memTotalKb > 0 ? SysInfo.memUsedKb / SysInfo.memTotalKb : 0
 
@@ -35,6 +37,7 @@ ColumnLayout {
 
                 icon: Icons.perfTab
                 label: Appearance.dash.labelHardware
+                colour: root.accent
             }
 
             RowLayout {
@@ -108,6 +111,7 @@ ColumnLayout {
 
                 icon: Net.glyph
                 label: Appearance.dash.labelNetwork
+                colour: root.accent
             }
 
             NetworkCard {

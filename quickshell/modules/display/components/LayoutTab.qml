@@ -9,6 +9,8 @@ import qs.modules.display
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var config: Appearance.display
     readonly property var draft: DisplayState.draft
 
@@ -18,6 +20,7 @@ ColumnLayout {
         label: root.config.labelActive
 
         Toggle {
+            accent: root.accent
             checked: !(root.draft?.disabled ?? false)
 
             onToggled: checked => DisplayState.setActive(checked)
@@ -60,6 +63,7 @@ ColumnLayout {
             Chip {
                 required property real modelData
 
+                accent: root.accent
                 label: root.config.scaleTemplate.arg(Number(modelData.toFixed(2)))
                 active: Math.abs(modelData - (root.draft?.scale ?? 1)) < root.config.scaleTolerance
 
@@ -77,6 +81,7 @@ ColumnLayout {
             Chip {
                 required property var modelData
 
+                accent: root.accent
                 label: modelData[0]
                 active: (root.draft?.transform ?? 0) === modelData[1]
 
@@ -94,6 +99,7 @@ ColumnLayout {
             Chip {
                 required property string modelData
 
+                accent: root.accent
                 label: modelData || root.config.labelMirrorNone
                 active: (root.draft?.mirror ?? "") === modelData
 

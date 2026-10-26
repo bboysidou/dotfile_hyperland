@@ -7,6 +7,7 @@ StyledRect {
 
     property string label
     property bool active: false
+    property color accent: Colours.accent
 
     signal triggered
 
@@ -14,7 +15,7 @@ StyledRect {
     implicitHeight: Appearance.display.chipHeight
 
     radius: Appearance.rounding.full
-    color: root.active ? Colours.accent : Colours.elevated
+    color: root.active ? root.accent : Colours.elevated
 
     StyledText {
         id: text

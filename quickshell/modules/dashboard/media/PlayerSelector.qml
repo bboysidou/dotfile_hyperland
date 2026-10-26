@@ -9,6 +9,8 @@ import qs.services
 RowLayout {
     id: root
 
+    property color accent: Colours.accent
+
     visible: Players.available
 
     spacing: Appearance.dash.selectorSpacing
@@ -29,7 +31,7 @@ RowLayout {
             color: chip.current ? Colours.hover : "transparent"
             radius: Appearance.dash.selectorRounding
             border.width: chip.current ? Appearance.control.focusBorderWidth : 0
-            border.color: Colours.accent
+            border.color: root.accent
 
             StateLayer {
                 radius: parent.radius

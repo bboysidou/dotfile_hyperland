@@ -6,6 +6,7 @@ MouseArea {
     id: root
 
     property bool checked: false
+    property color accent: Colours.highlight
 
     readonly property int padding: Appearance.control.togglePadding
     readonly property int thumbOn: root.height - root.padding * 2
@@ -29,9 +30,9 @@ MouseArea {
         anchors.fill: parent
 
         radius: Appearance.rounding.full
-        color: root.checked ? Colours.highlight : Colours.trough
+        color: root.checked ? root.accent : Colours.trough
         border.width: root.activeFocus || !root.checked ? Appearance.control.toggleBorderWidth : 0
-        border.color: root.activeFocus ? Colours.accent : Colours.textMuted
+        border.color: root.activeFocus ? root.accent : Colours.textMuted
 
         Behavior on color {
             CAnim {
@@ -70,7 +71,7 @@ MouseArea {
                 anchors.centerIn: parent
 
                 text: Icons.check
-                color: Colours.highlight
+                color: root.accent
                 font.pixelSize: Appearance.control.toggleIconSize
                 opacity: root.checked ? 1 : 0
 

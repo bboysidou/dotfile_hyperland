@@ -10,6 +10,8 @@ import qs.services
 Card {
     id: root
 
+    property color accent: Colours.accent
+
     signal focusRequested
     signal focusReleased
 
@@ -30,6 +32,7 @@ Card {
 
             icon: Icons.place
             label: Appearance.prayer.labelPlace
+            colour: root.accent
         }
 
         RowLayout {

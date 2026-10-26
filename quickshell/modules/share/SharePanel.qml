@@ -8,6 +8,8 @@ import qs.modules.share.components
 RevealCard {
     id: root
 
+    readonly property color accent: ShareState.section === ShareSource.window ? Colours.tabWindows : Colours.tabScreens
+
     implicitWidth: Appearance.share.width
     implicitHeight: layout.implicitHeight + Appearance.share.padding * 2
 
@@ -58,21 +60,26 @@ RevealCard {
             Layout.fillWidth: true
         }
 
-        TabStrip {
-            tabs: ShareState.tabs
+        SegmentBar {
+            Layout.fillWidth: true
+
+            options: ShareState.tabs
             current: ShareState.section
 
-            onSelected: section => ShareState.show(section)
+            onSelected: key => ShareState.show(key)
         }
 
         ShareGrid {
             Layout.fillWidth: true
 
             live: root.revealed
+            accent: root.accent
         }
 
         ShareActions {
             Layout.fillWidth: true
+
+            accent: root.accent
         }
     }
 

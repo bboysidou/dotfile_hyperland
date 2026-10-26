@@ -1,9 +1,14 @@
+import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.modules.share
 
 RowLayout {
+    id: root
+
+    property color accent: Colours.accent
+
     spacing: Appearance.share.actionSpacing
 
     ShareButton {
@@ -15,6 +20,7 @@ RowLayout {
 
     Toggle {
         checked: ShareState.remember
+        accent: root.accent
 
         onToggled: checked => ShareState.remember = checked
     }
@@ -36,6 +42,7 @@ RowLayout {
     ShareButton {
         label: Appearance.share.shareLabel
         accent: true
+        tint: root.accent
         disabled: ShareState.current === null
 
         onActivated: ShareState.share()

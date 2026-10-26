@@ -119,7 +119,7 @@ StyledRect {
 
                 visible: root.unread
                 radius: Appearance.rounding.full
-                color: Colours.textBright
+                color: Colours.notifUnread
             }
 
             ScrollText {

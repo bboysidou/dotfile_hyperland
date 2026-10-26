@@ -9,6 +9,7 @@ ColumnLayout {
     required property string title
     required property string subtitle
 
+    property color accent: Colours.accent
     property int glyphSize: Appearance.dash.emptyIconSize
     property int titleSize: Appearance.dash.detailArtistSize
     property int subtitleSize: Appearance.dash.cardLabelSize
@@ -19,7 +20,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
 
         text: root.glyph
-        color: Colours.accent
+        color: root.accent
         font.pixelSize: root.glyphSize
     }
 

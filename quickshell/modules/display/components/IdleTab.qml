@@ -7,6 +7,8 @@ import qs.services
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var config: Appearance.idle
 
     spacing: 0
@@ -24,6 +26,7 @@ ColumnLayout {
         label: root.config.labelEnabled
 
         Toggle {
+            accent: root.accent
             checked: Idle.enabled
 
             onToggled: checked => Idle.set("enabled", checked)
@@ -31,18 +34,21 @@ ColumnLayout {
     }
 
     IdleStage {
+        accent: root.accent
         label: root.config.labelLock
         toggleKey: "lockOn"
         secondsKey: "lockSeconds"
     }
 
     IdleStage {
+        accent: root.accent
         label: root.config.labelScreenOff
         toggleKey: "screenOffOn"
         secondsKey: "screenOffSeconds"
     }
 
     IdleStage {
+        accent: root.accent
         label: root.config.labelSuspend
         toggleKey: "suspendOn"
         secondsKey: "suspendSeconds"
@@ -52,6 +58,7 @@ ColumnLayout {
         label: root.config.labelBatteryOnly
 
         Toggle {
+            accent: root.accent
             enabled: Idle.enabled && Idle.suspendOn
             checked: Idle.batteryOnly
 

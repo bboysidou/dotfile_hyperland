@@ -9,6 +9,7 @@ StyledRect {
     id: root
 
     required property var entry
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.settings
     readonly property var unitState: Daemons.states[root.entry.id] ?? null
@@ -57,7 +58,7 @@ StyledRect {
                 Layout.preferredWidth: root.config.iconWidth
 
                 text: Icons[root.entry.glyph] ?? Icons.settings
-                color: root.active ? Colours.accent : Colours.textMuted
+                color: root.active ? root.accent : Colours.textMuted
                 font.pixelSize: root.config.iconSize
             }
 
@@ -89,6 +90,7 @@ StyledRect {
                 visible: root.installed
                 enabled: !root.busy
                 checked: root.active
+                accent: root.accent
 
                 onToggled: checked => Daemons.set(root.entry, checked)
             }
@@ -97,6 +99,7 @@ StyledRect {
                 visible: !root.installed && root.entry.installable
                 disabled: root.busy
                 accent: true
+                tint: root.accent
                 glyph: Icons.download
                 label: root.config.labelInstall
 
@@ -116,16 +119,19 @@ StyledRect {
         CommandLine {
             visible: !root.installed && root.commands.install !== ""
             label: root.config.labelInstall
+            accent: root.accent
             command: root.commands.install
         }
 
         CommandLine {
             label: root.config.labelEnable
+            accent: root.accent
             command: root.commands.enable
         }
 
         CommandLine {
             label: root.config.labelKill
+            accent: root.accent
             command: root.commands.kill
         }
     }

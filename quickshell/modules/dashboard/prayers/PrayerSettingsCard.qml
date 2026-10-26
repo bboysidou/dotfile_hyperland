@@ -11,6 +11,8 @@ import qs.services
 Card {
     id: root
 
+    property color accent: Colours.accent
+
     implicitHeight: (layout.implicitHeight || 0) + Appearance.dash.cardPadding * 2
 
     ColumnLayout {
@@ -28,6 +30,7 @@ Card {
 
             icon: Icons.clock
             label: Appearance.prayer.labelMethod
+            colour: root.accent
         }
 
         Repeater {
@@ -60,7 +63,7 @@ Card {
                     anchors.rightMargin: Appearance.padding.normal
 
                     text: option.modelData.label
-                    color: option.active ? Colours.accent : Colours.text
+                    color: option.active ? root.accent : Colours.text
                     font.weight: option.active ? Appearance.font.weightActive : Appearance.font.weightNormal
                 }
             }
@@ -71,6 +74,7 @@ Card {
 
             icon: Icons.shield
             label: Appearance.prayer.labelAsr
+            colour: root.accent
         }
 
         SegmentBar {
@@ -81,6 +85,7 @@ Card {
                         label: entry.label
                     }))
             current: Prayer.asr
+            accent: root.accent
 
             onSelected: key => Prayer.setAsr(key)
         }
@@ -90,6 +95,7 @@ Card {
 
             icon: Icons.sunriseMarker
             label: Appearance.prayer.labelHighLat
+            colour: root.accent
         }
 
         SegmentBar {
@@ -100,6 +106,7 @@ Card {
                         label: entry.label
                     }))
             current: Prayer.highLat
+            accent: root.accent
 
             onSelected: key => Prayer.setHighLat(key)
         }

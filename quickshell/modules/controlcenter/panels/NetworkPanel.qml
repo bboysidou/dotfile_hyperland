@@ -28,11 +28,13 @@ Panel {
     readonly property var tabs: [
         {
             key: NetworkSection.networks,
-            label: Appearance.speedTest.labelNetworks
+            label: Appearance.speedTest.labelNetworks,
+            accent: Colours.network
         },
         {
             key: NetworkSection.speedTest,
-            label: Appearance.speedTest.labelSpeedTest
+            label: Appearance.speedTest.labelSpeedTest,
+            accent: Colours.accent
         }
     ]
     readonly property bool listing: ControlState.networkSection === NetworkSection.networks

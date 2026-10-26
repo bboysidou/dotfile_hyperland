@@ -31,12 +31,20 @@ Panel {
 
     readonly property var groups: NotifHistory.bucket(root.entries)
 
-    readonly property color accent: root.criticalOnly ? Colours.urgencyCritical : Colours.accent
+    readonly property color accent: {
+        if (root.criticalOnly)
+            return Colours.urgencyCritical;
+        if (root.unreadOnly)
+            return Colours.notifUnread;
+        return Colours.accent;
+    }
 
     readonly property color emphasis: {
         if (root.entries.length === 0)
             return Colours.textMuted;
-        return root.criticalOnly ? Colours.urgencyCritical : Colours.textBright;
+        if (root.criticalOnly)
+            return Colours.urgencyCritical;
+        return root.unreadOnly ? Colours.notifUnread : Colours.textBright;
     }
 
     readonly property string heroLabel: {

@@ -9,6 +9,7 @@ StyledRect {
     property string glyph
     property string temp
     property bool active: false
+    property color accent: Colours.accent
     property real depth: 1
 
     readonly property var config: Appearance.weather
@@ -22,7 +23,7 @@ StyledRect {
     height: root.config.pillHeight * root.zoom * root.depth
 
     radius: width / 2
-    color: root.active ? Colours.accent : Colours.elevated
+    color: root.active ? root.accent : Colours.elevated
 
     Column {
         anchors.centerIn: parent

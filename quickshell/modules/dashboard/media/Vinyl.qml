@@ -9,6 +9,7 @@ Item {
     id: root
 
     property bool active: true
+    property color accent: Colours.media
 
     property int coverSize: Appearance.dash.vinylSize
     property real magnitude: Appearance.dash.visualiserMagnitude
@@ -25,7 +26,7 @@ Item {
         active: root.active
         innerRadius: root.ringRadius
         magnitude: root.magnitude
-        colour: Colours.media
+        colour: root.accent
     }
 
     ClippingRectangle {

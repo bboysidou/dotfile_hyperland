@@ -11,6 +11,7 @@ Item {
     id: root
 
     property date selected: Time.now
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.weather
     readonly property date today: new Date(Time.now.getFullYear(), Time.now.getMonth(), Time.now.getDate())
@@ -42,6 +43,7 @@ Item {
                 Layout.preferredWidth: root.config.calendarWidth
                 Layout.alignment: Qt.AlignTop
 
+                accent: root.accent
                 selectable: true
                 addable: true
                 selectedDate: root.selected
@@ -54,6 +56,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+                accent: root.accent
                 slots: root.inForecast ? Weather.slots(root.dayIndex, Time.now.getHours()) : []
             }
 
@@ -62,6 +65,7 @@ Item {
                 Layout.fillWidth: false
                 Layout.fillHeight: true
 
+                accent: root.accent
                 day: root.inForecast ? Weather.day(root.dayIndex) : null
                 date: root.selected
                 canBack: root.dayIndex > 0
@@ -74,6 +78,7 @@ Item {
         AgendaStrip {
             Layout.fillWidth: true
 
+            accent: root.accent
             date: root.selected
             today: root.dayIndex === 0
 

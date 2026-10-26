@@ -7,6 +7,7 @@ StyledRect {
     property string glyph
     property string label
     property bool accent: false
+    property color tint: Colours.accent
     property bool disabled: false
 
     signal triggered
@@ -15,7 +16,7 @@ StyledRect {
     implicitHeight: Appearance.display.buttonHeight
 
     radius: Appearance.rounding.full
-    color: root.accent ? Colours.accent : Colours.elevated
+    color: root.accent ? root.tint : Colours.elevated
     opacity: root.disabled ? Appearance.control.disabledOpacity : 1
 
     Row {

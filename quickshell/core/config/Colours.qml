@@ -63,10 +63,29 @@ Singleton {
     readonly property color audioOutput: raw.accent
     readonly property color audioInput: raw.magenta
     readonly property color audioStream: raw.green
+    readonly property color tabDash: raw.accent
+    readonly property color tabWeather: raw.yellow
+    readonly property color tabPerformance: raw.magenta
+    readonly property color tabMedia: raw.green
+    readonly property color tabPrayers: raw.orange
+    readonly property color tabGeneral: raw.accent
+    readonly property color tabServices: raw.green
+    readonly property color tabOverview: raw.accent
+    readonly property color tabHistory: raw.yellow
+    readonly property color tabDetails: raw.magenta
+    readonly property color tabCare: raw.green
+    readonly property color tabMode: raw.accent
+    readonly property color tabLayout: raw.green
+    readonly property color tabColor: raw.yellow
+    readonly property color tabWorkspaces: raw.magenta
+    readonly property color tabIdle: raw.orange
+    readonly property color tabScreens: raw.accent
+    readonly property color tabWindows: raw.green
     readonly property color network: raw.green
     readonly property color bluetooth: raw.blue
     readonly property color ringTrack: raw.bgLighter
     readonly property color urgencyCritical: raw.critical
+    readonly property color notifUnread: raw.warning
     readonly property color criticalSurface: blend(pill, raw.critical, criticalTint)
     readonly property color cpu: raw.accent
     readonly property color memory: raw.green

@@ -43,6 +43,7 @@ DetailCard {
         enabled: BatteryCare.canLimit
         options: root.limits
         current: String(Battery.limit)
+        accent: root.accent
 
         onSelected: key => BatteryCare.setLimit(Number(key))
     }
@@ -79,6 +80,7 @@ DetailCard {
 
             enabled: BatteryCare.canHold
             checked: BatteryCare.holding
+            accent: root.accent
 
             onToggled: BatteryCare.setHold(!BatteryCare.holding)
         }
@@ -97,6 +99,7 @@ DetailCard {
         enabled: BatteryCare.canMode
         options: root.modes
         current: Battery.chargeTypes.current
+        accent: root.accent
 
         onSelected: key => BatteryCare.setChargeType(key)
     }

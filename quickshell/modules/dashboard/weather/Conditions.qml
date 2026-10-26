@@ -12,6 +12,7 @@ ColumnLayout {
     property date date: new Date()
     property bool canBack: false
     property bool canForward: false
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.weather
 
@@ -80,6 +81,7 @@ ColumnLayout {
             text: root.config.windTemplate.arg(Math.round(Weather.wind(root.day?.wind ?? 0))).arg(WindUnit.labels[Prefs.windUnit])
             glyph: Icons.weatherWind
             label: root.config.labelWind
+            colour: root.accent
         }
 
         StatRing {
@@ -87,6 +89,7 @@ ColumnLayout {
             text: root.config.percentTemplate.arg(root.day?.humidity ?? 0)
             glyph: Icons.waterPercent
             label: root.config.labelHumidity
+            colour: root.accent
         }
 
         StatRing {
@@ -94,6 +97,7 @@ ColumnLayout {
             text: root.config.percentTemplate.arg(root.day?.rain ?? 0)
             glyph: Icons.water
             label: root.config.labelRain
+            colour: root.accent
         }
 
         StatRing {
@@ -101,6 +105,7 @@ ColumnLayout {
             text: root.config.tempTemplate.arg(Weather.temp(root.day?.feels ?? 0).toFixed(1))
             glyph: Icons.thermometer
             label: root.config.labelFeels
+            colour: root.accent
         }
     }
 }

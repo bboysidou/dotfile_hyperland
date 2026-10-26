@@ -13,6 +13,7 @@ Item {
     id: root
 
     property var slots: []
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.weather
     readonly property real radiusX: root.width * root.config.orbitWidthRatio / 2
@@ -57,7 +58,7 @@ Item {
         anchors.fill: parent
 
         angle: root.phase
-        accent: Colours.accent
+        accent: root.accent
     }
 
     Shape {
@@ -107,7 +108,7 @@ Item {
                 Layout.alignment: Qt.AlignBaseline
 
                 text: Qt.formatDateTime(clock.date, root.config.secondsFormat)
-                color: Colours.accent
+                color: root.accent
                 font.pixelSize: root.config.secondsSize
             }
         }
@@ -159,6 +160,7 @@ Item {
             glyph: slot.glyph
             temp: root.temperature(slot.temp)
             active: slot.active
+            accent: root.accent
         }
     }
 }

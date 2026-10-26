@@ -12,6 +12,7 @@ StyledRect {
     required property var entry
     required property bool selected
     required property bool live
+    property color accent: Colours.accent
 
     readonly property bool isWindow: root.entry.source === ShareSource.window
 
@@ -21,7 +22,7 @@ StyledRect {
     color: root.selected ? Colours.hover : Colours.pill
     radius: Appearance.share.tileRounding
     border.width: root.selected ? Appearance.share.tileBorderWidth : 0
-    border.color: Colours.accent
+    border.color: root.accent
 
     StateLayer {
         onClicked: root.clicked()

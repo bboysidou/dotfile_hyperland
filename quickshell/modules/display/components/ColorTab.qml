@@ -11,6 +11,8 @@ import qs.services
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var config: Appearance.display
     readonly property var draft: DisplayState.draft
     readonly property bool hdr: root.config.hdrPresets.includes(root.draft?.cm ?? "")
@@ -31,6 +33,7 @@ ColumnLayout {
             Chip {
                 required property var modelData
 
+                accent: root.accent
                 label: modelData[0]
                 active: (root.draft?.vrr ?? 0) === modelData[1]
 
@@ -48,6 +51,7 @@ ColumnLayout {
             Chip {
                 required property var modelData
 
+                accent: root.accent
                 label: modelData[0]
                 active: (root.draft?.bitdepth ?? 8) === modelData[1]
 
@@ -65,6 +69,7 @@ ColumnLayout {
             Chip {
                 required property string modelData
 
+                accent: root.accent
                 label: modelData
                 active: (root.draft?.cm ?? root.config.defaultCm) === modelData
 
@@ -99,6 +104,7 @@ ColumnLayout {
         label: root.config.labelDpms
 
         Toggle {
+            accent: root.accent
             enabled: DisplayState.monitor !== Monitors.focused
             checked: DisplayState.current?.settings.dpms ?? true
 

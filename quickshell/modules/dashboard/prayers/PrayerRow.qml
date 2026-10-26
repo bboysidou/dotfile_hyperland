@@ -10,6 +10,7 @@ RowLayout {
     required property bool active
     required property bool elapsed
     required property bool marker
+    property color accent: Colours.accent
 
     Layout.fillWidth: true
     Layout.preferredHeight: Appearance.prayer.rowHeight
@@ -27,7 +28,7 @@ RowLayout {
 
     StyledText {
         text: root.entry.time
-        color: root.active ? Colours.accent : root.elapsed || root.marker ? Colours.textMuted : Colours.text
+        color: root.active ? root.accent : root.elapsed || root.marker ? Colours.textMuted : Colours.text
         font.weight: root.active ? Appearance.font.weightActive : Appearance.font.weightNormal
         font.pixelSize: root.marker ? Appearance.dash.cardLabelSize : Appearance.font.size.normal
     }

@@ -25,6 +25,7 @@ DetailCard {
 
         options: root.config.spans
         current: BatteryHistory.span
+        accent: root.accent
 
         onSelected: key => BatteryHistory.span = key
     }

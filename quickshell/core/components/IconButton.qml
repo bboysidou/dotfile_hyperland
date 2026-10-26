@@ -8,6 +8,7 @@ Icon {
     property int size: Appearance.dash.iconButtonSize
     property bool active: false
     property bool accent: false
+    property color tint: Colours.accent
     property bool disabled: false
 
     signal triggered
@@ -19,7 +20,7 @@ Icon {
         if (root.disabled)
             return Colours.textMuted;
         if (root.accent || root.active)
-            return Colours.accent;
+            return root.tint;
         return Colours.text;
     }
 

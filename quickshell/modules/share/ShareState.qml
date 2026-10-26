@@ -21,14 +21,16 @@ Singleton {
 
     readonly property var tabs: [
         {
-            section: ShareSource.screen,
+            key: ShareSource.screen,
             icon: Icons.shareScreen,
-            label: Appearance.share.screensLabel
+            label: Appearance.share.screensLabel,
+            accent: Colours.tabScreens
         },
         {
-            section: ShareSource.window,
+            key: ShareSource.window,
             icon: Icons.shareWindow,
-            label: Appearance.share.windowsLabel
+            label: Appearance.share.windowsLabel,
+            accent: Colours.tabWindows
         }
     ]
 

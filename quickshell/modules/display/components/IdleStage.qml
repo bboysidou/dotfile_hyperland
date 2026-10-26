@@ -8,11 +8,13 @@ OptionRow {
 
     required property string toggleKey
     required property string secondsKey
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.idle
     readonly property bool active: Idle.enabled && Idle[root.toggleKey]
 
     Toggle {
+        accent: root.accent
         enabled: Idle.enabled
         checked: Idle[root.toggleKey]
 

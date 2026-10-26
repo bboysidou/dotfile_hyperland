@@ -5,6 +5,8 @@ import qs.core.config
 RowLayout {
     id: root
 
+    property color accent: Colours.accent
+
     signal focusRequested
     signal focusReleased
 
@@ -19,11 +21,15 @@ RowLayout {
 
         PrayerNextCard {
             Layout.fillWidth: true
+
+            accent: root.accent
         }
 
         PrayerListCard {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            accent: root.accent
         }
     }
 
@@ -37,6 +43,8 @@ RowLayout {
         PrayerPlaceCard {
             Layout.fillWidth: true
 
+            accent: root.accent
+
             onFocusRequested: root.focusRequested()
             onFocusReleased: root.focusReleased()
         }
@@ -44,6 +52,8 @@ RowLayout {
         PrayerSettingsCard {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            accent: root.accent
         }
     }
 }

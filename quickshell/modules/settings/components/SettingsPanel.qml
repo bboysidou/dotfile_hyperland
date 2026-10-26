@@ -12,11 +12,15 @@ Panel {
     readonly property var tabs: [
         {
             key: root.config.tabGeneral,
-            label: root.config.labelGeneralTab
+            icon: Icons.settings,
+            label: root.config.labelGeneralTab,
+            accent: Colours.tabGeneral
         },
         {
             key: root.config.tabServices,
-            label: root.config.labelServicesTab
+            icon: Icons.power,
+            label: root.config.labelServicesTab,
+            accent: Colours.tabServices
         }
     ]
 
@@ -59,6 +63,8 @@ Panel {
 
         GeneralTab {}
 
-        ServicesTab {}
+        ServicesTab {
+            accent: Colours.tabServices
+        }
     }
 }

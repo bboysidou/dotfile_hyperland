@@ -9,6 +9,7 @@ StyledRect {
 
     required property string label
     required property string command
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.settings
     readonly property bool copied: Daemons.copied === root.command
@@ -54,7 +55,7 @@ StyledRect {
 
             visible: root.copied
             text: root.config.labelCopied
-            color: Colours.accent
+            color: root.accent
             font.pixelSize: Appearance.font.size.small
         }
 

@@ -13,6 +13,7 @@ Item {
 
     readonly property int index: Math.max(0, root.options.findIndex(option => option.key === root.current))
     readonly property real segmentWidth: root.width / Math.max(1, root.options.length)
+    readonly property color fill: root.options[root.index]?.accent ?? root.accent
 
     property real leading: root.index * root.segmentWidth
     property real trailing: (root.index + 1) * root.segmentWidth
@@ -96,7 +97,7 @@ Item {
 
             width: Math.max(0, root.trailing - root.leading)
             height: bg.height
-            color: root.accent
+            color: root.fill
 
             topLeftRadius: root.index === 0 ? Appearance.segment.rounding : Appearance.segment.innerRounding
             bottomLeftRadius: root.index === 0 ? Appearance.segment.rounding : Appearance.segment.innerRounding
@@ -138,20 +139,32 @@ Item {
                         }
                     }
 
-                    ScrollText {
-                        anchors.fill: parent
-                        anchors.leftMargin: Appearance.segment.padding
-                        anchors.rightMargin: Appearance.segment.padding
+                    RowLayout {
+                        anchors.centerIn: parent
 
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: segment.modelData.label
-                        color: segment.active ? Colours.surface : Colours.textMuted
-                        font.pixelSize: Appearance.segment.fontSize
-                        font.weight: segment.active ? Appearance.font.weightActive : Appearance.font.weightNormal
+                        width: Math.min(implicitWidth, segment.width - Appearance.segment.padding * 2)
+                        spacing: Appearance.segment.iconSpacing
 
-                        Behavior on color {
-                            CAnim {}
+                        Icon {
+                            visible: !!segment.modelData.icon
+                            text: segment.modelData.icon ?? ""
+                            color: segment.active ? Colours.surface : (segment.modelData.accent ?? Colours.textMuted)
+                            font.pixelSize: Appearance.segment.iconSize
+                        }
+
+                        ScrollText {
+                            Layout.fillWidth: true
+
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            text: segment.modelData.label
+                            color: segment.active ? Colours.surface : Colours.textMuted
+                            font.pixelSize: Appearance.segment.fontSize
+                            font.weight: segment.active ? Appearance.font.weightActive : Appearance.font.weightNormal
+
+                            Behavior on color {
+                                CAnim {}
+                            }
                         }
                     }
 

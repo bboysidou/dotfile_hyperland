@@ -14,6 +14,7 @@ ColumnLayout {
 
     property date date: new Date()
     property bool today: true
+    property color accent: Colours.accent
 
     readonly property var config: Appearance.weather
     readonly property var events: Agenda.events.length >= 0 ? Agenda.on(root.date) : []
@@ -37,7 +38,7 @@ ColumnLayout {
 
         Icon {
             text: Icons.calendarDay
-            color: Colours.textMuted
+            color: root.accent
         }
 
         StyledText {

@@ -8,6 +8,8 @@ import qs.services
 Card {
     id: root
 
+    property color accent: Colours.accent
+
     implicitHeight: (layout.implicitHeight || 0) + Appearance.dash.cardPadding * 2
 
     ColumnLayout {
@@ -23,6 +25,7 @@ Card {
 
             icon: Icons.prayersTab
             label: Prayer.place.city
+            colour: root.accent
         }
 
         Item {
@@ -43,7 +46,7 @@ Card {
                     startAngle: Appearance.prayer.arcStart
                     span: Appearance.prayer.arcSpan
                     strokeWidth: Appearance.prayer.arcSize * Appearance.prayer.arcThicknessRatio
-                    fgColour: Prayer.urgent ? Colours.critical : Colours.accent
+                    fgColour: Prayer.urgent ? Colours.critical : root.accent
                 }
 
                 ColumnLayout {
@@ -72,7 +75,7 @@ Card {
                         Layout.alignment: Qt.AlignHCenter
 
                         text: Prayer.countdown
-                        color: Prayer.urgent ? Colours.critical : Colours.accent
+                        color: Prayer.urgent ? Colours.critical : root.accent
                         font.weight: Appearance.font.weightActive
                     }
                 }

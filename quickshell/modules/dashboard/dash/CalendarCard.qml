@@ -14,6 +14,7 @@ Card {
     readonly property int cellCount: Appearance.dash.calendarColumns * Appearance.dash.calendarRows
 
     property int monthOffset: 0
+    property color accent: Colours.accent
     property bool selectable: false
     property bool addable: false
     property date selectedDate: Time.now
@@ -98,6 +99,7 @@ Card {
                 icon: Icons.calendarMonth
                 size: Appearance.dash.calendarNavSize
                 accent: root.monthOffset !== 0
+                tint: root.accent
                 disabled: root.monthOffset === 0
 
                 onTriggered: root.monthOffset = 0
@@ -162,7 +164,7 @@ Card {
                     Layout.fillWidth: true
                     Layout.preferredHeight: Appearance.dash.calendarCellSize
 
-                    color: cell.cellData.isToday ? Colours.accent : (cell.cellData.isSelected ? Colours.accentMuted : "transparent")
+                    color: cell.cellData.isToday ? root.accent : (cell.cellData.isSelected ? Colours.shade(root.accent, Colours.accentMutedShade) : "transparent")
                     radius: Appearance.dash.calendarCellRounding
 
                     StateLayer {

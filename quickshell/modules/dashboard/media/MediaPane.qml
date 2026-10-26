@@ -10,6 +10,7 @@ Item {
     id: root
 
     property bool active: true
+    property color accent: Colours.accent
 
     implicitWidth: Appearance.dash.mediaTabWidth
     implicitHeight: Appearance.dash.mediaTabHeight + Appearance.dash.spacing + equalizer.implicitHeight
@@ -26,6 +27,7 @@ Item {
         EmptyState {
             anchors.centerIn: parent
 
+            accent: root.accent
             glyph: Icons.mediaTab
             title: Appearance.dash.emptyTitle
             subtitle: Appearance.dash.emptySubtitle
@@ -61,12 +63,15 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
 
                     active: root.active
+                    accent: root.accent
                 }
 
                 Details {
                     Layout.fillWidth: true
                     Layout.preferredWidth: 0
                     Layout.alignment: Qt.AlignVCenter
+
+                    accent: root.accent
                 }
             }
         }
@@ -79,5 +84,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.topMargin: Appearance.dash.spacing
+
+        accent: root.accent
     }
 }

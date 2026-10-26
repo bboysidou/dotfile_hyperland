@@ -8,6 +8,8 @@ import qs.services
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     spacing: Appearance.dash.cardSpacing
 
     Marquee {
@@ -61,6 +63,7 @@ ColumnLayout {
             icon: Icons.shuffle
             size: Appearance.dash.transportSize
             active: Players.shuffle
+            tint: root.accent
             disabled: !Players.shuffleSupported
 
             onTriggered: Players.toggleShuffle()
@@ -78,6 +81,7 @@ ColumnLayout {
             icon: Players.playIcon
             size: Appearance.dash.transportPrimarySize
             accent: true
+            tint: root.accent
             disabled: !Players.available
 
             onTriggered: Players.togglePlaying()
@@ -95,6 +99,7 @@ ColumnLayout {
             icon: Players.loopIcon
             size: Appearance.dash.transportSize
             active: Players.looping
+            tint: root.accent
             disabled: !Players.loopSupported
 
             onTriggered: Players.cycleLoop()
@@ -107,6 +112,7 @@ ColumnLayout {
 
         value: Players.progress
         thickness: Appearance.slider.largeThickness
+        fillColour: root.accent
         enabled: Players.canSeek
 
         onMoved: value => Players.seek(value)
@@ -137,5 +143,7 @@ ColumnLayout {
     PlayerSelector {
         Layout.alignment: Qt.AlignHCenter
         Layout.topMargin: Appearance.dash.cardSpacing
+
+        accent: root.accent
     }
 }

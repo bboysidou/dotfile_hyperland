@@ -8,6 +8,7 @@ StyledRect {
 
     property string glyph
     property string title
+    property color accent: Colours.accent
 
     default property alias content: body.data
     property alias trailing: trailingSlot.data
@@ -35,7 +36,7 @@ StyledRect {
 
             Icon {
                 text: root.glyph
-                color: Colours.accent
+                color: root.accent
                 font.pixelSize: root.config.iconSize
             }
 

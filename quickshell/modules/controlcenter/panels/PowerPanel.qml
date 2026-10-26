@@ -16,27 +16,31 @@ Panel {
     readonly property var config: Appearance.powerPanel
     readonly property var tabs: [
         {
-            section: PowerSection.overview,
+            key: PowerSection.overview,
             icon: Icons.power,
-            label: Appearance.batteryTab.labelOverview
+            label: Appearance.batteryTab.labelOverview,
+            accent: Colours.tabOverview
         },
         {
-            section: PowerSection.history,
+            key: PowerSection.history,
             icon: Icons.timer,
-            label: Appearance.batteryTab.labelHistory
+            label: Appearance.batteryTab.labelHistory,
+            accent: Colours.tabHistory
         },
         {
-            section: PowerSection.details,
+            key: PowerSection.details,
             icon: Icons.hardware,
-            label: Appearance.batteryTab.labelDetails
+            label: Appearance.batteryTab.labelDetails,
+            accent: Colours.tabDetails
         },
         {
-            section: PowerSection.care,
+            key: PowerSection.care,
             icon: Icons.leaf,
-            label: Appearance.batteryTab.labelCare
+            label: Appearance.batteryTab.labelCare,
+            accent: Colours.tabCare
         }
-    ].filter(tab => tab.section !== PowerSection.care || BatteryCare.supported)
-    readonly property string section: Battery.available && root.tabs.some(tab => tab.section === ControlState.powerSection) ? ControlState.powerSection : PowerSection.overview
+    ].filter(tab => tab.key !== PowerSection.care || BatteryCare.supported)
+    readonly property string section: Battery.available && root.tabs.some(tab => tab.key === ControlState.powerSection) ? ControlState.powerSection : PowerSection.overview
 
     function run(action: string): void {
         ControlState.hide();
@@ -70,14 +74,14 @@ Panel {
             }
         }
 
-        TabStrip {
-            Layout.alignment: Qt.AlignHCenter
+        SegmentBar {
+            Layout.fillWidth: true
 
             visible: Battery.available
             current: root.section
-            tabs: root.tabs
+            options: root.tabs
 
-            onSelected: section => ControlState.powerSection = section
+            onSelected: key => ControlState.powerSection = key
         }
 
         StackLayout {
@@ -93,9 +97,13 @@ Panel {
             ColumnLayout {
                 spacing: Appearance.batteryTab.sectionSpacing
 
-                HistoryCard {}
+                HistoryCard {
+                    accent: Colours.tabHistory
+                }
 
-                PowerSplit {}
+                PowerSplit {
+                    accent: Colours.tabHistory
+                }
 
                 Item {
                     Layout.fillHeight: true
@@ -115,7 +123,9 @@ Panel {
             ColumnLayout {
                 spacing: Appearance.batteryTab.sectionSpacing
 
-                CareCard {}
+                CareCard {
+                    accent: Colours.tabCare
+                }
 
                 Item {
                     Layout.fillHeight: true

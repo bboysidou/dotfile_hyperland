@@ -8,6 +8,8 @@ import qs.core.config
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var config: Appearance.settings
 
     spacing: root.config.listSpacing
@@ -43,6 +45,7 @@ ColumnLayout {
                     required property var modelData
 
                     entry: modelData
+                    accent: root.accent
                 }
             }
         }

@@ -22,7 +22,7 @@ RevealCard {
     readonly property real paneWidth: root.pane?.width ?? 0
     readonly property real paneHeight: root.pane?.implicitHeight ?? 0
 
-    implicitWidth: Math.max(root.paneWidth, tabs.implicitWidth || 0) + Appearance.dash.padding * 2
+    implicitWidth: root.paneWidth + Appearance.dash.padding * 2
     implicitHeight: (tabs.implicitHeight || 0) + root.paneHeight + Appearance.dash.padding * 3
 
     color: Colours.bar
@@ -82,43 +82,49 @@ RevealCard {
         origin: Corner.bottomRight
     }
 
-    TabStrip {
+    SegmentBar {
         id: tabs
 
         anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: Appearance.dash.padding
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: Appearance.dash.padding
 
         current: DashState.tab
-        tabs: [
+        options: [
             {
-                section: DashSection.dash,
+                key: DashSection.dash,
                 icon: Icons.dashTab,
-                label: Appearance.dash.labelDash
+                label: Appearance.dash.labelDash,
+                accent: Colours.tabDash
             },
             {
-                section: DashSection.weather,
+                key: DashSection.weather,
                 icon: Icons.weatherPartly,
-                label: Appearance.weather.labelWeather
+                label: Appearance.weather.labelWeather,
+                accent: Colours.tabWeather
             },
             {
-                section: DashSection.performance,
+                key: DashSection.performance,
                 icon: Icons.perfTab,
-                label: Appearance.dash.labelPerformance
+                label: Appearance.dash.labelPerformance,
+                accent: Colours.tabPerformance
             },
             {
-                section: DashSection.media,
+                key: DashSection.media,
                 icon: Icons.mediaTab,
-                label: Appearance.dash.labelMedia
+                label: Appearance.dash.labelMedia,
+                accent: Colours.tabMedia
             },
             {
-                section: DashSection.prayers,
+                key: DashSection.prayers,
                 icon: Icons.prayersTab,
-                label: Appearance.dash.labelPrayers
+                label: Appearance.dash.labelPrayers,
+                accent: Colours.tabPrayers
             }
         ]
 
-        onSelected: section => DashState.tab = section
+        onSelected: key => DashState.tab = key
     }
 
     ClippingRectangle {
@@ -164,6 +170,7 @@ RevealCard {
                         roleValue: DashSection.weather
 
                         delegate: WeatherPane {
+                            accent: Colours.tabWeather
                             onFocusRequested: DashState.pinned = true
                             onFocusReleased: root.forceActiveFocus()
                         }
@@ -172,6 +179,7 @@ RevealCard {
                         roleValue: DashSection.performance
 
                         delegate: PerfPane {
+                            accent: Colours.tabPerformance
                             width: Math.max(implicitWidth, root.minPaneWidth)
                         }
                     }
@@ -179,6 +187,7 @@ RevealCard {
                         roleValue: DashSection.media
 
                         delegate: MediaPane {
+                            accent: Colours.tabMedia
                             active: root.onMedia
                         }
                     }
@@ -186,6 +195,7 @@ RevealCard {
                         roleValue: DashSection.prayers
 
                         delegate: PrayerPane {
+                            accent: Colours.tabPrayers
                             width: Math.max(implicitWidth, root.minPaneWidth)
                             onFocusRequested: DashState.pinned = true
                             onFocusReleased: root.forceActiveFocus()

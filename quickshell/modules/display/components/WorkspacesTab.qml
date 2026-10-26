@@ -10,6 +10,8 @@ import qs.services
 ColumnLayout {
     id: root
 
+    property color accent: Colours.accent
+
     readonly property var config: Appearance.display
 
     spacing: root.config.sectionSpacing
@@ -42,7 +44,7 @@ ColumnLayout {
                 Layout.preferredHeight: root.config.workspaceTileSize
 
                 radius: root.config.tileRounding
-                color: tile.mine ? Colours.accent : Colours.elevated
+                color: tile.mine ? root.accent : Colours.elevated
 
                 Column {
                     anchors.centerIn: parent
