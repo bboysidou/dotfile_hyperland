@@ -127,7 +127,7 @@ Scope {
 
                     WallpaperImage {
                         screen: surface.screen
-                        path: Wallpaper.current
+                        path: WallpaperLayout.currentFor(surface.screen?.name ?? "")
                         playing: false
                     }
                 }

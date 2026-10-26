@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.enums
@@ -125,6 +126,12 @@ RevealCard {
             Layout.preferredHeight: item?.implicitHeight ?? 0
 
             sourceComp: LauncherState.clipboardMode ? clipComp : LauncherState.themeMode ? themeComp : LauncherState.wallpaperMode ? wallpaperComp : appsComp
+        }
+
+        ScreenBar {
+            Layout.alignment: Qt.AlignHCenter
+
+            visible: LauncherState.wallpaperMode && Quickshell.screens.length > 1
         }
 
         FitBar {

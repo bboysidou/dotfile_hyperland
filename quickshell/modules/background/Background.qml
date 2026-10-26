@@ -20,6 +20,8 @@ Scope {
 
             required property var modelData
 
+            readonly property string wanted: WallpaperLayout.currentFor(panel.modelData.name)
+
             function swap(): void {
                 if (current.status === Image.Ready) {
                     previous.path = current.path;
@@ -27,7 +29,7 @@ Scope {
                 }
 
                 current.opacity = 0;
-                current.path = Wallpaper.current;
+                current.path = panel.wanted;
             }
 
             screen: panel.modelData
@@ -41,15 +43,8 @@ Scope {
             anchors.left: true
             anchors.right: true
 
-            Component.onCompleted: current.path = Wallpaper.current
-
-            Connections {
-                target: Wallpaper
-
-                function onCurrentChanged(): void {
-                    panel.swap();
-                }
-            }
+            Component.onCompleted: current.path = panel.wanted
+            onWantedChanged: panel.swap()
 
             WallpaperImage {
                 id: previous

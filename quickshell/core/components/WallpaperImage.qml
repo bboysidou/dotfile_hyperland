@@ -7,8 +7,9 @@ AnimatedImage {
     required property var screen
     property string path
 
-    readonly property bool spans: Wallpaper.spans(root.path)
-    readonly property rect desktop: Wallpaper.desktop()
+    readonly property string screenName: root.screen?.name ?? ""
+    readonly property bool spans: WallpaperLayout.spans(root.path, root.screenName)
+    readonly property rect desktop: WallpaperLayout.desktop()
     readonly property real screenWidth: root.parent?.width ?? 0
     readonly property real screenHeight: root.parent?.height ?? 0
 
@@ -18,7 +19,7 @@ AnimatedImage {
     height: root.spans ? root.desktop.height : root.screenHeight
 
     source: root.path ? `file://${root.path}` : ""
-    fillMode: Wallpaper.fillModeFor(root.path)
+    fillMode: WallpaperLayout.fillModeFor(root.path, root.screenName)
     asynchronous: true
-    sourceSize: Wallpaper.isUnscaled(root.path) ? undefined : Qt.size(root.width, root.height)
+    sourceSize: WallpaperLayout.isUnscaled(root.path, root.screenName) ? undefined : Qt.size(root.width, root.height)
 }

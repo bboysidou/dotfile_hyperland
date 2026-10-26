@@ -16,8 +16,9 @@ Item {
     readonly property bool onPath: root.PathView.onPath
     readonly property int thumbWidth: Appearance.launcher.wallpaperItemWidth
     readonly property int thumbHeight: Math.round(root.thumbWidth * Appearance.launcher.wallpaperAspect)
-    readonly property bool unscaled: Wallpaper.isUnscaled(root.modelData)
-    readonly property real ratio: root.unscaled ? root.thumbWidth / Math.max(1, Screen.width) : 1
+    readonly property string screenName: WallpaperLayout.target
+    readonly property bool unscaled: WallpaperLayout.isUnscaled(root.modelData, root.screenName)
+    readonly property real ratio: root.unscaled ? root.thumbWidth / Math.max(1, WallpaperLayout.screenFor(root.screenName)?.width ?? 1) : 1
 
     signal clicked
 
@@ -76,7 +77,7 @@ Item {
             scale: root.ratio
 
             source: `file://${root.modelData}`
-            fillMode: Wallpaper.fillModeFor(root.modelData)
+            fillMode: WallpaperLayout.fillModeFor(root.modelData, root.screenName)
             asynchronous: true
             sourceSize: root.unscaled ? undefined : Qt.size(root.thumbWidth, root.thumbHeight)
         }

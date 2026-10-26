@@ -13,16 +13,16 @@ Row {
     spacing: Appearance.launcher.fitSpacing
 
     Repeater {
-        model: WallpaperFit.values
+        model: WallpaperLayout.fitsAvailable()
 
         FitChip {
             required property string modelData
 
             label: WallpaperFit.labels[modelData]
             letter: WallpaperFit.letters[modelData]
-            active: Wallpaper.fitFor(root.path) === modelData
+            active: WallpaperLayout.fitFor(root.path, WallpaperLayout.target) === modelData
 
-            onTriggered: Wallpaper.setFit(root.path, modelData)
+            onTriggered: WallpaperLayout.setFit(root.path, modelData)
         }
     }
 }

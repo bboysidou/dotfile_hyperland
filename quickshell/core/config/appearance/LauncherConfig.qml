@@ -35,6 +35,9 @@ QtObject {
     readonly property int fitChipSize: 12
     readonly property real fitKeyOpacity: 0.6
     readonly property string fitKeyTemplate: "^%1"
+    readonly property int linkKey: Qt.Key_A
+    readonly property string linkLetter: "A"
+    readonly property string linkLabel: "All displays"
     readonly property string usageCacheDir: "quickshell/launcher"
     readonly property string usageCacheFile: "usage.json"
     readonly property int scoreExact: 100

@@ -42,6 +42,7 @@ Singleton {
 
     function enterWallpapers(query: string): void {
         Wallpaper.refresh();
+        WallpaperLayout.target = Monitors.focused;
         root.mode = LauncherMode.wallpapers;
         root.search = query;
     }
@@ -100,7 +101,7 @@ Singleton {
     }
 
     function hide(): void {
-        Wallpaper.stopPreview();
+        WallpaperLayout.stopPreview();
         Theme.stopPreview();
         root.opened = false;
     }
@@ -116,16 +117,27 @@ Singleton {
         if (!path)
             return;
 
-        Wallpaper.set(path);
+        WallpaperLayout.set(path);
         root.hide();
     }
 
     function chordWallpaper(key: int, path: string): bool {
-        const fit = WallpaperFit.fromKey(key);
-        if (!root.wallpaperMode || !fit || !path)
+        if (!root.wallpaperMode)
             return false;
 
-        Wallpaper.setFit(path, fit);
+        if (key === Appearance.launcher.linkKey) {
+            WallpaperLayout.setLinked(!WallpaperLayout.linked);
+            return true;
+        }
+
+        if (key >= Qt.Key_1 && key <= Qt.Key_9)
+            return WallpaperLayout.pick(key - Qt.Key_1);
+
+        const fit = WallpaperFit.fromKey(key);
+        if (!WallpaperLayout.fitsAvailable().includes(fit) || !path)
+            return false;
+
+        WallpaperLayout.setFit(path, fit);
         return true;
     }
 

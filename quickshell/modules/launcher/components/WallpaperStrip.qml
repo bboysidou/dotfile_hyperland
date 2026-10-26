@@ -18,7 +18,7 @@ PathView {
     signal activated(string path)
 
     function sync(): string {
-        const index = root.search ? 0 : Math.max(0, root.entries.indexOf(Wallpaper.committed));
+        const index = root.search ? 0 : Math.max(0, root.entries.indexOf(WallpaperLayout.committedFor(WallpaperLayout.target)));
         root.currentIndex = index;
         return root.entries[index] ?? "";
     }
@@ -28,7 +28,7 @@ PathView {
             return;
 
         root.currentIndex = Num.wrap(root.currentIndex, delta, root.entries.length);
-        Wallpaper.preview(root.entries[root.currentIndex] ?? "");
+        WallpaperLayout.preview(root.entries[root.currentIndex] ?? "");
     }
 
     model: root.entries
@@ -45,14 +45,26 @@ PathView {
     highlightRangeMode: PathView.StrictlyEnforceRange
 
     Component.onCompleted: root.sync()
-    Component.onDestruction: Wallpaper.stopPreview()
+    Component.onDestruction: WallpaperLayout.stopPreview()
 
     onEntriesChanged: {
         const path = root.sync();
         if (root.search)
-            Wallpaper.preview(path);
+            WallpaperLayout.preview(path);
     }
-    onMovementEnded: Wallpaper.preview(root.entries[root.currentIndex] ?? "")
+    onMovementEnded: WallpaperLayout.preview(root.entries[root.currentIndex] ?? "")
+
+    Connections {
+        target: WallpaperLayout
+
+        function onTargetChanged(): void {
+            root.sync();
+        }
+
+        function onLinkedChanged(): void {
+            root.sync();
+        }
+    }
 
     delegate: WallpaperCard {
         onClicked: root.activated(modelData)
