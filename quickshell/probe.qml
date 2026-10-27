@@ -159,8 +159,8 @@ ShellRoot {
         Appearance.orbit.maxNodes,
         Appearance.orbit.labelMore,
         Appearance.anim.durations.orbitMorph,
-        Appearance.updates.repoMaxRatio,
-        Appearance.updates.versionArrow,
+        Appearance.updates.tabRepo,
+        Appearance.updates.versionColumnWidth,
         Icons.updateAur,
         Icons.refresh,
         Appearance.bar.workspacePillActiveWidth,
@@ -254,8 +254,6 @@ ShellRoot {
             UpdatesPanel {}
             UpdatesHeader {}
             UpdateSection {
-                glyph: ""
-                title: ""
                 placeholder: ""
                 entries: []
             }
@@ -265,7 +263,9 @@ ShellRoot {
                         from: "",
                         to: ""
                     })
+                separated: false
             }
+            UpdateGridHeader {}
             Password {}
             Criticals {}
             Identity {}

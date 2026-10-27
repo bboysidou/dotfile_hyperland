@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import qs.core.components
 import qs.core.config
@@ -11,19 +12,28 @@ import qs.services
 RevealCard {
     id: root
 
-    readonly property real availableHeight: root.height - header.height - Appearance.updates.padding * 2 - Appearance.updates.sectionSpacing * 2
-    readonly property real repoHeight: {
-        const avail = root.availableHeight;
-        if (repo.contentHeight + aur.contentHeight <= avail)
-            return avail - aur.contentHeight;
-        return Math.max(avail * Appearance.updates.repoMaxRatio, avail - aur.contentHeight);
-    }
+    readonly property var config: Appearance.updates
+    readonly property var tabs: [
+        {
+            key: root.config.tabRepo,
+            icon: Icons.arch,
+            label: root.config.tabLabelFormat.arg(root.config.labelRepo).arg(Updates.repo.length),
+            accent: Colours.tabRepo
+        },
+        {
+            key: root.config.tabAur,
+            icon: Icons.updateAur,
+            label: root.config.tabLabelFormat.arg(root.config.labelAur).arg(Updates.aur.length),
+            accent: Colours.tabAur
+        }
+    ]
 
     function upgrade(): void {
         Launch.app(Terminal.command(Commands.updates));
         UpdatesState.hide();
     }
 
+    outlineColour: tabBar.fill
     implicitWidth: Appearance.updates.width
 
     color: Colours.bar
@@ -72,8 +82,8 @@ RevealCard {
         subtitle: Appearance.updates.emptySubtitle
     }
 
-    UpdateSection {
-        id: repo
+    SegmentBar {
+        id: tabBar
 
         anchors.top: header.bottom
         anchors.left: parent.left
@@ -83,23 +93,14 @@ RevealCard {
         anchors.rightMargin: Appearance.updates.padding
 
         visible: Updates.available
-        height: root.repoHeight
-        glyph: Icons.arch
-        title: Appearance.updates.labelRepo
-        placeholder: Appearance.updates.emptyRepo
-        entries: Updates.repo
+        current: UpdatesState.tab
+        options: root.tabs
 
-        Behavior on height {
-            Anim {
-                type: AnimType.emphasizedSmall
-            }
-        }
+        onSelected: key => UpdatesState.tab = key
     }
 
-    UpdateSection {
-        id: aur
-
-        anchors.top: repo.bottom
+    StackLayout {
+        anchors.top: tabBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -109,9 +110,16 @@ RevealCard {
         anchors.bottomMargin: Appearance.updates.padding
 
         visible: Updates.available
-        glyph: Icons.updateAur
-        title: Appearance.updates.labelAur
-        placeholder: Appearance.updates.emptyAur
-        entries: Updates.aur
+        currentIndex: Math.max(0, root.tabs.findIndex(tab => tab.key === UpdatesState.tab))
+
+        UpdateSection {
+            placeholder: Appearance.updates.emptyRepo
+            entries: Updates.repo
+        }
+
+        UpdateSection {
+            placeholder: Appearance.updates.emptyAur
+            entries: Updates.aur
+        }
     }
 }

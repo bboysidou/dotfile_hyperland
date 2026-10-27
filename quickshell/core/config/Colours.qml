@@ -82,6 +82,8 @@ Singleton {
     readonly property color tabIdle: raw.orange
     readonly property color tabScreens: raw.accent
     readonly property color tabWindows: raw.green
+    readonly property color tabRepo: raw.accent
+    readonly property color tabAur: raw.green
     readonly property color network: raw.green
     readonly property color bluetooth: raw.blue
     readonly property color ringTrack: raw.bgLighter
