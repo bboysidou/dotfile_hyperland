@@ -31,7 +31,10 @@ return {
 
     vim.cmd("highlight TelescopeNormal guibg=" .. c.bg)
     vim.cmd("highlight MasonNormal guibg=" .. c.bg)
-    vim.cmd("highlight BufferLineFill guibg=" .. c.bg)
+
+    for _, group in ipairs({ "FloatBorder", "TelescopeBorder", "WinSeparator" }) do
+      vim.api.nvim_set_hl(0, group, { fg = c.border, bg = "NONE" })
+    end
 
     vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = c.blue })
     vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = c.blue })

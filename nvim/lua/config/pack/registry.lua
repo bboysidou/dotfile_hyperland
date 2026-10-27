@@ -48,8 +48,6 @@ return {
   "persistence",
   "undotree",
   "comment",
-  "bufferline",
-  "lualine",
   "fidget",
   "dressing",
   "tmux_navigator",

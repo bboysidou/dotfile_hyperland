@@ -57,10 +57,10 @@ keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- find string u
 keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>") -- list open buffers in current neovim instance
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- list available help tags
 keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>") -- list TODOs comments
--- bufferline
-keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>BufferLineCycleNext<CR>") -- cycle through buffers
-keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>BufferLineCyclePrev<CR>") -- cycle through buffers
-keymap.set({ "n", "v", "i" }, "<A-a>", "<CMD>BufferLineCloseOthers<CR>") -- close all other buffers
+-- buffers
+keymap.set({ "n", "v", "i" }, "<A-l>", "<CMD>bnext<CR>") -- cycle through buffers
+keymap.set({ "n", "v", "i" }, "<A-h>", "<CMD>bprevious<CR>") -- cycle through buffers
+keymap.set({ "n", "v", "i" }, "<A-a>", "<CMD>%bdelete|edit #|bdelete #<CR>") -- close all other buffers
 keymap.set({ "n", "v", "i" }, "<leader>q", ":bdelete<CR>")
 
 -- harpoon
