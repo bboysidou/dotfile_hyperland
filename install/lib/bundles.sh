@@ -8,6 +8,7 @@ DOCKER_ROOTLESS_PACKAGE="docker-rootless-extras"
 DOCKER_ROOTLESS_SOCKET="docker.socket"
 DOCKER_ROOTLESS_CONTEXT="rootless"
 DEFAULT_UID=1000
+LOGITECH_PACKAGE="solaar"
 
 B_PKGS=()
 B_AUR=()
@@ -55,8 +56,12 @@ bundleSelected() {
   [[ "$1" == core || " ${A_BUNDLES} " == *" $1 "* ]]
 }
 
+packageDeclined() {
+  [[ "$1" == "$LOGITECH_PACKAGE" && "${A_LOGITECH:-no}" == no ]]
+}
+
 packageExcluded() {
-  [[ " ${A_EXCLUDE} " == *" $1 "* ]]
+  [[ " ${A_EXCLUDE} " == *" $1 "* ]] || packageDeclined "$1"
 }
 
 packageWanted() {

@@ -75,9 +75,6 @@ trash-cli
 xdg-user-dirs
 ex-vi-compat
 sassc
-speedtest-cli
-net-tools
-transmission-gtk
 mesa
 mesa-utils
 vulkan-icd-loader
@@ -90,7 +87,6 @@ pipewire-pulse
 libpulse
 alsa-utils
 alsa-plugins
-alsa-firmware
 sof-firmware
 pamixer
 ffmpeg
@@ -113,12 +109,9 @@ ttf-nunito
 otf-font-awesome
 breeze-icons
 nwg-look
-nwg-displays
 aur:otf-apple-sf-pro
 aur:ttf-orbitron
 aur:ttf-icomoon-feather
 aur:bibata-cursor-theme-bin
-aur:pacseek-bin
-aur:trizen
 aur:nmrs
 aur:nmrs-tui

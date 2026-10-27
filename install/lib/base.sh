@@ -35,6 +35,7 @@ AC_ONLY_UNITS=(paccache.service plocate-updatedb.service man-db.service)
 AC_ONLY_DROPIN="10-ac-only.conf"
 INTEL_THERMALD_MIN_MODEL=42
 INTEL_LPMD_MODELS=" 151 154 170 172 183 186 189 191 204 "
+VM_SKIP_PKGS=(linux-firmware sof-firmware)
 GLOBAL_USER_SERVICES=(filter-chain.service gcr-ssh-agent.socket)
 SYSTEM_SERVICES=(NetworkManager.service fstrim.timer bluetooth.service cronie.service paccache.timer systemd-timesyncd.service qs-hwinfo.service systemd-oomd.service)
 
@@ -65,7 +66,13 @@ basePackageList() {
   mapfile -t boot < <(bootPackages)
   mapfile -t shells < <(shellPackages)
   mapfile -t power < <(basePowerPackages)
-  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" "${shells[@]}" "${power[@]}" | awk 'NF && !seen[$0]++'
+  printf '%s\n' "${BASE_PKGS[@]}" "${ucode[@]}" "${B_PKGS[@]}" "${G_PKGS[@]}" "${boot[@]}" "${shells[@]}" "${power[@]}" |
+    awk -v skip="$(_baseVirtualSkip)" 'NF && !seen[$0]++ && index(" " skip " ", " " $0 " ") == 0'
+}
+
+_baseVirtualSkip() {
+  if [[ "${D_VIRT:-none}" != none ]]; then echo "${VM_SKIP_PKGS[*]}"; fi
+  return 0
 }
 
 basePowerPackages() {

@@ -5,6 +5,8 @@ SECURE_BOOT_VAR="${EFIVARS_DIR}/SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c"
 SECURE_BOOT_VALUE_OFFSET=4
 POWER_SUPPLY_DIR="/sys/class/power_supply"
 MEM_SLEEP="/sys/power/mem_sleep"
+USB_DEVICES_DIR="/sys/bus/usb/devices"
+LOGITECH_USB_VENDOR="046d"
 
 NVIDIA_OPEN_CODENAMES="TU|GA|AD|GB|GH"
 NVIDIA_580XX_CODENAMES="GM|GP|GV"
@@ -18,6 +20,7 @@ D_SECURE_BOOT=0
 D_NVIDIA=none
 D_LAPTOP=0
 D_S2IDLE=0
+D_LOGITECH=0
 
 detectCpu() {
   case "$(grep -m1 '^vendor_id' /proc/cpuinfo | awk '{print $3}')" in
@@ -42,6 +45,13 @@ detectLaptop() {
   D_S2IDLE=0
   if grep -qF '[s2idle]' "$MEM_SLEEP" 2>/dev/null; then
     D_S2IDLE=1
+  fi
+}
+
+detectLogitech() {
+  D_LOGITECH=0
+  if grep -qsx "$LOGITECH_USB_VENDOR" "$USB_DEVICES_DIR"/*/idVendor; then
+    D_LOGITECH=1
   fi
 }
 
@@ -83,6 +93,7 @@ detectAll() {
   detectCpu
   detectVirt
   detectLaptop
+  detectLogitech
   detectFirmware
   detectGpu
   detectNvidia

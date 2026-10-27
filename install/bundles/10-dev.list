@@ -1,5 +1,5 @@
 #: title=Development
-#: description=Compilers, build tools, node, JDK 17 + 21, GitHub CLI, opencode, Antigravity
+#: description=Compilers, build tools, node, JDK 17 + 21, GitHub CLI, opencode, Antigravity, pacseek
 #: default=on
 gcc
 gdb
@@ -20,3 +20,4 @@ github-cli
 opencode
 dpkg
 aur:antigravity
+aur:pacseek-bin

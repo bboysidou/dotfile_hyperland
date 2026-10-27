@@ -262,7 +262,7 @@ _summaryRows() {
     "Keymap=${A_KEYMAP}" "Disk=${A_DISK} ($(diskDescribe "$A_DISK"))" "Layout=${plan}" \
     "Bootloader=${A_BOOT}$([[ "$A_LIMINE_SCAN" == yes ]] && echo " + limine-scan")$([[ "$A_SNAPPER" == yes ]] && echo " + snapper")" "CPU=${A_CPU}" "GPU=$(gpuDescribe)" "Virtual=${D_VIRT}" \
     "Bundles=core ${A_BUNDLES}" "Excluded=${A_EXCLUDE:-none}" \
-    "System=docker ${A_DOCKER_MODE} · idle ${A_IDLE} · hibernate ${A_HIBERNATE}" \
+    "System=docker ${A_DOCKER_MODE} · idle ${A_IDLE} · hibernate ${A_HIBERNATE} · logitech ${A_LOGITECH}" \
     "Shells=${BASE_SHELL} ${A_SHELLS} · login ${A_LOGIN_SHELL}" "Terminals=${BASE_TERMINAL} ${A_TERMINALS} · keybind ${A_DEFAULT_TERMINAL}"
 }
 
@@ -361,10 +361,24 @@ _askHibernate() {
   fi
 }
 
+_askLogitech() {
+  local default=no
+  if ((D_LOGITECH)); then default=yes; fi
+  A_LOGITECH="${A_LOGITECH:-$default}"
+  bundleSelected peripherals || return 0
+  _preseeded A_LOGITECH && return 0
+  if uiConfirm "Do you use a Logitech mouse or keyboard (installs Solaar for battery, DPI and pairing)?" "$default"; then
+    A_LOGITECH=yes
+  else
+    A_LOGITECH=no
+  fi
+}
+
 askSystem() {
   _askDocker
   _askIdle
   _askHibernate
+  _askLogitech
 }
 
 askEverything() {

@@ -1,5 +1,5 @@
 #: title=Peripherals
-#: description=Solaar for Logitech MX devices, OpenRGB
+#: description=OpenRGB, plus Solaar when you use a Logitech device (asked later)
 #: default=on
 solaar
 openrgb
