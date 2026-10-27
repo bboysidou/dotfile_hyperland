@@ -9,6 +9,7 @@ custom_scripts/tmux_sessions.txt
 custom_scripts/~
 quickshell/.superpowers/
 systemd/user/quickshell.service.d/gpu.conf
+mpv/local.conf
 fish/functions/fisher.fish
 fish/completions/fisher.fish
 fish/functions/tide.fish

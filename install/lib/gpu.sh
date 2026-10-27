@@ -5,6 +5,8 @@ GPU_MODPROBE="/etc/modprobe.d/nvidia.conf"
 GPU_MKINITCPIO_DROPIN="/etc/mkinitcpio.conf.d/10-installer.conf"
 GPU_DEFAULT_HOOKS="base systemd autodetect microcode modconf kms keyboard sd-vconsole block filesystems fsck"
 MESA_EGL_VENDOR="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
+IGPU_RENDER_NODE="/dev/dri/igpu-render"
+DECODE_CAPS="quickshell/services/decode/caps.sh"
 NVIDIA_MODULES="nvidia nvidia_modeset nvidia_uvm nvidia_drm"
 NVIDIA_POWER_UNITS=(nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service nvidia-suspend-then-hibernate.service)
 NVIDIA_RTD3_CODENAMES="TU"
@@ -24,6 +26,7 @@ G_HYBRID=0
 G_PRIMARY=""
 G_PRIMARY_VENDOR=unknown
 G_OLD_INTEL=0
+G_DECODE_PIN=0
 G_PKGS=()
 G_AUR=()
 
@@ -292,14 +295,29 @@ gpuEnvLua() {
   fi
   if ((G_HYBRID)); then
     echo 'hl.env("AQ_DRM_DEVICES", "/dev/dri/igpu:/dev/dri/dgpu")'
-    echo 'hl.env("MOZ_WAYLAND_DRM_DEVICE", "/dev/dri/igpu-render")'
+  fi
+  if ((G_DECODE_PIN)); then
+    echo "hl.env(\"MOZ_DRM_DEVICE\", \"${IGPU_RENDER_NODE}\")"
   fi
   return 0
 }
 
-gpuConfigureUser() {
+gpuPinIntegratedDecode() {
   local repo="$1"
+  ((G_HYBRID && D_LAPTOP)) || return 1
+  inChroot sh "${repo#"$MNT"}/${DECODE_CAPS}" pin \
+    "/dev/dri/by-path/pci-${G_IGPU}-render" "/dev/dri/by-path/pci-${G_DGPU}-render" >/dev/null
+}
+
+gpuConfigureUser() {
+  local repo="$1" mpvLocal=""
+  G_DECODE_PIN=0
+  if gpuPinIntegratedDecode "$repo"; then
+    G_DECODE_PIN=1
+    mpvLocal="vaapi-device=${IGPU_RENDER_NODE}"
+  fi
   gpuEnvLua | writeFile "${repo}/hypr/config/env-gpu.lua"
+  writeFile "${repo}/mpv/local.conf" <<<"$mpvLocal"
   if ((G_HYBRID)) && [[ "$G_PRIMARY_VENDOR" != nvidia ]]; then
     writeFile "${repo}/systemd/user/quickshell.service.d/gpu.conf" <<EOF
 [Service]
