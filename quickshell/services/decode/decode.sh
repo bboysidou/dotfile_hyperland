@@ -44,7 +44,7 @@ video_engines() {
         FNR == 1 { flush(); n = split(FILENAME, part, "/"); pid = part[n - 2]; client = pdev = kind = ""; busy = total = 0 }
         /^drm-client-id:/ { client = $2 }
         /^drm-pdev:/ { pdev = $2 }
-        /^drm-engine-(dec|enc|jpeg|video)[^:]*:/ { busy += $2; kind = "ns" }
+        /^drm-engine-(dec|enc|jpeg|vcn|video)[^:]*:/ { busy += $2; kind = "ns" }
         /^drm-cycles-vcs:/ { busy += $2; kind = "cycles" }
         /^drm-total-cycles-vcs:/ { total += $2 }
         END {

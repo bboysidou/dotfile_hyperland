@@ -66,6 +66,13 @@ ColumnLayout {
         onSelected: key => GpuStats.select(Number(key))
     }
 
+    StatusChip {
+        visible: VideoDecode.dedicatedOnBattery
+        glyph: Icons.alert
+        label: Appearance.hardware.labelDedicatedDecode
+        tone: Colours.warning
+    }
+
     SectionTitle {
         glyph: Icons.gpu
         title: Appearance.hardware.titleTemplate.arg(Appearance.hardware.labelGpu).arg(GpuStats.name)
@@ -126,6 +133,15 @@ ColumnLayout {
             label: Appearance.hardware.labelFan
             value: root.fan()
             valueColour: Tone.usage(GpuStats.fan * Appearance.scale.percent, Colours.text)
+        }
+
+        StatRow {
+            readonly property var codecs: VideoDecode.codecsOf(GpuStats.pci)
+
+            glyph: Icons.video
+            label: Appearance.hardware.labelDecodes
+            value: codecs === null ? Appearance.hardware.placeholder : codecs.length === 0 ? Appearance.hardware.decodeUnsupportedNote : codecs.map(codec => VideoDecode.codecLabel(codec)).join(Appearance.hardware.codecSeparator)
+            valueColour: codecs !== null && codecs.length > 0 ? Colours.gpu : Colours.textMuted
         }
 
         StatRow {

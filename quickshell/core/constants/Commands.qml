@@ -34,6 +34,7 @@ Singleton {
     readonly property var networkEditor: ["nm-connection-editor"]
     readonly property var gpu: ["sh", `${Quickshell.shellDir}/services/gpu/gpu.sh`]
     readonly property var decode: ["sh", `${Quickshell.shellDir}/services/decode/decode.sh`, "scan"]
+    readonly property var decodeCaps: ["sh", `${Quickshell.shellDir}/services/decode/caps.sh`, "cards"]
     readonly property var speedTest: ["bash", `${Quickshell.shellDir}/services/speedtest/net_speedtest.sh`]
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]

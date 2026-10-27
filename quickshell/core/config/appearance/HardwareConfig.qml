@@ -129,7 +129,18 @@ QtObject {
     readonly property string labelCpuDecode: "Software decoding"
     readonly property string decodePillTemplate: "%1 · %2 · %3 · %4"
     readonly property string decodeEngineTemplate: "engine %1%"
+    readonly property string decodeNoteTemplate: "%1 · %2"
+    readonly property string decodeCapableNote: "GPU can decode it, check app settings"
+    readonly property string decodeUnsupportedNote: "no hardware decoder"
+    readonly property string labelDecodes: "Decodes"
+    readonly property string labelDedicatedDecode: "Decoding on the dedicated GPU keeps it awake on battery"
+    readonly property string codecSeparator: " · "
     readonly property string codecUnknown: "hardware · codec not reported"
+    readonly property var codecKeys: ({
+            mpeg2vi: "mpeg2",
+            vpx: "vp9",
+            libdav1: "av1"
+        })
     readonly property var codecLabels: ({
             h264: "H.264",
             hevc: "HEVC",
@@ -139,6 +150,7 @@ QtObject {
             libdav1: "AV1",
             vpx: "VP8/VP9",
             mpeg2vi: "MPEG-2",
+            mpeg2: "MPEG-2",
             mpeg4: "MPEG-4",
             vc1: "VC-1",
             mjpeg: "MJPEG"

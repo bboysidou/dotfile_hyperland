@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.core.helpers
 import qs.services
 
@@ -78,9 +79,14 @@ ColumnLayout {
             StatusChip {
                 required property var modelData
 
+                readonly property string support: VideoDecode.support(modelData.key)
+                readonly property string summary: Appearance.hardware.decodePillTemplate.arg(Appearance.hardware.labelCpuDecode).arg(modelData.app).arg(modelData.codec).arg(root.share(modelData.load))
+
+                width: Math.min(implicitWidth, parent.width)
+
                 glyph: Icons.alert
-                label: Appearance.hardware.decodePillTemplate.arg(Appearance.hardware.labelCpuDecode).arg(modelData.app).arg(modelData.codec).arg(root.share(modelData.load))
-                tone: Colours.warning
+                label: support === DecodeSupport.unknown ? summary : Appearance.hardware.decodeNoteTemplate.arg(summary).arg(support === DecodeSupport.supported ? Appearance.hardware.decodeCapableNote : Appearance.hardware.decodeUnsupportedNote)
+                tone: support === DecodeSupport.unsupported ? Colours.textMuted : Colours.warning
             }
         }
     }

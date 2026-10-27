@@ -18,7 +18,9 @@ StyledRect {
     RowLayout {
         id: row
 
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.leftMargin: Appearance.chip.paddingH
+        anchors.rightMargin: Appearance.chip.paddingH
 
         spacing: Appearance.chip.spacing
 
@@ -28,7 +30,9 @@ StyledRect {
             font.pixelSize: Appearance.chip.iconSize
         }
 
-        StyledText {
+        ScrollText {
+            Layout.fillWidth: true
+
             text: root.label
             color: root.tone
             font.pixelSize: Appearance.chip.textSize
