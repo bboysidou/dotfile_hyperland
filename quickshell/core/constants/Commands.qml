@@ -3,7 +3,9 @@ pragma Singleton
 import Quickshell
 
 Singleton {
-    readonly property var appScope: ["systemd-run", "--user", "--scope", "--collect", "--quiet", "--slice=app.slice", "--"]
+    readonly property var appScope: ["systemd-run", "--user", "--scope", "--collect", "--quiet", "--slice=app.slice"]
+    readonly property string appDirectoryFlag: "--working-directory=%1"
+    readonly property string endOfOptions: "--"
     readonly property var mouseSettings: ["solaar"]
     readonly property var updates: ({
             program: ["sh", "-c", "exec \"$HOME/.config/custom_scripts/sys_update.sh\""],
