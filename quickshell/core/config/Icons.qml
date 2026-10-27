@@ -81,6 +81,8 @@ Singleton {
     readonly property string gpu: "\uDB83\uDFB2"
     readonly property string flash: "\uDB80\uDE41"
     readonly property string speedometer: "\uDB81\uDCC5"
+    readonly property string alert: "\uDB80\uDC26"
+    readonly property string video: "\uDB81\uDD67"
     readonly property string sleep: "\uDB81\uDCB2"
     readonly property string leaf: "\uDB80\uDF2A"
     readonly property string scaleBalance: "\uDB81\uDDD1"

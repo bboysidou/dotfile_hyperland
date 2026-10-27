@@ -141,6 +141,31 @@ ColumnLayout {
     }
 
     ListBlock {
+        id: decodeBlock
+
+        readonly property var streams: VideoDecode.onCard(GpuStats.pci)
+
+        title: Appearance.hardware.labelDecode
+        placeholder: Appearance.hardware.emptyDecode
+        empty: streams.length === 0
+
+        Repeater {
+            model: decodeBlock.streams
+
+            ProcRow {
+                required property var modelData
+
+                name: modelData.app
+                glyph: Icons.video
+                value: modelData.codec
+                valueColour: Colours.gpu
+                extraGlyph: Icons.speedometer
+                extra: Appearance.hardware.decodeEngineTemplate.arg(modelData.load)
+            }
+        }
+    }
+
+    ListBlock {
         title: Appearance.hardware.labelTopGpuProcs
         placeholder: Appearance.hardware.emptyGpuProcs
         empty: GpuStats.processes.length === 0

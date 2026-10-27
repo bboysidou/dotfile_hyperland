@@ -27,6 +27,7 @@ QtObject {
     readonly property int idlePollInterval: 10000
     readonly property int procPollInterval: 3000
     readonly property int probeRetryInterval: 30000
+    readonly property int decodePollInterval: 2000
     readonly property int coreAverageWindow: 600000
     readonly property int coreAverageMax: 3
 
@@ -123,6 +124,24 @@ QtObject {
     readonly property string labelFree: "Free"
     readonly property string labelModules: "Modules"
     readonly property string emptyGpuProcs: "No GPU clients"
+    readonly property string labelDecode: "Video Decoding"
+    readonly property string emptyDecode: "No video decoding on this GPU"
+    readonly property string labelCpuDecode: "Software decoding"
+    readonly property string decodePillTemplate: "%1 · %2 · %3 · %4"
+    readonly property string decodeEngineTemplate: "engine %1%"
+    readonly property string codecUnknown: "hardware · codec not reported"
+    readonly property var codecLabels: ({
+            h264: "H.264",
+            hevc: "HEVC",
+            vp8: "VP8",
+            vp9: "VP9",
+            av1: "AV1",
+            libdav1: "AV1",
+            mpeg2vi: "MPEG-2",
+            mpeg4: "MPEG-4",
+            vc1: "VC-1",
+            mjpeg: "MJPEG"
+        })
     readonly property string emptyDimms: "Install qs-hwinfo to list modules"
     readonly property string titleTemplate: "%1 — %2"
     readonly property string rowTemplate: "%1: "

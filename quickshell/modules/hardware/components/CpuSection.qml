@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import qs.core.components
 import qs.core.config
 import qs.core.helpers
 import qs.services
@@ -62,6 +63,25 @@ ColumnLayout {
             label: Appearance.hardware.labelUtil
             value: Appearance.scale.percentTemplate.arg(CpuStats.usagePercent)
             valueColour: Tone.usage(CpuStats.usagePercent, Colours.text)
+        }
+    }
+
+    Flow {
+        Layout.fillWidth: true
+
+        visible: VideoDecode.software.length > 0
+        spacing: Appearance.chip.spacing
+
+        Repeater {
+            model: VideoDecode.software
+
+            StatusChip {
+                required property var modelData
+
+                glyph: Icons.alert
+                label: Appearance.hardware.decodePillTemplate.arg(Appearance.hardware.labelCpuDecode).arg(modelData.app).arg(modelData.codec).arg(root.share(modelData.load))
+                tone: Colours.warning
+            }
         }
     }
 

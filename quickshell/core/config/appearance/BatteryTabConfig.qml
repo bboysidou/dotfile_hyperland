@@ -58,12 +58,6 @@ QtObject {
     readonly property string wattTemplate: "%1 W"
     readonly property string emptySplit: "Install qs-hwinfo to split CPU power"
 
-    readonly property int chipSpacing: 6
-    readonly property int chipPaddingH: 10
-    readonly property int chipPaddingV: 5
-    readonly property int chipRounding: 10
-    readonly property int chipIconSize: 13
-    readonly property real chipTint: 0.14
     readonly property string conditionGood: "Good"
     readonly property string conditionTemplate: "Health: %1"
     readonly property string ageYearsTemplate: "%1y %2m old"

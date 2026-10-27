@@ -32,6 +32,7 @@ Singleton {
     readonly property LauncherConfig launcher: LauncherConfig {}
     readonly property ControlConfig control: ControlConfig {}
     readonly property CardConfig card: CardConfig {}
+    readonly property ChipConfig chip: ChipConfig {}
     readonly property AudioPanelConfig audioPanel: AudioPanelConfig {}
     readonly property NotifPanelConfig notifPanel: NotifPanelConfig {}
     readonly property SegmentConfig segment: SegmentConfig {}

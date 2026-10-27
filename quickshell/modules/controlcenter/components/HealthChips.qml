@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import qs.core.components
 import qs.core.config
 import qs.core.constants
 import qs.services
@@ -22,7 +23,7 @@ Flow {
     Layout.fillWidth: true
 
     visible: Battery.condition !== "" || root.age !== "" || root.calibrate
-    spacing: root.config.chipSpacing
+    spacing: Appearance.chip.spacing
 
     StatusChip {
         visible: Battery.condition !== ""

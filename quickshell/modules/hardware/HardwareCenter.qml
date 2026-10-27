@@ -24,6 +24,12 @@ Scope {
     }
 
     Binding {
+        target: VideoDecode
+        property: "active"
+        value: HardwareState.opened && (HardwareState.section === HardwareSection.cpu || HardwareState.section === HardwareSection.gpu)
+    }
+
+    Binding {
         target: Dimms
         property: "active"
         value: HardwareState.opened && HardwareState.section === HardwareSection.memory
