@@ -10,6 +10,8 @@ INHIBIT_WHAT="sleep:idle"
 INHIBIT_WHO="sys-update"
 INHIBIT_WHY="System update in progress"
 HYPRLAND_PROCESS="Hyprland"
+TMUX_SESSION="sys-update"
+PAUSE_PROMPT="Press any key to close"
 
 sudoPid=""
 inhibitPid=""
@@ -42,6 +44,25 @@ stopBackground() {
     kill "$sudoPid" 2>/dev/null
     sudoPid=""
   fi
+}
+
+enterTmux() {
+  if [[ -n "${TMUX:-}" ]] || ! command -v tmux >/dev/null; then
+    return 0
+  fi
+  exec tmux new-session -A -s "$TMUX_SESSION" -e "SYS_UPDATE_PAUSE=${SYS_UPDATE_PAUSE:-}" "${BASH_SOURCE[0]}" "$@"
+}
+
+pauseIfAsked() {
+  if [[ "${SYS_UPDATE_PAUSE:-}" == 1 ]]; then
+    printf '\n'
+    read -rsn1 -p "$PAUSE_PROMPT" _
+  fi
+}
+
+onExit() {
+  stopBackground
+  pauseIfAsked
 }
 
 requireFreeSpace() {
@@ -139,7 +160,8 @@ offerReboot() {
 }
 
 main() {
-  trap stopBackground EXIT
+  enterTmux "$@"
+  trap onExit EXIT
   requireFreeSpace
   keepSudoAlive
   holdInhibitor

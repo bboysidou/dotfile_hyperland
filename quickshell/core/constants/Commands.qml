@@ -8,9 +8,9 @@ Singleton {
     readonly property string endOfOptions: "--"
     readonly property var mouseSettings: ["solaar"]
     readonly property var updates: ({
-            program: ["sh", "-c", "exec \"$HOME/.config/custom_scripts/sys_update.sh\""],
+            program: ["sh", "-c", "SYS_UPDATE_PAUSE=1 exec \"$HOME/.config/custom_scripts/sys_update.sh\""],
             title: "updates",
-            hold: true
+            hold: false
         })
     readonly property var cpuMonitor: ({
             program: ["btop"],

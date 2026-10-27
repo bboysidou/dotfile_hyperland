@@ -14,7 +14,7 @@ set -gx ANDROID_SDK_ROOT $ANDROID_HOME
 # Aliases
 alias tmuxa="sh ~/.config/custom_scripts/tmux_add_session.sh"
 alias ocr="qs ipc call screenshot ocr"
-alias sysupdate="sudo pacman -Syu; and yay -Syu"
+alias sysupdate="$HOME/.config/custom_scripts/sys_update.sh"
 alias sysclean="paccache -r; and sudo pacman -R (pacman -Qtdq)"
 alias ls="eza --icons=auto"
 alias ll="eza --icons=auto -l"
