@@ -5,7 +5,7 @@ SYS="${QS_DECODE_SYSFS:-/sys}"
 PROC="${QS_DECODE_PROCFS:-/proc}"
 SAMPLE_SECONDS="${QS_DECODE_SAMPLE:-1}"
 CPU_MIN_PERCENT=5
-THREAD_PATTERN='^(av:[^:]+:(df|sw)[0-9]+|dav1d-worker)$'
+THREAD_PATTERN='^(av:[^:]+:(df|sw)[0-9]+|dav1d-worker|CodecWorker)$'
 NVIDIA_VENDOR=0x10de
 
 ticks_per_second() {
@@ -23,6 +23,7 @@ decoder_threads() {
         stat=$(cat "$task/stat" 2>/dev/null) || continue
         case "$name" in
             dav1d-worker) codec=av1 ;;
+            CodecWorker) codec=vpx ;;
             *) codec=${name#av:}; codec=${codec%%:*} ;;
         esac
         printf '%s %s %s %s %s\n' "$1" "${rest%%/*}" "${task##*/}" "$codec" "$(printf '%s' "${stat##*) }" | awk '{ print $12 + $13 }')"

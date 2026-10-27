@@ -137,6 +137,7 @@ QtObject {
             vp9: "VP9",
             av1: "AV1",
             libdav1: "AV1",
+            vpx: "VP8/VP9",
             mpeg2vi: "MPEG-2",
             mpeg4: "MPEG-4",
             vc1: "VC-1",
