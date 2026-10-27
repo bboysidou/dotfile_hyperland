@@ -81,7 +81,6 @@ transmission-gtk
 mesa
 mesa-utils
 vulkan-icd-loader
-vdpauinfo
 libva-utils
 pipewire
 wireplumber

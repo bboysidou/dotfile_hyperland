@@ -160,6 +160,7 @@ stagePreflight() {
   uiHeader "0 · Preflight"
   _requireLive
   detectAll
+  gpuWarnVirtual
   _requireFirmware
   _requireNetwork
   if ((!DRY_RUN)) && ! command -v gum >/dev/null 2>&1; then

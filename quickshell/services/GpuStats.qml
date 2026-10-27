@@ -80,11 +80,18 @@ Singleton {
             found.sort((a, b) => a.dedicated - b.dedicated);
         }
 
+        root.cards = found;
+        root.select(root.preferredCard(found));
+    }
+
+    function preferredCard(found: var): int {
+        const integrated = found.findIndex(card => !card.dedicated);
+        if (PowerSource.onBattery && integrated >= 0)
+            return integrated;
+
         const preferred = found.findIndex(card => card.dedicated && !card.suspended);
         const awake = found.findIndex(card => !card.suspended);
-
-        root.cards = found;
-        root.select(preferred >= 0 ? preferred : Math.max(0, awake));
+        return preferred >= 0 ? preferred : Math.max(0, awake);
     }
 
     function select(index: int): void {
@@ -184,7 +191,6 @@ Singleton {
 
         if (!GpuBusyKind.values.includes(current.kind) || !isFinite(current.work)) {
             root.previousCounter = null;
-        root.previousEnergy = null;
             return NaN;
         }
 
@@ -259,6 +265,15 @@ Singleton {
 
         root.previousGfx = {};
         processProc.running = true;
+    }
+
+    Connections {
+        target: PowerSource
+
+        function onOnBatteryChanged(): void {
+            if (PowerSource.onBattery && root.cards.length > 1)
+                root.select(root.preferredCard(root.cards));
+        }
     }
 
     Process {

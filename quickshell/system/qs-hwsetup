@@ -8,6 +8,8 @@ SYS="${QS_GPU_SYSFS:-/sys}"
 SUPPLIES="$SYS/class/power_supply"
 RAPL="$SYS/class/powercap/intel-rapl:0"
 MKINITCPIO=/etc/mkinitcpio.conf
+MKINITCPIO_DROPINS=/etc/mkinitcpio.conf.d
+HWSETUP_DROPIN="$MKINITCPIO_DROPINS/90-qs-hwsetup.conf"
 I2C_CONF=/etc/modules-load.d/i2c-dev.conf
 BIN_DIR=/usr/local/bin
 UNIT_DIR=/etc/systemd/system
@@ -140,6 +142,16 @@ plan_headers() {
   done
 }
 
+effective_hooks() {
+  local file line hooks=""
+  for file in "$MKINITCPIO" "$MKINITCPIO_DROPINS"/*.conf; do
+    [[ -r "$file" ]] || continue
+    line="$(sed -nE 's/^HOOKS=\((.*)\)/\1/p' "$file" | tail -n 1)"
+    [[ -n "$line" ]] && hooks="$line"
+  done
+  printf '%s\n' "$hooks"
+}
+
 plan_nvidia_driver() {
   local name=$1
   if [[ "$name" =~ $NVIDIA_580XX ]]; then
@@ -154,7 +166,7 @@ plan_nvidia_driver() {
   fi
   want_pkg egl-wayland "NVIDIA on Wayland"
   plan_headers
-  grep -qE '^HOOKS=.*\bkms\b' "$MKINITCPIO" 2>/dev/null && want_step step_kms "drop the kms hook so nouveau stays out of the initramfs"
+  [[ " $(effective_hooks) " == *" kms "* ]] && want_step step_kms "drop the kms hook so nouveau stays out of the initramfs"
   return 0
 }
 
@@ -309,10 +321,11 @@ step_i2c() {
 }
 
 step_kms() {
-  sudo cp "$MKINITCPIO" "$MKINITCPIO.qs-hwsetup.bak" &&
-    sudo sed -i -E '/^HOOKS=/ s/ kms\b//' "$MKINITCPIO" &&
+  local hooks
+  hooks="$(tr ' ' '\n' <<<"$(effective_hooks)" | grep -vx -e kms -e '' | paste -sd' ')"
+  printf 'HOOKS=(%s)\n' "$hooks" | sudo install -Dm644 /dev/stdin "$HWSETUP_DROPIN" &&
     sudo mkinitcpio -P &&
-    warn "backup kept at $MKINITCPIO.qs-hwsetup.bak"
+    warn "delete $HWSETUP_DROPIN and run mkinitcpio -P to undo"
 }
 
 run_steps() {

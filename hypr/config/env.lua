@@ -6,6 +6,6 @@ hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("GDK_SCALE", "1")
 
--- GPU-specific vars (LIBVA_DRIVER_NAME, VDPAU_DRIVER, AQ_DRM_DEVICES...)
--- are generated per machine by install/gpu.sh into config/env-gpu.lua
+-- GPU-specific vars (AQ_DRM_DEVICES, NVIDIA video vars...)
+-- are generated per machine by install/lib/gpu.sh into config/env-gpu.lua
 pcall(require, "config/env-gpu")
