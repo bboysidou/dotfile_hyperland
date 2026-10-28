@@ -10,6 +10,9 @@ import qs.core.enums
 Item {
     id: root
 
+    property string edge: BarEdge.top
+
+    readonly property bool vertical: BarEdge.vertical(root.edge)
     readonly property var slotIds: {
         const ids = Hyprland.workspaces.values.map(ws => ws.id).filter(id => id > 0);
 
@@ -42,10 +45,12 @@ Item {
         root.activate(root.slotIds[next]);
     }
 
-    Layout.leftMargin: Appearance.bar.workspaceMarginLeft
+    Layout.alignment: root.vertical ? Qt.AlignHCenter : Qt.AlignLeft | Qt.AlignVCenter
+    Layout.leftMargin: root.vertical ? 0 : Appearance.bar.workspaceMarginLeft
+    Layout.topMargin: root.vertical ? Appearance.bar.workspaceMarginLeft : 0
 
     implicitWidth: row.implicitWidth
-    implicitHeight: root.pillSize
+    implicitHeight: row.implicitHeight
 
     Timer {
         running: true
@@ -79,11 +84,14 @@ Item {
         }
     }
 
-    Row {
+    Grid {
         id: row
 
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
 
+        columns: root.vertical ? 1 : root.slotIds.length
+        horizontalItemAlignment: Grid.AlignHCenter
+        verticalItemAlignment: Grid.AlignVCenter
         spacing: Appearance.bar.workspacePillSpacing
 
         Repeater {
@@ -103,8 +111,10 @@ Item {
 
                 property bool entered: false
 
-                width: slot.active ? Appearance.bar.workspacePillActiveWidth : root.pillSize
-                height: root.pillSize
+                readonly property real length: slot.active ? Appearance.bar.workspacePillActiveWidth : root.pillSize
+
+                width: root.vertical ? root.pillSize : slot.length
+                height: root.vertical ? slot.length : root.pillSize
 
                 cursorShape: Qt.PointingHandCursor
                 hoverEnabled: true
@@ -126,6 +136,13 @@ Item {
                     }
                 }
 
+                Behavior on height {
+                    Anim {
+                        duration: Appearance.bar.workspaceExtendDuration
+                        type: AnimType.standard
+                    }
+                }
+
                 Behavior on opacity {
                     Anim {
                         type: AnimType.standardLarge
@@ -133,7 +150,14 @@ Item {
                 }
 
                 transform: Translate {
-                    y: slot.entered ? 0 : root.pillSize
+                    x: slot.entered || !root.vertical ? 0 : root.pillSize
+                    y: slot.entered || root.vertical ? 0 : root.pillSize
+
+                    Behavior on x {
+                        Anim {
+                            type: AnimType.standardLarge
+                        }
+                    }
 
                     Behavior on y {
                         Anim {

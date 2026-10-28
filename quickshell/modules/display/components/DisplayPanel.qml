@@ -106,6 +106,12 @@ RevealCard {
                     icon: Icons.timer,
                     label: root.config.labelIdleTab,
                     accent: Colours.tabIdle
+                },
+                {
+                    key: root.config.tabBar,
+                    icon: Icons.dashTab,
+                    label: root.config.labelBarTab,
+                    accent: Colours.tabBar
                 }
             ]
 
@@ -117,7 +123,7 @@ RevealCard {
             Layout.preferredHeight: root.config.tabHeight
 
             visible: DisplayState.draft !== null
-            currentIndex: [root.config.tabMode, root.config.tabLayout, root.config.tabColor, root.config.tabWorkspaces, root.config.tabIdle].indexOf(DisplayState.tab)
+            currentIndex: [root.config.tabMode, root.config.tabLayout, root.config.tabColor, root.config.tabWorkspaces, root.config.tabIdle, root.config.tabBar].indexOf(DisplayState.tab)
 
             ModeTab {}
 
@@ -135,6 +141,10 @@ RevealCard {
 
             IdleTab {
                 accent: Colours.tabIdle
+            }
+
+            BarTab {
+                accent: Colours.tabBar
             }
         }
 

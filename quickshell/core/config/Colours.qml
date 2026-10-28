@@ -80,6 +80,7 @@ Singleton {
     readonly property color tabColor: raw.yellow
     readonly property color tabWorkspaces: raw.magenta
     readonly property color tabIdle: raw.orange
+    readonly property color tabBar: raw.blue
     readonly property color tabScreens: raw.accent
     readonly property color tabWindows: raw.green
     readonly property color tabRepo: raw.accent

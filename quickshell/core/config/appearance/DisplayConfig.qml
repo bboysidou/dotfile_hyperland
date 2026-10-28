@@ -43,6 +43,7 @@ QtObject {
     readonly property int canvasDetailSize: 10
     readonly property int canvasBorder: 2
     readonly property real canvasDisabledOpacity: 0.35
+    readonly property real disabledOpacity: 0.4
     readonly property int snapDistance: 120
     readonly property int canvasBezel: 6
     readonly property int canvasStandWidth: 16
@@ -79,11 +80,20 @@ QtObject {
     readonly property string tabColor: "color"
     readonly property string tabWorkspaces: "workspaces"
     readonly property string tabIdle: "idle"
+    readonly property string tabBar: "bar"
     readonly property string labelModeTab: "Mode"
     readonly property string labelLayoutTab: "Layout"
     readonly property string labelColorTab: "Color"
     readonly property string labelWorkspacesTab: "Workspaces"
     readonly property string labelIdleTab: "Idle"
+    readonly property string labelBarTab: "Bar"
+    readonly property string labelBarHint: "Bar on %1. Changes apply right away."
+    readonly property string labelBarShown: "Show bar"
+    readonly property string labelBarFrame: "Show frame"
+    readonly property string labelBarEdge: "Location"
+    readonly property string labelBarEntries: "Show"
+    readonly property int barEntryColumns: 3
+    readonly property int barEdgeWidth: 320
     readonly property string labelActive: "Active"
     readonly property string labelPosition: "Position"
     readonly property string labelScale: "Scale"

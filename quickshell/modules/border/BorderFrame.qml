@@ -7,13 +7,16 @@ Shape {
 
     property real thickness: Appearance.border.thickness
     property real topThickness: root.thickness
+    property real bottomThickness: root.thickness
+    property real leftThickness: root.thickness
+    property real rightThickness: root.thickness
     property real rounding: Appearance.border.rounding
     property color colour: Colours.bar
 
-    readonly property real edgeLeft: root.thickness
-    readonly property real edgeRight: root.width - root.thickness
+    readonly property real edgeLeft: root.leftThickness
+    readonly property real edgeRight: root.width - root.rightThickness
     readonly property real edgeTop: root.topThickness
-    readonly property real edgeBottom: root.height - root.thickness
+    readonly property real edgeBottom: root.height - root.bottomThickness
     readonly property real innerRadius: Math.max(0, Math.min(root.rounding, (root.edgeRight - root.edgeLeft) / 2, (root.edgeBottom - root.edgeTop) / 2))
 
     preferredRendererType: Shape.CurveRenderer

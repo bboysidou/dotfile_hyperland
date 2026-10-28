@@ -183,23 +183,6 @@ QtObject {
     readonly property string touchpadMatch: "touchpad"
     readonly property var switchKeys: [["Alt+Shift", "grp:alt_shift_toggle"], ["Ctrl+Shift", "grp:ctrl_shift_toggle"], ["Super+Space", "grp:win_space_toggle"], ["Caps Lock", "grp:caps_toggle"]]
     readonly property var urgencyLabels: [[NotificationUrgency.Low, "Low priority"], [NotificationUrgency.Normal, "Normal"], [NotificationUrgency.Critical, "Critical"]]
-    readonly property var barLabels: [
-        [BarEntry.workspaces, "Workspaces"],
-        [BarEntry.updates, "Updates"],
-        [BarEntry.media, "Media"],
-        [BarEntry.worldClock, "Clock"],
-        [BarEntry.prayers, "Prayer times"],
-        [BarEntry.tray, "System tray"],
-        [BarEntry.cpu, "CPU"],
-        [BarEntry.gpu, "GPU"],
-        [BarEntry.memory, "Memory"],
-        [BarEntry.mouseBattery, "Mouse battery"],
-        [BarEntry.network, "Network"],
-        [BarEntry.bluetooth, "Bluetooth"],
-        [BarEntry.notifications, "Notifications"],
-        [BarEntry.battery, "Battery"],
-        [BarEntry.volume, "Volume"]
-    ]
     readonly property string inputHeader: "-- Input (written by the Quickshell settings panel, ALT + S)\n-- https://wiki.hypr.land/Configuring/Basics/Variables/\n\n"
     readonly property string inputTemplate: "hl.config({\n    input = {\n        kb_layout  = \"%1\",\n        kb_variant = \"%2\",\n        kb_model   = \"\",\n        kb_options = \"%3\",\n\n        follow_mouse       = 2,\n        numlock_by_default = true,\n        sensitivity        = %4,\n        accel_profile      = \"%5\",\n        natural_scroll     = %6,\n        touchpad = {\n            natural_scroll       = %7,\n            tap_to_click         = %8,\n            disable_while_typing = %9,\n        },\n    },\n})\n"
     readonly property var services: [

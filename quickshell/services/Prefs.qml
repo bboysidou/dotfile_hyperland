@@ -17,6 +17,7 @@ Singleton {
 
     property bool loaded: false
     property var hiddenBar: []
+    property var barScreens: ({})
     property var notifTimeouts: [Appearance.notif.timeoutLow, Appearance.notif.timeoutNormal, Appearance.notif.timeoutCritical]
     property string font: ""
     property real textScale: 1
@@ -40,17 +41,50 @@ Singleton {
         root.persist();
     }
 
-    function shown(entry: string): bool {
-        return !root.hiddenBar.includes(entry);
+    function barOf(screen: string): var {
+        const saved = root.barScreens[screen] ?? {};
+
+        return {
+            shown: saved.shown ?? true,
+            frame: saved.frame ?? true,
+            edge: saved.edge ?? BarEdge.top,
+            hidden: saved.hidden ?? root.hiddenBar
+        };
     }
 
-    function visibleEntries(entries: var): var {
-        return entries.filter(entry => root.shown(entry));
+    function setBar(screen: string, key: string, value: var): void {
+        const next = Object.assign({}, root.barScreens);
+        const bar = root.barOf(screen);
+
+        bar[key] = value;
+        next[screen] = bar;
+        root.set("barScreens", next);
     }
 
-    function setShown(entry: string, on: bool): void {
-        const rest = root.hiddenBar.filter(item => item !== entry);
-        root.set("hiddenBar", on ? rest : rest.concat([entry]));
+    function frameThickness(screen: string, edge: string): int {
+        const bar = root.barOf(screen);
+
+        if (!bar.shown && !bar.frame)
+            return 0;
+
+        if (!bar.shown || bar.edge !== edge)
+            return Appearance.border.thickness;
+
+        return BarEdge.vertical(edge) ? Appearance.bar.width : Appearance.bar.height;
+    }
+
+    function barShows(screen: string, entry: string): bool {
+        return !root.barOf(screen).hidden.includes(entry);
+    }
+
+    function barEntries(screen: string, entries: var): var {
+        const hidden = root.barOf(screen).hidden;
+        return entries.filter(entry => !hidden.includes(entry));
+    }
+
+    function setBarEntry(screen: string, entry: string, on: bool): void {
+        const rest = root.barOf(screen).hidden.filter(item => item !== entry);
+        root.setBar(screen, "hidden", on ? rest : rest.concat([entry]));
     }
 
     function stepTimeout(urgency: int, delta: int): void {
@@ -99,6 +133,7 @@ Singleton {
         try {
             const state = JSON.parse(payload);
             root.hiddenBar = state.hiddenBar ?? root.hiddenBar;
+            root.barScreens = state.barScreens ?? root.barScreens;
             root.notifTimeouts = state.notifTimeouts ?? root.notifTimeouts;
             root.font = state.font ?? root.font;
             root.textScale = state.textScale ?? root.textScale;
@@ -128,6 +163,7 @@ Singleton {
     function flush(): void {
         store.setText(JSON.stringify({
             hiddenBar: root.hiddenBar,
+            barScreens: root.barScreens,
             notifTimeouts: root.notifTimeouts,
             font: root.font,
             textScale: root.textScale,

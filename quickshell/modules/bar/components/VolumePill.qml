@@ -9,7 +9,7 @@ import qs.services
 Pill {
     id: root
 
-    Layout.rightMargin: Appearance.bar.pillMarginRight
+    trailing: Appearance.bar.pillMarginRight
 
     visible: Audio.available
     interactive: true
@@ -29,6 +29,7 @@ Pill {
     Slider {
         Layout.leftMargin: Appearance.bar.volumeMarginLeft
 
+        visible: !root.vertical
         value: Audio.percent / Appearance.audio.max
 
         onMoved: value => Audio.setPercent(Math.round(value * Appearance.audio.max))

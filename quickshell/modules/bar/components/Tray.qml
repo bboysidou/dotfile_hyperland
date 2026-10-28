@@ -11,7 +11,7 @@ Pill {
 
     required property var panel
 
-    Layout.rightMargin: Appearance.bar.pillMarginRight
+    trailing: Appearance.bar.pillMarginRight
 
     visible: SystemTray.items.values.length > 0
     spacing: Appearance.bar.traySpacing
@@ -20,6 +20,7 @@ Pill {
         model: SystemTray.items
 
         TrayItem {
+            edge: root.edge
             panel: root.panel
         }
     }

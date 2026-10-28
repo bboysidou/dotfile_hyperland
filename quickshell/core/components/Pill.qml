@@ -1,12 +1,16 @@
 import QtQuick
 import QtQuick.Layouts
 import qs.core.config
+import qs.core.enums
 
 StyledRect {
     id: root
 
     default property alias content: layout.data
-    property alias spacing: layout.spacing
+    property real spacing: Appearance.spacing.small
+    property string edge: BarEdge.top
+    property int leading: 0
+    property int trailing: 0
     property int paddingH: Appearance.bar.pillPaddingH
     property int paddingV: Appearance.bar.pillPaddingV
     property bool interactive: false
@@ -14,13 +18,25 @@ StyledRect {
     property bool secondary: false
 
     readonly property alias hovered: mouse.containsMouse
+    readonly property bool vertical: BarEdge.vertical(root.edge)
 
     signal clicked
     signal secondaryClicked
     signal scrolled(int delta)
 
-    implicitWidth: layout.implicitWidth + paddingH * 2
-    implicitHeight: layout.implicitHeight + paddingV * 2
+    Layout.alignment: root.vertical ? Qt.AlignHCenter : Qt.AlignLeft | Qt.AlignVCenter
+    Layout.leftMargin: root.vertical ? 0 : root.leading
+    Layout.rightMargin: root.vertical ? 0 : root.trailing
+    Layout.topMargin: root.vertical ? root.leading : 0
+    Layout.bottomMargin: root.vertical ? root.trailing : 0
+
+    implicitWidth: layout.implicitWidth + (root.vertical ? root.paddingV : root.paddingH) * 2
+    implicitHeight: layout.implicitHeight + (root.vertical ? root.paddingH : root.paddingV) * 2
+
+    Component.onCompleted: {
+        for (const child of layout.children)
+            child.Layout.alignment = Qt.AlignCenter;
+    }
 
     data: [
         StateLayer {
@@ -37,11 +53,15 @@ StyledRect {
                 onWheel: event => root.scrolled(event.angleDelta.y)
             }
         },
-        RowLayout {
+        GridLayout {
             id: layout
 
             anchors.centerIn: parent
-            spacing: Appearance.spacing.small
+            flow: root.vertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
+            rows: root.vertical ? -1 : 1
+            columns: root.vertical ? 1 : -1
+            rowSpacing: root.spacing
+            columnSpacing: root.spacing
         }
     ]
 }

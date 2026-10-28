@@ -1,7 +1,8 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
-import qs.core.config
+import qs.core.enums
+import qs.services
 
 Scope {
     id: root
@@ -11,19 +12,25 @@ Scope {
     Zone {
         anchors.top: true
 
-        exclusiveZone: Appearance.bar.height
+        exclusiveZone: Prefs.frameThickness(root.modelData.name, BarEdge.top)
     }
 
     Zone {
         anchors.left: true
+
+        exclusiveZone: Prefs.frameThickness(root.modelData.name, BarEdge.left)
     }
 
     Zone {
         anchors.right: true
+
+        exclusiveZone: Prefs.frameThickness(root.modelData.name, BarEdge.right)
     }
 
     Zone {
         anchors.bottom: true
+
+        exclusiveZone: Prefs.frameThickness(root.modelData.name, BarEdge.bottom)
     }
 
     component Zone: PanelWindow {
@@ -31,7 +38,6 @@ Scope {
         color: "transparent"
 
         mask: Region {}
-        exclusiveZone: Appearance.border.thickness
 
         implicitWidth: 1
         implicitHeight: 1

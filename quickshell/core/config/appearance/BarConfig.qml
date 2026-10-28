@@ -3,6 +3,9 @@ import qs.core.enums
 
 QtObject {
     readonly property int height: 34
+    readonly property int width: 44
+    readonly property int slotGap: 12
+    readonly property string clockVerticalFormat: "HH\nmm"
     readonly property int paddingSide: 0
     readonly property int pillPaddingV: 2
     readonly property int pillPaddingH: 8
@@ -54,4 +57,21 @@ QtObject {
     readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.updates, BarEntry.media]
     readonly property var entriesCentre: [BarEntry.worldClock, BarEntry.prayers]
     readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.battery, BarEntry.volume]
+    readonly property var entryLabels: [
+        [BarEntry.workspaces, "Workspaces"],
+        [BarEntry.updates, "Updates"],
+        [BarEntry.media, "Media"],
+        [BarEntry.worldClock, "Clock"],
+        [BarEntry.prayers, "Prayer times"],
+        [BarEntry.tray, "System tray"],
+        [BarEntry.cpu, "CPU"],
+        [BarEntry.gpu, "GPU"],
+        [BarEntry.memory, "Memory"],
+        [BarEntry.mouseBattery, "Mouse battery"],
+        [BarEntry.network, "Network"],
+        [BarEntry.bluetooth, "Bluetooth"],
+        [BarEntry.notifications, "Notifications"],
+        [BarEntry.battery, "Battery"],
+        [BarEntry.volume, "Volume"]
+    ]
 }

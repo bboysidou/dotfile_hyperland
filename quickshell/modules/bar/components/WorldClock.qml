@@ -4,12 +4,19 @@ import Quickshell
 import qs.core.components
 import qs.core.config
 import qs.core.constants
+import qs.core.enums
 import qs.core.helpers
 import qs.modules.dashboard
 import qs.services
 
 MouseArea {
     id: root
+
+    property string edge: BarEdge.top
+
+    readonly property bool vertical: BarEdge.vertical(root.edge)
+
+    Layout.alignment: Qt.AlignCenter
 
     implicitWidth: layout.implicitWidth
     implicitHeight: layout.implicitHeight
@@ -26,19 +33,28 @@ MouseArea {
     }
     onContainsMouseChanged: DashState.barHover = root.containsMouse
 
-    RowLayout {
+    GridLayout {
         id: layout
 
         anchors.fill: parent
-        spacing: Appearance.spacing.small
+        flow: root.vertical ? GridLayout.TopToBottom : GridLayout.LeftToRight
+        rows: root.vertical ? -1 : 1
+        columns: root.vertical ? 1 : -1
+        rowSpacing: Appearance.spacing.small
+        columnSpacing: Appearance.spacing.small
 
         Icon {
+            Layout.alignment: Qt.AlignCenter
+
             text: Icons.clock
             color: DashState.opened ? Colours.accent : Colours.text
         }
 
         StyledText {
-            text: Time.barText
+            Layout.alignment: Qt.AlignCenter
+
+            text: root.vertical ? Qt.formatDateTime(Time.now, Appearance.bar.clockVerticalFormat) : Time.barText
+            horizontalAlignment: Text.AlignHCenter
             color: DashState.opened ? Colours.textBright : Colours.text
         }
     }

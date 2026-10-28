@@ -11,6 +11,7 @@ MouseArea {
 
     property bool controllable: false
     property bool showElapsed: false
+    property bool compact: false
     property real availableWidth: 0
     property color accent: Colours.media
     property string fontFamily: Appearance.font.family.sans
@@ -63,7 +64,7 @@ MouseArea {
         Icon {
             id: frame
 
-            Layout.rightMargin: Appearance.bar.mediaMarginRight
+            Layout.rightMargin: root.compact ? Appearance.spacing.none : Appearance.bar.mediaMarginRight
 
             text: root.frameGlyph
             color: root.accent
@@ -73,6 +74,7 @@ MouseArea {
         Marquee {
             id: title
 
+            visible: !root.compact
             Layout.rightMargin: root.showElapsed ? Appearance.bar.mediaMarginRight : Appearance.spacing.none
 
             full: root.label
@@ -85,7 +87,7 @@ MouseArea {
         StyledText {
             id: elapsed
 
-            visible: root.showElapsed
+            visible: root.showElapsed && !root.compact
 
             text: `${Fmt.duration(Players.position)}/${Fmt.duration(Players.length)}`
             color: Colours.textMuted

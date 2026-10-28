@@ -20,7 +20,7 @@ Pill {
         return Colours.accent;
     }
 
-    Layout.rightMargin: Appearance.bar.pillMarginRight
+    trailing: Appearance.bar.pillMarginRight
 
     visible: MouseBattery.available
     interactive: true

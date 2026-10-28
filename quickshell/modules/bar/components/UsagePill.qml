@@ -18,7 +18,7 @@ Pill {
     readonly property color stateColour: Tone.usage(root.percent, Colours.text)
     readonly property color stateRingColour: Tone.usage(root.percent, root.ringColour)
 
-    Layout.rightMargin: Appearance.bar.pillMarginRight
+    trailing: Appearance.bar.pillMarginRight
 
     interactive: true
     secondary: root.launchCommand.length > 0
@@ -38,6 +38,8 @@ Pill {
 
     Ring {
         Layout.leftMargin: Appearance.bar.ringMarginLeft
+
+        visible: !root.vertical
 
         value: root.percent / 100
         colour: root.stateRingColour

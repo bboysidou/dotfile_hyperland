@@ -30,12 +30,18 @@ PanelWindow {
     readonly property bool focused: Monitors.focused === root.screen.name
     readonly property bool grabbing: root.focused && BorderState.panelOpen
     readonly property bool covered: Monitors.covered(root.screen)
+    readonly property var barConfig: Prefs.barOf(root.modelData.name)
+    readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
     readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
     readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, updates, hardware, display, settings, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
     property real outline: root.openPanel !== null && Prefs.panelOutline !== OutlineMode.off ? 1 : 0
     property color outlineColour: Colours.accent
+
+    function edge(side: string): real {
+        return Prefs.frameThickness(root.modelData.name, side) * root.revealed;
+    }
 
     screen: root.modelData
     color: "transparent"
@@ -174,25 +180,30 @@ PanelWindow {
         BorderFrame {
             anchors.fill: parent
 
-            thickness: Appearance.border.thickness * root.revealed
-            topThickness: Appearance.bar.height * root.revealed
+            topThickness: root.edge(BarEdge.top)
+            bottomThickness: root.edge(BarEdge.bottom)
+            leftThickness: root.edge(BarEdge.left)
+            rightThickness: root.edge(BarEdge.right)
             opacity: root.revealed
+            visible: root.barConfig.shown || root.barConfig.frame
         }
 
         BarContent {
             id: bar
 
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.leftMargin: Appearance.border.thickness
-            anchors.rightMargin: Appearance.border.thickness
+            readonly property real side: Appearance.border.thickness
+            readonly property real depth: Prefs.frameThickness(root.modelData.name, root.barConfig.edge)
 
-            implicitHeight: Appearance.bar.height
+            x: root.barConfig.edge === BarEdge.right ? parent.width - bar.width : root.barVertical ? 0 : bar.side
+            y: root.barConfig.edge === BarEdge.bottom ? parent.height - bar.height : root.barVertical ? bar.side : 0
+            width: root.barVertical ? bar.depth : parent.width - bar.side * 2
+            height: root.barVertical ? parent.height - bar.side * 2 : bar.depth
 
             opacity: root.revealed
-            visible: root.revealed > 0
+            visible: root.barConfig.shown && root.revealed > 0
 
+            edge: root.barConfig.edge
+            screenName: root.modelData.name
             panelWindow: root
         }
 
@@ -200,10 +211,10 @@ PanelWindow {
             id: inner
 
             anchors.fill: parent
-            anchors.topMargin: Appearance.bar.height * root.revealed
-            anchors.leftMargin: Appearance.border.thickness * root.revealed
-            anchors.rightMargin: Appearance.border.thickness * root.revealed
-            anchors.bottomMargin: Appearance.border.thickness * root.revealed
+            anchors.topMargin: root.edge(BarEdge.top)
+            anchors.leftMargin: root.edge(BarEdge.left)
+            anchors.rightMargin: root.edge(BarEdge.right)
+            anchors.bottomMargin: root.edge(BarEdge.bottom)
 
             Keys.onEscapePressed: BorderState.closeAll()
 

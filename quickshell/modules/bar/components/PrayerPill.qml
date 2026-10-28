@@ -20,6 +20,7 @@ Pill {
     }
 
     StyledRect {
+        visible: !root.vertical
         implicitWidth: Appearance.prayer.dividerWidth
         implicitHeight: Appearance.prayer.dividerHeight
 
@@ -34,13 +35,15 @@ Pill {
     }
 
     StyledText {
+        visible: !root.vertical
         text: Prayer.next?.label ?? ""
         color: Prayer.urgent ? Colours.critical : Colours.text
         font.weight: Appearance.font.weightNormal
     }
 
     StyledText {
-        text: Prayer.countdown
+        text: root.vertical ? Prayer.countdown.replace(" ", "\n") : Prayer.countdown
+        horizontalAlignment: Text.AlignHCenter
         color: Prayer.urgent ? Colours.critical : Colours.textMuted
         font.weight: Appearance.font.weightActive
     }
