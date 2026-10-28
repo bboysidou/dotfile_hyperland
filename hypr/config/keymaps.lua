@@ -88,12 +88,15 @@ hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 -- Workspaces ----------------------------------------------------------------
 -- Which monitor each workspace lives on comes from workspaces.lua, which the
 -- Quickshell display panel writes (focus the monitor, then the workspace).
-local wsMonitor = require("workspaces")
+local hasWorkspaces, wsMonitor = pcall(require, "workspaces")
+if not hasWorkspaces then
+	wsMonitor = {}
+end
 
 for i = 1, 10 do
 	local key = i % 10 -- workspace 10 maps to key 0
 	hl.bind(mainMod .. " + " .. key, function()
-		if hl.get_monitor(wsMonitor[i]) then
+		if wsMonitor[i] and hl.get_monitor(wsMonitor[i]) then
 			hl.dispatch(hl.dsp.focus({ monitor = wsMonitor[i] }))
 		end
 		hl.dispatch(hl.dsp.focus({ workspace = i }))

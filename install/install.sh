@@ -84,6 +84,8 @@ source "${LIB_DIR}/disk.sh"
 source "${LIB_DIR}/bundles.sh"
 # shellcheck source=lib/shells.sh
 source "${LIB_DIR}/shells.sh"
+# shellcheck source=lib/displays.sh
+source "${LIB_DIR}/displays.sh"
 # shellcheck source=lib/boot.sh
 source "${LIB_DIR}/boot.sh"
 # shellcheck source=lib/base.sh

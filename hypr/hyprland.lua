@@ -13,10 +13,10 @@
 require("config/env")
 
 -- Monitors
-require("monitors")
+pcall(require, "monitors")
 
 -- Workspaces
-require("workspaces")
+pcall(require, "workspaces")
 
 -- Autostart
 require("config/autostart")
