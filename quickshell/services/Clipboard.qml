@@ -1,5 +1,6 @@
 pragma Singleton
 
+import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.core.config
@@ -11,7 +12,13 @@ Singleton {
 
     readonly property string cacheDir: `${Paths.cache}/${Appearance.clipboard.cacheDir}`
     readonly property var binaryPattern: /^\[\[ binary data (.+) (\w+) (\d+)x(\d+) \]\]$/
+    readonly property string configPath: `${Paths.config}/cliphist/config`
+    readonly property bool ready: root.recording && Prefs.loaded
 
+    property bool recording: false
+    property bool agesLoaded: false
+    property var ages: ({})
+    property int total: 0
     property var entries: []
     property var thumbs: ({})
     property var pending: []
@@ -43,13 +50,54 @@ Singleton {
     }
 
     function adopt(payload: string): void {
-        root.entries = payload.split("\n").map(root.entry).filter(item => item !== null).slice(0, Appearance.clipboard.maxEntries);
+        const all = payload.split("\n").map(root.entry).filter(item => item !== null);
+
+        root.total = all.length;
+        root.entries = all.slice(0, Appearance.clipboard.maxEntries);
+        root.stamp(all.map(item => item.id));
 
         const images = root.entries.filter(item => item.image).map(item => item.id);
 
         decoder.images = images;
         decoder.command = ["sh", "-c", Commands.clipThumbs, "sh", root.cacheDir].concat(images);
         decoder.running = true;
+    }
+
+    function stamp(ids: var): void {
+        if (!root.agesLoaded)
+            return;
+
+        const now = Date.now();
+        const next = {};
+
+        for (const id of ids)
+            next[id] = root.ages[id] ?? now;
+
+        if (JSON.stringify(next) !== JSON.stringify(root.ages)) {
+            root.ages = next;
+            agesFile.setText(JSON.stringify(next));
+        }
+
+        root.expire(ids);
+    }
+
+    function expire(ids: var): void {
+        if (Prefs.clipMaxDays <= 0)
+            return;
+
+        const cutoff = Date.now() - Prefs.clipMaxDays * Units.msPerDay;
+        const stale = ids.filter(id => root.ages[id] < cutoff);
+
+        if (stale.length === 0)
+            return;
+
+        root.entries = root.entries.filter(item => !stale.includes(item.id));
+        root.mutate(["sh", "-c", Commands.clipDeleteMany, "sh"].concat(stale));
+    }
+
+    function writeConfig(): void {
+        if (root.ready)
+            root.mutate(["sh", "-c", Commands.clipConfig, "sh", root.configPath, String(Prefs.clipMaxItems)]);
     }
 
     function query(text: string): var {
@@ -96,7 +144,57 @@ Singleton {
 
     function wipe(): void {
         root.entries = [];
+        root.total = 0;
         root.mutate(Commands.clipWipe);
+    }
+
+    onReadyChanged: root.writeConfig()
+
+    Connections {
+        target: Prefs
+
+        function onClipMaxItemsChanged(): void {
+            root.writeConfig();
+        }
+
+        function onClipMaxDaysChanged(): void {
+            root.refresh();
+        }
+    }
+
+    Process {
+        running: root.ready
+        command: Commands.clipWatchText
+    }
+
+    Process {
+        running: root.ready && Prefs.clipImages
+        command: Commands.clipWatchImage
+    }
+
+    Timer {
+        running: root.recording && root.agesLoaded
+        interval: Appearance.clipboard.sweepInterval
+        repeat: true
+        triggeredOnStart: true
+
+        onTriggered: root.refresh()
+    }
+
+    FileView {
+        id: agesFile
+
+        path: `${Prefs.stateDir}/${Appearance.clipboard.agesFile}`
+        atomicWrites: true
+        printErrors: false
+
+        onLoaded: {
+            try {
+                root.ages = JSON.parse(agesFile.text());
+            } catch (parseError) {}
+            root.agesLoaded = true;
+        }
+        onLoadFailed: root.agesLoaded = true
     }
 
     Process {

@@ -28,6 +28,8 @@ Flickable {
 
         SystemSection {}
 
+        ClipboardSection {}
+
         KeyboardSection {}
 
         PointerSection {}

@@ -1,10 +1,18 @@
+import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 import qs.core.constants
 import qs.core.enums
+import qs.services
 
 Scope {
+    Binding {
+        target: Clipboard
+        property: "recording"
+        value: true
+    }
+
     GlobalShortcut {
         appid: Ids.appid
         name: "launcher"

@@ -9,9 +9,6 @@ hl.on("hyprland.start", function()
 	-- Load GTK settings
 	hl.exec_cmd("~/.config/hypr/scripts/gtk.sh")
 
-	-- Load cliphist history
-	hl.exec_cmd("wl-paste --watch cliphist store")
-
 	-- Load Quickshell shell (replaces waybar and dunst), supervised so a crash restarts it
 	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP XDG_SESSION_TYPE && systemctl --user restart quickshell.service")
 

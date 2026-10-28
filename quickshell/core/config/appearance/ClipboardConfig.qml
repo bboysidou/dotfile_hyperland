@@ -10,6 +10,9 @@ QtObject {
     readonly property real hintOpacity: 0.9
     readonly property string cacheDir: "quickshell/clipboard"
     readonly property int maxEntries: 200
+    readonly property string agesFile: "clipboard_ages.json"
+    readonly property int sweepInterval: 3600000
+    readonly property int defaultMaxItems: 750
     readonly property int visibleRows: 6
     readonly property int thumbWidth: 86
     readonly property int thumbHeight: 48

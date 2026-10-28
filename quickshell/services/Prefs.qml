@@ -30,6 +30,9 @@ Singleton {
     property int updateMinutes: Appearance.updates.pollMinutes
     property int mouseWarn: Appearance.powerPanel.warningPercent
     property string panelOutline: OutlineMode.tab
+    property int clipMaxItems: Appearance.clipboard.defaultMaxItems
+    property bool clipImages: true
+    property int clipMaxDays: 0
     property var timezones: []
 
     function set(key: string, value: var): void {
@@ -109,6 +112,9 @@ Singleton {
             root.updateMinutes = state.updateMinutes ?? root.updateMinutes;
             root.mouseWarn = state.mouseWarn ?? root.mouseWarn;
             root.panelOutline = state.panelOutline ?? root.panelOutline;
+            root.clipMaxItems = state.clipMaxItems ?? root.clipMaxItems;
+            root.clipImages = state.clipImages ?? root.clipImages;
+            root.clipMaxDays = state.clipMaxDays ?? root.clipMaxDays;
         } catch (parseError) {}
 
         root.loaded = true;
@@ -134,7 +140,10 @@ Singleton {
             windUnit: root.windUnit,
             updateMinutes: root.updateMinutes,
             mouseWarn: root.mouseWarn,
-            panelOutline: root.panelOutline
+            panelOutline: root.panelOutline,
+            clipMaxItems: root.clipMaxItems,
+            clipImages: root.clipImages,
+            clipMaxDays: root.clipMaxDays
         }));
     }
 

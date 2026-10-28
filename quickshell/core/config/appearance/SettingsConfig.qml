@@ -56,6 +56,13 @@ QtObject {
     readonly property string labelOff: "Off"
     readonly property string labelWeather: "Weather"
     readonly property string labelSystem: "System"
+    readonly property string labelClipboard: "Clipboard"
+    readonly property string labelClipMaxItems: "Keep up to"
+    readonly property string labelClipImages: "Save images"
+    readonly property string labelClipMaxAge: "Delete entries after"
+    readonly property string labelClipClear: "Clear history (%1)"
+    readonly property string labelClear: "Clear"
+    readonly property string labelConfirm: "Sure?"
     readonly property string labelHistoryDays: "Keep history for"
     readonly property string labelHistoryMax: "History holds up to"
     readonly property string labelMaxPopups: "Popups at once"
@@ -109,6 +116,32 @@ QtObject {
     readonly property int mouseWarnMax: 50
     readonly property int mouseWarnStep: 5
     readonly property int segmentWidth: 210
+    readonly property int clipItemsMin: 50
+    readonly property int clipItemsMax: 1000
+    readonly property int clipItemsStep: 50
+    readonly property int confirmTimeout: 3000
+    readonly property var clipAgeChoices: [
+        {
+            key: "0",
+            label: "Never"
+        },
+        {
+            key: "1",
+            label: "1d"
+        },
+        {
+            key: "7",
+            label: "7d"
+        },
+        {
+            key: "30",
+            label: "30d"
+        },
+        {
+            key: "90",
+            label: "90d"
+        }
+    ]
     readonly property var barClockFormats: [
         {
             key: "ddd, dd. MMM HH:mm",

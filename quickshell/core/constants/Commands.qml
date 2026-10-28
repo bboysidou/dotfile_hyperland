@@ -85,6 +85,10 @@ Singleton {
     readonly property string clipCopy: 'printf "%s\\t\\n" "$1" | cliphist decode | wl-copy'
     readonly property string clipDelete: 'printf "%s\\t\\n" "$1" | cliphist delete'
     readonly property var clipWipe: ["cliphist", "wipe"]
+    readonly property string clipDeleteMany: 'for id; do printf "%s\\t\\n" "$id"; done | cliphist delete'
+    readonly property var clipWatchText: ["wl-paste", "--type", "text", "--watch", "cliphist", "store"]
+    readonly property var clipWatchImage: ["wl-paste", "--type", "image", "--watch", "cliphist", "store"]
+    readonly property string clipConfig: 'mkdir -p "${1%/*}" && printf "max-items %s\\n" "$2" > "$1"'
     readonly property string clipThumbs: 'dir="$1"; shift; mkdir -p "$dir" || exit 1; for id; do [ -s "$dir/$id" ] || printf "%s\\t\\n" "$id" | cliphist decode > "$dir/$id"; done; for f in "$dir"/*; do [ -e "$f" ] || continue; keep=0; for id; do [ "${f##*/}" = "$id" ] && keep=1 && break; done; [ "$keep" = 1 ] || rm -f -- "$f"; done'
 
     readonly property var shareRegion: ["slurp", "-f", "%o %x %y %w %h"]
