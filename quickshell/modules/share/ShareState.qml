@@ -18,8 +18,9 @@ Singleton {
     property int index: 0
     property bool remember: false
     property var windows: []
+    property var workspaces: []
 
-    readonly property var tabs: [
+    readonly property var baseTabs: [
         {
             key: ShareSource.screen,
             icon: Icons.shareScreen,
@@ -34,6 +35,15 @@ Singleton {
         }
     ]
 
+    readonly property var workspaceTab: ({
+            key: ShareSource.workspace,
+            icon: Icons.dashTab,
+            label: Appearance.share.workspacesLabel,
+            accent: Colours.tabWorkspaces
+        })
+
+    readonly property var tabs: root.workspaces.length > 0 ? [...root.baseTabs, root.workspaceTab] : root.baseTabs
+
     readonly property var screens: Quickshell.screens.map(screen => ({
                 source: ShareSource.screen,
                 id: screen.name,
@@ -43,7 +53,13 @@ Singleton {
                 capture: screen
             }))
 
-    readonly property var entries: root.section === ShareSource.screen ? root.screens : root.windows
+    readonly property var lists: ({
+            [ShareSource.screen]: root.screens,
+            [ShareSource.window]: root.windows,
+            [ShareSource.workspace]: root.workspaces
+        })
+
+    readonly property var entries: root.lists[root.section] ?? []
     readonly property var current: root.entries[root.index] ?? null
 
     function entry(chunk: string): var {
@@ -69,12 +85,51 @@ Singleton {
         return list.split(Xdph.entryEnd).filter(chunk => chunk.includes(Xdph.addressSeparator)).map(chunk => root.entry(chunk));
     }
 
-    function open(fifo: string, list: string, token: bool): void {
+    function workspace(name: string, id: string): var {
+        const screen = Quickshell.screens.find(candidate => Hyprland.monitorFor(candidate)?.activeWorkspace?.name === name) ?? null;
+
+        return {
+            source: ShareSource.workspace,
+            id: id,
+            title: Appearance.share.workspaceTemplate.arg(name),
+            subtitle: screen?.name ?? "",
+            icon: "",
+            capture: screen
+        };
+    }
+
+    function parseWorkspaces(list: string): var {
+        const result = [];
+        let rest = unescape(encodeURIComponent(list));
+
+        while (rest.length > 0) {
+            const lengthEnd = rest.indexOf(Xdph.workspaceFieldSeparator);
+            const length = Number(rest.slice(0, lengthEnd));
+            const nameEnd = lengthEnd + Xdph.workspaceFieldSeparator.length + length;
+            const recordEnd = rest.indexOf(Xdph.workspaceRecordEnd, nameEnd);
+
+            if (lengthEnd < 0 || !Number.isInteger(length) || recordEnd < 0 || !rest.startsWith(Xdph.workspaceFieldSeparator, nameEnd))
+                break;
+
+            const name = decodeURIComponent(escape(rest.slice(lengthEnd + Xdph.workspaceFieldSeparator.length, nameEnd)));
+            const id = rest.slice(nameEnd + Xdph.workspaceFieldSeparator.length, recordEnd);
+
+            if (Number(id) > 0)
+                result.push(root.workspace(name, id));
+
+            rest = rest.slice(recordEnd + Xdph.workspaceRecordEnd.length);
+        }
+
+        return result;
+    }
+
+    function open(fifo: string, list: string, workspaces: string, token: bool): void {
         root.cancel();
         Hyprland.refreshToplevels();
 
         root.fifo = fifo;
         root.windows = root.parse(list);
+        root.workspaces = root.parseWorkspaces(workspaces);
         root.remember = token;
         root.show(ShareSource.screen);
         root.index = Math.max(0, root.screens.findIndex(screen => screen.id === Monitors.focused));
@@ -87,9 +142,9 @@ Singleton {
     }
 
     function cycle(): void {
-        const at = ShareSource.values.indexOf(root.section);
+        const at = root.tabs.findIndex(tab => tab.key === root.section);
 
-        root.show(ShareSource.values[(at + 1) % ShareSource.values.length]);
+        root.show(root.tabs[(at + 1) % root.tabs.length].key);
     }
 
     function select(index: int): void {
@@ -117,8 +172,12 @@ Singleton {
     }
 
     function share(): void {
-        if (root.current)
-            root.reply(root.selection(`${root.current.source}${Xdph.targetSeparator}${root.current.id}`));
+        if (!root.current)
+            return;
+
+        const prefix = root.current.source === ShareSource.workspace ? Xdph.workspaceId : root.current.source;
+
+        root.reply(root.selection(`${prefix}${Xdph.targetSeparator}${root.current.id}`));
     }
 
     function cancel(): void {

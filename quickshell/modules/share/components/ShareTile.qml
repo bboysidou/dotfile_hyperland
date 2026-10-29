@@ -61,7 +61,7 @@ StyledRect {
                 anchors.centerIn: parent
 
                 visible: !preview.hasContent
-                text: root.isWindow ? Icons.shareWindow : Icons.shareScreen
+                text: root.isWindow ? Icons.shareWindow : root.entry.source === ShareSource.workspace ? Icons.dashTab : Icons.shareScreen
                 color: Colours.textMuted
                 font.pixelSize: Appearance.share.previewIconSize
             }

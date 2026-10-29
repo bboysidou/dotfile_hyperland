@@ -8,7 +8,7 @@ import qs.modules.share.components
 RevealCard {
     id: root
 
-    readonly property color accent: ShareState.section === ShareSource.window ? Colours.tabWindows : Colours.tabScreens
+    readonly property color accent: tabBar.fill
 
     outlineColour: tabBar.fill
     implicitWidth: Appearance.share.width

@@ -35,11 +35,13 @@ QtObject {
     readonly property string subtitle: "An app wants to capture what you pick"
     readonly property string screensLabel: "Screens"
     readonly property string windowsLabel: "Windows"
+    readonly property string workspacesLabel: "Workspaces"
     readonly property string regionLabel: "Region"
     readonly property string rememberLabel: "Remember choice"
     readonly property string cancelLabel: "Cancel"
     readonly property string shareLabel: "Share"
     readonly property string emptyTitle: "No windows"
     readonly property string emptySubtitle: "Open a window to share it"
+    readonly property string workspaceTemplate: "Workspace %1"
     readonly property string resolutionTemplate: "%1 \u00D7 %2"
 }

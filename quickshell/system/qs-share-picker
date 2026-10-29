@@ -14,7 +14,7 @@ fifo="${XDG_RUNTIME_DIR:-/tmp}/qs-share-picker.$$"
 mkfifo -m 600 "$fifo" || exec "$FALLBACK" "$@"
 trap 'rm -f "$fifo"' EXIT
 
-if ! qs ipc call share pick "$fifo" "${XDPH_WINDOW_SHARING_LIST:-}" "$token" >/dev/null 2>&1; then
+if ! qs ipc call share pick "$fifo" "${XDPH_WINDOW_SHARING_LIST:-}" "${XDPH_WORKSPACE_SHARING_LIST_V2:-}" "$token" >/dev/null 2>&1; then
     rm -f "$fifo"
     exec "$FALLBACK" "$@"
 fi

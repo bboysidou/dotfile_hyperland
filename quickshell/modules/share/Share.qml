@@ -6,8 +6,8 @@ Scope {
     IpcHandler {
         target: "share"
 
-        function pick(fifo: string, list: string, token: bool): string {
-            ShareState.open(fifo, list, token);
+        function pick(fifo: string, list: string, workspaces: string, token: bool): string {
+            ShareState.open(fifo, list, workspaces, token);
             return IpcStatus.open;
         }
 
