@@ -120,7 +120,7 @@ Singleton {
     }
 
     function render(): string {
-        return root.config.inputTemplate.arg(root.clean(root.layouts.map(entry => entry.layout).join(","))).arg(root.clean(root.layouts.map(entry => entry.variant).join(","))).arg(root.clean(root.options.join(","))).arg(root.sensitivity.toFixed(root.config.sensitivityDecimals)).arg(root.flat ? root.config.flatProfile : "").arg(String(root.naturalScroll)).arg(String(root.touchNatural)).arg(String(root.tapToClick)).arg(String(root.disableWhileTyping));
+        return root.config.inputTemplate.arg(root.clean(root.layouts.map(entry => entry.layout).join(","))).arg(root.clean(root.layouts.map(entry => entry.variant).join(","))).arg(root.clean(root.options.join(","))).arg(root.sensitivity.toFixed(root.config.sensitivityDecimals)).arg(root.flat ? root.config.flatProfile : root.config.adaptiveProfile).arg(String(root.naturalScroll)).arg(String(root.touchNatural)).arg(String(root.tapToClick)).arg(String(root.disableWhileTyping));
     }
 
     function schedule(): void {

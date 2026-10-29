@@ -180,6 +180,7 @@ QtObject {
     ]
     readonly property int maxLayouts: 4
     readonly property string flatProfile: "flat"
+    readonly property string adaptiveProfile: "adaptive"
     readonly property string touchpadMatch: "touchpad"
     readonly property var switchKeys: [["Alt+Shift", "grp:alt_shift_toggle"], ["Ctrl+Shift", "grp:ctrl_shift_toggle"], ["Super+Space", "grp:win_space_toggle"], ["Caps Lock", "grp:caps_toggle"]]
     readonly property var urgencyLabels: [[NotificationUrgency.Low, "Low priority"], [NotificationUrgency.Normal, "Normal"], [NotificationUrgency.Critical, "Critical"]]
