@@ -47,7 +47,7 @@ PanelWindow {
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
 
-    WlrLayershell.layer: root.grabbing ? WlrLayer.Overlay : WlrLayer.Top
+    WlrLayershell.layer: root.grabbing || root.covered ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: root.grabbing ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     anchors.top: true
