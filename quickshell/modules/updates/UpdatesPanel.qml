@@ -45,6 +45,12 @@ RevealCard {
     transformOrigin: Item.TopRight
 
     visible: root.revealed || root.opacity > 0
+    focus: root.revealed
+
+    onRevealedChanged: {
+        if (root.revealed)
+            root.forceActiveFocus();
+    }
 
     Fillet {
         anchors.right: parent.left
