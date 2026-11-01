@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.helpers
 import qs.modules.controlcenter.panels
 import qs.modules.settings
 import qs.services
@@ -38,6 +39,14 @@ Panel {
     implicitWidth: root.config.width
 
     Keys.onEscapePressed: SettingsState.hide()
+    Keys.onPressed: event => {
+        const tabs = Nav.horizontal(event);
+        if (tabs === 0 || !tabBar.visible)
+            return;
+
+        tabBar.step(tabs);
+        event.accepted = true;
+    }
 
     ColumnLayout {
         id: header

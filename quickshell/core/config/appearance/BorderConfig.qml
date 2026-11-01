@@ -7,5 +7,7 @@ QtObject {
     readonly property int outline: 2
     readonly property real outlineSolidFrom: 0.8
     readonly property real outlineSolidTo: 0.98
+    readonly property int pinSize: 14
+    readonly property int pinInset: 4
     readonly property string outlineShader: "core/shaders/outline.frag.qsb"
 }

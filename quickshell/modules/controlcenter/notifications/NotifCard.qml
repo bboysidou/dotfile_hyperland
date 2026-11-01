@@ -2,11 +2,11 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Widgets
 import qs.core.components
 import qs.core.config
 import qs.core.enums
 import qs.core.helpers
+import qs.modules.notifications.components
 import qs.services
 
 StyledRect {
@@ -90,26 +90,13 @@ StyledRect {
 
             spacing: Appearance.notifPanel.cardSpacing
 
-            Item {
-                Layout.preferredWidth: Appearance.notifPanel.cardIconSize
-                Layout.preferredHeight: Appearance.notifPanel.cardIconSize
-
-                IconImage {
-                    anchors.fill: parent
-
-                    visible: root.group.image.length > 0
-                    source: root.group.image
-                    asynchronous: true
-                }
-
-                Icon {
-                    anchors.centerIn: parent
-
-                    visible: root.group.image.length === 0
-                    text: root.critical ? Icons.notifCritical : Icons.notifNormal
-                    color: root.critical ? Colours.urgencyCritical : Colours.textMuted
-                    font.pixelSize: Appearance.notifPanel.cardIconSize
-                }
+            NotifIcon {
+                size: Appearance.notifPanel.cardIconSize
+                source: root.group.avatar || root.group.image
+                avatar: root.group.avatar
+                badge: root.group.avatar !== "" ? root.group.image : ""
+                tint: root.critical ? Colours.urgencyCritical : Colours.textMuted
+                glyph: root.critical ? Icons.notifCritical : Icons.notifNormal
             }
 
             StyledRect {

@@ -23,6 +23,8 @@ Singleton {
     readonly property string prayersTab: "\uDB86\uDC27"
     readonly property string place: "\uDB80\uDF4E"
     readonly property string pinOff: "\uDB81\uDC04"
+    readonly property string pin: "\uDB81\uDC03"
+    readonly property string pinOutline: "\uDB82\uDD31"
     readonly property string sunriseMarker: "\uDB81\uDD9C"
     readonly property string brightness: "\uDB80\uDCDF"
     readonly property string shield: "\uDB80\uDD98"

@@ -91,8 +91,8 @@ StyledRect {
         }
 
         Keys.onPressed: event => {
-            const rows = Nav.vertical(event);
-            const columns = Nav.horizontal(event);
+            const rows = Nav.vertical(event, true);
+            const columns = Nav.horizontal(event, true);
 
             if (event.key === Qt.Key_Escape) {
                 root.cancelled();

@@ -30,6 +30,9 @@ QtObject {
     readonly property int faviconTimeout: 5
     readonly property string faviconEndpoint: "https://icons.duckduckgo.com/ip2"
     readonly property string faviconCacheDir: "quickshell/favicons"
+    readonly property string avatarCacheDir: "quickshell/notif-avatars"
+    readonly property int avatarGrabScale: 2
+    readonly property string fileScheme: "file://"
     readonly property var faviconBrowsers: ["zen", "firefox", "librewolf", "floorp", "brave", "chromium", "google-chrome"]
     readonly property var originBrowsers: ["zen", "firefox", "librewolf", "floorp"]
     readonly property string originScript: "system/qs-notif-origin"

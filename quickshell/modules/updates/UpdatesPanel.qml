@@ -52,6 +52,15 @@ RevealCard {
             root.forceActiveFocus();
     }
 
+    Keys.onPressed: event => {
+        const tabs = Nav.horizontal(event);
+        if (tabs === 0 || !tabBar.visible)
+            return;
+
+        tabBar.step(tabs);
+        event.accepted = true;
+    }
+
     Fillet {
         anchors.right: parent.left
         anchors.top: parent.top

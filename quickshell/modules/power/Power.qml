@@ -193,7 +193,7 @@ Scope {
                 focus: panel.primary
 
                 Keys.onPressed: event => {
-                    const delta = Nav.horizontal(event);
+                    const delta = Nav.horizontal(event, true);
 
                     if (event.key === Qt.Key_Escape)
                         PowerState.hide();

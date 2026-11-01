@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.core.enums
+import qs.core.helpers
 import qs.modules.controlcenter
 import qs.modules.controlcenter.components
 import qs.modules.power
@@ -49,6 +50,15 @@ Panel {
 
     outlineColour: tabBar.fill
     implicitWidth: Appearance.orbit.panelWidth
+
+    Keys.onPressed: event => {
+        const tabs = Nav.horizontal(event);
+        if (tabs === 0 || !tabBar.visible)
+            return;
+
+        tabBar.step(tabs);
+        event.accepted = true;
+    }
 
     ColumnLayout {
         anchors.fill: parent

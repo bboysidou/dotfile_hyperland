@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Window
 import Quickshell.Widgets
 import qs.core.components
 import qs.core.config
@@ -29,6 +30,19 @@ Item {
     property bool entered
     property bool grown
     property real progress: 1
+
+    function keepAvatar(image: Item): void {
+        const entry = root.modelData.entry;
+        const path = NotifHistory.avatarPath(entry);
+        if (path === "" || entry.avatarFile !== "" || !image.Window.window)
+            return;
+
+        const side = Appearance.notif.iconSize * Appearance.notif.avatarGrabScale;
+        image.grabToImage(result => {
+            if (result.saveToFile(path))
+                NotifHistory.setAvatarFile(entry, path);
+        }, Qt.size(side, side));
+    }
 
     function sync(): void {
         countdown.stop();
@@ -130,9 +144,13 @@ Item {
             NotifIcon {
                 Layout.alignment: Qt.AlignTop
 
-                popup: root.modelData
+                source: root.modelData.iconSource
+                avatar: root.modelData.avatar
+                badge: root.modelData.badge
                 tint: root.tint
                 glyph: root.glyph
+
+                onAvatarLoaded: image => root.keepAvatar(image)
             }
 
             ColumnLayout {

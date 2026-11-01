@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.helpers
 import qs.modules.display
 import qs.services
 
@@ -30,6 +31,8 @@ RevealCard {
     Keys.onPressed: event => {
         const shift = event.modifiers & Qt.ShiftModifier;
         const onMode = DisplayState.tab === root.config.tabMode;
+        const tabs = Nav.horizontal(event);
+        const rows = Nav.vertical(event);
 
         if (event.key === Qt.Key_Escape)
             DisplayState.hide();
@@ -39,10 +42,12 @@ RevealCard {
             Displays.revert();
         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)
             Displays.confirming ? Displays.keep() : DisplayState.apply();
-        else if (onMode && event.key === Qt.Key_Left)
-            shift ? DisplayState.stepRate(-1) : DisplayState.stepMode(-1);
-        else if (onMode && event.key === Qt.Key_Right)
-            shift ? DisplayState.stepRate(1) : DisplayState.stepMode(1);
+        else if (onMode && shift && (event.key === Qt.Key_Left || event.key === Qt.Key_Right))
+            DisplayState.stepRate(event.key === Qt.Key_Right ? 1 : -1);
+        else if (tabs !== 0 && tabBar.visible)
+            tabBar.step(tabs);
+        else if (onMode && rows !== 0)
+            DisplayState.stepMode(rows);
         else
             return;
 
@@ -67,6 +72,10 @@ RevealCard {
             Layout.fillWidth: true
 
             visible: Displays.monitors.length > 0
+        }
+
+        ArrangementRow {
+            visible: DisplayState.names.length > 1
         }
 
         SegmentBar {

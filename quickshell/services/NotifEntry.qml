@@ -15,6 +15,8 @@ QtObject {
     property string summary
     property string body
     property string image
+    property string avatar
+    property string avatarFile
     property int urgency: NotificationUrgency.Normal
     property double time
     property bool read
@@ -39,6 +41,7 @@ QtObject {
             summary: root.summary,
             body: root.body,
             image: root.image,
+            avatarFile: root.avatarFile,
             urgency: root.urgency,
             time: root.time,
             read: root.read

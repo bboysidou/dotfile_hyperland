@@ -27,8 +27,9 @@ PanelWindow {
     required property var modelData
 
     readonly property alias inner: inner
-    readonly property bool focused: Monitors.focused === root.screen.name
-    readonly property bool grabbing: root.focused && BorderState.panelOpen
+    readonly property bool focused: BorderState.pinned ? BorderState.pinnedScreen === root.screen.name : Monitors.focused === root.screen.name
+    readonly property bool hosting: root.focused && BorderState.panelOpen
+    readonly property bool grabbing: root.hosting && !BorderState.pinned
     readonly property bool covered: Monitors.covered(root.screen)
     readonly property var barConfig: Prefs.barOf(root.modelData.name)
     readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
@@ -47,8 +48,8 @@ PanelWindow {
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
 
-    WlrLayershell.layer: root.grabbing || root.covered ? WlrLayer.Overlay : WlrLayer.Top
-    WlrLayershell.keyboardFocus: root.grabbing ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    WlrLayershell.layer: root.hosting || root.covered ? WlrLayer.Overlay : WlrLayer.Top
+    WlrLayershell.keyboardFocus: root.hosting ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     anchors.top: true
     anchors.bottom: true
@@ -217,6 +218,16 @@ PanelWindow {
             anchors.bottomMargin: root.edge(BarEdge.bottom)
 
             Keys.onEscapePressed: BorderState.closeAll()
+
+            Loader {
+                active: root.openPanel !== null
+                z: 2
+
+                sourceComponent: PinButton {
+                    panel: root.openPanel
+                    screenName: root.modelData.name
+                }
+            }
 
             PanelSlot {
                 id: launcher

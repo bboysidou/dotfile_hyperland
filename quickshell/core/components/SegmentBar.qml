@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import qs.core.config
+import qs.core.helpers
 
 Item {
     id: root
@@ -21,6 +22,15 @@ Item {
     property real flash: 0
 
     signal selected(string key)
+
+    function step(delta: int): void {
+        if (root.options.length < 2)
+            return;
+
+        root.selected(root.options[Num.wrap(root.index, delta, root.options.length)].key);
+        popAnim.restart();
+        flashAnim.restart();
+    }
 
     implicitHeight: Appearance.segment.height
 
@@ -124,6 +134,8 @@ Item {
                     required property int index
 
                     readonly property bool active: root.index === segment.index
+                    readonly property real leftRounding: segment.index === 0 ? Appearance.segment.rounding : Appearance.segment.innerRounding
+                    readonly property real rightRounding: segment.index === root.options.length - 1 ? Appearance.segment.rounding : Appearance.segment.innerRounding
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -131,7 +143,10 @@ Item {
                     StyledRect {
                         anchors.fill: parent
 
-                        radius: Appearance.segment.innerRounding
+                        topLeftRadius: segment.leftRounding
+                        bottomLeftRadius: segment.leftRounding
+                        topRightRadius: segment.rightRounding
+                        bottomRightRadius: segment.rightRounding
                         color: !segment.active && pointer.containsMouse ? Colours.hover : "transparent"
 
                         Behavior on color {

@@ -6,27 +6,40 @@ import Quickshell
 Singleton {
     id: root
 
-    function vertical(event: var): int {
+    function letters(event: var, typing: bool): bool {
+        if (event.modifiers & Qt.ControlModifier)
+            return true;
+
+        return !typing && !(event.modifiers & (Qt.ShiftModifier | Qt.AltModifier | Qt.MetaModifier));
+    }
+
+    function vertical(event: var, typing = false): int {
         if (event.key === Qt.Key_Down)
             return 1;
         if (event.key === Qt.Key_Up)
             return -1;
+        if (!root.letters(event, typing))
+            return 0;
+        if (event.key === Qt.Key_J)
+            return 1;
+        if (event.key === Qt.Key_K)
+            return -1;
         if (!(event.modifiers & Qt.ControlModifier))
             return 0;
-        if (event.key === Qt.Key_J || event.key === Qt.Key_N)
+        if (event.key === Qt.Key_N)
             return 1;
-        if (event.key === Qt.Key_K || event.key === Qt.Key_P)
+        if (event.key === Qt.Key_P)
             return -1;
 
         return 0;
     }
 
-    function horizontal(event: var): int {
+    function horizontal(event: var, typing = false): int {
         if (event.key === Qt.Key_Right)
             return 1;
         if (event.key === Qt.Key_Left)
             return -1;
-        if (!(event.modifiers & Qt.ControlModifier))
+        if (!root.letters(event, typing))
             return 0;
         if (event.key === Qt.Key_L)
             return 1;

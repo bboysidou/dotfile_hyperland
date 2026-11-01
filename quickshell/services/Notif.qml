@@ -13,6 +13,7 @@ QtObject {
 
     required property Notification notification
 
+    property NotifEntry entry: null
     property string resolvedImage
     property string summary
     property string body
@@ -40,6 +41,8 @@ QtObject {
     readonly property string originBrowser: Appearance.notif.originBrowsers.find(name => root.browser.includes(name)) ?? ""
     readonly property string avatar: root.browser !== "" && notification?.image && !root.preview ? notification.image : ""
     readonly property string badge: root.avatar !== "" ? (root.resolvedImage || root.appSource) : ""
+    property bool hadAvatar: false
+    readonly property string historyImage: root.hadAvatar ? (root.resolvedImage || root.appSource) : root.iconSource
     readonly property var hints: notification?.hints ?? ({})
     readonly property string tag: NotifHistory.tagOf(root.hints)
     readonly property int value: typeof root.hints[NotifHints.value] === "number" ? Num.clamp(root.hints[NotifHints.value], 0, Appearance.notif.progressMax) : -1
@@ -110,7 +113,7 @@ QtObject {
 
     function fetchFavicon(host: string): void {
         root.origin = host;
-        NotifHistory.setOrigin(root.notification, host);
+        NotifHistory.setOrigin(root.entry, host);
 
         const cached = Notifs.favicons[host];
         if (cached) {
@@ -231,7 +234,7 @@ QtObject {
                     return;
                 if (icon) {
                     root.origin = host;
-                    NotifHistory.setOrigin(root.notification, host);
+                    NotifHistory.setOrigin(root.entry, host);
                     Notifs.favicons[host] = `file://${icon}`;
                 }
                 root.fetchFavicon(host);
@@ -262,9 +265,19 @@ QtObject {
         onTriggered: root.removed()
     }
 
+    onHistoryImageChanged: NotifHistory.setImage(root.entry, root.historyImage, root.avatar)
+    onAvatarChanged: {
+        if (root.avatar !== "")
+            root.hadAvatar = true;
+        NotifHistory.setImage(root.entry, root.historyImage, root.avatar);
+    }
+
     Component.onCompleted: {
+        root.entry = NotifHistory.entryOf(root.notification);
         root.created = Date.now();
+        root.hadAvatar = root.avatar !== "";
         root.refresh();
+        NotifHistory.setImage(root.entry, root.historyImage, root.avatar);
         root.resolveFavicon();
     }
 }

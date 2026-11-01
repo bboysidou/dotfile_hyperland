@@ -53,6 +53,8 @@ brightnessctl
 ddcutil
 acpi
 pacman-contrib
+reflector
+gum
 cronie
 man-db
 git

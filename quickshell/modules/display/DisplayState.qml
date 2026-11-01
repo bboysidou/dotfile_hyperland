@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import qs.core.config
+import qs.core.enums
 import qs.core.helpers
 import qs.services
 
@@ -25,7 +26,10 @@ Singleton {
     readonly property int rateIndex: root.draft ? root.rates.indexOf(root.draft.rate) : -1
     readonly property var names: Displays.monitors.map(entry => entry.name)
     readonly property int enabledCount: root.names.filter(name => !(root.drafts[name]?.disabled ?? true)).length
-    readonly property bool changed: JSON.stringify(root.drafts) !== JSON.stringify(Displays.snapshot().settings) || JSON.stringify(root.assignment) !== JSON.stringify(Displays.workspaces)
+    readonly property var remembered: DisplayLayout.positions
+    readonly property var arrangement: root.detect(root.drafts)
+    readonly property string mirrorSource: root.arrangement.kind === DisplayArrangement.mirror ? root.arrangement.output : root.monitor
+    readonly property bool changed:JSON.stringify(root.drafts) !== JSON.stringify(Displays.snapshot().settings) || JSON.stringify(root.assignment) !== JSON.stringify(Displays.workspaces)
 
     function show(): void {
         Displays.refresh();
@@ -107,15 +111,18 @@ Singleton {
         return settings && !settings.disabled && !settings.mirror;
     }
 
+    function intersects(first, second): bool {
+        const a = root.logical(first);
+        const b = root.logical(second);
+        return first.x < second.x + b.width && first.x + a.width > second.x && first.y < second.y + b.height && first.y + a.height > second.y;
+    }
+
     function overlaps(name: string, x: int, y: int): bool {
-        const size = root.logical(root.drafts[name]);
-        return root.names.some(other => {
-            if (other === name || !root.placed(other))
-                return false;
-            const box = root.drafts[other];
-            const otherSize = root.logical(box);
-            return x < box.x + otherSize.width && x + size.width > box.x && y < box.y + otherSize.height && y + size.height > box.y;
+        const moved = Object.assign({}, root.drafts[name], {
+            x: x,
+            y: y
         });
+        return root.names.some(other => other !== name && root.placed(other) && root.intersects(moved, root.drafts[other]));
     }
 
     function snap(value: int, candidates): int {
@@ -189,6 +196,69 @@ Singleton {
         if (!on && root.enabledCount <= 1)
             return;
         root.set("disabled", !on);
+    }
+
+    function detect(drafts): var {
+        const enabled = root.names.filter(name => drafts[name] && !drafts[name].disabled);
+        const sources = enabled.filter(name => !drafts[name].mirror);
+        if (enabled.length === 1)
+            return {
+                kind: DisplayArrangement.only,
+                output: enabled[0]
+            };
+        if (sources.length === 1 && enabled.every(name => name === sources[0] || drafts[name].mirror === sources[0]))
+            return {
+                kind: DisplayArrangement.mirror,
+                output: sources[0]
+            };
+        return {
+            kind: sources.length === enabled.length ? DisplayArrangement.extend : "",
+            output: ""
+        };
+    }
+
+    function revived(name: string): var {
+        const settings = Object.assign({}, root.drafts[name], {
+            disabled: false,
+            mirror: ""
+        });
+        const mode = Displays.find(name)?.modes[0];
+        if ((settings.width > 0 && Number(settings.rate) > 0) || !mode)
+            return settings;
+        return Object.assign(settings, {
+            width: mode.width,
+            height: mode.height,
+            rate: mode.rates[mode.rates.length - 1],
+            scale: 1
+        });
+    }
+
+    function spread(next): var {
+        const done = [];
+        const order = root.names.slice().sort((first, second) => next[first].x - next[second].x || next[first].y - next[second].y);
+        for (const name of order) {
+            if (done.some(other => root.intersects(next[name], next[other])))
+                next[name] = Object.assign({}, next[name], {
+                    x: Math.max(...done.map(other => next[other].x + root.logical(next[other]).width)),
+                    y: 0
+                });
+            done.push(name);
+        }
+        return next;
+    }
+
+    function arrange(kind: string, output: string): void {
+        const next = {};
+        for (const name of root.names) {
+            const settings = Object.assign(root.revived(name), kind === DisplayArrangement.extend ? root.remembered[name] ?? {} : {});
+            if (kind === DisplayArrangement.mirror && name !== output)
+                settings.mirror = output;
+            if (kind === DisplayArrangement.only && name !== output)
+                settings.disabled = true;
+            next[name] = settings;
+        }
+        root.drafts = kind === DisplayArrangement.extend ? root.spread(next) : next;
+        root.normalise();
     }
 
     function assign(workspace: int): void {

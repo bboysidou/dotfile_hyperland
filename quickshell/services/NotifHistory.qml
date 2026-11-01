@@ -12,6 +12,7 @@ Singleton {
     id: root
 
     readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
+    readonly property string avatarDir: `${Paths.cache}/${Appearance.notif.avatarCacheDir}`
     readonly property string statePath: `${root.stateDir}/${Appearance.notif.historyFile}`
 
     property list<NotifEntry> entries: []
@@ -36,6 +37,7 @@ Singleton {
                     appName: entry.appName,
                     desktopEntry: entry.desktopEntry,
                     image: entry.image,
+                    avatar: entry.avatarFile || entry.avatar,
                     latest: entry.time,
                     entries: [entry]
                 });
@@ -79,7 +81,7 @@ Singleton {
             tag,
             summary: notification.summary ?? "",
             body: notification.body ?? "",
-            image: root.resolve(notification),
+            image: "",
             urgency: notification.urgency,
             time: Date.now(),
             read: false,
@@ -91,22 +93,12 @@ Singleton {
         root.save();
     }
 
-    function resolve(notification): string {
-        if (notification.image)
-            return notification.image;
-
-        if (notification.appIcon)
-            return Fmt.icon(notification.appIcon);
-
-        const lookup = notification.desktopEntry || notification.appName;
-        const entry = lookup ? DesktopEntries.heuristicLookup(lookup) : null;
-        return entry?.icon ? Fmt.icon(entry.icon) : "";
-    }
-
     function detach(notification): void {
         for (const entry of root.toArray())
-            if (entry.notification === notification)
+            if (entry.notification === notification) {
                 entry.notification = null;
+                entry.avatar = "";
+            }
     }
 
     function dismiss(entry: NotifEntry): void {
@@ -138,8 +130,11 @@ Singleton {
 
     function reap(removed: var): void {
         Qt.callLater(() => {
-            for (const entry of removed)
+            for (const entry of removed) {
+                if (entry.avatarFile !== "")
+                    Quickshell.execDetached(["rm", "-f", entry.avatarFile.replace(Appearance.notif.fileScheme, "")]);
                 entry.destroy();
+            }
         });
     }
 
@@ -170,10 +165,40 @@ Singleton {
         root.reap(removed);
     }
 
-    function setOrigin(notification, host: string): void {
-        for (const entry of root.toArray())
-            if (entry.notification === notification)
-                entry.origin = host;
+    function entryOf(notification): NotifEntry {
+        if (!notification)
+            return null;
+
+        return root.toArray().find(entry => entry.notification === notification) ?? null;
+    }
+
+    function setOrigin(entry: NotifEntry, host: string): void {
+        if (!entry)
+            return;
+
+        entry.origin = host;
+        root.save();
+    }
+
+    function setImage(entry: NotifEntry, image: string, avatar: string): void {
+        if (!entry)
+            return;
+
+        entry.image = image;
+        if (entry.live && avatar !== "")
+            entry.avatar = avatar;
+        root.save();
+    }
+
+    function avatarPath(entry: NotifEntry): string {
+        return entry ? `${root.avatarDir}/${entry.key}.png` : "";
+    }
+
+    function setAvatarFile(entry: NotifEntry, path: string): void {
+        if (!entry)
+            return;
+
+        entry.avatarFile = `${Appearance.notif.fileScheme}${path}`;
         root.save();
     }
 
@@ -254,7 +279,7 @@ Singleton {
     readonly property Process ensureDir: Process {
         running: true
 
-        command: ["mkdir", "-p", root.stateDir]
+        command: ["mkdir", "-p", root.stateDir, root.avatarDir]
     }
 
     readonly property FileView store: FileView {

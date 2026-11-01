@@ -6,5 +6,6 @@ QtObject {
     readonly property string fitStateFile: "wallpaper-fit.json"
     readonly property string layoutStateFile: "wallpaper-screens.json"
     readonly property int fitSaveDebounce: 400
+    readonly property int mapSettle: 1000
     readonly property var extensions: ["jpg", "jpeg", "png", "gif"]
 }

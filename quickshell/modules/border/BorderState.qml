@@ -19,6 +19,21 @@ Singleton {
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
 
     property real rightInset: 0
+    property bool pinned: false
+    property string pinnedScreen: ""
+
+    function togglePin(screenName: string): void {
+        if (!root.panelOpen && DashState.opened)
+            DashState.show("");
+
+        root.pinnedScreen = screenName;
+        root.pinned = !root.pinned;
+    }
+
+    onPanelOpenChanged: {
+        if (!root.panelOpen)
+            root.pinned = false;
+    }
 
     function closeExcept(keep: QtObject): void {
         if (keep !== LauncherState && LauncherState.opened)

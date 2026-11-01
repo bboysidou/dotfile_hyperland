@@ -7,6 +7,7 @@ import qs.core.components
 import qs.core.config
 import qs.core.constants
 import qs.core.enums
+import qs.core.helpers
 import qs.services
 
 Scope {
@@ -21,6 +22,8 @@ Scope {
             required property var modelData
 
             readonly property string wanted: WallpaperLayout.currentFor(panel.modelData.name)
+            readonly property bool covered: Monitors.covered(panel.modelData)
+            property bool mapped: false
 
             function swap(): void {
                 if (current.status === Image.Ready) {
@@ -33,6 +36,7 @@ Scope {
             }
 
             screen: panel.modelData
+            visible: panel.mapped || !panel.covered
             color: Colours.surface
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.layer: WlrLayer.Background
@@ -45,6 +49,13 @@ Scope {
 
             Component.onCompleted: current.path = panel.wanted
             onWantedChanged: panel.swap()
+
+            Timer {
+                running: !panel.mapped && !panel.covered
+                interval: Appearance.wallpaper.mapSettle
+
+                onTriggered: panel.mapped = true
+            }
 
             WallpaperImage {
                 id: previous
