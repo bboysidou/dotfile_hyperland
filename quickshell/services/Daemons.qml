@@ -100,8 +100,10 @@ Singleton {
         const next = Object.assign({}, root.failures);
         if (code === 0)
             delete next[root.busy];
-        else
+        else {
             next[root.busy] = code;
+            ErrorLog.report(root.busy, Appearance.errorLog.exitTemplate.arg(runner.command.join(" ")).arg(code));
+        }
         root.failures = next;
         root.busy = "";
         root.refresh();

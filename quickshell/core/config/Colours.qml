@@ -71,6 +71,7 @@ Singleton {
     readonly property color tabPrayers: raw.orange
     readonly property color tabGeneral: raw.accent
     readonly property color tabServices: raw.green
+    readonly property color tabErrors: raw.critical
     readonly property color tabOverview: raw.accent
     readonly property color tabHistory: raw.yellow
     readonly property color tabDetails: raw.magenta

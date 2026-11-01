@@ -4,6 +4,7 @@ import qs.core.components
 import qs.core.config
 import qs.modules.controlcenter.panels
 import qs.modules.settings
+import qs.services
 
 Panel {
     id: root
@@ -21,8 +22,17 @@ Panel {
             icon: Icons.power,
             label: root.config.labelServicesTab,
             accent: Colours.tabServices
+        },
+        {
+            key: Appearance.errorLog.tabKey,
+            icon: Icons.alert,
+            label: ErrorLog.unseen > 0 ? Appearance.errorLog.tabTemplate.arg(Appearance.errorLog.labelTab).arg(ErrorLog.unseen) : Appearance.errorLog.labelTab,
+            accent: Colours.tabErrors
         }
     ]
+    readonly property bool watchingErrors: SettingsState.opened && SettingsState.tab === Appearance.errorLog.tabKey
+
+    onWatchingErrorsChanged: ErrorLog.markSeen()
 
     outlineColour: tabBar.fill
     implicitWidth: root.config.width
@@ -68,6 +78,10 @@ Panel {
 
         ServicesTab {
             accent: Colours.tabServices
+        }
+
+        ErrorsTab {
+            accent: Colours.tabErrors
         }
     }
 }

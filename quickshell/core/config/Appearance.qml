@@ -59,4 +59,5 @@ Singleton {
     readonly property ClipboardConfig clipboard: ClipboardConfig {}
     readonly property SpeedTestConfig speedTest: SpeedTestConfig {}
     readonly property SettingsConfig settings: SettingsConfig {}
+    readonly property ErrorLogConfig errorLog: ErrorLogConfig {}
 }
