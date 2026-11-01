@@ -76,6 +76,8 @@ QtObject {
     readonly property int visualiserRange: 100
     readonly property real visualiserNoiseReduction: 0.85
     readonly property real visualiserFalloff: 1.5
+    readonly property string visualiserMethod: "pulse"
+    readonly property string visualiserSource: "auto"
     readonly property int vinylSize: 168
     readonly property int vinylSizeSmall: 96
     readonly property int visualiserMagnitudeSmall: 20

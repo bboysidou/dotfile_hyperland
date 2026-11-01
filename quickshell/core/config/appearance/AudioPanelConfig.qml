@@ -48,4 +48,38 @@ QtObject {
     readonly property string labelNoDevice: "No device"
     readonly property string emptyStreams: "Nothing playing"
     readonly property string labelStreamVolume: "Stream volume"
+    readonly property string labelDefaultSink: "Default"
+
+    readonly property int routeHeight: 26
+    readonly property int routeOptionHeight: 26
+    readonly property int routeSpacing: 2
+    readonly property int routeRounding: 8
+    readonly property int routePaddingH: 8
+    readonly property int routeIconSize: 14
+    readonly property int routeTextSize: 11
+
+    readonly property int meterThickness: 4
+    readonly property int meterTopMargin: 2
+    readonly property real meterFloorDb: -60
+    readonly property real meterDbScale: 20
+    readonly property int meterInterval: 16
+    readonly property real meterRelease: 0.02
+    readonly property int meterHoldDuration: 900
+    readonly property real meterHoldRelease: 0.008
+    readonly property int meterHoldWidth: 2
+    readonly property real meterMutedOpacity: 0.4
+
+    readonly property int spectrumHeight: 34
+    readonly property int spectrumTopMargin: 4
+    readonly property int spectrumBars: 32
+    readonly property string spectrumMethod: "pipewire"
+    readonly property real spectrumOpacity: 0.85
+    readonly property real spectrumBarRatio: 0.6
+    readonly property int spectrumMinBar: 2
+    readonly property int spectrumDuration: 80
+    readonly property real spectrumGain: 1.25
+    readonly property real spectrumCurve: 0.7
+
+    readonly property string labelMicTest: "Hear yourself"
+    readonly property string labelMicTestDetail: "Plays this mic through the output"
 }

@@ -15,6 +15,7 @@ StyledRect {
     property int position: 0
     property bool active: false
     property bool stream: false
+    property bool monitorable: false
     property color accent: Colours.audioOutput
     property string glyph: Icons.speaker
     property string mutedGlyph: Icons.volumeMuted
@@ -33,16 +34,25 @@ StyledRect {
         return root.node?.name ?? "";
     }
     readonly property color onCard: root.active ? Colours.surface : Colours.text
+    readonly property bool routable: root.stream && Audio.routable(root.node)
+    readonly property bool spectrum: root.stream ? meter.sounding : root.active
+    readonly property bool grows: root.stream || root.spectrum || root.monitorable
 
     signal activated
 
     Layout.fillWidth: true
-    Layout.preferredHeight: root.active ? Appearance.card.activeHeight : Appearance.card.height
+    Layout.preferredHeight: {
+        const base = root.active ? Appearance.card.activeHeight : Appearance.card.height;
+        if (root.grows)
+            return Math.max(base, content.implicitHeight + Appearance.card.paddingV * 2);
+        return base;
+    }
 
     color: root.active ? root.accent : (pointer.containsMouse ? Colours.hover : Colours.pill)
     radius: Appearance.card.rounding
     border.width: root.active ? Appearance.card.activeBorderWidth : Appearance.card.borderWidth
     border.color: root.active ? root.accent : Colours.border
+    clip: root.grows
 
     activeFocusOnTab: !root.stream
 
@@ -108,6 +118,8 @@ StyledRect {
     }
 
     ColumnLayout {
+        id: content
+
         anchors.fill: parent
         anchors.leftMargin: Appearance.card.paddingH
         anchors.rightMargin: Appearance.card.paddingH
@@ -195,6 +207,75 @@ StyledRect {
                 color: Colours.textMuted
                 font.pixelSize: Appearance.card.detailSize
             }
+        }
+
+        LevelMeter {
+            id: meter
+
+            Layout.fillWidth: true
+            Layout.topMargin: Appearance.audioPanel.meterTopMargin
+
+            visible: root.stream
+            node: root.node
+            accent: root.accent
+            muted: root.muted
+        }
+
+        StreamRoute {
+            Layout.fillWidth: true
+
+            visible: root.routable
+            node: root.node
+            accent: root.accent
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+
+            visible: root.monitorable
+            spacing: Appearance.card.spacing
+
+            ColumnLayout {
+                Layout.fillWidth: true
+
+                spacing: Appearance.card.textSpacing
+
+                StyledText {
+                    Layout.fillWidth: true
+
+                    text: Appearance.audioPanel.labelMicTest
+                    color: root.onCard
+                    font.pixelSize: Appearance.card.nameSize
+                }
+
+                StyledText {
+                    Layout.fillWidth: true
+
+                    text: Appearance.audioPanel.labelMicTestDetail
+                    color: root.onCard
+                    font.pixelSize: Appearance.card.detailSize
+                    opacity: Appearance.audioPanel.orbRingOpacity
+                    elide: Text.ElideRight
+                }
+            }
+
+            Toggle {
+                Layout.alignment: Qt.AlignVCenter
+
+                checked: Audio.micTest
+                accent: Colours.textBright
+
+                onToggled: checked => Audio.micTest = checked
+            }
+        }
+
+        AudioSpectrum {
+            Layout.fillWidth: true
+            Layout.topMargin: Appearance.audioPanel.spectrumTopMargin
+
+            visible: root.spectrum
+            node: root.node
+            accent: root.active ? Colours.surface : root.accent
         }
     }
 }

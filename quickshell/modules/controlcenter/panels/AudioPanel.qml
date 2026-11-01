@@ -86,6 +86,7 @@ Panel {
         if (root.revealed) {
             intro.restart();
         } else {
+            Audio.micTest = false;
             root.introHeader = 0;
             root.introContent = 0;
         }
@@ -216,6 +217,7 @@ Panel {
                     position: index
                     stream: root.streams
                     active: root.isActive(modelData)
+                    monitorable: root.inputs && active
                     accent: root.accent
                     glyph: root.glyph
                     mutedGlyph: root.mutedGlyph

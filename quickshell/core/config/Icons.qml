@@ -77,6 +77,8 @@ Singleton {
     readonly property string calendarMonth: "\uDB83\uDE17"
     readonly property string chevronLeft: "\uDB80\uDD41"
     readonly property string chevronRight: "\uDB80\uDD42"
+    readonly property string chevronDown: "\uDB80\uDD40"
+    readonly property string chevronUp: "\uDB80\uDD43"
     readonly property string thermometer: "\uDB81\uDD0F"
     readonly property string gpu: "\uDB83\uDFB2"
     readonly property string flash: "\uDB80\uDE41"

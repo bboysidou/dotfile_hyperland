@@ -108,5 +108,14 @@ RowLayout {
                 font.pixelSize: Appearance.card.detailSize
             }
         }
+
+        LevelMeter {
+            Layout.fillWidth: true
+            Layout.topMargin: Appearance.audioPanel.meterTopMargin
+
+            node: root.node
+            accent: root.accent
+            muted: root.muted
+        }
     }
 }
