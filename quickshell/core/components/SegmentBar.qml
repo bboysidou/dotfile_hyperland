@@ -161,10 +161,6 @@ Item {
                             color: segment.active ? Colours.surface : Colours.textMuted
                             font.pixelSize: Appearance.segment.fontSize
                             font.weight: segment.active ? Appearance.font.weightActive : Appearance.font.weightNormal
-
-                            Behavior on color {
-                                CAnim {}
-                            }
                         }
                     }
 
