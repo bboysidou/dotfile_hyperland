@@ -27,7 +27,7 @@ QtObject {
 
     readonly property var alertOffsets: [20, 10, 5, 0]
     readonly property int notifyIdBase: 9200
-    readonly property string notifyAppName: "adhan"
+    readonly property string notifyAppName: "Adhan Time"
     readonly property int urgentWindow: 20
 
     readonly property int pillIconSize: 13
