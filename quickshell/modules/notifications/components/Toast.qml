@@ -19,6 +19,7 @@ Item {
     readonly property string glyph: modelData.critical ? Icons.notifCritical : Icons.notifNormal
     readonly property bool aged: Time.now.getTime() - modelData.created >= Appearance.notif.ageThreshold * 1000
 
+    readonly property string copyText: [root.modelData.summary, Str.plain(root.modelData.body)].filter(part => part !== "").join("\n")
     readonly property bool timed: !root.modelData.critical && root.modelData.timeout > 0
     readonly property int timerReserve: root.timed ? Appearance.notif.timerThickness + Appearance.notif.timerMargin : 0
 
@@ -104,12 +105,14 @@ Item {
             onExited: root.modelData.hold(false)
 
             onClicked: event => {
+                if (root.modelData.replying)
+                    return;
                 if (event.button === Qt.RightButton)
                     Notifs.dismissAll();
-                else if (event.button === Qt.MiddleButton && root.modelData.defaultAction)
-                    root.modelData.invoke(root.modelData.defaultAction);
-                else
+                else if (event.button === Qt.MiddleButton)
                     root.modelData.notification?.dismiss();
+                else
+                    Notifs.activate(root.modelData);
             }
         }
 
@@ -158,6 +161,14 @@ Item {
                         font.pixelSize: Appearance.font.size.tiny
                         font.weight: Appearance.font.weightIcon
                     }
+
+                    IconButton {
+                        visible: root.interactive
+                        icon: Notifs.copied !== "" && Notifs.copied === root.copyText ? Icons.check : Icons.copy
+                        size: Appearance.notif.toolSize
+
+                        onTriggered: Notifs.copy(root.copyText)
+                    }
                 }
 
                 StyledText {
@@ -194,11 +205,33 @@ Item {
                     }
                 }
 
+                NotifProgress {
+                    Layout.fillWidth: true
+
+                    value: root.modelData.value
+                }
+
                 RowLayout {
-                    visible: root.interactive && root.modelData.buttons.length > 0
+                    visible: root.interactive && !root.modelData.replying && (root.modelData.buttons.length > 0 || root.modelData.code !== "" || root.modelData.replyable)
 
                     Layout.topMargin: Appearance.padding.tiny
                     spacing: Appearance.notif.actionSpacing
+
+                    NotifChip {
+                        visible: root.modelData.code !== ""
+                        glyph: Notifs.copied === root.modelData.code ? Icons.check : Icons.key
+                        label: Notifs.copied === root.modelData.code ? Appearance.notif.copiedLabel : Appearance.notif.codeTemplate.arg(root.modelData.code)
+                        accent: true
+
+                        onClicked: Notifs.copy(root.modelData.code)
+                    }
+
+                    NotifChip {
+                        visible: root.modelData.replyable
+                        label: Appearance.notif.labelReply
+
+                        onClicked: root.modelData.startReply()
+                    }
 
                     Repeater {
                         model: root.modelData.buttons
@@ -210,6 +243,14 @@ Item {
                             action: modelData
                         }
                     }
+                }
+
+                NotifReply {
+                    Layout.fillWidth: true
+                    Layout.topMargin: Appearance.padding.tiny
+
+                    visible: root.interactive && root.modelData.replying
+                    popup: root.modelData
                 }
             }
         }

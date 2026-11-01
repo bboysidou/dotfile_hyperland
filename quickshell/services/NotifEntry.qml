@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell.Services.Notifications
+import qs.core.helpers
 
 QtObject {
     id: root
@@ -9,6 +10,7 @@ QtObject {
     property string key
     property string appName
     property string desktopEntry
+    property string tag
     property string summary
     property string body
     property string image
@@ -20,6 +22,7 @@ QtObject {
 
     readonly property bool live: root.notification !== null
     readonly property bool critical: root.urgency === NotificationUrgency.Critical
+    readonly property string code: Str.otp(`${root.summary} ${root.body}`)
 
     readonly property var actions: root.live ? root.notification.actions : []
     readonly property var buttons: root.actions.filter(action => action.identifier !== "default")
@@ -30,6 +33,7 @@ QtObject {
             key: root.key,
             appName: root.appName,
             desktopEntry: root.desktopEntry,
+            tag: root.tag,
             summary: root.summary,
             body: root.body,
             image: root.image,

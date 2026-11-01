@@ -4,7 +4,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Services.Notifications
+import Quickshell.Hyprland
 import qs.core.config
+import qs.core.constants
 import qs.core.helpers
 
 Singleton {
@@ -13,6 +15,9 @@ Singleton {
     property list<Notif> popups: []
     property var favicons: ({})
     property int missedWhileLocked: 0
+    property Notif replyTarget: null
+    property var recent: []
+    property string copied: ""
 
     readonly property string faviconDir: `${Paths.cache}/${Appearance.notif.faviconCacheDir}`
 
@@ -39,8 +44,94 @@ Singleton {
 
         wrapper.removed.connect(() => root.forget(wrapper));
 
+        root.supersede(wrapper);
         root.popups = [wrapper].concat(root.toArray());
         root.restack();
+    }
+
+    function supersede(wrapper: Notif): void {
+        if (wrapper.tag === "")
+            return;
+
+        for (const popup of root.toArray())
+            if (popup.tag === wrapper.tag && popup.notification?.appName === wrapper.notification.appName)
+                popup.notification.expire();
+    }
+
+    function latest(): Notif {
+        return root.toArray().find(popup => !popup.closing) ?? null;
+    }
+
+    function focusApp(desktopEntry: string, appName: string): bool {
+        const wanted = [desktopEntry, appName].map(name => Str.fold(name)).filter(name => name !== "");
+        const match = Hyprland.toplevels.values.find(toplevel => {
+            const app = Str.fold(toplevel.wayland?.appId ?? "");
+            return app !== "" && wanted.some(name => app === name || app.endsWith(`.${name}`) || name.endsWith(`.${app}`));
+        });
+
+        if (!match)
+            return false;
+
+        Hyprland.dispatch(Hyprland.usingLua ? Appearance.notif.focusLua.arg(match.address) : Appearance.notif.focusLegacy.arg(match.address));
+        return true;
+    }
+
+    function activate(popup: Notif): void {
+        const source = popup?.notification;
+        if (!source)
+            return;
+
+        if (popup.defaultAction) {
+            popup.invoke(popup.defaultAction);
+            return;
+        }
+
+        root.focusApp(source.desktopEntry, source.appName);
+        source.dismiss();
+    }
+
+    function activateEntry(entry: NotifEntry): void {
+        if (entry.defaultAction) {
+            entry.defaultAction.invoke();
+            return;
+        }
+
+        root.focusApp(entry.desktopEntry, entry.appName);
+    }
+
+    function dismissLatest(): void {
+        root.latest()?.notification?.dismiss();
+    }
+
+    function openLatest(): void {
+        root.activate(root.latest());
+    }
+
+    function record(snapshot: var): void {
+        root.recent = [snapshot].concat(root.recent).slice(0, Appearance.notif.recentLimit);
+    }
+
+    function restore(): bool {
+        const last = root.recent[0];
+        if (!last)
+            return false;
+
+        root.recent = root.recent.slice(1);
+        const icon = last.image.startsWith("/") || last.image.startsWith("file://") ? ["-i", last.image.replace("file://", "")] : [];
+        Quickshell.execDetached(["notify-send", "-a", last.appName, "-u", NotifHints.urgencyNames[last.urgency] ?? NotifHints.urgencyNames[1], "-h", Appearance.notif.restoredFlag].concat(icon, [Commands.endOfOptions, last.summary, last.body]));
+        return true;
+    }
+
+    function copy(text: string): void {
+        Quickshell.execDetached(["wl-copy", "--", text]);
+        root.copied = text;
+        copiedTimer.restart();
+    }
+
+    readonly property Timer copiedTimer: Timer {
+        interval: Appearance.notif.copiedTimeout
+
+        onTriggered: root.copied = ""
     }
 
     function find(notification: Notification): Notif {
@@ -105,8 +196,9 @@ Singleton {
         imageSupported: true
         bodyImagesSupported: false
         bodyHyperlinksSupported: false
-        inlineReplySupported: false
+        inlineReplySupported: true
         persistenceSupported: false
+        extraHints: NotifHints.captured
 
         onNotification: notification => {
             root.track(notification);

@@ -53,13 +53,30 @@ Singleton {
         return out;
     }
 
+    function tagOf(hints: var): string {
+        const sync = hints?.[NotifHints.synchronous];
+        if (sync !== undefined)
+            return `${sync}` || NotifHints.synchronous;
+        return `${hints?.[NotifHints.stackTag] ?? ""}`;
+    }
+
     function remember(notification): void {
+        const hints = notification.hints ?? {};
+        if (hints[NotifHints.restored] !== undefined)
+            return;
+
+        const appName = notification.appName || Appearance.notif.labelUnknownApp;
+        const tag = root.tagOf(hints);
+        if (tag !== "")
+            root.drop(list => list.filter(entry => entry.tag !== tag || entry.appName !== appName));
+
         root.counter += 1;
 
         const entry = component.createObject(root, {
             key: `${Date.now()}-${root.counter}`,
-            appName: notification.appName || Appearance.notif.labelUnknownApp,
+            appName,
             desktopEntry: notification.desktopEntry ?? "",
+            tag,
             summary: notification.summary ?? "",
             body: notification.body ?? "",
             image: root.resolve(notification),

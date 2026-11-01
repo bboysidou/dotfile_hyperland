@@ -1,6 +1,7 @@
 pragma Singleton
 
 import Quickshell
+import qs.core.constants
 
 Singleton {
     id: root
@@ -29,6 +30,21 @@ Singleton {
         }
 
         return false;
+    }
+
+    function plain(markup: string): string {
+        let text = (markup ?? "").replace(NotifHints.markupTag, "");
+        for (const [pattern, replacement] of NotifHints.entities)
+            text = text.replace(pattern, replacement);
+        return text;
+    }
+
+    function otp(text: string): string {
+        const source = root.plain(text);
+        if (!NotifHints.codeContext.test(source))
+            return "";
+        const match = NotifHints.codeDigits.exec(source);
+        return match ? match[1].replace(NotifHints.codeSeparators, "") : "";
     }
 
     function contains(haystack: string, needle: string): bool {

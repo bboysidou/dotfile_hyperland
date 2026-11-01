@@ -58,4 +58,19 @@ QtObject {
     readonly property string labelUnknownApp: "Notification"
     readonly property string emptyTitle: "All caught up"
     readonly property string emptySubtitle: "Nothing waiting for you"
+
+    readonly property int recentLimit: 10
+    readonly property int progressMax: 100
+    readonly property int progressThickness: 6
+    readonly property int toolSize: 14
+    readonly property int copiedTimeout: 1500
+    readonly property string labelReply: "Reply"
+    readonly property string labelSend: "Send"
+    readonly property string replyPlaceholder: "Reply…"
+    readonly property string codeTemplate: "Copy %1"
+    readonly property string copiedLabel: "Copied"
+    readonly property string progressTemplate: "%1%"
+    readonly property string restoredFlag: "string:x-qs-restored:1"
+    readonly property string focusLua: 'hl.dsp.focus({ window = "address:0x%1" })'
+    readonly property string focusLegacy: "focuswindow address:0x%1"
 }

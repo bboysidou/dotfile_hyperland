@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
 import qs.core.config
+import qs.core.constants
 import qs.core.helpers
 
 QtObject {
@@ -29,6 +30,13 @@ QtObject {
     readonly property int timeout: !notification || notification.expireTimeout < 0 ? defaultTimeout : notification.expireTimeout
 
     readonly property string preview: notification?.hints?.category === Appearance.notif.previewCategory ? Fmt.icon(notification.hints["image-path"] ?? "") : ""
+
+    readonly property var hints: notification?.hints ?? ({})
+    readonly property string tag: NotifHistory.tagOf(root.hints)
+    readonly property int value: typeof root.hints[NotifHints.value] === "number" ? Num.clamp(root.hints[NotifHints.value], 0, Appearance.notif.progressMax) : -1
+    readonly property string code: Str.otp(`${root.summary} ${root.body}`)
+    readonly property bool replyable: !!notification?.hasInlineReply && !closing
+    property bool replying
 
     readonly property var actions: notification && !closing ? notification.actions : []
     readonly property var buttons: root.actions.filter(action => action.identifier !== "default")
@@ -122,9 +130,38 @@ QtObject {
 
     function invoke(action: NotificationAction): void {
         action.invoke();
+    }
 
-        if (!root.notification.resident)
-            root.notification.dismiss();
+    function startReply(): void {
+        root.replying = true;
+        root.hold(true);
+        Notifs.replyTarget = root;
+    }
+
+    function stopReply(): void {
+        root.replying = false;
+        root.hold(false);
+        if (Notifs.replyTarget === root)
+            Notifs.replyTarget = null;
+    }
+
+    function reply(text: string): void {
+        const source = root.notification;
+        root.stopReply();
+        if (!source || text.trim() === "")
+            return;
+        source.sendInlineReply(text);
+    }
+
+    function snapshot(): var {
+        const source = root.notification;
+        return {
+            appName: source?.appName ?? "",
+            urgency: root.urgency,
+            image: root.iconSource,
+            summary: root.summary,
+            body: Str.plain(root.body)
+        };
     }
 
     readonly property Connections updates: Connections {
@@ -140,7 +177,10 @@ QtObject {
             root.arm();
         }
 
-        function onClosed(): void {
+        function onClosed(reason: int): void {
+            if (reason === NotificationCloseReason.Dismissed)
+                Notifs.record(root.snapshot());
+            root.stopReply();
             root.close();
         }
     }

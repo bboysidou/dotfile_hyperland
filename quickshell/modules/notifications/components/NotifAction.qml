@@ -17,7 +17,13 @@ Pill {
 
     visible: !!root.action
 
-    onClicked: root.popup ? root.popup.invoke(root.action) : root.action.invoke()
+    onClicked: {
+        if (root.popup) {
+            root.popup.invoke(root.action);
+            return;
+        }
+        root.action.invoke();
+    }
 
     StyledText {
         text: root.action?.text ?? ""

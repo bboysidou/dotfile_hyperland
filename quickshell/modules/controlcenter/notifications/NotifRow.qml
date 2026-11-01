@@ -14,6 +14,8 @@ StyledRect {
 
     required property NotifEntry entry
 
+    readonly property string copyText: [root.entry.summary, Str.plain(root.entry.body)].filter(part => part !== "").join("\n")
+
     Layout.fillWidth: true
     Layout.preferredHeight: layout.implicitHeight + Appearance.notif.rowPaddingV * 2
 
@@ -24,9 +26,15 @@ StyledRect {
         id: pointer
 
         radius: parent.radius
-        cursorShape: root.entry.defaultAction ? Qt.PointingHandCursor : Qt.ArrowCursor
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+        cursorShape: Qt.PointingHandCursor
 
-        onClicked: root.entry.defaultAction?.invoke()
+        onClicked: event => {
+            if (event.button === Qt.MiddleButton)
+                NotifHistory.dismiss(root.entry);
+            else
+                Notifs.activateEntry(root.entry);
+        }
     }
 
     ColumnLayout {
@@ -57,6 +65,13 @@ StyledRect {
                 text: Fmt.relativeTime(root.entry.time)
                 color: Colours.textMuted
                 font.pixelSize: Appearance.font.size.small
+            }
+
+            IconButton {
+                icon: Notifs.copied !== "" && Notifs.copied === root.copyText ? Icons.check : Icons.copy
+                size: Appearance.notif.toolSize
+
+                onTriggered: Notifs.copy(root.copyText)
             }
 
             Item {
@@ -101,9 +116,18 @@ StyledRect {
         }
 
         RowLayout {
-            visible: root.entry.buttons.length > 0
+            visible: root.entry.buttons.length > 0 || root.entry.code !== ""
 
             spacing: Appearance.notif.actionSpacing
+
+            NotifChip {
+                visible: root.entry.code !== ""
+                glyph: Notifs.copied === root.entry.code ? Icons.check : Icons.key
+                label: Notifs.copied === root.entry.code ? Appearance.notif.copiedLabel : Appearance.notif.codeTemplate.arg(root.entry.code)
+                accent: true
+
+                onClicked: Notifs.copy(root.entry.code)
+            }
 
             Repeater {
                 model: root.entry.buttons
