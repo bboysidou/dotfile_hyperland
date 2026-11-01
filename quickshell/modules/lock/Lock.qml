@@ -1,7 +1,6 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
@@ -41,6 +40,14 @@ Scope {
             return IpcStatus.locked;
         }
 
+        function preview(): string {
+            if (Lock.locked || introPreview.playing)
+                return IpcStatus.busy;
+
+            introPreview.play();
+            return IpcStatus.started;
+        }
+
         function status(): string {
             return Lock.locked ? "locked" : "unlocked";
         }
@@ -54,6 +61,10 @@ Scope {
                 focused: Lock.focused
             });
         }
+    }
+
+    LockPreview {
+        id: introPreview
     }
 
     SleepGuard {
@@ -78,125 +89,23 @@ Scope {
                 onPressed: keys.forceActiveFocus()
             }
 
-            Item {
-                id: content
+            LockStage {
+                id: stage
 
                 anchors.fill: parent
 
-                opacity: 0
+                screen: surface.screen
+                focused: keys.activeFocus
 
-                Anim {
-                    target: content
-                    property: "opacity"
-                    to: 1
-                    type: Appearance.lock.fadeInType
-                    running: true
-                }
-
-                SequentialAnimation {
-                    id: exit
-
-                    Anim {
-                        target: content
-                        property: "opacity"
-                        to: 0
-                        type: Appearance.lock.fadeOutType
-                    }
-                    ScriptAction {
-                        script: Lock.release()
-                    }
-                }
+                onExited: Lock.release()
 
                 Connections {
                     target: Lock
 
                     function onUnlockingChanged(): void {
                         if (Lock.unlocking)
-                            exit.start();
+                            stage.leave();
                     }
-                }
-
-                Rectangle {
-                    id: shot
-
-                    anchors.fill: parent
-
-                    color: Colours.surface
-                    visible: false
-                    clip: true
-
-                    WallpaperImage {
-                        screen: surface.screen
-                        path: WallpaperLayout.currentFor(surface.screen?.name ?? "")
-                        playing: false
-                    }
-                }
-
-                MultiEffect {
-                    anchors.fill: parent
-
-                    source: shot
-                    blurEnabled: true
-                    blur: Appearance.lock.blur
-                    blurMax: Appearance.lock.blurMax
-                    autoPaddingEnabled: false
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-
-                    color: Colours.surface
-                    opacity: Appearance.lock.backgroundDim
-                }
-
-                Identity {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.topMargin: Appearance.lock.edgeMargin
-                    anchors.leftMargin: Appearance.lock.edgeMargin
-                }
-
-                Criticals {
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.topMargin: Appearance.lock.edgeMargin
-                    anchors.rightMargin: Appearance.lock.edgeMargin
-                }
-
-                Column {
-                    anchors.centerIn: parent
-
-                    spacing: Appearance.lock.fieldTopMargin
-
-                    Clock {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-
-                    Password {
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        focused: keys.activeFocus
-                    }
-                }
-
-                Connectivity {
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.bottomMargin: Appearance.lock.edgeMargin
-                    anchors.leftMargin: Appearance.lock.edgeMargin
-                }
-
-                MediaChip {
-                    anchors.bottom: parent.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottomMargin: Appearance.lock.edgeMargin
-                }
-
-                Batteries {
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.bottomMargin: Appearance.lock.edgeMargin
-                    anchors.rightMargin: Appearance.lock.edgeMargin
                 }
             }
 

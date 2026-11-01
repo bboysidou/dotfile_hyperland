@@ -45,11 +45,59 @@ QtObject {
     readonly property int sleepMonitorRetry: 2000
     readonly property string fadeInType: AnimType.standardLarge
     readonly property string fadeOutType: AnimType.standard
+    readonly property int fadeInDuration: 300
+    readonly property int fadeOutDuration: 300
+    readonly property int previewHold: 2500
     readonly property int shakeAmplitude: 12
     readonly property int shakeStep: 55
     readonly property real shakeDecay: 0.5
     readonly property int flashHold: 500
     readonly property real dotCollapseScale: 0.85
+    readonly property int introStrandDelay: 120
+    readonly property int introStrandDuration: 700
+    readonly property int introStrandRetract: 360
+    readonly property int introOrbDuration: 520
+    readonly property real introOrbFrom: 0.2
+    readonly property real introOrbFade: 2
+    readonly property int introOpenHold: 280
+    readonly property int introDropDuration: 170
+    readonly property real introPunchScale: 1.14
+    readonly property int introPunchOut: 70
+    readonly property int introPunchBack: 460
+    readonly property int introHold: 650
+    readonly property int introRepaint: 16
+    readonly property real introStrandGlowWidth: 10
+    readonly property real introStrandMidWidth: 4
+    readonly property real introStrandCoreWidth: 2
+    readonly property real introStrandGlowAlpha: 0.3
+    readonly property real introStrandMidAlpha: 0.65
+    readonly property real introStrandCoreAlpha: 0.95
+    readonly property real introHeadSize: 4
+    readonly property real introHeadBlur: 22
+    readonly property int introBurstDuration: 780
+    readonly property int introFlashDuration: 300
+    readonly property real introFlashOpacity: 0.85
+    readonly property int introRingCount: 3
+    readonly property real introRingStagger: 0.12
+    readonly property real introRingGrow: 380
+    readonly property real introRingWidth: 6
+    readonly property real introRingOpacity: 1
+    readonly property int introSparkCount: 18
+    readonly property real introSparkReach: 200
+    readonly property real introSparkLength: 30
+    readonly property real introSparkThickness: 4
+    readonly property real introSparkJitter: 0.2
+    readonly property real padlockBodyWidth: 58
+    readonly property real padlockBodyHeight: 44
+    readonly property real padlockBodyRadius: 11
+    readonly property real padlockShackleWidth: 38
+    readonly property real padlockShackleHeight: 48
+    readonly property real padlockShackleStroke: 7
+    readonly property real padlockLift: 16
+    readonly property real padlockLegCut: 14
+    readonly property real padlockKeyholeSize: 11
+    readonly property real padlockKeyStemWidth: 4
+    readonly property real padlockKeyStemHeight: 10
     readonly property string pamConfig: "lock"
     readonly property string pamDir: "core/config/pam"
     readonly property string stateFile: "lock.json"

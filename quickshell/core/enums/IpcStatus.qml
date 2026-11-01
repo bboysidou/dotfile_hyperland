@@ -8,4 +8,5 @@ Singleton {
     readonly property string locked: "locked"
     readonly property string started: "started"
     readonly property string rescanning: "rescanning"
+    readonly property string busy: "busy"
 }
