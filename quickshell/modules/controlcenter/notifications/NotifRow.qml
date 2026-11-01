@@ -62,7 +62,7 @@ StyledRect {
             }
 
             StyledText {
-                text: Fmt.relativeTime(root.entry.time)
+                text: root.entry.origin !== "" ? Appearance.notif.originTemplate.arg(root.entry.origin).arg(Fmt.relativeTime(root.entry.time)) : Fmt.relativeTime(root.entry.time)
                 color: Colours.textMuted
                 font.pixelSize: Appearance.font.size.small
             }

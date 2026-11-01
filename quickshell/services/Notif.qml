@@ -17,6 +17,8 @@ QtObject {
     property string summary
     property string body
     property string iconSource
+    property string appSource
+    property string origin
     property double created
     property bool held
     property bool shown
@@ -31,6 +33,13 @@ QtObject {
 
     readonly property string preview: notification?.hints?.category === Appearance.notif.previewCategory ? Fmt.icon(notification.hints["image-path"] ?? "") : ""
 
+    readonly property string browser: {
+        const app = `${notification?.desktopEntry ?? ""} ${notification?.appName ?? ""}`.toLowerCase();
+        return Appearance.notif.faviconBrowsers.find(name => app.includes(name)) ?? "";
+    }
+    readonly property string originBrowser: Appearance.notif.originBrowsers.find(name => root.browser.includes(name)) ?? ""
+    readonly property string avatar: root.browser !== "" && notification?.image && !root.preview ? notification.image : ""
+    readonly property string badge: root.avatar !== "" ? (root.resolvedImage || root.appSource) : ""
     readonly property var hints: notification?.hints ?? ({})
     readonly property string tag: NotifHistory.tagOf(root.hints)
     readonly property int value: typeof root.hints[NotifHints.value] === "number" ? Num.clamp(root.hints[NotifHints.value], 0, Appearance.notif.progressMax) : -1
@@ -52,21 +61,29 @@ QtObject {
 
         root.summary = source.summary;
         root.body = source.body;
+        root.appSource = root.resolveApp(source);
         root.iconSource = root.resolveSource(source);
     }
 
+    function resolveApp(source: Notification): string {
+        if (source.appIcon)
+            return Fmt.icon(source.appIcon);
+
+        const entry = source.desktopEntry ? DesktopEntries.heuristicLookup(source.desktopEntry) : source.appName ? DesktopEntries.heuristicLookup(source.appName) : null;
+        return entry?.icon ? Fmt.icon(entry.icon) : "";
+    }
+
     function resolveSource(source: Notification): string {
+        if (root.avatar)
+            return root.avatar;
+
         if (root.resolvedImage)
             return root.resolvedImage;
 
         if (source.image && !root.preview)
             return source.image;
 
-        if (source.appIcon)
-            return Fmt.icon(source.appIcon);
-
-        const entry = source.desktopEntry ? DesktopEntries.heuristicLookup(source.desktopEntry) : source.appName ? DesktopEntries.heuristicLookup(source.appName) : null;
-        return entry?.icon ? Fmt.icon(entry.icon) : "";
+        return root.appSource;
     }
 
     function resolveFavicon(): void {
@@ -75,13 +92,25 @@ QtObject {
         if (!source || root.resolvedImage)
             return;
 
-        const app = `${source.desktopEntry} ${source.appName}`.toLowerCase();
-        if (!Appearance.notif.faviconBrowsers.some(browser => app.includes(browser)))
+        if (root.browser === "")
             return;
 
         const host = Fmt.domain(source.body);
-        if (!host)
+        if (host) {
+            root.fetchFavicon(host);
             return;
+        }
+
+        if (root.originBrowser === "")
+            return;
+
+        originProbe.command = [`${Quickshell.shellDir}/${Appearance.notif.originScript}`, root.originBrowser, root.summary, Notifs.faviconDir];
+        originProbe.running = true;
+    }
+
+    function fetchFavicon(host: string): void {
+        root.origin = host;
+        NotifHistory.setOrigin(root.notification, host);
 
         const cached = Notifs.favicons[host];
         if (cached) {
@@ -91,7 +120,8 @@ QtObject {
 
         favicon.host = host;
         favicon.target = `${Notifs.faviconDir}/${host}.ico`;
-        favicon.command = ["curl", "-sfL", "--create-dirs", "--max-time", `${Appearance.notif.faviconTimeout}`, "-o", favicon.target, `${Appearance.notif.faviconEndpoint}/${host}.ico`];
+        const parent = host.split(".").slice(-2).join(".");
+        favicon.command = ["sh", "-c", Commands.faviconFetch, "sh", favicon.target, `${Appearance.notif.faviconTimeout}`, `${Appearance.notif.faviconEndpoint}/${host}.ico`, `${Appearance.notif.faviconEndpoint}/${parent}.ico`];
         favicon.running = true;
     }
 
@@ -164,6 +194,14 @@ QtObject {
         };
     }
 
+    readonly property Connections apps: Connections {
+        target: Notifs
+
+        function onAppCountChanged(): void {
+            root.refresh();
+        }
+    }
+
     readonly property Connections updates: Connections {
         target: root.notification
 
@@ -182,6 +220,22 @@ QtObject {
                 Notifs.record(root.snapshot());
             root.stopReply();
             root.close();
+        }
+    }
+
+    readonly property Process originProbe: Process {
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const [host, icon] = text.trim().split("\t");
+                if (!host || !root.notification)
+                    return;
+                if (icon) {
+                    root.origin = host;
+                    NotifHistory.setOrigin(root.notification, host);
+                    Notifs.favicons[host] = `file://${icon}`;
+                }
+                root.fetchFavicon(host);
+            }
         }
     }
 

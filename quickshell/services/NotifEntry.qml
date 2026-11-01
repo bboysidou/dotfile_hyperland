@@ -11,6 +11,7 @@ QtObject {
     property string appName
     property string desktopEntry
     property string tag
+    property string origin
     property string summary
     property string body
     property string image
@@ -34,6 +35,7 @@ QtObject {
             appName: root.appName,
             desktopEntry: root.desktopEntry,
             tag: root.tag,
+            origin: root.origin,
             summary: root.summary,
             body: root.body,
             image: root.image,

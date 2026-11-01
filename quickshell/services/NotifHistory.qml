@@ -170,6 +170,13 @@ Singleton {
         root.reap(removed);
     }
 
+    function setOrigin(notification, host: string): void {
+        for (const entry of root.toArray())
+            if (entry.notification === notification)
+                entry.origin = host;
+        root.save();
+    }
+
     function save(): void {
         debounce.restart();
     }

@@ -140,35 +140,13 @@ Item {
 
                 spacing: Appearance.padding.tiny
 
-                RowLayout {
+                NotifHeading {
                     Layout.fillWidth: true
 
-                    spacing: Appearance.spacing.small
-
-                    ScrollText {
-                        Layout.fillWidth: true
-
-                        text: root.modelData.summary
-                        color: root.modelData.critical ? Colours.urgencyCritical : Colours.textBright
-                        font.weight: Appearance.font.weightActive
-                    }
-
-                    StyledText {
-                        visible: root.aged
-
-                        text: Fmt.age(root.modelData.created, Time.now)
-                        color: Colours.textMuted
-                        font.pixelSize: Appearance.font.size.tiny
-                        font.weight: Appearance.font.weightIcon
-                    }
-
-                    IconButton {
-                        visible: root.interactive
-                        icon: Notifs.copied !== "" && Notifs.copied === root.copyText ? Icons.check : Icons.copy
-                        size: Appearance.notif.toolSize
-
-                        onTriggered: Notifs.copy(root.copyText)
-                    }
+                    popup: root.modelData
+                    aged: root.aged
+                    copyText: root.copyText
+                    interactive: root.interactive
                 }
 
                 StyledText {

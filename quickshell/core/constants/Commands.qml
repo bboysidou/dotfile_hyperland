@@ -111,6 +111,7 @@ Singleton {
     readonly property var logFollow: ["qs", "log", "--follow", "--no-color", "--log-times", "--pid"]
     readonly property string crashReports: 'for d in "$1"/*/; do r="$d"report.txt; [ -f "$r" ] || continue; printf "%s\\t%s\\t%s\\n" "$(stat -c %Y "$r")" "$r" "$(sed -n "s/^Signal: //p" "$r" | head -n 1)"; done'
     readonly property string copyFile: 'wl-copy < "$1"'
+    readonly property string faviconFetch: 'mkdir -p "${1%/*}" && { curl -sfL --max-time "$2" -o "$1" "$3" || curl -sfL --max-time "$2" -o "$1" "$4"; }'
     readonly property var keymapLayouts: ["localectl", "list-x11-keymap-layouts"]
     readonly property var keymapVariants: ["localectl", "list-x11-keymap-variants"]
     readonly property var inputDevices: ["hyprctl", "-j", "devices"]
