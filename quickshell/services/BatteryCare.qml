@@ -44,7 +44,7 @@ Singleton {
         if (writer.running || Battery.sysfs === "" || pairs.length === 0)
             return;
 
-        writer.command = ["sh", "-c", Commands.batteryWrite, "sh", Battery.sysfs].concat(pairs.flat().map(String));
+        writer.command = ["sh", "-c", Commands.batteryWrite, "sh", Battery.sysfs].concat([].concat(...pairs).map(String));
         writer.running = true;
     }
 
