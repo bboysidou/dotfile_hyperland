@@ -22,6 +22,10 @@ Item {
         return root.powered ? root.accent : Colours.elevated;
     }
 
+    function fit(drift: real, lift: real, ratio: real): real {
+        return Math.max(0, Math.min(root.width - Math.abs(drift) * 2, root.height - Math.abs(lift) * 2)) * ratio;
+    }
+
     StyledRect {
         id: primary
 
@@ -29,7 +33,7 @@ Item {
         readonly property real lift: Appearance.orbit.orbPrimaryDriftY
         readonly property real rate: Appearance.orbit.orbPrimaryRate
 
-        width: root.width * Appearance.orbit.orbPrimaryRatio
+        width: root.fit(primary.drift, primary.lift, Appearance.orbit.orbPrimaryRatio)
         height: width
         radius: width / 2
 
@@ -59,7 +63,7 @@ Item {
         readonly property real lift: Appearance.orbit.orbSecondaryDriftY
         readonly property real rate: Appearance.orbit.orbSecondaryRate
 
-        width: root.width * Appearance.orbit.orbSecondaryRatio
+        width: root.fit(secondary.drift, secondary.lift, Appearance.orbit.orbSecondaryRatio)
         height: width
         radius: width / 2
 

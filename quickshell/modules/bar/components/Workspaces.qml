@@ -23,7 +23,7 @@ Item {
         return ids.sort((a, b) => a - b);
     }
 
-    readonly property int pillSize: Appearance.slider.thickness
+    readonly property int pillSize: Appearance.bar.workspacePillSize
     readonly property int pillRounding: Math.round(root.pillSize * Appearance.slider.roundingRatio)
     readonly property int activeId: Hyprland.focusedWorkspace?.id ?? -1
 

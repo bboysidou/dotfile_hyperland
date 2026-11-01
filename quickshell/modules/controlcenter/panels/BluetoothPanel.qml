@@ -67,9 +67,9 @@ Panel {
 
             control: Component {
                 IconButton {
+                    visible: Bt.enabled && Bt.available
                     icon: Icons.refresh
                     size: Appearance.control.scanIconSize
-                    disabled: !Bt.enabled || !Bt.available
 
                     onTriggered: Bt.rescan()
 

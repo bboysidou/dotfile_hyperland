@@ -12,6 +12,7 @@ QtObject {
     readonly property int pillMarginRight: 10
     readonly property int workspaceMarginLeft: 7
     readonly property int workspacesMinimum: 9
+    readonly property int workspacePillSize: 16
     readonly property int workspacePillActiveWidth: 30
     readonly property int workspacePillSpacing: 6
     readonly property int workspaceExtendDuration: 420

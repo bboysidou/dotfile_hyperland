@@ -12,6 +12,8 @@ Canvas {
     property color danger: Colours.critical
     property real coreRadius: Appearance.orbit.coreSize / 2
 
+    onActiveChanged: root.requestPaint()
+
     onPaint: {
         const orbit = Appearance.orbit;
         const ctx = getContext("2d");

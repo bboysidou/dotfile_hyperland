@@ -53,7 +53,7 @@ Singleton {
         for (const popup of Notifs.toArray()) {
             const notification = popup.notification;
 
-            if (!notification || notification.appName !== Ids.appid)
+            if (!notification || notification.appName !== Appearance.prayer.notifyAppName)
                 continue;
 
             if (notification.summary.indexOf(entry.label) === 0)
@@ -69,7 +69,7 @@ Singleton {
         const summary = offset > 0 ? `${entry.label} in ${offset} minutes` : `${entry.label} — it's time`;
         const body = `${entry.time} · ${Prayer.place.city}`;
 
-        root.queue = root.queue.concat([["notify-send", "-u", "critical", "-a", Ids.appid, "-r", String(Appearance.prayer.notifyIdBase + index), summary, body]]);
+        root.queue = root.queue.concat([["notify-send", "-u", "critical", "-a", Appearance.prayer.notifyAppName, "-r", String(Appearance.prayer.notifyIdBase + index), summary, body]]);
         root.pump();
     }
 

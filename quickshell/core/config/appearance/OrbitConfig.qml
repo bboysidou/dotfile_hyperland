@@ -69,11 +69,11 @@ QtObject {
     readonly property real radarFalloff: 0.02
     readonly property real radarIdleOpacity: 0.03
 
-    readonly property real orbPrimaryRatio: 0.8
-    readonly property real orbSecondaryRatio: 0.9
-    readonly property real orbPrimaryDriftX: 120
+    readonly property real orbPrimaryRatio: 0.95
+    readonly property real orbSecondaryRatio: 1
+    readonly property real orbPrimaryDriftX: 100
     readonly property real orbPrimaryDriftY: 80
-    readonly property real orbSecondaryDriftX: -120
+    readonly property real orbSecondaryDriftX: -100
     readonly property real orbSecondaryDriftY: -80
     readonly property real orbPrimaryRate: 2
     readonly property real orbSecondaryRate: 1.5

@@ -250,10 +250,9 @@ Panel {
 
             control: Component {
                 IconButton {
-                    visible: root.listing
+                    visible: root.listing && Net.wifiEnabled && Net.wifiDevice !== null
                     icon: Icons.refresh
                     size: Appearance.control.scanIconSize
-                    disabled: !Net.wifiEnabled || Net.wifiDevice === null
 
                     onTriggered: Net.rescan()
 

@@ -85,7 +85,7 @@ Item {
         anchors.fill: parent
 
         radius: Appearance.segment.rounding
-        color: Colours.trough
+        color: Colours.pill
         border.width: Appearance.segment.borderWidth
         border.color: Colours.border
         clip: true
