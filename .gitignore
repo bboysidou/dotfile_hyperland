@@ -1,4 +1,5 @@
 custom_scripts/gitignore
+custom_scripts/saved_sessions*
 fish/fishd.tmp*
 fish/fish_variables*
 fish/fish_history
