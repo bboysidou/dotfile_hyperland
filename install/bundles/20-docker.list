@@ -3,3 +3,4 @@
 #: default=on
 docker
 docker-compose
+docker-buildx

@@ -2,7 +2,6 @@
 #: description=OBS, Kdenlive, VLC, mpv, Discord, Transmission
 #: default=on
 obs-studio
-kdenlive
 vlc
 mpv
 discord
