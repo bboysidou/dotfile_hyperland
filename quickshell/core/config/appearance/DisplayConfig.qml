@@ -87,7 +87,7 @@ QtObject {
     readonly property string labelWorkspacesTab: "Workspaces"
     readonly property string labelIdleTab: "Idle"
     readonly property string labelBarTab: "Bar"
-    readonly property string labelBarHint: "Bar on %1. Changes apply right away."
+    readonly property string labelBarHint: "Bar on %1. Changes apply right away. Widgets turned off in Settings › General are not listed."
     readonly property string labelBarShown: "Show bar"
     readonly property string labelBarFrame: "Show frame"
     readonly property string labelBarEdge: "Location"

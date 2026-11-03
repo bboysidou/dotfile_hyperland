@@ -24,6 +24,7 @@ ColumnLayout {
 
         text: root.config.labelBarHint.arg(DisplayState.monitor)
         color: Colours.textMuted
+        wrapMode: Text.WordWrap
     }
 
     OptionRow {
@@ -79,7 +80,7 @@ ColumnLayout {
         rowSpacing: 0
 
         Repeater {
-            model: Appearance.bar.entryLabels
+            model: Appearance.bar.entryLabels.filter(entry => Prefs.barEnabled(entry[0]))
 
             OptionRow {
                 id: entry

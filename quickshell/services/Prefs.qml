@@ -17,6 +17,7 @@ Singleton {
 
     property bool loaded: false
     property var hiddenBar: []
+    property var disabledBar: []
     property var barScreens: ({})
     property var notifTimeouts: [Appearance.notif.timeoutLow, Appearance.notif.timeoutNormal, Appearance.notif.timeoutCritical]
     property string font: ""
@@ -73,13 +74,24 @@ Singleton {
         return BarEdge.vertical(edge) ? Appearance.bar.width : Appearance.bar.height;
     }
 
+    function barEnabled(entry: string): bool {
+        return Appearance.bar.lockedEntries.includes(entry) || !root.disabledBar.includes(entry);
+    }
+
+    function setBarEnabled(entry: string, on: bool): void {
+        if (Appearance.bar.lockedEntries.includes(entry))
+            return;
+        const rest = root.disabledBar.filter(item => item !== entry);
+        root.set("disabledBar", on ? rest : rest.concat([entry]));
+    }
+
     function barShows(screen: string, entry: string): bool {
-        return !root.barOf(screen).hidden.includes(entry);
+        return root.barEnabled(entry) && !root.barOf(screen).hidden.includes(entry);
     }
 
     function barEntries(screen: string, entries: var): var {
         const hidden = root.barOf(screen).hidden;
-        return entries.filter(entry => !hidden.includes(entry));
+        return entries.filter(entry => root.barEnabled(entry) && !hidden.includes(entry));
     }
 
     function setBarEntry(screen: string, entry: string, on: bool): void {
@@ -133,6 +145,7 @@ Singleton {
         try {
             const state = JSON.parse(payload);
             root.hiddenBar = state.hiddenBar ?? root.hiddenBar;
+            root.disabledBar = state.disabledBar ?? root.disabledBar;
             root.barScreens = state.barScreens ?? root.barScreens;
             root.notifTimeouts = state.notifTimeouts ?? root.notifTimeouts;
             root.font = state.font ?? root.font;
@@ -163,6 +176,7 @@ Singleton {
     function flush(): void {
         store.setText(JSON.stringify({
             hiddenBar: root.hiddenBar,
+            disabledBar: root.disabledBar,
             barScreens: root.barScreens,
             notifTimeouts: root.notifTimeouts,
             font: root.font,

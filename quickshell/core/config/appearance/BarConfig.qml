@@ -60,6 +60,7 @@ QtObject {
     readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.idle, BarEntry.updates, BarEntry.media]
     readonly property var entriesCentre: [BarEntry.worldClock, BarEntry.prayers]
     readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.battery, BarEntry.volume]
+    readonly property var lockedEntries: [BarEntry.workspaces, BarEntry.worldClock, BarEntry.notifications]
     readonly property var entryLabels: [
         [BarEntry.workspaces, "Workspaces"],
         [BarEntry.idle, "Idle"],
