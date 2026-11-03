@@ -42,7 +42,9 @@ QtObject {
     readonly property int mediaGapMin: 20
     readonly property int mediaPositionInterval: 1000
     readonly property int volumeMarginLeft: 8
-    readonly property int updatesMarginLeft: 45
+    readonly property int idleMarginLeft: 45
+    readonly property int idleMarginRight: 12
+    readonly property int updatesMarginLeft: 0
     readonly property int updatesMarginRight: 12
     readonly property int trayIconSize: 16
     readonly property int traySpacing: 8
@@ -55,11 +57,12 @@ QtObject {
     readonly property int trayTooltipRounding: 10
     readonly property string trayUnknownLabel: "Unknown"
     readonly property string clockFormat: "ddd, dd. MMM HH:mm"
-    readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.updates, BarEntry.media]
+    readonly property var entriesLeft: [BarEntry.osIcon, BarEntry.workspaces, BarEntry.idle, BarEntry.updates, BarEntry.media]
     readonly property var entriesCentre: [BarEntry.worldClock, BarEntry.prayers]
     readonly property var entriesRight: [BarEntry.tray, BarEntry.cpu, BarEntry.gpu, BarEntry.memory, BarEntry.mouseBattery, BarEntry.network, BarEntry.bluetooth, BarEntry.notifications, BarEntry.battery, BarEntry.volume]
     readonly property var entryLabels: [
         [BarEntry.workspaces, "Workspaces"],
+        [BarEntry.idle, "Idle"],
         [BarEntry.updates, "Updates"],
         [BarEntry.media, "Media"],
         [BarEntry.worldClock, "Clock"],

@@ -13,6 +13,8 @@ QtObject {
     readonly property int maxSeconds: 7200
     readonly property var steps: [[600, 30], [3600, 300], [7200, 900]]
     readonly property int stepperWidth: 110
+    readonly property string panelTitle: "Idle"
+    readonly property int panelLabelWidth: 135
     readonly property string labelEnabled: "Idle actions"
     readonly property string labelLock: "Lock screen"
     readonly property string labelScreenOff: "Screen off"

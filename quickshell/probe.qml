@@ -243,6 +243,8 @@ ShellRoot {
             BluetoothPanel {}
             NotifPanel {}
             PowerPanel {}
+            IdlePanel {}
+            IdlePill {}
             PowerOverview {}
             BatteryStats {}
             HealthChips {}

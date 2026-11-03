@@ -35,7 +35,7 @@ QtObject {
     readonly property string fileScheme: "file://"
     readonly property var faviconBrowsers: ["zen", "firefox", "librewolf", "floorp", "brave", "chromium", "google-chrome"]
     readonly property var originBrowsers: ["zen", "firefox", "librewolf", "floorp"]
-    readonly property string originScript: "system/qs-notif-origin"
+    readonly property string originScript: "scripts/notifications/qs-notif-origin"
     readonly property int badgeSize: 16
     readonly property string originTemplate: "%1  ·  %2"
 

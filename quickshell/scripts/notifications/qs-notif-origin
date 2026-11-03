@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+import glob
+import json
+import os
+import re
+import sqlite3
+import sys
+from urllib.parse import quote, urlsplit
+
+PROFILE_ROOTS = {
+    "zen": ["~/.zen", "~/.config/zen"],
+    "firefox": ["~/.mozilla/firefox", "~/.config/mozilla/firefox"],
+    "librewolf": ["~/.librewolf", "~/.config/librewolf"],
+    "floorp": ["~/.floorp", "~/.config/floorp"],
+}
+SESSION = "sessionstore-backups/recovery.jsonlz4"
+MOZLZ4_HEADER = 12
+ALLOW = 1
+ICON_TARGET = 64
+SVG_WIDTH = 65535
+PNG_MAGIC = b"\x89PNG"
+ICON_QUERY = """
+SELECT i.data, i.width FROM moz_icons i
+JOIN moz_icons_to_pages ip ON ip.icon_id = i.id
+JOIN moz_pages_w_icons p ON p.id = ip.page_id
+WHERE p.page_url LIKE ? OR p.page_url LIKE ?
+"""
+
+
+def lz4_block(src):
+    dst = bytearray()
+    i, n = 0, len(src)
+    while i < n:
+        token = src[i]
+        i += 1
+        length = token >> 4
+        if length == 15:
+            while True:
+                b = src[i]
+                i += 1
+                length += b
+                if b != 255:
+                    break
+        dst += src[i:i + length]
+        i += length
+        if i >= n:
+            break
+        offset = src[i] | (src[i + 1] << 8)
+        i += 2
+        match = token & 15
+        if match == 15:
+            while True:
+                b = src[i]
+                i += 1
+                match += b
+                if b != 255:
+                    break
+        match += 4
+        start = len(dst) - offset
+        if offset >= match:
+            dst += dst[start:start + match]
+        else:
+            for k in range(match):
+                dst.append(dst[start + k])
+    return bytes(dst)
+
+
+def newest_profile(browser):
+    sessions = []
+    for root in PROFILE_ROOTS.get(browser, []):
+        sessions += glob.glob(os.path.join(glob.escape(os.path.expanduser(root)), "*", SESSION))
+    if not sessions:
+        return None
+    return os.path.dirname(os.path.dirname(max(sessions, key=os.path.getmtime)))
+
+
+def allowed_hosts(profile):
+    path = os.path.join(profile, "permissions.sqlite")
+    if not os.path.exists(path):
+        return []
+    db = open_db(path)
+    try:
+        rows = db.execute("SELECT origin FROM moz_perms WHERE type = 'desktop-notification' AND permission = ?", (ALLOW,)).fetchall()
+    finally:
+        db.close()
+    return sorted({urlsplit(origin).netloc for (origin,) in rows if urlsplit(origin).netloc})
+
+
+def open_tabs(profile):
+    with open(os.path.join(profile, SESSION), "rb") as handle:
+        raw = handle.read()
+    data = json.loads(lz4_block(raw[MOZLZ4_HEADER:]))
+    tabs = []
+    for window in data.get("windows", []):
+        for tab in window.get("tabs", []):
+            entries = tab.get("entries") or []
+            if entries:
+                entry = entries[min(len(entries), max(1, tab.get("index", 1))) - 1]
+                tabs.append((urlsplit(entry.get("url", "")).netloc, entry.get("title", "")))
+    return tabs
+
+
+def open_db(path):
+    return sqlite3.connect(f"file:{quote(path)}?immutable=1", uri=True)
+
+
+def extract_icon(profile, host, cache):
+    path = os.path.join(profile, "favicons.sqlite")
+    if not cache or not os.path.exists(path):
+        return ""
+    db = open_db(path)
+    try:
+        rows = db.execute(ICON_QUERY, (f"https://{host}/%", f"http://{host}/%")).fetchall()
+    finally:
+        db.close()
+    if not rows:
+        return ""
+    data, width = min(rows, key=lambda row: abs((row[1] if row[1] != SVG_WIDTH else ICON_TARGET) - ICON_TARGET))
+    extension = "png" if data[:4] == PNG_MAGIC else "svg" if width == SVG_WIDTH else "ico"
+    os.makedirs(cache, exist_ok=True)
+    target = os.path.join(cache, f"{host.replace(':', '_')}.{extension}")
+    with open(target, "wb") as handle:
+        handle.write(data)
+    return target
+
+
+def fold(text):
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def pick(allowed, tabs, summary):
+    opened = [host for host in allowed if any(tab_host == host for tab_host, _ in tabs)]
+    pool = opened or allowed
+    if len(pool) == 1:
+        return pool[0]
+    needle = fold(summary)
+    if not needle:
+        return ""
+    hits = [host for host in pool if needle in fold(host) or any(needle in fold(title) for tab_host, title in tabs if tab_host == host)]
+    return hits[0] if len(hits) == 1 else ""
+
+
+def main():
+    if len(sys.argv) < 3:
+        return
+    profile = newest_profile(sys.argv[1])
+    if not profile:
+        return
+    try:
+        allowed = allowed_hosts(profile)
+        tabs = open_tabs(profile) if allowed else []
+    except (OSError, ValueError, IndexError, sqlite3.Error):
+        return
+    host = pick(allowed, tabs, sys.argv[2])
+    if not host:
+        return
+    try:
+        icon = extract_icon(profile, host, sys.argv[3] if len(sys.argv) > 3 else "")
+    except (OSError, sqlite3.Error):
+        icon = ""
+    print(f"{host}\t{icon}")
+
+
+main()

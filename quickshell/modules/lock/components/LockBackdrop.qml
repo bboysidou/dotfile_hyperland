@@ -18,10 +18,9 @@ Item {
         visible: false
         clip: true
 
-        WallpaperImage {
+        WallpaperStill {
             screen: root.screen
             path: WallpaperLayout.currentFor(root.screen?.name ?? "")
-            playing: false
         }
     }
 

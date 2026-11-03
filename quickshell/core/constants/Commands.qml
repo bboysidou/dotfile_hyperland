@@ -3,12 +3,14 @@ pragma Singleton
 import Quickshell
 
 Singleton {
+    id: root
+
     readonly property var appScope: ["systemd-run", "--user", "--scope", "--collect", "--quiet", "--slice=app.slice"]
     readonly property string appDirectoryFlag: "--working-directory=%1"
     readonly property string endOfOptions: "--"
     readonly property var mouseSettings: ["solaar"]
     readonly property var updates: ({
-            program: ["sh", "-c", "SYS_UPDATE_PAUSE=1 exec \"$HOME/.config/custom_scripts/sys_update.sh\""],
+            program: ["sh", "-c", "SYS_UPDATE_PAUSE=1 exec \"$HOME/.config/quickshell/scripts/updates/sys_update.sh\""],
             title: "updates",
             hold: false
         })
@@ -28,16 +30,16 @@ Singleton {
             hold: false
         })
     readonly property var hardwareSetup: ({
-            program: ["bash", `${Quickshell.shellDir}/system/qs-hwsetup`],
+            program: ["bash", `${Quickshell.shellDir}/scripts/hardware/qs-hwsetup`],
             title: "hardware setup",
             hold: false
         })
     readonly property var calendar: ["zen-browser", "https://calendar.google.com"]
     readonly property var networkEditor: ["nm-connection-editor"]
-    readonly property var gpu: ["sh", `${Quickshell.shellDir}/services/gpu/gpu.sh`]
-    readonly property var decode: ["sh", `${Quickshell.shellDir}/services/decode/decode.sh`, "scan"]
-    readonly property var decodeCaps: ["sh", `${Quickshell.shellDir}/services/decode/caps.sh`, "cards"]
-    readonly property var speedTest: ["bash", `${Quickshell.shellDir}/services/speedtest/net_speedtest.sh`]
+    readonly property var gpu: ["sh", `${Quickshell.shellDir}/scripts/gpu/gpu.sh`]
+    readonly property var decode: ["sh", `${Quickshell.shellDir}/scripts/decode/decode.sh`, "scan"]
+    readonly property var decodeCaps: ["sh", `${Quickshell.shellDir}/scripts/decode/caps.sh`, "cards"]
+    readonly property var speedTest: ["bash", `${Quickshell.shellDir}/scripts/speedtest/net_speedtest.sh`]
     readonly property var bluetoothUnblock: ["rfkill", "unblock", "bluetooth"]
     readonly property var shutdown: ["systemctl", "poweroff"]
     readonly property var reboot: ["systemctl", "reboot"]
@@ -76,10 +78,21 @@ Singleton {
 
     readonly property string cpuProcesses: "top -b -n 2 -d %1 -w 512 -o %CPU | awk '/^ *PID/ { frame++; next } frame == 2 && NF >= 12 && $12 != \"top\" && shown < %2 { shown++; name = $12; for (i = 13; i <= NF; i++) name = name \" \" $i; printf \"%s\\t%s\\t%s\\n\", $1, $9, name }'"
 
-    readonly property string shotRegion: 'mkdir -p "%1" && grim -g "$(slurp)" "%1/%2" && %3'
-    readonly property string shotFullscreen: 'mkdir -p "%1" && sleep %3 && grim "%1/%2" && %4'
-    readonly property string shotNotify: 'act=$(notify-send -c "%5" -h "string:image-path:%1" -A "show=%4" -w "%2" "%3") && [ "$act" = show ] && dbus-send --session --type=method_call --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"file://%1" string:""'
+    readonly property string shotNotify: 'act=$(notify-send -c "%5" -h "string:image-path:%1" -A "show=%4" -A "edit=%6" -w "%2" "%3"); case "$act" in show) dbus-send --session --type=method_call --dest=org.freedesktop.FileManager1 /org/freedesktop/FileManager1 org.freedesktop.FileManager1.ShowItems array:string:"file://%1" string:"" ;; edit) qs ipc call screenshot edit "%1" ;; esac'
     readonly property string shotOcr: 'img=$(mktemp --suffix=.png) && grim -g "$(slurp)" "$img" && text=$(tesseract "$img" - -l eng 2>/dev/null) && rm -f "$img" && printf "%s" "$text" | wl-copy && notify-send "OCR complete" "$text"'
+    readonly property var screenshotClients: ["hyprctl", "clients", "-j"]
+    readonly property var screenshotCursor: ["hyprctl", "cursorpos", "-j"]
+    readonly property string screenshotPublish: 'out="$dir/$base.png"; n=2; until ln "$tmp" "$out" 2>/dev/null; do [ "$n" -gt "$max" ] && exit 1; out="$dir/$base-$n.png"; n=$((n + 1)); done; [ "$copy" = 1 ] && wl-copy --type image/png < "$out" >/dev/null 2>&1; printf "%s" "$out"'
+    readonly property string screenshotOutput: `copy=1; src=$1; dir=$2; base=$3; max=$4; shift 4; tmp="$dir/.$base.$$.png"; trap 'rm -f "$src" "$tmp"' EXIT; size=$(magick identify -format "%w %h" "$src") || exit 1; crop=$(echo "$size $*" | awk 'function n(v) { return sprintf("%.4f", v) + 0 } function c(v) { v = n(v); return v == int(v) ? v : int(v) + 1 } { W = $1; H = $2; sx = W / $7; sy = H / $8; l = int(n($3 * sx)); t = int(n($4 * sy)); r = c(($3 + $5) * sx); b = c(($4 + $6) * sy); if (l < 0) l = 0; if (t < 0) t = 0; if (r > W) r = W; if (b > H) b = H; printf "%dx%d+%d+%d", r - l, b - t, l, t }'); mkdir -p "$dir" && magick "$src" -crop "$crop" +repage "$tmp" || exit 1; ${root.screenshotPublish}`
+    readonly property string screenshotMerge: `copy=1; dir=$1; base=$2; max=$3; cw=$4; ch=$5; shift 5; tmp="$dir/.$base.$$.png"; srcs=(); specs=(); scale=0; trap 'rm -f "\${srcs[@]}" "$tmp"' EXIT; while [ $# -ge 5 ]; do srcs+=("$1"); specs+=("$1 $2 $3 $4 $5"); width=$(magick identify -format "%w" "$1") || exit 1; scale=$(awk -v a="$scale" -v b="$width" -v c="$4" 'BEGIN { s = b / c; print (s > a) ? s : a }'); shift 5; done; args=(-size "$(awk -v s="$scale" -v w="$cw" -v h="$ch" 'BEGIN { printf "%dx%d", w * s + 0.5, h * s + 0.5 }')" xc:none); for spec in "\${specs[@]}"; do set -- $spec; geo=$(awk -v s="$scale" -v x="$2" -v y="$3" -v w="$4" -v h="$5" 'BEGIN { printf "%dx%d!+%d+%d", w * s + 0.5, h * s + 0.5, x * s + 0.5, y * s + 0.5 }'); args+=("(" "$1" -resize "\${geo%%+*}" ")" -geometry "+\${geo#*+}" -composite); done; mkdir -p "$dir" && magick "\${args[@]}" -depth 8 "$tmp" || exit 1; ${root.screenshotPublish}`
+    readonly property string editorExport: `src=$1; mode=$2; dir=$3; base=$4; max=$5; size=$6; tmp="$dir/.$base.$$.png"; trap 'rm -f "$src" "$tmp"' EXIT; [ "$(magick identify -format "%wx%h" "$src")" = "$size" ] || magick "$src" -resize "$size!" -depth 8 "$src" || exit 1; if [ "$mode" = copy ]; then wl-copy --type image/png < "$src" >/dev/null 2>&1; exit 0; fi; copy=0; [ "$mode" = both ] && copy=1; mkdir -p "$dir" && cp "$src" "$tmp" || exit 1; ${root.screenshotPublish}`
+    readonly property string editorOcr: 'src=$1; lang=$2; trap \'rm -f "$src"\' EXIT; text=$(tesseract "$src" - -l "$lang" 2>/dev/null | sed "/^[[:space:]]*$/d"); [ -n "$text" ] || exit 3; printf "%s" "$text" | wl-copy >/dev/null 2>&1; printf "%s" "$text"'
+    readonly property string screenshotCopy: 'wl-copy --type image/png < "$1" >/dev/null 2>&1'
+    readonly property var screenshotReveal: ["dbus-send", "--session", "--type=method_call", "--dest=org.freedesktop.FileManager1", "/org/freedesktop/FileManager1", "org.freedesktop.FileManager1.ShowItems"]
+    readonly property var screenshotTrash: ["gio", "trash"]
+    readonly property var editorCopied: ["notify-send", "-a", "Screenshot"]
+    readonly property var screenshotFailed: ["notify-send", "-u", "critical"]
+    readonly property var screenshotDiscard: ["rm", "-f"]
 
     readonly property var clipList: ["cliphist", "list"]
     readonly property string clipCopy: 'printf "%s\\t\\n" "$1" | cliphist decode | wl-copy'
@@ -95,10 +108,10 @@ Singleton {
     readonly property string shareReply: '[ -p "$2" ] && printf "%s\\n" "$1" > "$2"'
 
     readonly property string serviceStatus: 'for spec; do id=${spec%%|*}; rest=${spec#*|}; kind=${rest%%|*}; unit=${rest#*|}; case $kind in system) state=$(systemctl show -p LoadState,ActiveState,UnitFileState "$unit" | tr "\\n" " ") ;; user) state=$(systemctl --user show -p LoadState,ActiveState,UnitFileState "$unit" | tr "\\n" " ") ;; flag) if [ -e "$unit" ]; then state="LoadState=loaded ActiveState=inactive UnitFileState=disabled"; else state="LoadState=loaded ActiveState=active UnitFileState=enabled"; fi ;; esac; printf "%s\\t%s\\n" "$id" "$state"; done'
-    readonly property string serviceInstall: 'name=${2%.service}; install -Dm755 "$1/system/$name" "/usr/local/bin/$name" && install -Dm644 "$1/system/$2" "/etc/systemd/system/$2" && systemctl daemon-reload && systemctl enable --now "$2"'
+    readonly property string serviceInstall: 'name=${2%.service}; install -Dm755 "$1/scripts/hardware/$name" "/usr/local/bin/$name" && install -Dm644 "$1/scripts/hardware/$2" "/etc/systemd/system/$2" && systemctl daemon-reload && systemctl enable --now "$2"'
     readonly property string serviceFlagOff: 'mkdir -p "${1%/*}" && touch "$1"'
     readonly property string serviceSystem: "sudo systemctl %1 %2"
-    readonly property string serviceSystemInstall: "sudo install -Dm755 %1/system/%2 /usr/local/bin/%2 && sudo install -Dm644 %1/system/%3 /etc/systemd/system/%3 && sudo systemctl daemon-reload && sudo systemctl enable --now %3"
+    readonly property string serviceSystemInstall: "sudo install -Dm755 %1/scripts/hardware/%2 /usr/local/bin/%2 && sudo install -Dm644 %1/scripts/hardware/%3 /etc/systemd/system/%3 && sudo systemctl daemon-reload && sudo systemctl enable --now %3"
     readonly property string serviceUser: "systemctl --user %1 %2"
     readonly property var serviceOn: ["enable", "--now"]
     readonly property var serviceOff: ["disable", "--now"]

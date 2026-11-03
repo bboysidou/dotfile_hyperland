@@ -79,8 +79,8 @@ ColumnLayout {
             StatusChip {
                 required property var modelData
 
-                readonly property string support: VideoDecode.support(modelData.key)
-                readonly property string summary: Appearance.hardware.decodePillTemplate.arg(Appearance.hardware.labelCpuDecode).arg(modelData.app).arg(modelData.codec).arg(root.share(modelData.load))
+                readonly property string support: modelData.call ? DecodeSupport.unknown : VideoDecode.support(modelData.key)
+                readonly property string summary: Appearance.hardware.decodePillTemplate.arg(modelData.call ? Appearance.hardware.labelCpuCall : Appearance.hardware.labelCpuDecode).arg(modelData.app).arg(modelData.codec).arg(root.share(modelData.load))
 
                 width: Math.min(implicitWidth, parent.width)
 

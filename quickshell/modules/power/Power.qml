@@ -112,10 +112,9 @@ Scope {
                     visible: false
                     clip: true
 
-                    WallpaperImage {
+                    WallpaperStill {
                         screen: panel.modelData
                         path: WallpaperLayout.currentFor(panel.modelData.name)
-                        playing: false
                     }
                 }
 
@@ -146,7 +145,6 @@ Scope {
                     anchors.centerIn: parent
 
                     spacing: Appearance.power.sectionSpacing
-                    visible: panel.primary
 
                     PowerHeader {
                         anchors.horizontalCenter: parent.horizontalCenter

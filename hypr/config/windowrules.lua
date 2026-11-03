@@ -71,3 +71,5 @@ hl.window_rule({
     match            = { class = "jetbrains-studio", title = "^win(.*)" },
     no_initial_focus = true,
 })
+
+hl.layer_rule({ match = { namespace = "^quickshell-screenshot(-editor)?$" }, no_anim = true, animation = "none" })

@@ -127,6 +127,8 @@ QtObject {
     readonly property string labelDecode: "Video Decoding"
     readonly property string emptyDecode: "No video decoding on this GPU"
     readonly property string labelCpuDecode: "Software decoding"
+    readonly property string labelCpuCall: "WebRTC call"
+    readonly property string callCodec: "webrtc"
     readonly property string decodePillTemplate: "%1 · %2 · %3 · %4"
     readonly property string decodeEngineTemplate: "engine %1%"
     readonly property string decodeNoteTemplate: "%1 · %2"
@@ -153,7 +155,8 @@ QtObject {
             mpeg2: "MPEG-2",
             mpeg4: "MPEG-4",
             vc1: "VC-1",
-            mjpeg: "MJPEG"
+            mjpeg: "MJPEG",
+            webrtc: "encode + decode"
         })
     readonly property string emptyDimms: "Install qs-hwinfo to list modules"
     readonly property string titleTemplate: "%1 — %2"

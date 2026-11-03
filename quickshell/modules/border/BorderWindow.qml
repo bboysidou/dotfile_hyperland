@@ -33,8 +33,8 @@ PanelWindow {
     readonly property bool covered: Monitors.covered(root.screen)
     readonly property var barConfig: Prefs.barOf(root.modelData.name)
     readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
-    readonly property real rightInset: [audio, network, bluetooth, notifications, power, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
-    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, updates, hardware, display, settings, dashboard].find(slot => slot.open)?.item ?? null
+    readonly property real rightInset: [audio, network, bluetooth, notifications, power, idle, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
+    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
     property real outline: root.openPanel !== null && Prefs.panelOutline !== OutlineMode.off ? 1 : 0
@@ -88,6 +88,9 @@ PanelWindow {
         }
         Region {
             item: power.item?.revealed ? power.item : null
+        }
+        Region {
+            item: idle.item?.revealed ? idle.item : null
         }
         Region {
             item: display.item?.revealed ? display.item : null
@@ -320,6 +323,18 @@ PanelWindow {
                 open: root.focused && ControlState.opened && ControlState.section === ControlSection.power
 
                 PowerPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
+            }
+
+            PanelSlot {
+                id: idle
+
+                open: root.focused && ControlState.opened && ControlState.section === ControlSection.idle
+
+                IdlePanel {
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom

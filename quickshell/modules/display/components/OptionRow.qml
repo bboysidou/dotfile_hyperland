@@ -7,6 +7,7 @@ RowLayout {
     id: root
 
     property string label
+    property int labelWidth: Appearance.display.labelWidth
 
     default property alias content: slot.data
 
@@ -16,7 +17,7 @@ RowLayout {
     spacing: Appearance.display.gridSpacing
 
     StyledText {
-        Layout.preferredWidth: Appearance.display.labelWidth
+        Layout.preferredWidth: root.labelWidth
 
         text: root.label
         color: Colours.textMuted

@@ -64,6 +64,7 @@ Singleton {
                 app: parts[2] ?? "",
                 key: Appearance.hardware.codecKeys[parts[3]] ?? parts[3] ?? "",
                 codec: root.codecLabel(parts[3] ?? ""),
+                call: parts[3] === Appearance.hardware.callCodec,
                 pci: parts[4] ?? "",
                 load: Number(parts[5]) || 0
             };

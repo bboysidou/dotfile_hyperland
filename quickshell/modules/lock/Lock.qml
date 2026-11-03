@@ -73,6 +73,18 @@ Scope {
 
     IdleGuard {}
 
+    Variants {
+        model: Quickshell.screens
+
+        WallpaperStill {
+            required property var modelData
+
+            screen: modelData
+            path: WallpaperLayout.currentFor(modelData.name)
+            visible: false
+        }
+    }
+
     WlSessionLock {
         id: session
 

@@ -5,7 +5,6 @@ import Quickshell
 import qs.core.config
 import qs.core.constants
 import qs.core.enums
-import qs.core.helpers
 
 Singleton {
     id: root
@@ -22,6 +21,12 @@ Singleton {
             subtitle: Appearance.shot.regionSubtitle
         },
         {
+            action: ShotAction.monitor,
+            icon: Icons.monitor,
+            label: Appearance.shot.monitorLabel,
+            subtitle: Appearance.shot.monitorSubtitle
+        },
+        {
             action: ShotAction.fullscreen,
             icon: Icons.shotFullscreen,
             label: Appearance.shot.fullscreenLabel,
@@ -34,8 +39,6 @@ Singleton {
             subtitle: Appearance.shot.ocrSubtitle
         }
     ]
-
-    readonly property string dir: `${Paths.home}/${Appearance.shot.dir}`
 
     readonly property var results: {
         const query = root.search.trim().toLowerCase();
@@ -74,17 +77,13 @@ Singleton {
         capture.restart();
     }
 
-    function notify(file: string, label: string): string {
-        return Commands.shotNotify.arg(`${root.dir}/${file}`).arg(Appearance.shot.notifyTitle).arg(`${label}\n${file}`).arg(Appearance.shot.showInFolderLabel).arg(Appearance.notif.previewCategory);
-    }
-
     function run(action: string): void {
-        const file = Qt.formatDateTime(new Date(), Appearance.shot.fileFormat);
-
         if (action === ShotAction.region)
-            Quickshell.execDetached(["sh", "-c", Commands.shotRegion.arg(root.dir).arg(file).arg(root.notify(file, Appearance.shot.regionLabel))]);
+            ScreenshotState.open(ScreenshotMode.smart);
+        else if (action === ShotAction.monitor)
+            ScreenshotState.open(ScreenshotMode.monitor);
         else if (action === ShotAction.fullscreen)
-            Quickshell.execDetached(["sh", "-c", Commands.shotFullscreen.arg(root.dir).arg(file).arg(Appearance.shot.fullscreenDelay).arg(root.notify(file, Appearance.shot.fullscreenLabel))]);
+            ScreenshotState.open(ScreenshotMode.all);
         else if (action === ShotAction.ocr)
             Quickshell.execDetached(["sh", "-c", Commands.shotOcr]);
     }

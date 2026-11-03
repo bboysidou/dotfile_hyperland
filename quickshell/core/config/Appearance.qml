@@ -53,6 +53,9 @@ Singleton {
     readonly property WeatherConfig weather: WeatherConfig {}
     readonly property EqualizerConfig equalizer: EqualizerConfig {}
     readonly property ShotConfig shot: ShotConfig {}
+    readonly property ScreenshotConfig screenshot: ScreenshotConfig {}
+    readonly property EditorConfig editor: EditorConfig {}
+    readonly property PreviewConfig preview: PreviewConfig {}
     readonly property ShareConfig share: ShareConfig {}
     readonly property OrbitConfig orbit: OrbitConfig {}
     readonly property KeybindsConfig keybinds: KeybindsConfig {}

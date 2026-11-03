@@ -14,15 +14,15 @@ QtObject {
     readonly property real subtitleOpacity: 0.7
     readonly property string placeholder: "Screenshot..."
     readonly property int captureDelay: 450
-    readonly property int fullscreenDelay: 1
     readonly property string dir: "Pictures/screenshots"
-    readonly property string fileFormat: "'screenshot_'yyyy-MM-dd_HH-mm-ss'.png'"
     readonly property string notifyTitle: "Screenshot created"
     readonly property string showInFolderLabel: "Show in folder"
     readonly property string regionLabel: "Selected area"
     readonly property string fullscreenLabel: "Fullscreen"
     readonly property string ocrLabel: "OCR"
     readonly property string regionSubtitle: "Drag to pick a region"
-    readonly property string fullscreenSubtitle: "Whole screen after 1s"
+    readonly property string fullscreenSubtitle: "All monitors in one image"
+    readonly property string monitorLabel: "Monitor"
+    readonly property string monitorSubtitle: "Click a monitor to capture it"
     readonly property string ocrSubtitle: "Region to text, copied to clipboard"
 }

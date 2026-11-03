@@ -40,6 +40,13 @@ GridLayout {
                 }
             }
             DelegateChoice {
+                roleValue: BarEntry.idle
+
+                delegate: IdlePill {
+                    edge: root.edge
+                }
+            }
+            DelegateChoice {
                 roleValue: BarEntry.updates
 
                 delegate: UpdatesPill {

@@ -5,6 +5,7 @@ import Quickshell
 Singleton {
     readonly property string osIcon: "osIcon"
     readonly property string workspaces: "workspaces"
+    readonly property string idle: "idle"
     readonly property string updates: "updates"
     readonly property string media: "media"
     readonly property string worldClock: "worldClock"

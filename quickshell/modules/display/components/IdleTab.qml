@@ -8,6 +8,7 @@ ColumnLayout {
     id: root
 
     property color accent: Colours.accent
+    property int labelWidth: Appearance.display.labelWidth
 
     readonly property var config: Appearance.idle
 
@@ -23,6 +24,7 @@ ColumnLayout {
     }
 
     OptionRow {
+        labelWidth: root.labelWidth
         label: root.config.labelEnabled
 
         Toggle {
@@ -34,6 +36,7 @@ ColumnLayout {
     }
 
     IdleStage {
+        labelWidth: root.labelWidth
         accent: root.accent
         label: root.config.labelLock
         toggleKey: "lockOn"
@@ -41,6 +44,7 @@ ColumnLayout {
     }
 
     IdleStage {
+        labelWidth: root.labelWidth
         accent: root.accent
         label: root.config.labelScreenOff
         toggleKey: "screenOffOn"
@@ -48,6 +52,7 @@ ColumnLayout {
     }
 
     IdleStage {
+        labelWidth: root.labelWidth
         accent: root.accent
         label: root.config.labelSuspend
         toggleKey: "suspendOn"
@@ -55,6 +60,7 @@ ColumnLayout {
     }
 
     OptionRow {
+        labelWidth: root.labelWidth
         label: root.config.labelBatteryOnly
 
         Toggle {

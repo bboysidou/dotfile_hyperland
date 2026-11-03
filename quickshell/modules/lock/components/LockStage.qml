@@ -13,7 +13,19 @@ Item {
     signal revealed
     signal exited
 
+    property bool started: false
+
+    function begin(): void {
+        if (root.started)
+            return;
+
+        root.started = true;
+        enter.start();
+        intro.play();
+    }
+
     function leave(): void {
+        root.started = true;
         enter.stop();
         reveal.stop();
         exit.start();
@@ -21,7 +33,14 @@ Item {
 
     opacity: 0
 
-    Component.onCompleted: intro.play()
+    Connections {
+        target: root.Window.window
+        enabled: !root.started
+
+        function onFrameSwapped(): void {
+            root.begin();
+        }
+    }
 
     Anim {
         id: enter
@@ -31,7 +50,6 @@ Item {
         to: 1
         type: Appearance.lock.fadeInType
         duration: Appearance.lock.fadeInDuration
-        running: true
     }
 
     SequentialAnimation {
