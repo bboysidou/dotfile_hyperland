@@ -12,7 +12,7 @@ done
 
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
-DECODE_CAPS="${SCRIPT_DIR}/../quickshell/services/decode/caps.sh"
+DECODE_CAPS="${SCRIPT_DIR}/../quickshell/scripts/decode/caps.sh"
 GPU_UDEV_RULE="/etc/udev/rules.d/90-gpu-dev-path.rules"
 IGPU_RENDER_NODE="/dev/dri/igpu-render"
 NVIDIA_FEATURE="VaapiOnNvidiaGPUs"

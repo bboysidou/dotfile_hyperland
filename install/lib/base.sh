@@ -222,10 +222,10 @@ password	include		system-auth
 password	optional	pam_gnome_keyring.so
 EOF
   run install -Dm644 "${INSTALLER_DIR}/fontconfig/fonts.conf" "${MNT}/etc/fonts/local.conf"
-  run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo" "${MNT}/usr/local/bin/qs-hwinfo"
-  run install -Dm644 "${INSTALLER_DIR}/quickshell/system/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"
-  run install -Dm755 "${INSTALLER_DIR}/quickshell/system/qs-battery-perms" "${MNT}/usr/local/bin/qs-battery-perms"
-  run install -Dm644 "${INSTALLER_DIR}/quickshell/system/99-qs-battery.rules" "${MNT}/etc/udev/rules.d/99-qs-battery.rules"
+  run install -Dm755 "${INSTALLER_DIR}/quickshell/scripts/hardware/qs-hwinfo" "${MNT}/usr/local/bin/qs-hwinfo"
+  run install -Dm644 "${INSTALLER_DIR}/quickshell/scripts/hardware/qs-hwinfo.service" "${MNT}/etc/systemd/system/qs-hwinfo.service"
+  run install -Dm755 "${INSTALLER_DIR}/quickshell/scripts/battery/qs-battery-perms" "${MNT}/usr/local/bin/qs-battery-perms"
+  run install -Dm644 "${INSTALLER_DIR}/quickshell/scripts/battery/99-qs-battery.rules" "${MNT}/etc/udev/rules.d/99-qs-battery.rules"
   run sed -i -E \
     -e "s/^#? *deny *=.*/deny = ${FAILLOCK_DENY}/" \
     -e "s/^#? *unlock_time *=.*/unlock_time = ${FAILLOCK_UNLOCK_SECONDS}/" \
