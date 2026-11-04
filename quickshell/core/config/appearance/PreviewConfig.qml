@@ -5,9 +5,7 @@ QtObject {
     readonly property int width: 300
     readonly property int maxHeight: 220
     readonly property int thumbScale: 2
-    readonly property int margin: 24
     readonly property int timeout: 6000
-    readonly property int rounding: 12
     readonly property int border: 1
     readonly property int padding: 6
     readonly property real barOpacity: 0.82
