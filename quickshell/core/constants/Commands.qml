@@ -124,6 +124,7 @@ Singleton {
 
     readonly property var timezones: ["timedatectl", "list-timezones"]
     readonly property var logFollow: ["qs", "log", "--follow", "--no-color", "--log-times", "--pid"]
+    readonly property string hyprlandErrors: `printf 'V\\t%s\\n' "$(hyprctl version | head -n 1)"; tail --pid="$1" -n +1 -F "$2" 2>/dev/null | awk -v ctx="$3" '$0 ~ /^[A-Z]+ @ / { split($0, f, " "); c = substr(f[3], 1, 8); if (c < last) rolls++; last = c } /^(ERR|WARN|CRIT)/ { for (i = (seen > ctx ? seen - ctx : 0); i < seen; i++) print "C\\t" ring[i % ctx]; seen = 0; print "E\\t" NR "\\t" last "\\t" rolls + 0 "\\t" $0; fflush(); next } { ring[seen % ctx] = $0; seen++ }'`
     readonly property string crashReports: 'for d in "$1"/*/; do r="$d"report.txt; [ -f "$r" ] || continue; printf "%s\\t%s\\t%s\\n" "$(stat -c %Y "$r")" "$r" "$(sed -n "s/^Signal: //p" "$r" | head -n 1)"; done'
     readonly property string copyFile: 'wl-copy < "$1"'
     readonly property string faviconFetch: 'mkdir -p "${1%/*}" && { curl -sfL --max-time "$2" -o "$1" "$3" || curl -sfL --max-time "$2" -o "$1" "$4"; }'

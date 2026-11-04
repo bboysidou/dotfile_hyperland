@@ -42,6 +42,9 @@ require("config/keymaps")
 -- Animations
 require("config/animation")
 
+-- Debug logging
+require("config/debug")
+
 -- Misc
 hl.config({
     misc = {

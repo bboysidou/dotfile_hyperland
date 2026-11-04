@@ -16,6 +16,7 @@ Singleton {
     readonly property var fromToken: ({
             WARN: root.warn,
             ERROR: root.error,
+            ERR: root.error,
             CRIT: root.error,
             FATAL: root.crash
         })

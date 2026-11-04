@@ -109,7 +109,7 @@ Singleton {
     }
 
     function add(item: var): void {
-        const key = [item.level, item.source, item.message, item.details].join("|").replace(LogFormat.address, "0x");
+        const key = item.groupKey ?? [item.level, item.source, item.message, item.details].join("|").replace(LogFormat.address, "0x");
         const existing = root.groups[key];
         if (existing) {
             existing.count += 1;
@@ -145,7 +145,11 @@ Singleton {
 
     function resetLog(): void {
         root.pending = null;
-        root.order = root.order.filter(entry => entry.level === LogLevel.crash || entry.level === LogLevel.report);
+        root.retain(entry => entry.level === LogLevel.crash || entry.level === LogLevel.report || entry.source === root.config.hyprlandSource);
+    }
+
+    function retain(keep: var): void {
+        root.order = root.order.filter(keep);
         const next = {};
         for (const entry of root.order)
             next[entry.key] = entry;
@@ -224,6 +228,16 @@ Singleton {
 
         onStarted: root.resetLog()
         onExited: restarter.restart()
+    }
+
+    HyprlandLogFeed {
+        active: root.loaded
+
+        onCaptured: item => {
+            if (item.time > root.clearedAt)
+                root.add(item);
+        }
+        onRestarted: root.retain(entry => entry.source !== root.config.hyprlandSource)
     }
 
     Process {
