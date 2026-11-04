@@ -66,7 +66,7 @@ QtObject {
     readonly property string editedLabel: "Edited"
     readonly property string copiedTitle: "Copied to clipboard"
     readonly property string failLoad: "Could not open the image in the editor"
-    readonly property string ocrLanguage: "eng"
+    readonly property string ocrLanguage: "eng+fra+ara"
     readonly property string ocrTitle: "Text copied"
     readonly property string ocrEmpty: "No text found"
     readonly property int ocrPreviewLength: 240

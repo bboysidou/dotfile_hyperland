@@ -22,6 +22,7 @@ QtObject {
     readonly property string windowLabel: "Window"
     readonly property string monitorLabel: "Monitor"
     readonly property string annotateTag: "EDIT"
+    readonly property string ocrTag: "OCR"
     readonly property string failTitle: "Screenshot failed"
     readonly property string failTimeout: "No frame from the compositor within 2 s"
     readonly property string failGrab: "Could not render the captured frame"

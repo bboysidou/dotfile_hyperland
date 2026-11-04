@@ -22,6 +22,7 @@ Singleton {
     property var lastRegion: null
     property int serial: 0
     property bool annotate: false
+    property bool reading: false
 
     readonly property bool listed: root.clients !== null
     readonly property string dir: `${Paths.home}/${Appearance.shot.dir}`
@@ -33,6 +34,7 @@ Singleton {
         PreviewState.hide();
         root.mode = mode;
         root.annotate = false;
+        root.reading = false;
         root.parts = [];
         root.clients = null;
         root.cursor = null;
@@ -40,6 +42,11 @@ Singleton {
         cursorProc.running = true;
         root.opened = true;
         watchdog.restart();
+    }
+
+    function read(): void {
+        root.open(ScreenshotMode.smart);
+        root.reading = root.opened;
     }
 
     function close(): void {
@@ -116,9 +123,13 @@ Singleton {
             screen: screen.name,
             rect: region
         };
+        const geometry = [region.x, region.y, region.width, region.height, screen.width, screen.height].map(String);
         root.grab(frame, screen, temp => {
             root.close();
-            root.launch(["bash", "-c", Commands.screenshotOutput, "bash", temp, root.dir, base, String(Appearance.screenshot.maxSuffix), ...[region.x, region.y, region.width, region.height, screen.width, screen.height].map(String)], label);
+            if (root.reading)
+                EditorOutput.extract(temp, geometry);
+            else
+                root.launch(["bash", "-c", Commands.screenshotOutput, "bash", temp, root.dir, base, String(Appearance.screenshot.maxSuffix), ...geometry], label);
         });
     }
 

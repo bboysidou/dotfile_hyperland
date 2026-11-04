@@ -115,7 +115,8 @@ PanelWindow {
         if (root.picking)
             return `${root.modelData.name}  ${Math.round(root.width * root.scale)}${Appearance.screenshot.sizeSeparator}${Math.round(root.height * root.scale)}`;
 
-        const shape = (ScreenshotState.shape === ScreenshotShape.free ? "" : `  ${ScreenshotShape.labels[ScreenshotState.shape]}`) + (ScreenshotState.annotate ? `  ${Appearance.screenshot.annotateTag}` : "");
+        const tag = ScreenshotState.reading ? Appearance.screenshot.ocrTag : ScreenshotState.annotate ? Appearance.screenshot.annotateTag : "";
+        const shape = (ScreenshotState.shape === ScreenshotShape.free ? "" : `  ${ScreenshotShape.labels[ScreenshotState.shape]}`) + (tag ? `  ${tag}` : "");
         if (root.dragging && size)
             return `${Math.round(size.width * root.scale)}${Appearance.screenshot.sizeSeparator}${Math.round(size.height * root.scale)}${shape}`;
 

@@ -28,6 +28,12 @@ Singleton {
             EditorState.close();
     }
 
+    function extract(temp: string, region): void {
+        reader.createObject(root, {
+            command: ["bash", "-c", Commands.screenshotOcr, "bash", temp, Appearance.editor.ocrLanguage, ...region]
+        });
+    }
+
     function delivered(output: string, path: string): void {
         if (output === EditOutput.copy)
             Quickshell.execDetached([...Commands.editorCopied, Appearance.editor.copiedTitle]);

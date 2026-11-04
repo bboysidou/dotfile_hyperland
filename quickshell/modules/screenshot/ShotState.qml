@@ -3,7 +3,6 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import qs.core.config
-import qs.core.constants
 import qs.core.enums
 
 Singleton {
@@ -85,7 +84,7 @@ Singleton {
         else if (action === ShotAction.fullscreen)
             ScreenshotState.open(ScreenshotMode.all);
         else if (action === ShotAction.ocr)
-            Quickshell.execDetached(["sh", "-c", Commands.shotOcr]);
+            ScreenshotState.read();
     }
 
     Timer {
