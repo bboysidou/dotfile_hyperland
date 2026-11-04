@@ -90,7 +90,7 @@ Singleton {
 
     function grab(frame, screen, done): void {
         root.serial += 1;
-        const temp = `${Paths.runtime}/${Appearance.screenshot.tempFile.arg(screen.name).arg(String(Date.now())).arg(String(root.serial))}`;
+        const temp = `${Paths.runtime}/${Appearance.screenshot.frameFile.arg(screen.name).arg(String(Date.now())).arg(String(root.serial))}`;
         const started = frame.grabToImage(result => {
             if (!result.saveToFile(temp))
                 root.fail(Appearance.screenshot.failSave);

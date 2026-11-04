@@ -17,6 +17,7 @@ QtObject {
     readonly property string coordSeparator: ", "
     readonly property string filePattern: "'screenshot_'yyyy-MM-dd_HH-mm-ss"
     readonly property string tempFile: "qs-screenshot-%1-%2-%3.png"
+    readonly property string frameFile: "qs-screenshot-%1-%2-%3.bmp"
     readonly property string regionLabel: "Region"
     readonly property string windowLabel: "Window"
     readonly property string monitorLabel: "Monitor"
