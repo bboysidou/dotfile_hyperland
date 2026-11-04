@@ -12,6 +12,7 @@ Pill {
     required property var panel
 
     trailing: Appearance.bar.pillMarginRight
+    paddingV: Appearance.spacing.none
 
     visible: SystemTray.items.values.length > 0
     spacing: Appearance.bar.traySpacing

@@ -11,6 +11,7 @@ QtObject {
     readonly property int pillPaddingH: 8
     readonly property int pillMarginRight: 10
     readonly property int workspaceMarginLeft: 7
+    readonly property int workspaceMarginRight: 14
     readonly property int workspacesMinimum: 9
     readonly property int workspacePillSize: 15
     readonly property int workspacePillActiveWidth: 40
@@ -36,16 +37,12 @@ QtObject {
     readonly property string mouseLowIcon: "input-mouse"
     readonly property string mouseLowSummary: "Mouse battery low"
     readonly property string mouseLowBody: "%1% left"
-    readonly property int mediaMarginLeft: 12
+    readonly property int mediaMarginLeft: 4
     readonly property int mediaMarginRight: 10
     readonly property int mediaFrameInterval: 100
     readonly property int mediaGapMin: 20
     readonly property int mediaPositionInterval: 1000
     readonly property int volumeMarginLeft: 8
-    readonly property int idleMarginLeft: 45
-    readonly property int idleMarginRight: 12
-    readonly property int updatesMarginLeft: 0
-    readonly property int updatesMarginRight: 12
     readonly property int trayIconSize: 16
     readonly property int traySpacing: 8
     readonly property real trayPassiveOpacity: 0.5

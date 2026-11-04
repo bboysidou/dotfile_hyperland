@@ -7,8 +7,7 @@ import qs.services
 Pill {
     id: root
 
-    leading: Appearance.bar.updatesMarginLeft
-    trailing: Appearance.bar.updatesMarginRight
+    trailing: Appearance.bar.pillMarginRight
 
     visible: Updates.available
     interactive: true

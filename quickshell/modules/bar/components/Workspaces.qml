@@ -47,7 +47,9 @@ Item {
 
     Layout.alignment: root.vertical ? Qt.AlignHCenter : Qt.AlignLeft | Qt.AlignVCenter
     Layout.leftMargin: root.vertical ? 0 : Appearance.bar.workspaceMarginLeft
+    Layout.rightMargin: root.vertical ? 0 : Appearance.bar.workspaceMarginRight
     Layout.topMargin: root.vertical ? Appearance.bar.workspaceMarginLeft : 0
+    Layout.bottomMargin: root.vertical ? Appearance.bar.workspaceMarginRight : 0
 
     implicitWidth: row.implicitWidth
     implicitHeight: row.implicitHeight
