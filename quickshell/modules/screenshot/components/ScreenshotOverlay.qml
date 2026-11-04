@@ -176,6 +176,7 @@ PanelWindow {
 
         captureSource: ScreenshotState.opened ? root.modelData : null
         live: false
+        paintCursor: false
         opacity: root.ready ? 1 : 0
     }
 
@@ -183,7 +184,7 @@ PanelWindow {
         anchors.fill: parent
 
         visible: root.interactive
-        hole: root.focusRect
+        hole: root.region
     }
 
     Rectangle {
