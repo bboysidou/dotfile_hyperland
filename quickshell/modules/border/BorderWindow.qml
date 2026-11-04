@@ -371,7 +371,8 @@ PanelWindow {
                 open: root.focused && DisplayState.opened
 
                 DisplayPanel {
-                    anchors.centerIn: parent
+                    anchors.top: parent.top
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
 
@@ -390,7 +391,7 @@ PanelWindow {
             PanelSlot {
                 id: dashboard
 
-                open: root.focused && DashState.opened
+                open: root.focused && DashState.opened && !DisplayState.opened
 
                 DashboardPanel {
                     anchors.top: parent.top

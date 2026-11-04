@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.core.helpers
 import qs.modules.display
 import qs.services
@@ -17,8 +18,13 @@ RevealCard {
     implicitWidth: root.config.width
     implicitHeight: layout.implicitHeight + root.config.padding * 2
 
-    radius: root.config.rounding
+    color: Colours.bar
+    topLeftRadius: 0
+    topRightRadius: 0
+    bottomLeftRadius: Appearance.border.rounding
+    bottomRightRadius: Appearance.border.rounding
     scaleFrom: root.config.scaleFrom
+    transformOrigin: Item.Top
 
     visible: root.revealed || root.opacity > 0
     focus: root.revealed
@@ -52,6 +58,20 @@ RevealCard {
             return;
 
         event.accepted = true;
+    }
+
+    Fillet {
+        anchors.right: parent.left
+        anchors.top: parent.top
+
+        origin: Corner.bottomLeft
+    }
+
+    Fillet {
+        anchors.left: parent.right
+        anchors.top: parent.top
+
+        origin: Corner.bottomRight
     }
 
     ColumnLayout {

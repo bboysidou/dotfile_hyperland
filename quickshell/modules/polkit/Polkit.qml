@@ -1,11 +1,13 @@
 pragma ComponentBehavior: Bound
 
+import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.Polkit
 import Quickshell.Wayland
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.modules.polkit.components
 
 Scope {
@@ -46,10 +48,12 @@ Scope {
 
             shown: root.flow !== null && !root.flow.isCompleted
 
-            exclusionMode: ExclusionMode.Ignore
+            exclusiveZone: 0
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-            implicitWidth: Appearance.polkit.width
+            anchors.top: true
+
+            implicitWidth: Appearance.polkit.width + Appearance.border.fillet * 2
             implicitHeight: layout.implicitHeight + Appearance.polkit.padding * 2
 
             mask: Region {
@@ -64,13 +68,36 @@ Scope {
             RevealCard {
                 id: card
 
-                anchors.fill: parent
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                radius: Appearance.polkit.rounding
-                border.width: Appearance.polkit.borderWidth
+                width: Appearance.polkit.width
+
+                color: Colours.bar
+                topLeftRadius: 0
+                topRightRadius: 0
+                bottomLeftRadius: Appearance.border.rounding
+                bottomRightRadius: Appearance.border.rounding
 
                 revealed: panel.visible
+                elevation: 0
                 scaleFrom: Appearance.polkit.scaleFrom
+                transformOrigin: Item.Top
+
+                Fillet {
+                    anchors.right: parent.left
+                    anchors.top: parent.top
+
+                    origin: Corner.bottomLeft
+                }
+
+                Fillet {
+                    anchors.left: parent.right
+                    anchors.top: parent.top
+
+                    origin: Corner.bottomRight
+                }
 
                 ColumnLayout {
                     id: layout

@@ -5,8 +5,6 @@ QtObject {
     readonly property int width: 1640
     readonly property int maxHeightRatio: 88
     readonly property int padding: 32
-    readonly property int rounding: 24
-    readonly property int borderWidth: 1
     readonly property int columnCount: 3
     readonly property int columnSpacing: 32
     readonly property int sectionSpacing: 22

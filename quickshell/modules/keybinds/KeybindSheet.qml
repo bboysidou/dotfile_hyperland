@@ -10,6 +10,7 @@ import qs.core.components
 import qs.core.config
 import qs.core.constants
 import qs.core.enums
+import qs.core.helpers
 import qs.modules.keybinds.components
 import qs.services
 
@@ -97,18 +98,22 @@ Scope {
                 StyledRect {
                     id: card
 
-                    anchors.centerIn: parent
+                    anchors.top: parent.top
+                    anchors.topMargin: Monitors.covered(panel.modelData) ? 0 : Prefs.frameThickness(panel.modelData.name, BarEdge.top)
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     visible: panel.primary
                     implicitWidth: Appearance.keybinds.width
                     implicitHeight: Math.min(inner.implicitHeight + Appearance.keybinds.padding * 2, panel.height * Appearance.keybinds.maxHeightRatio / 100)
 
-                    color: Colours.surface
-                    radius: Appearance.keybinds.rounding
-                    border.width: Appearance.keybinds.borderWidth
-                    border.color: Colours.border
+                    color: Colours.bar
+                    topLeftRadius: 0
+                    topRightRadius: 0
+                    bottomLeftRadius: Appearance.border.rounding
+                    bottomRightRadius: Appearance.border.rounding
 
                     scale: panel.active ? 1 : Appearance.keybinds.scaleFrom
+                    transformOrigin: Item.Top
 
                     Behavior on scale {
                         Anim {
@@ -122,6 +127,20 @@ Scope {
                         level: Appearance.elevation.panel
                         radius: card.radius
                         z: -1
+                    }
+
+                    Fillet {
+                        anchors.right: parent.left
+                        anchors.top: parent.top
+
+                        origin: Corner.bottomLeft
+                    }
+
+                    Fillet {
+                        anchors.left: parent.right
+                        anchors.top: parent.top
+
+                        origin: Corner.bottomRight
                     }
 
                     EmptyState {

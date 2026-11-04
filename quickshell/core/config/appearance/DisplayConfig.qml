@@ -3,7 +3,6 @@ import QtQuick
 QtObject {
     readonly property int width: 1100
     readonly property int padding: 28
-    readonly property int rounding: 28
     readonly property real scaleFrom: 0.96
     readonly property int sectionSpacing: 24
     readonly property int chipSpacing: 8

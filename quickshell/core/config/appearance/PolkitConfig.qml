@@ -2,8 +2,6 @@ import QtQuick
 
 QtObject {
     readonly property int width: 420
-    readonly property int rounding: 16
-    readonly property int borderWidth: 2
     readonly property int padding: 20
     readonly property int spacing: 12
     readonly property int iconSize: 32
