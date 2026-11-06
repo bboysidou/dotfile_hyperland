@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PAM_SUDO="${QS_FP_PAM_SUDO:-/etc/pam.d/sudo}"
+PAM_LINE="-auth      sufficient  pam_fprintd.so max-tries=3 timeout=10"
+ENROLLED_PATTERN='^[[:space:]]*-[[:space:]]*#[0-9]+:'
+
+[[ "$EUID" -ne 0 ]] || { echo "Run as your own user, not root." >&2; exit 1; }
+
+sudo pacman -S --needed fprintd
+
+if ! listing="$(fprintd-list "$USER" 2>&1)"; then
+  echo "No fingerprint reader found: $listing"
+  echo "Nothing changed in PAM. Remove the package with: sudo pacman -Rns fprintd"
+  exit 0
+fi
+
+if ! grep -qE "$ENROLLED_PATTERN" <<<"$listing"; then
+  echo "Reader found, no finger enrolled. Follow the prompts."
+  fprintd-enroll "$USER"
+fi
+
+fprintd-list "$USER" | grep -qE "$ENROLLED_PATTERN" || { echo "Enrolment failed, PAM unchanged." >&2; exit 1; }
+
+if grep -q 'pam_fprintd' "$PAM_SUDO"; then
+  echo "$PAM_SUDO already uses the fingerprint reader."
+else
+  patched="$(mktemp)"
+  trap 'rm -f "$patched"' EXIT
+  sed "0,/^auth/s//${PAM_LINE}\n&/" "$PAM_SUDO" >"$patched"
+  grep -q 'pam_fprintd' "$patched" || { echo "Could not patch $PAM_SUDO, unchanged." >&2; exit 1; }
+  sudo cp -a "$PAM_SUDO" "${PAM_SUDO}.bak"
+  sudo install -m 644 "$patched" "${PAM_SUDO}.new"
+  sudo mv "${PAM_SUDO}.new" "$PAM_SUDO"
+  echo "Patched $PAM_SUDO. Backup: ${PAM_SUDO}.bak"
+fi
+
+echo "Keep this terminal open. In a new terminal run: sudo -k; sudo true"
+echo "The lock screen picks up the enrolled finger on the next lock."
