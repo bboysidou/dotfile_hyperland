@@ -12,6 +12,7 @@ import qs.modules.bar
 import qs.modules.dashboard
 import qs.modules.display
 import qs.modules.display.components
+import qs.modules.fingerprint
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
@@ -33,8 +34,8 @@ PanelWindow {
     readonly property bool covered: Monitors.covered(root.screen)
     readonly property var barConfig: Prefs.barOf(root.modelData.name)
     readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
-    readonly property real rightInset: [audio, network, bluetooth, notifications, power, idle, updates, hardware, settings].find(slot => slot.open)?.item?.width ?? 0
-    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, dashboard].find(slot => slot.open)?.item ?? null
+    readonly property real rightInset: [audio, network, bluetooth, notifications, power, idle, updates, hardware, settings, fingerprint].find(slot => slot.open)?.item?.width ?? 0
+    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, fingerprint, fingerprintEnroll, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
     property real outline: root.openPanel !== null && Prefs.panelOutline !== OutlineMode.off ? 1 : 0
@@ -110,6 +111,12 @@ PanelWindow {
         Region {
             item: share.item?.revealed ? share.item : null
         }
+        Region {
+            item: fingerprint.item?.revealed ? fingerprint.item : null
+        }
+        Region {
+            item: fingerprintEnroll.item?.revealed ? fingerprintEnroll.item : null
+        }
     }
 
     Binding {
@@ -149,6 +156,9 @@ PanelWindow {
             HardwareState.hide();
             SettingsState.hide();
             ShareState.dismiss();
+
+            if (!FingerprintEnroll.busy)
+                FingerprintState.hide();
         }
     }
 
@@ -385,6 +395,29 @@ PanelWindow {
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
+                }
+            }
+
+            PanelSlot {
+                id: fingerprint
+
+                open: root.focused && FingerprintState.opened
+
+                FingerprintPanel {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                }
+            }
+
+            PanelSlot {
+                id: fingerprintEnroll
+
+                open: root.focused && FingerprintState.enrollOpened
+
+                FingerprintEnrollPanel {
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
 

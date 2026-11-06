@@ -105,8 +105,38 @@ Column {
         }
     }
 
-    StyledRect {
+    Item {
+        id: inputHost
+
         anchors.horizontalCenter: parent.horizontalCenter
+
+        implicitWidth: Math.max(Appearance.lock.fieldWidth, Appearance.lock.orbSize)
+        implicitHeight: Lock.fingerMode ? Appearance.lock.orbSize : Appearance.lock.fieldHeight
+
+        Behavior on implicitHeight {
+            NumberAnimation {
+                duration: Appearance.lock.modeFade
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        FingerprintOrb {
+            anchors.centerIn: parent
+
+            opacity: Lock.fingerMode ? 1 : 0
+            visible: opacity > 0
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: Appearance.lock.modeFade
+                }
+            }
+        }
+    }
+
+    StyledRect {
+        parent: inputHost
+        anchors.centerIn: parent
         anchors.horizontalCenterOffset: root.shakeOffset
 
         implicitWidth: Appearance.lock.fieldWidth
@@ -116,7 +146,14 @@ Column {
         radius: Appearance.lock.fieldRounding
         border.width: Appearance.lock.fieldBorderWidth
         border.color: root.flashing ? Colours.critical : Lock.busy ? Colours.textMuted : Colours.accent
-        opacity: Lock.coolingDown ? Appearance.control.disabledOpacity : 1
+        opacity: Lock.fingerMode ? 0 : Lock.coolingDown ? Appearance.control.disabledOpacity : 1
+        visible: opacity > 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Appearance.lock.modeFade
+            }
+        }
 
         Behavior on border.color {
             CAnim {
@@ -173,6 +210,16 @@ Column {
         visible: Lock.failures > 0
         text: Lock.failureText
         color: Lock.coolingDown ? Colours.critical : Colours.textMuted
+        font.family: Appearance.lock.labelFont
+        font.pixelSize: Appearance.lock.messageFontSize
+    }
+
+    StyledText {
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        visible: Fingerprint.hint.length > 0
+        text: Lock.fingerMode && Fingerprint.hint === Appearance.lock.fingerprintPrompt ? Appearance.lock.fingerprintTouch : Fingerprint.hint
+        color: Fingerprint.mismatched || Fingerprint.exhausted ? Colours.critical : Colours.textMuted
         font.family: Appearance.lock.labelFont
         font.pixelSize: Appearance.lock.messageFontSize
     }

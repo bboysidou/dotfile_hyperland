@@ -58,7 +58,11 @@ Scope {
                 failures: Lock.failures,
                 cooldown: Lock.cooldown,
                 coolingDown: Lock.coolingDown,
-                focused: Lock.focused
+                focused: Lock.focused,
+                fingerprintPresent: Fingerprint.present,
+                fingerprintEnrolled: Fingerprint.enrolled,
+                fingerprintScanning: Fingerprint.scanning,
+                fingerprintTries: Fingerprint.tries
             });
         }
     }

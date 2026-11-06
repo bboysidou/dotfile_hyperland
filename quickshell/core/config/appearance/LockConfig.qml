@@ -100,6 +100,33 @@ QtObject {
     readonly property real padlockKeyStemHeight: 10
     readonly property string pamConfig: "lock"
     readonly property string pamDir: "core/config/pam"
+    readonly property string fingerprintPamConfig: "fingerprint"
+    readonly property int fingerprintMaxTries: 5
+    readonly property int fingerprintErrorRetries: 5
+    readonly property int fingerprintRetryDelay: 1500
+    readonly property string fingerprintPrompt: "Or use your fingerprint"
+    readonly property string fingerprintTouch: "Touch the sensor or start typing"
+    readonly property int typingHold: 6000
+    readonly property int orbSize: 96
+    readonly property int orbRippleCount: 3
+    readonly property int orbRippleSize: 65
+    readonly property real orbRippleScale: 1.46
+    readonly property real orbRippleWidth: 1
+    readonly property real orbRippleOpacity: 0.7
+    readonly property int orbRipplePeriod: 1800
+    readonly property int orbGlyphSize: 68
+    readonly property real orbGlyphStroke: 1.8
+    readonly property real orbGlyphCentre: 0.63
+    readonly property int readEstimate: 1000
+    readonly property int readEstimateMin: 200
+    readonly property int readEstimateMax: 2500
+    readonly property real readFillCap: 0.9
+    readonly property int readFillFinish: 140
+    readonly property int readDrain: 260
+    readonly property int readGrace: 1500
+    readonly property int modeFade: 180
+    readonly property string fingerprintMismatch: "Fingerprint not recognised"
+    readonly property string fingerprintExhausted: "Too many fingerprint attempts, use your password"
     readonly property string stateFile: "lock.json"
     readonly property string greetingTemplate: "Hello, %1! %2"
     readonly property string placeholderTemplate: "Hi, %1"

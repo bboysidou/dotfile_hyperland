@@ -19,6 +19,8 @@ Scope {
 
         if (starting)
             Lock.show();
+        else
+            Fingerprint.rescan();
     }
 
     Process {

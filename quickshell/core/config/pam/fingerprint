@@ -1,0 +1,1 @@
+auth        required    pam_fprintd.so max-tries=1 timeout=-1

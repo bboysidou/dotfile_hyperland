@@ -5,6 +5,7 @@ import Quickshell
 import qs.modules.controlcenter
 import qs.modules.dashboard
 import qs.modules.display
+import qs.modules.fingerprint
 import qs.modules.hardware
 import qs.modules.launcher
 import qs.modules.screenshot
@@ -15,7 +16,7 @@ import qs.modules.updates
 Singleton {
     id: root
 
-    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened
+    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened || FingerprintState.opened || FingerprintState.enrollOpened
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
 
     property real rightInset: 0
@@ -54,6 +55,8 @@ Singleton {
             DisplayState.hide();
         if (keep !== SettingsState && SettingsState.opened)
             SettingsState.hide();
+        if (keep !== FingerprintState && (FingerprintState.opened || FingerprintState.enrollOpened))
+            FingerprintState.hide();
     }
 
     function closeAll(): void {
@@ -135,6 +138,20 @@ Singleton {
         function onOpenedChanged(): void {
             if (DisplayState.opened)
                 root.closeExcept(DisplayState);
+        }
+    }
+
+    Connections {
+        target: FingerprintState
+
+        function onOpenedChanged(): void {
+            if (FingerprintState.opened)
+                root.closeExcept(FingerprintState);
+        }
+
+        function onEnrollOpenedChanged(): void {
+            if (FingerprintState.enrollOpened)
+                root.closeExcept(FingerprintState);
         }
     }
 

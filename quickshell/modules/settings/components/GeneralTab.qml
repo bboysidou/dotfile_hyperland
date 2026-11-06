@@ -28,6 +28,8 @@ Flickable {
 
         SystemSection {}
 
+        FingerprintSection {}
+
         ClipboardSection {}
 
         KeyboardSection {}

@@ -19,6 +19,8 @@ Singleton {
     property bool recovering: false
     property bool seeded: false
     property bool aborted: false
+    property bool typing: false
+    property bool fingerUnlock: false
     property int focusHolders: 0
     property string buffer: ""
     property string message: ""
@@ -29,10 +31,18 @@ Singleton {
 
     signal failed
 
+    onLockedChanged: {
+        if (root.locked)
+            Fingerprint.begin();
+        else
+            Fingerprint.end();
+    }
+
     readonly property bool busy: pam.active
     readonly property bool focused: root.focusHolders > 0
     readonly property int cooldown: Math.max(0, Math.ceil((root.cooldownUntil - root.now) / Appearance.lock.faillockTick))
     readonly property bool coolingDown: root.cooldown > 0
+    readonly property bool fingerMode: Fingerprint.reading || root.fingerUnlock || (Fingerprint.usable && !root.typing && !root.coolingDown)
 
     readonly property string greeting: {
         const hour = Time.now.getHours();
@@ -90,11 +100,15 @@ Singleton {
     }
 
     function reset(): void {
+        root.typing = false;
+        root.fingerUnlock = false;
         root.buffer = "";
         root.message = "";
     }
 
     function append(text: string): void {
+        root.typing = true;
+
         if (root.busy || root.unlocking || root.recovering)
             return;
 
@@ -229,6 +243,20 @@ Singleton {
         root.cooldownUntil = root.now + seconds * Appearance.lock.faillockTick;
     }
 
+    function grant(): void {
+        watchdog.stop();
+
+        if (pam.active)
+            pam.abort();
+
+        Fingerprint.end();
+        root.failures = 0;
+        root.lastFailure = 0;
+        root.cooldownUntil = 0;
+        root.persist();
+        root.unlocking = true;
+    }
+
     function finish(result): void {
         watchdog.stop();
 
@@ -238,11 +266,7 @@ Singleton {
         }
 
         if (result === PamResult.Success) {
-            root.failures = 0;
-            root.lastFailure = 0;
-            root.cooldownUntil = 0;
-            root.persist();
-            root.unlocking = true;
+            root.grant();
             return;
         }
 
@@ -260,12 +284,30 @@ Singleton {
         root.failed();
     }
 
+    Connections {
+        target: Fingerprint
+
+        function onMatched(): void {
+            if (root.locked && !root.unlocking) {
+                root.fingerUnlock = true;
+                root.grant();
+            }
+        }
+    }
+
     Timer {
         running: root.locked && root.cooldownUntil > root.now
         interval: Appearance.lock.faillockTick
         repeat: true
 
         onTriggered: root.tick()
+    }
+
+    Timer {
+        running: root.typing && root.buffer.length === 0 && !root.busy && !root.recovering && !root.message
+        interval: Appearance.lock.typingHold
+
+        onTriggered: root.typing = false
     }
 
     Timer {

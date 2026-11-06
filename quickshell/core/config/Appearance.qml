@@ -38,6 +38,7 @@ Singleton {
     readonly property SegmentConfig segment: SegmentConfig {}
     readonly property UpdatesConfig updates: UpdatesConfig {}
     readonly property HardwareConfig hardware: HardwareConfig {}
+    readonly property FingerprintConfig fingerprint: FingerprintConfig {}
     readonly property ThemeConfig theme: ThemeConfig {}
     readonly property WallpaperConfig wallpaper: WallpaperConfig {}
     readonly property LockConfig lock: LockConfig {}

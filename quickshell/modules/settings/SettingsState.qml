@@ -14,6 +14,7 @@ Singleton {
         root.tab = Appearance.settings.tabGeneral;
         Daemons.refresh();
         InputPrefs.refresh();
+        Fingerprint.refresh();
         root.opened = true;
     }
 

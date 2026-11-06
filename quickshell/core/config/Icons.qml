@@ -163,6 +163,7 @@ Singleton {
     readonly property string equalizer: "\uDB81\uDE6A"
     readonly property string terminal: "\uDB80\uDD8D"
     readonly property string key: "\uDB80\uDF06"
+    readonly property string fingerprint: "\uDB80\uDE37"
 
     readonly property var mediaFrames: ["\u2582\u2584\u2586", "\u2584\u2582\u2586", "\u2584\u2586\u2582", "\u2586\u2584\u2582", "\u2586\u2582\u2584"]
 

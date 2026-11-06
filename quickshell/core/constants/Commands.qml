@@ -9,6 +9,15 @@ Singleton {
     readonly property string appDirectoryFlag: "--working-directory=%1"
     readonly property string endOfOptions: "--"
     readonly property var mouseSettings: ["solaar"]
+    readonly property var fingerprintList: ["sh", "-c", "exec fprintd-list \"$USER\""]
+    readonly property var fingerprintMonitor: ["stdbuf", "-oL", "gdbus", "monitor", "--system", "--dest", "net.reactivated.Fprint"]
+    readonly property var fingerprintPresent: /'finger-present': <(true|false)>/
+    readonly property var fingerprintFinger: /^\s*-\s*#\d+:\s*(\S+)/
+    readonly property var fingerprintQuery: ["sh", "-c", "dev=$(busctl call net.reactivated.Fprint /net/reactivated/Fprint/Manager net.reactivated.Fprint.Manager GetDefaultDevice | cut -d'\"' -f2) && exec busctl get-property net.reactivated.Fprint \"$dev\" net.reactivated.Fprint.Device \"$1\"", "sh"]
+    readonly property var fingerprintEnroll: ["stdbuf", "-oL", "fprintd-enroll", "-f"]
+    readonly property var fingerprintDelete: ["fprintd-delete", "-f"]
+    readonly property var fingerprintSudoCheck: ["grep", "-q", "pam_fprintd", "/etc/pam.d/sudo"]
+    readonly property string fingerprintSetup: `${Quickshell.shellDir}/scripts/fingerprint/qs-fingerprint-setup`
     readonly property var updates: ({
             program: ["sh", "-c", "SYS_UPDATE_PAUSE=1 exec \"$HOME/.config/quickshell/scripts/updates/sys_update.sh\""],
             title: "updates",
