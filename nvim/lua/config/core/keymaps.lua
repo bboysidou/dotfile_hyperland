@@ -90,9 +90,6 @@ keymap.set("n", "<leader>hh", function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "Show harpoon menu" })
 
--- flutter
-keymap.set({ "n", "v", "i" }, "<A-f>", ":FlutterOutlineToggle<CR>")
-
 -- file
 keymap.set("n", "n", "nzzzv") -- search down and center the view
 keymap.set("n", "N", "Nzzzv") -- search up center the view
