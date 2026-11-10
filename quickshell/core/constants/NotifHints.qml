@@ -7,7 +7,8 @@ Singleton {
     readonly property string synchronous: "x-canonical-private-synchronous"
     readonly property string stackTag: "x-dunst-stack-tag"
     readonly property string restored: "x-qs-restored"
-    readonly property var captured: ["value", "x-canonical-private-synchronous", "x-dunst-stack-tag", "x-qs-restored"]
+    readonly property string sticky: "x-qs-sticky"
+    readonly property var captured: ["value", "x-canonical-private-synchronous", "x-dunst-stack-tag", "x-qs-restored", "x-qs-sticky"]
     readonly property var codeContext: /\b(code|otp|pin|passcode|password|verification|verify|2fa|one[- ]time|security|token|login)\b/i
     readonly property var codeDigits: /(?:^|\D)(\d{3}[- ]\d{3}|\d{4,8})(?!\d)/
     readonly property var codeSeparators: /[- ]/g

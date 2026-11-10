@@ -33,6 +33,7 @@ QtObject {
     readonly property bool persistent: !!notification && root.value >= 0 && (notification.resident || notification.expireTimeout === 0)
     readonly property int timeout: !notification || notification.expireTimeout < 0 || root.persistent ? defaultTimeout : notification.expireTimeout
     property bool kept
+    readonly property bool sticky: root.persistent && root.hints[NotifHints.sticky] === true
 
     readonly property string preview: notification?.hints?.category === Appearance.notif.previewCategory ? Fmt.icon(notification.hints["image-path"] ?? "") : ""
 
@@ -139,7 +140,7 @@ QtObject {
         expiry.stop();
         root.armedFor = 0;
 
-        if (root.held || root.closing || !root.shown || root.timeout <= 0)
+        if (root.held || root.closing || !root.shown || root.sticky || root.timeout <= 0)
             return;
 
         expiry.interval = root.timeout;

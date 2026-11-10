@@ -121,7 +121,9 @@ Item {
             onClicked: event => {
                 if (root.modelData.replying)
                     return;
-                if (event.button === Qt.RightButton)
+                if (event.button === Qt.RightButton && root.modelData.sticky)
+                    root.modelData.retire();
+                else if (event.button === Qt.RightButton)
                     Notifs.dismissAll();
                 else if (event.button === Qt.MiddleButton)
                     root.modelData.notification?.dismiss();
