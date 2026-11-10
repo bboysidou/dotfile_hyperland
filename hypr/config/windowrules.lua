@@ -31,8 +31,9 @@ hl.window_rule({
 
 hl.window_rule({
     name  = "ONLYOFFICE",
-    match = { class = "^(ONLYOFFICE Desktop Editors)$" },
-    tile  = true,
+    match   = { class = "^(ONLYOFFICE|ONLYOFFICE Desktop Editors)$" },
+    tile    = true,
+    no_blur = true,
 })
 
 hl.window_rule({
