@@ -37,6 +37,9 @@ Singleton {
             return;
         }
 
+        if (NotifHistory.entryOf(notification))
+            return;
+
         NotifHistory.remember(notification);
 
         const wrapper = component.createObject(root, {
@@ -140,7 +143,8 @@ Singleton {
     }
 
     function forget(wrapper: Notif): void {
-        NotifHistory.detach(wrapper.notification);
+        if (!wrapper.kept)
+            NotifHistory.detach(wrapper.notification);
         root.popups = root.toArray().filter(popup => popup !== wrapper);
         root.restack();
         wrapper.destroy();

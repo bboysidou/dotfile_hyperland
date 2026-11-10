@@ -115,6 +115,12 @@ StyledRect {
             elide: Text.ElideRight
         }
 
+        NotifProgress {
+            Layout.fillWidth: true
+
+            value: root.entry.live ? root.entry.value : -1
+        }
+
         RowLayout {
             visible: root.entry.buttons.length > 0 || root.entry.code !== ""
 

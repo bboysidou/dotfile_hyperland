@@ -30,7 +30,9 @@ QtObject {
     readonly property int urgency: notification?.urgency ?? NotificationUrgency.Normal
     readonly property bool critical: urgency === NotificationUrgency.Critical
     readonly property int defaultTimeout: Prefs.notifTimeouts[urgency] ?? Appearance.notif.timeoutNormal
-    readonly property int timeout: !notification || notification.expireTimeout < 0 ? defaultTimeout : notification.expireTimeout
+    readonly property bool persistent: !!notification && root.value >= 0 && (notification.resident || notification.expireTimeout === 0)
+    readonly property int timeout: !notification || notification.expireTimeout < 0 || root.persistent ? defaultTimeout : notification.expireTimeout
+    property bool kept
 
     readonly property string preview: notification?.hints?.category === Appearance.notif.previewCategory ? Fmt.icon(notification.hints["image-path"] ?? "") : ""
 
@@ -45,7 +47,7 @@ QtObject {
     readonly property string historyImage: root.hadAvatar ? (root.resolvedImage || root.appSource) : root.iconSource
     readonly property var hints: notification?.hints ?? ({})
     readonly property string tag: NotifHistory.tagOf(root.hints)
-    readonly property int value: typeof root.hints[NotifHints.value] === "number" ? Num.clamp(root.hints[NotifHints.value], 0, Appearance.notif.progressMax) : -1
+    readonly property int value: NotifHistory.valueOf(root.hints)
     readonly property string code: Str.otp(`${root.summary} ${root.body}`)
     readonly property bool replyable: !!notification?.hasInlineReply && !closing
     property bool replying
@@ -144,6 +146,11 @@ QtObject {
         root.armedAt = Date.now();
         root.armedFor = root.timeout;
         expiry.start();
+    }
+
+    function retire(): void {
+        root.kept = true;
+        root.close();
     }
 
     function hold(value: bool): void {
@@ -257,7 +264,7 @@ QtObject {
     }
 
     readonly property Timer expiry: Timer {
-        onTriggered: root.notification?.expire()
+        onTriggered: root.persistent ? root.retire() : root.notification?.expire()
     }
 
     readonly property Timer exit: Timer {

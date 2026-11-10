@@ -20,6 +20,7 @@ QtObject {
     property int urgency: NotificationUrgency.Normal
     property double time
     property bool read
+    property int value: -1
 
     property Notification notification
 
@@ -30,6 +31,29 @@ QtObject {
     readonly property var actions: root.live ? root.notification.actions : []
     readonly property var buttons: root.actions.filter(action => action.identifier !== "default")
     readonly property NotificationAction defaultAction: root.actions.find(action => action.identifier === "default") ?? null
+
+    readonly property Connections updates: Connections {
+        target: root.notification
+
+        function onSummaryChanged(): void {
+            root.summary = root.notification.summary;
+            NotifHistory.save();
+        }
+
+        function onBodyChanged(): void {
+            root.body = root.notification.body;
+            NotifHistory.save();
+        }
+
+        function onHintsChanged(): void {
+            root.value = NotifHistory.valueOf(root.notification.hints);
+        }
+
+        function onClosed(reason: int): void {
+            root.notification = null;
+            root.avatar = "";
+        }
+    }
 
     function serialise(): var {
         return {

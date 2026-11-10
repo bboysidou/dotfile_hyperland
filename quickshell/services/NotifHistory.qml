@@ -62,6 +62,11 @@ Singleton {
         return `${hints?.[NotifHints.stackTag] ?? ""}`;
     }
 
+    function valueOf(hints: var): int {
+        const value = hints?.[NotifHints.value];
+        return typeof value === "number" ? Num.clamp(value, 0, Appearance.notif.progressMax) : -1;
+    }
+
     function remember(notification): void {
         const hints = notification.hints ?? {};
         if (hints[NotifHints.restored] !== undefined)
@@ -85,6 +90,7 @@ Singleton {
             urgency: notification.urgency,
             time: Date.now(),
             read: false,
+            value: root.valueOf(hints),
             notification
         });
 
