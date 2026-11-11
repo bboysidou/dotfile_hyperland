@@ -7,15 +7,17 @@ local terminal = hasTerminal and chosenTerminal or "kitty"
 local terminalExecFlags = { kitty = "", foot = "", alacritty = " -e", ghostty = " -e" }
 local browser = "zen-browser"
 local browser_alt = "brave"
+local file_manager = "files"
+-- "thunar"
 
 local appScope = "systemd-run --user --scope --collect --quiet --slice=app.slice -- "
 
 local function inTerminal(command)
-  return terminal .. (terminalExecFlags[terminal] or " -e") .. " " .. command
+	return terminal .. (terminalExecFlags[terminal] or " -e") .. " " .. command
 end
 
 local function launchApp(command)
-  return hl.dsp.exec_cmd(appScope .. command)
+	return hl.dsp.exec_cmd(appScope .. command)
 end
 
 -- Main modifier (SUPER / "Windows" key)
@@ -52,7 +54,7 @@ hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/si
 hl.bind(mainMod .. " + V", hl.dsp.global("quickshell:clipboard"))
 
 -- Applications --------------------------------------------------------------
-hl.bind(mainMod .. " + F", launchApp("thunar"))
+hl.bind(mainMod .. " + F", launchApp(file_manager))
 hl.bind(mainMod .. " + Return", launchApp(terminal))
 hl.bind(mainMod .. " + B", launchApp(browser))
 hl.bind(mainMod .. " + CTRL + B", launchApp(browser_alt))

@@ -14,7 +14,7 @@ x-scheme-handler/antigravity=antigravity.desktop
 application/pdf=org.gnome.Evince.desktop
 image/jpeg=zen.desktop
 image/png=feh.desktop
-inode/directory=thunar.desktop
+inode/directory=files_file_manager.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
