@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
+import qs.core.enums
 import qs.services
 
 SettingsSection {
@@ -53,6 +54,15 @@ SettingsSection {
                 readonly property bool locked: Appearance.bar.lockedEntries.includes(widget.modelData[0])
 
                 label: widget.modelData[1]
+
+                SegmentBar {
+                    width: root.config.zoneSegmentWidth
+
+                    options: BarZone.options
+                    current: Prefs.barZone(widget.modelData[0])
+
+                    onSelected: key => Prefs.setBarZone(widget.modelData[0], key)
+                }
 
                 Toggle {
                     enabled: !widget.locked

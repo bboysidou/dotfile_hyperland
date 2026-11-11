@@ -179,6 +179,7 @@ ColumnLayout {
                 glyph: Glyphs.volume(Audio.percent, Audio.muted)
                 value: Audio.percent / Appearance.audio.max
                 colour: Colours.audioOutput
+                wheelStep: Appearance.audio.step / Appearance.audio.max
 
                 onMoved: value => Audio.setPercent(Math.round(value * Appearance.audio.max))
             }

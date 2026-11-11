@@ -11,4 +11,5 @@ QtObject {
     readonly property int handlePressedWidth: 2
     readonly property int handleGap: 4
     readonly property int handleOverhang: 3
+    readonly property real wheelStep: 0.05
 }

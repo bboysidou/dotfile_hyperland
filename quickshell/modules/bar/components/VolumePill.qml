@@ -31,6 +31,7 @@ Pill {
 
         visible: !root.vertical
         value: Audio.percent / Appearance.audio.max
+        wheelStep: Appearance.audio.step / Appearance.audio.max
 
         onMoved: value => Audio.setPercent(Math.round(value * Appearance.audio.max))
     }

@@ -9,6 +9,7 @@ RowLayout {
     property string glyph
     property real value: 0
     property color colour: Colours.accent
+    property real wheelStep: Appearance.slider.wheelStep
 
     signal moved(real value)
 
@@ -27,6 +28,7 @@ RowLayout {
 
         value: root.value
         fillColour: root.colour
+        wheelStep: root.wheelStep
 
         onMoved: value => root.moved(value)
     }

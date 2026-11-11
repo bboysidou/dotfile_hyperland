@@ -10,6 +10,7 @@ MouseArea {
     property int thickness: Appearance.slider.thickness
     property color fillColour: Colours.highlight
     property int rounding: Math.round(root.thickness * Appearance.slider.trackRoundingRatio)
+    property real wheelStep: Appearance.slider.wheelStep
 
     readonly property int baseHandle: Appearance.slider.handleWidth
     readonly property real centre: root.baseHandle / 2 + Num.clamp01(root.value) * Math.max(0, root.width - root.baseHandle)
@@ -33,6 +34,11 @@ MouseArea {
     onPositionChanged: event => {
         if (root.pressed)
             root.moved(root.valueAt(event.x));
+    }
+    onWheel: event => {
+        const delta = event.angleDelta.y !== 0 ? event.angleDelta.y : -event.angleDelta.x;
+        if (delta !== 0)
+            root.moved(Num.clamp01(root.value + Math.sign(delta) * root.wheelStep));
     }
 
     StyledRect {

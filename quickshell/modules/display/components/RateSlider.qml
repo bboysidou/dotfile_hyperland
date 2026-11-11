@@ -31,6 +31,7 @@ ColumnLayout {
         enabled: root.rates.length > 1
         value: root.rates.length > 1 ? root.index / root.steps : 1
         fillColour: Colours.accent
+        wheelStep: 1 / root.steps
 
         onMoved: value => root.picked(Math.round(value * root.steps))
     }
