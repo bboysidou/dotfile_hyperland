@@ -27,3 +27,6 @@ systemd/user/quickshell.service.d/idle.conf
 
 # local working docs, never published
 docs/
+
+# tool caches
+.impeccable/
