@@ -27,6 +27,9 @@ import qs.services
 
 ShellRoot {
     readonly property var probes: [
+        KeyboardBacklight.available,
+        KeyboardBacklight.level,
+        KeyboardBacklight.maximum,
         Appearance.tab.height,
         Appearance.notif.historyMaxEntries,
         Appearance.notif.historySaveDebounce,

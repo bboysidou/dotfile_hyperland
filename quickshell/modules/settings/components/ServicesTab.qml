@@ -38,6 +38,8 @@ ColumnLayout {
 
             spacing: root.config.listSpacing
 
+            PrayerSection {}
+
             Repeater {
                 model: root.config.services
 

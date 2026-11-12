@@ -4,12 +4,13 @@ import QtQuick
 import Quickshell
 import qs.core.config
 import qs.core.enums
+import qs.services
 import qs.core.helpers
 
 Singleton {
     id: root
 
-    readonly property var sections: [DashSection.dash, DashSection.weather, DashSection.performance, DashSection.media, DashSection.prayers]
+    readonly property var sections: [DashSection.dash, DashSection.weather, DashSection.performance, DashSection.media].concat(Prefs.loaded && Prefs.prayersEnabled ? [DashSection.prayers] : [])
 
     property bool pinned: false
     property bool barHover: false
@@ -24,7 +25,7 @@ Singleton {
 
     function show(section: string): void {
         if (section.length > 0)
-            root.tab = section;
+            root.tab = root.sections.includes(section) ? section : DashSection.dash;
 
         root.pinned = true;
     }
@@ -44,6 +45,11 @@ Singleton {
 
     function step(delta: int): void {
         root.tab = root.sections[Num.clamp(root.index + delta, 0, root.sections.length - 1)];
+    }
+
+    onSectionsChanged: {
+        if (!root.sections.includes(root.tab))
+            root.tab = DashSection.dash;
     }
 
     onHoveringChanged: {

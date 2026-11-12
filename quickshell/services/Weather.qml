@@ -17,7 +17,7 @@ Singleton {
     property bool loaded: false
 
     readonly property var config: Appearance.weather
-    readonly property var place: Prayer.place
+    readonly property var place: Location.place
     readonly property string stateDir: `${Paths.state}/${Appearance.state.dir}`
     readonly property bool available: root.data !== null
     readonly property var dates: root.data?.daily?.time ?? []

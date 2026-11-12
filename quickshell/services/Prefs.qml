@@ -16,6 +16,7 @@ Singleton {
     readonly property string statePath: `${root.stateDir}/${root.config.stateFile}`
 
     property bool loaded: false
+    property bool prayersEnabled: false
     property var hiddenBar: []
     property var disabledBar: []
     property var barScreens: ({})
@@ -76,6 +77,8 @@ Singleton {
     }
 
     function barEnabled(entry: string): bool {
+        if (entry === BarEntry.prayers && (!root.loaded || !root.prayersEnabled))
+            return false;
         return Appearance.bar.lockedEntries.includes(entry) || !root.disabledBar.includes(entry);
     }
 
@@ -173,6 +176,7 @@ Singleton {
             const state = JSON.parse(payload);
             root.hiddenBar = state.hiddenBar ?? root.hiddenBar;
             root.disabledBar = state.disabledBar ?? root.disabledBar;
+            root.prayersEnabled = typeof state.prayersEnabled === "boolean" ? state.prayersEnabled : !root.disabledBar.includes(BarEntry.prayers);
             root.barScreens = state.barScreens ?? root.barScreens;
             root.barZones = state.barZones ?? root.barZones;
             root.notifTimeouts = state.notifTimeouts ?? root.notifTimeouts;
@@ -205,6 +209,7 @@ Singleton {
         store.setText(JSON.stringify({
             hiddenBar: root.hiddenBar,
             disabledBar: root.disabledBar,
+            prayersEnabled: root.prayersEnabled,
             barScreens: root.barScreens,
             barZones: root.barZones,
             notifTimeouts: root.notifTimeouts,

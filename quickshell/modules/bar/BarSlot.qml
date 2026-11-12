@@ -37,6 +37,7 @@ GridLayout {
 
                 delegate: Workspaces {
                     edge: root.edge
+                    screenName: root.panelWindow?.screen?.name ?? ""
                 }
             }
             DelegateChoice {

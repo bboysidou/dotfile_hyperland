@@ -72,6 +72,21 @@ ColumnLayout {
         }
     }
 
+    OptionRow {
+        visible: KeyboardBacklight.available
+        labelWidth: root.labelWidth
+        label: root.config.labelKeyboardBacklight
+
+        Stepper {
+            stepperWidth: root.config.stepperWidth
+            value: root.config.keyboardBacklightLevels[KeyboardBacklight.level] ?? String(KeyboardBacklight.level)
+            canDecrease: KeyboardBacklight.level > 0
+            canIncrease: KeyboardBacklight.level < KeyboardBacklight.maximum
+
+            onStepped: delta => KeyboardBacklight.step(delta)
+        }
+    }
+
     Item {
         Layout.fillHeight: true
     }

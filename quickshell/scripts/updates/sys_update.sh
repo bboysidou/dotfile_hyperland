@@ -212,6 +212,11 @@ onExit() {
   stopBackground
   ((summaryShown)) || showSummary "$status"
   pauseIfAsked
+
+  # Refresh the update badge when the script exits.
+  if command -v qs >/dev/null 2>&1; then
+    qs ipc call updates refresh >/dev/null 2>&1 || true
+  fi
 }
 
 runStep() {

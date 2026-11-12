@@ -54,7 +54,10 @@ Scope {
         enabled: root.armed && Idle.enabled && Idle.screenOffOn
         timeout: Idle.screenOffSeconds
 
-        onIsIdleChanged: Displays.setAllDpms(!isIdle)
+        onIsIdleChanged: {
+            KeyboardBacklight.setScreenOff(isIdle);
+            Displays.setAllDpms(!isIdle);
+        }
     }
 
     IdleMonitor {

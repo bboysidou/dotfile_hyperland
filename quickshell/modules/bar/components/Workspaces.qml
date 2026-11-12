@@ -6,26 +6,36 @@ import Quickshell.Hyprland
 import qs.core.components
 import qs.core.config
 import qs.core.enums
+import qs.services
 
 Item {
     id: root
 
     property string edge: BarEdge.top
+    property string screenName: ""
+
+    readonly property var monitor: Hyprland.monitors.values.find(entry => entry.name === root.screenName) ?? null
 
     readonly property bool vertical: BarEdge.vertical(root.edge)
     readonly property var slotIds: {
-        const ids = Hyprland.workspaces.values.map(ws => ws.id).filter(id => id > 0);
+        const live = Hyprland.workspaces.values.filter(ws => ws.id > 0);
+        const ids = live.filter(ws => ws.monitor?.name === root.screenName).map(ws => ws.id);
 
-        for (let id = 1; id <= Appearance.bar.workspacesMinimum; id++)
-            if (!ids.includes(id))
+        // Empty workspaces may not exist in Hyprland yet. Use their configured
+        // output, but let an existing workspace's actual monitor take priority.
+        Displays.workspaces.forEach((output, index) => {
+            const id = index + 1;
+            if (output && Displays.resolve(output) === root.screenName
+                    && !live.some(ws => ws.id === id) && !ids.includes(id))
                 ids.push(id);
+        });
 
         return ids.sort((a, b) => a - b);
     }
 
     readonly property int pillSize: Appearance.bar.workspacePillSize
     readonly property int pillRounding: Math.round(root.pillSize * Appearance.slider.roundingRatio)
-    readonly property int activeId: Hyprland.focusedWorkspace?.id ?? -1
+    readonly property int activeId: root.monitor?.activeWorkspace?.id ?? -1
 
     property bool introDone: false
     property real wheelDelta: 0
@@ -91,7 +101,7 @@ Item {
 
         anchors.centerIn: parent
 
-        columns: root.vertical ? 1 : root.slotIds.length
+        columns: root.vertical ? 1 : Math.max(1, root.slotIds.length)
         horizontalItemAlignment: Grid.AlignHCenter
         verticalItemAlignment: Grid.AlignVCenter
         spacing: Appearance.bar.workspacePillSpacing
@@ -189,6 +199,14 @@ Item {
                         if (slot.occupied)
                             return Colours.accentMuted;
                         return Colours.trough;
+                    }
+
+                    StyledText {
+                        anchors.centerIn: parent
+                        text: slot.workspaceId
+                        font.pixelSize: Appearance.font.size.small
+                        font.weight: slot.active ? Appearance.font.weightActive : Appearance.font.weightNormal
+                        color: slot.active || slot.urgent ? Colours.surface : slot.occupied ? Colours.text : Colours.textMuted
                     }
 
                     Behavior on scale {

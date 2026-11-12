@@ -20,6 +20,8 @@ QtObject {
     readonly property string labelScreenOff: "Screen off"
     readonly property string labelSuspend: "Suspend"
     readonly property string labelBatteryOnly: "On battery only"
+    readonly property string labelKeyboardBacklight: "Keyboard backlight"
+    readonly property var keyboardBacklightLevels: ["Off", "Low", "High"]
     readonly property string hintDisabled: "Idle actions are off. The screen stays on until you lock it."
     readonly property string hintActive: "Timers count from the last keyboard or mouse input."
     readonly property string secondsTemplate: "%1 s"

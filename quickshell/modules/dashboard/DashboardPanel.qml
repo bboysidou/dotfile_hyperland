@@ -123,7 +123,7 @@ RevealCard {
                 label: Appearance.dash.labelPrayers,
                 accent: Colours.tabPrayers
             }
-        ]
+        ].filter(option => DashState.sections.includes(option.key))
 
         onSelected: key => DashState.tab = key
     }

@@ -1,9 +1,12 @@
 //@ pragma UseQApplication
+// Use Qt Compose until native Wayland text-input focus transitions are reliable.
+//@ pragma DefaultEnv QT_IM_MODULE=compose
 //@ pragma DefaultEnv QS_NO_RELOAD_POPUP=1
 //@ pragma DefaultEnv QSG_RENDER_LOOP=threaded
 //@ pragma IconTheme kora-robot
 
 import Quickshell
+import qs.cassette
 import qs.modules.background
 import qs.modules.border
 import qs.modules.controlcenter
@@ -31,6 +34,8 @@ ShellRoot {
 
     settings.watchFiles: true
 
+    DeckWindow { visible: false }
+
     Background {}
     Border {}
     ControlCenter {}
@@ -45,7 +50,7 @@ ShellRoot {
     Osd {}
     Polkit {}
     Power {}
-    PrayerCenter {}
+    PrayerModule {}
     Screenshot {}
     SettingsCenter {}
     Share {}

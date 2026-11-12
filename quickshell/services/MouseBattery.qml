@@ -10,6 +10,7 @@ import qs.core.constants
 Singleton {
     id: root
 
+    property bool backendAvailable: false
     property bool available: false
     property int percent: 0
     property string state: ""
@@ -45,7 +46,14 @@ Singleton {
         id: notifier
     }
 
+    Process {
+        running: true
+        command: ["sh", "-c", "command -v solaar >/dev/null 2>&1"]
+        onExited: code => root.backendAvailable = code === 0
+    }
+
     Poller {
+        polling: root.backendAvailable
         command: ["solaar", "show"]
         interval: Appearance.bar.mousePollInterval
 
