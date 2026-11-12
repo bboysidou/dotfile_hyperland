@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Layouts
 import qs.core.components
 import qs.core.config
 import qs.modules.barlayout
@@ -28,9 +29,14 @@ SettingsSection {
     }
 
     SettingRow {
+        Layout.preferredHeight: editButton.implicitHeight
+        Layout.bottomMargin: root.config.editLayoutPadding
+
         label: root.config.labelBarWidgets
 
         PillButton {
+            id: editButton
+
             glyph: Icons.dashTab
             label: root.config.labelEditLayout
 

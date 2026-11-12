@@ -69,6 +69,7 @@ QtObject {
     readonly property string labelBarClock: "Bar clock"
     readonly property string labelBarWidgets: "Widget layout"
     readonly property string labelEditLayout: "Edit layout"
+    readonly property int editLayoutPadding: 8
     readonly property string labelTempUnit: "Temperature"
     readonly property string labelWindUnit: "Wind speed"
     readonly property string labelUpdateCheck: "Check for updates"
