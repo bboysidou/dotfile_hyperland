@@ -203,6 +203,7 @@ Item {
 
                     StyledText {
                         anchors.centerIn: parent
+                        visible: Prefs.workspaceNumbers
                         text: slot.workspaceId
                         font.pixelSize: Appearance.font.size.small
                         font.weight: slot.active ? Appearance.font.weightActive : Appearance.font.weightNormal

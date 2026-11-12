@@ -67,6 +67,7 @@ QtObject {
     readonly property string labelHistoryMax: "History holds up to"
     readonly property string labelMaxPopups: "Popups at once"
     readonly property string labelBarClock: "Bar clock"
+    readonly property string labelWorkspaceNumbers: "Workspace numbers"
     readonly property string labelBarWidgets: "Widget layout"
     readonly property string labelEditLayout: "Edit layout"
     readonly property int editLayoutPadding: 8

@@ -29,6 +29,16 @@ SettingsSection {
     }
 
     SettingRow {
+        label: root.config.labelWorkspaceNumbers
+
+        Toggle {
+            checked: Prefs.workspaceNumbers
+
+            onToggled: checked => Prefs.set("workspaceNumbers", checked)
+        }
+    }
+
+    SettingRow {
         Layout.preferredHeight: editButton.implicitHeight
         Layout.bottomMargin: root.config.editLayoutPadding
 
