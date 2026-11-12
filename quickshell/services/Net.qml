@@ -12,6 +12,7 @@ Singleton {
     id: root
 
     property bool scanning: false
+    property bool inspecting: false
     property bool rescanning: false
     property var details: ({})
     property string wanAddress: ""
@@ -244,7 +245,7 @@ Singleton {
     onActiveInterfaceChanged: {
         root.details = ({});
         root.wanAddress = "";
-        if (root.activeInterface !== "")
+        if (root.inspecting && root.activeInterface !== "")
             detailPoller.poll();
         if (root.wanReachable)
             wanPoller.poll();
@@ -313,7 +314,7 @@ Singleton {
 
         command: ["sh", "-c", Commands.networkDetails.arg(NetFields.queried.join(",")).arg(root.activeInterface)]
         interval: Appearance.control.detailPollInterval
-        polling: root.activeInterface !== ""
+        polling: root.inspecting && root.activeInterface !== ""
 
         onReceived: text => root.details = root.parseDetails(text)
     }

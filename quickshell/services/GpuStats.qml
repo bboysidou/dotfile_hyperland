@@ -13,6 +13,8 @@ Singleton {
 
     property bool active: false
 
+    readonly property bool barShown: Prefs.loaded && Prefs.barEnabled(BarEntry.gpu)
+
     property var cards: []
     property int selected: 0
 
@@ -297,7 +299,7 @@ Singleton {
 
     Timer {
         interval: root.active ? Appearance.hardware.activePollInterval : PowerSource.poll(Appearance.bar.usagePollInterval)
-        running: root.available
+        running: root.available && (root.active || root.barShown)
         repeat: true
         triggeredOnStart: true
 

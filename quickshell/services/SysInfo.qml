@@ -4,12 +4,17 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.core.config
+import qs.core.enums
 import qs.core.helpers
 
 Singleton {
     id: root
 
     property bool detailed: false
+    property bool dashWatched: false
+    property bool hardwareWatched: false
+
+    readonly property bool barShown: Prefs.loaded && (Prefs.barEnabled(BarEntry.cpu) || Prefs.barEnabled(BarEntry.memory))
 
     property int cpuPercent: 0
     property int memPercent: 0
@@ -184,7 +189,7 @@ Singleton {
 
     Timer {
         interval: PowerSource.poll(Appearance.bar.usagePollInterval)
-        running: !root.detailed
+        running: !root.detailed && (root.barShown || root.dashWatched || root.hardwareWatched)
         repeat: true
         triggeredOnStart: true
 

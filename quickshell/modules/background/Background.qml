@@ -23,6 +23,7 @@ Scope {
 
             readonly property string wanted: WallpaperLayout.currentFor(panel.modelData.name)
             readonly property bool covered: Monitors.covered(panel.modelData)
+            readonly property bool obscured: panel.covered || Lock.locked
             property bool mapped: false
 
             function swap(): void {
@@ -61,12 +62,14 @@ Scope {
                 id: previous
 
                 screen: panel.modelData
+                paused: panel.obscured
             }
 
             WallpaperImage {
                 id: current
 
                 screen: panel.modelData
+                paused: panel.obscured
                 opacity: 0
 
                 onStatusChanged: {

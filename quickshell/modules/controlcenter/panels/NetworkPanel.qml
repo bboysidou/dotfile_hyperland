@@ -231,6 +231,12 @@ Panel {
 
     Binding {
         target: Net
+        property: "inspecting"
+        value: ControlState.opened && ControlState.section === ControlSection.network
+    }
+
+    Binding {
+        target: Net
         property: "scanning"
         value: ControlState.opened && ControlState.section === ControlSection.network && root.listing
     }

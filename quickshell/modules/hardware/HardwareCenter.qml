@@ -24,6 +24,12 @@ Scope {
     }
 
     Binding {
+        target: SysInfo
+        property: "hardwareWatched"
+        value: HardwareState.opened
+    }
+
+    Binding {
         target: VideoDecode
         property: "active"
         value: HardwareState.opened && (HardwareState.section === HardwareSection.cpu || HardwareState.section === HardwareSection.gpu)

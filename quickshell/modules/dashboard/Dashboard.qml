@@ -33,6 +33,12 @@ Scope {
     }
 
     Binding {
+        target: SysInfo
+        property: "dashWatched"
+        value: DashState.opened && root.onDash
+    }
+
+    Binding {
         target: Cava
         property: "active"
         value: DashState.opened && Players.playing && (root.onMedia || root.onDash)
