@@ -67,9 +67,8 @@ QtObject {
     readonly property string labelHistoryMax: "History holds up to"
     readonly property string labelMaxPopups: "Popups at once"
     readonly property string labelBarClock: "Bar clock"
-    readonly property string labelBarWidgets: "Widgets. Pick where each one sits; pick which screens show it in Display › Bar."
-    readonly property int barWidgetColumns: 1
-    readonly property int zoneSegmentWidth: 180
+    readonly property string labelBarWidgets: "Widget layout"
+    readonly property string labelEditLayout: "Edit layout"
     readonly property string labelTempUnit: "Temperature"
     readonly property string labelWindUnit: "Wind speed"
     readonly property string labelUpdateCheck: "Check for updates"

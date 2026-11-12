@@ -23,6 +23,7 @@ Singleton {
     readonly property SliderConfig slider: SliderConfig {}
     readonly property MarqueeConfig marquee: MarqueeConfig {}
     readonly property BarConfig bar: BarConfig {}
+    readonly property BarLayoutConfig barLayout: BarLayoutConfig {}
     readonly property GaugeConfig gauge: GaugeConfig {}
     readonly property TabConfig tab: TabConfig {}
     readonly property DashConfig dash: DashConfig {}

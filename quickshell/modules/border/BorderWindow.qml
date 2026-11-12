@@ -6,6 +6,8 @@ import qs.core.components
 import qs.core.config
 import qs.core.enums
 import qs.core.helpers
+import qs.modules.barlayout
+import qs.modules.barlayout.components
 import qs.modules.controlcenter
 import qs.modules.controlcenter.panels
 import qs.modules.bar
@@ -35,7 +37,7 @@ PanelWindow {
     readonly property var barConfig: Prefs.barOf(root.modelData.name)
     readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
     readonly property real rightInset: [audio, network, bluetooth, notifications, power, idle, updates, hardware, settings, fingerprint].find(slot => slot.open)?.item?.width ?? 0
-    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, fingerprint, fingerprintEnroll, dashboard].find(slot => slot.open)?.item ?? null
+    readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, fingerprint, fingerprintEnroll, barLayout, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
     property real outline: root.openPanel !== null && Prefs.panelOutline !== OutlineMode.off ? 1 : 0
@@ -117,6 +119,9 @@ PanelWindow {
         Region {
             item: fingerprintEnroll.item?.revealed ? fingerprintEnroll.item : null
         }
+        Region {
+            item: barLayout.item?.revealed ? barLayout.item : null
+        }
     }
 
     Binding {
@@ -155,6 +160,7 @@ PanelWindow {
             DashState.hide();
             HardwareState.hide();
             SettingsState.hide();
+            BarLayoutState.hide();
             ShareState.dismiss();
 
             if (!FingerprintEnroll.busy)
@@ -417,6 +423,17 @@ PanelWindow {
 
                 FingerprintEnrollPanel {
                     anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+
+            PanelSlot {
+                id: barLayout
+
+                open: root.focused && BarLayoutState.opened
+
+                BarLayoutPanel {
+                    anchors.top: parent.top
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
             }

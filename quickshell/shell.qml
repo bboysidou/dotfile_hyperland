@@ -8,6 +8,7 @@
 import Quickshell
 import qs.cassette
 import qs.modules.background
+import qs.modules.barlayout
 import qs.modules.border
 import qs.modules.controlcenter
 import qs.modules.dashboard
@@ -37,6 +38,7 @@ ShellRoot {
     DeckWindow { visible: false }
 
     Background {}
+    BarLayoutCenter {}
     Border {}
     ControlCenter {}
     Dashboard {}

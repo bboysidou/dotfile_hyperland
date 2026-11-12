@@ -2,6 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import qs.modules.barlayout
 import qs.modules.controlcenter
 import qs.modules.dashboard
 import qs.modules.display
@@ -16,7 +17,7 @@ import qs.modules.updates
 Singleton {
     id: root
 
-    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened || FingerprintState.opened || FingerprintState.enrollOpened
+    readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened || FingerprintState.opened || FingerprintState.enrollOpened || BarLayoutState.opened
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
 
     property real rightInset: 0
@@ -57,6 +58,8 @@ Singleton {
             SettingsState.hide();
         if (keep !== FingerprintState && (FingerprintState.opened || FingerprintState.enrollOpened))
             FingerprintState.hide();
+        if (keep !== BarLayoutState && BarLayoutState.opened)
+            BarLayoutState.hide();
     }
 
     function closeAll(): void {
@@ -152,6 +155,15 @@ Singleton {
         function onEnrollOpenedChanged(): void {
             if (FingerprintState.enrollOpened)
                 root.closeExcept(FingerprintState);
+        }
+    }
+
+    Connections {
+        target: BarLayoutState
+
+        function onOpenedChanged(): void {
+            if (BarLayoutState.opened)
+                root.closeExcept(BarLayoutState);
         }
     }
 

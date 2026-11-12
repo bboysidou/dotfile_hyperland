@@ -21,6 +21,7 @@ Singleton {
     property var disabledBar: []
     property var barScreens: ({})
     property var barZones: ({})
+    property var barOrder: []
     property var notifTimeouts: [Appearance.notif.timeoutLow, Appearance.notif.timeoutNormal, Appearance.notif.timeoutCritical]
     property string font: ""
     property real textScale: 1
@@ -115,8 +116,36 @@ Singleton {
         root.set("barZones", next);
     }
 
+    function orderedEntries(): var {
+        const defaults = Appearance.bar.entryOrder;
+        const saved = root.barOrder.filter(entry => defaults.includes(entry) && entry !== BarEntry.media);
+        const missing = defaults.filter(entry => !saved.includes(entry) && entry !== BarEntry.media);
+        return saved.concat(missing, [BarEntry.media]);
+    }
+
+    function zoneOrder(zone: string): var {
+        return root.orderedEntries().filter(entry => root.barZone(entry) === zone);
+    }
+
     function zoneEntries(screen: string, zone: string): var {
-        return root.barEntries(screen, Appearance.bar.entryOrder.filter(entry => root.barZone(entry) === zone));
+        return root.barEntries(screen, root.zoneOrder(zone));
+    }
+
+    function moveBarEntry(entry: string, zone: string, before: string): void {
+        if (!BarZone.values.includes(zone) || entry === before)
+            return;
+        const order = root.orderedEntries().filter(item => item !== entry);
+        const tail = order.filter(item => root.barZone(item) === zone && item !== BarEntry.media).pop();
+        const anchor = before !== "" && before !== BarEntry.media ? order.indexOf(before) : order.indexOf(tail) + 1;
+        order.splice(anchor < 0 ? order.length - 1 : anchor, 0, entry);
+        root.barOrder = order.filter(item => item !== BarEntry.media);
+        root.setBarZone(entry, zone);
+    }
+
+    function resetBarLayout(): void {
+        root.barOrder = [];
+        root.barZones = {};
+        root.persist();
     }
 
     function barEntries(screen: string, entries: var): var {
@@ -179,6 +208,7 @@ Singleton {
             root.prayersEnabled = typeof state.prayersEnabled === "boolean" ? state.prayersEnabled : !root.disabledBar.includes(BarEntry.prayers);
             root.barScreens = state.barScreens ?? root.barScreens;
             root.barZones = state.barZones ?? root.barZones;
+            root.barOrder = state.barOrder ?? root.barOrder;
             root.notifTimeouts = state.notifTimeouts ?? root.notifTimeouts;
             root.font = state.font ?? root.font;
             root.textScale = state.textScale ?? root.textScale;
@@ -212,6 +242,7 @@ Singleton {
             prayersEnabled: root.prayersEnabled,
             barScreens: root.barScreens,
             barZones: root.barZones,
+            barOrder: root.barOrder,
             notifTimeouts: root.notifTimeouts,
             font: root.font,
             textScale: root.textScale,
