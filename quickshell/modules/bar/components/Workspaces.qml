@@ -17,7 +17,17 @@ Item {
     readonly property var monitor: Hyprland.monitors.values.find(entry => entry.name === root.screenName) ?? null
 
     readonly property bool vertical: BarEdge.vertical(root.edge)
-    readonly property var slotIds: {
+    readonly property var slotIds: Prefs.workspacesAll ? root.allIds : root.monitorIds
+    readonly property var allIds: {
+        const ids = Hyprland.workspaces.values.map(ws => ws.id).filter(id => id > 0);
+
+        for (let id = 1; id <= Appearance.bar.workspacesMinimum; id++)
+            if (!ids.includes(id))
+                ids.push(id);
+
+        return ids.sort((a, b) => a - b);
+    }
+    readonly property var monitorIds: {
         const live = Hyprland.workspaces.values.filter(ws => ws.id > 0);
         const ids = live.filter(ws => ws.monitor?.name === root.screenName).map(ws => ws.id);
 
@@ -35,7 +45,7 @@ Item {
 
     readonly property int pillSize: Prefs.workspaceNumbers ? Appearance.bar.workspacePillNumberedSize : Appearance.bar.workspacePillSize
     readonly property int pillRounding: Math.round(root.pillSize * Appearance.slider.roundingRatio)
-    readonly property int activeId: root.monitor?.activeWorkspace?.id ?? -1
+    readonly property int activeId: (Prefs.workspacesAll ? Hyprland.focusedWorkspace : root.monitor?.activeWorkspace)?.id ?? -1
 
     property bool introDone: false
     property real wheelDelta: 0

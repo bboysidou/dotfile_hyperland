@@ -29,6 +29,16 @@ SettingsSection {
     }
 
     SettingRow {
+        label: root.config.labelWorkspacesAll
+
+        Toggle {
+            checked: Prefs.workspacesAll
+
+            onToggled: checked => Prefs.set("workspacesAll", checked)
+        }
+    }
+
+    SettingRow {
         label: root.config.labelWorkspaceNumbers
 
         Toggle {

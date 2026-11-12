@@ -31,6 +31,7 @@ Singleton {
     property int maxPopups: Appearance.notif.maxVisible
     property string barClock: Appearance.bar.clockFormat
     property bool workspaceNumbers: false
+    property bool workspacesAll: true
     property string tempUnit: TempUnit.celsius
     property string windUnit: WindUnit.ms
     property int updateMinutes: Appearance.updates.pollMinutes
@@ -219,6 +220,7 @@ Singleton {
             root.maxPopups = state.maxPopups ?? root.maxPopups;
             root.barClock = state.barClock ?? root.barClock;
             root.workspaceNumbers = state.workspaceNumbers ?? root.workspaceNumbers;
+            root.workspacesAll = state.workspacesAll ?? root.workspacesAll;
             root.tempUnit = state.tempUnit ?? root.tempUnit;
             root.windUnit = state.windUnit ?? root.windUnit;
             root.updateMinutes = state.updateMinutes ?? root.updateMinutes;
@@ -254,6 +256,7 @@ Singleton {
             maxPopups: root.maxPopups,
             barClock: root.barClock,
             workspaceNumbers: root.workspaceNumbers,
+            workspacesAll: root.workspacesAll,
             tempUnit: root.tempUnit,
             windUnit: root.windUnit,
             updateMinutes: root.updateMinutes,
