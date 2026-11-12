@@ -78,17 +78,20 @@ hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.resize({ x = -5, y = 0, rela
 hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -5, relative = true }))
 hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 5, relative = true }))
 
--- Move focus
-hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
-hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
+-- Move focus / move the active window (vim keys and arrows)
+local directionKeys = {
+	{ keys = { "H", "left" }, direction = "left" },
+	{ keys = { "L", "right" }, direction = "right" },
+	{ keys = { "J", "down" }, direction = "down" },
+	{ keys = { "K", "up" }, direction = "up" },
+}
 
--- Move the active window
-hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ direction = "right" }))
-hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ direction = "up" }))
-hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ direction = "down" }))
+for _, entry in ipairs(directionKeys) do
+	for _, key in ipairs(entry.keys) do
+		hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ direction = entry.direction }))
+		hl.bind(mainMod .. " + CTRL + " .. key, hl.dsp.window.move({ direction = entry.direction }))
+	end
+end
 
 -- Actions -------------------------------------------------------------------
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
