@@ -33,7 +33,7 @@ Item {
         return ids.sort((a, b) => a - b);
     }
 
-    readonly property int pillSize: Appearance.bar.workspacePillSize
+    readonly property int pillSize: Prefs.workspaceNumbers ? Appearance.bar.workspacePillNumberedSize : Appearance.bar.workspacePillSize
     readonly property int pillRounding: Math.round(root.pillSize * Appearance.slider.roundingRatio)
     readonly property int activeId: root.monitor?.activeWorkspace?.id ?? -1
 
