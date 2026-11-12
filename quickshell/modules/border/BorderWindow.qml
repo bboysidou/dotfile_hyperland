@@ -32,11 +32,31 @@ PanelWindow {
     readonly property alias inner: inner
     readonly property bool focused: BorderState.pinned ? BorderState.pinnedScreen === root.screen.name : Monitors.focused === root.screen.name
     readonly property bool hosting: root.focused && BorderState.panelOpen
-    readonly property bool grabbing: root.hosting && !BorderState.pinned
+    readonly property bool grabbing: root.hosting && BorderState.transientOpen
     readonly property bool covered: Monitors.covered(root.screen)
     readonly property var barConfig: Prefs.barOf(root.modelData.name)
     readonly property bool barVertical: BarEdge.vertical(root.barConfig.edge)
     readonly property real rightInset: [audio, network, bluetooth, notifications, power, idle, updates, hardware, settings, fingerprint].find(slot => slot.open)?.item?.width ?? 0
+    readonly property var panelSlots: [
+        { slot: launcher, state: LauncherState },
+        { slot: screenshot, state: ShotState },
+        { slot: share, state: ShareState },
+        { slot: audio, state: ControlState },
+        { slot: network, state: ControlState },
+        { slot: bluetooth, state: ControlState },
+        { slot: notifications, state: ControlState },
+        { slot: power, state: ControlState },
+        { slot: idle, state: ControlState },
+        { slot: updates, state: UpdatesState },
+        { slot: hardware, state: HardwareState },
+        { slot: display, state: DisplayState },
+        { slot: settings, state: SettingsState },
+        { slot: fingerprint, state: FingerprintState },
+        { slot: fingerprintEnroll, state: FingerprintState },
+        { slot: barLayout, state: BarLayoutState },
+        { slot: dashboard, state: DashState }
+    ]
+    readonly property var openPanels: root.panelSlots.filter(entry => entry.slot.open && entry.slot.item !== null)
     readonly property Item openPanel: [launcher, screenshot, share, audio, network, bluetooth, notifications, power, idle, updates, hardware, display, settings, fingerprint, fingerprintEnroll, barLayout, dashboard].find(slot => slot.open)?.item ?? null
 
     property real revealed: root.covered ? 0 : 1
@@ -155,16 +175,16 @@ PanelWindow {
         active: root.grabbing
 
         onCleared: {
-            LauncherState.hide();
-            ControlState.hide();
-            DashState.hide();
-            HardwareState.hide();
-            SettingsState.hide();
-            BarLayoutState.hide();
-            ShareState.dismiss();
+            BorderState.closeUnpinned(LauncherState);
+            BorderState.closeUnpinned(ControlState);
+            BorderState.closeUnpinned(DashState);
+            BorderState.closeUnpinned(HardwareState);
+            BorderState.closeUnpinned(SettingsState);
+            BorderState.closeUnpinned(BarLayoutState);
+            BorderState.closeUnpinned(ShareState);
 
             if (!FingerprintEnroll.busy)
-                FingerprintState.hide();
+                BorderState.closeUnpinned(FingerprintState);
         }
     }
 
@@ -176,7 +196,7 @@ PanelWindow {
         enabled: root.grabbing
         acceptedButtons: Qt.AllButtons
 
-        onPressed: BorderState.closeAll()
+        onPressed: BorderState.closeTransient()
     }
 
     Item {
@@ -236,14 +256,16 @@ PanelWindow {
             anchors.rightMargin: root.edge(BarEdge.right)
             anchors.bottomMargin: root.edge(BarEdge.bottom)
 
-            Keys.onEscapePressed: BorderState.closeAll()
+            Keys.onEscapePressed: BorderState.closeTransient()
 
-            Loader {
-                active: root.openPanel !== null
-                z: 2
+            Repeater {
+                model: root.openPanels
 
-                sourceComponent: PinButton {
-                    panel: root.openPanel
+                PinButton {
+                    required property var modelData
+
+                    panel: modelData.slot.item
+                    owner: modelData.state
                     screenName: root.modelData.name
                 }
             }
@@ -257,7 +279,7 @@ PanelWindow {
                     anchors.bottom: parent.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    onDismissed: BorderState.closeAll()
+                    onDismissed: BorderState.closeTransient()
                 }
             }
 
@@ -270,7 +292,7 @@ PanelWindow {
                     anchors.bottom: parent.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    onDismissed: BorderState.closeAll()
+                    onDismissed: BorderState.closeTransient()
                 }
             }
 

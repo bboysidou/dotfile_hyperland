@@ -2,6 +2,7 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import qs.core.enums
 import qs.modules.barlayout
 import qs.modules.controlcenter
 import qs.modules.dashboard
@@ -17,59 +18,92 @@ import qs.modules.updates
 Singleton {
     id: root
 
+    readonly property var states: [LauncherState, ShotState, ShareState, ControlState, UpdatesState, HardwareState, DashState, DisplayState, SettingsState, FingerprintState, BarLayoutState]
     readonly property bool sideOpen: LauncherState.opened || ControlState.opened || UpdatesState.opened || HardwareState.opened || ShotState.opened || ShareState.opened || DisplayState.opened || SettingsState.opened || FingerprintState.opened || FingerprintState.enrollOpened || BarLayoutState.opened
     readonly property bool panelOpen: root.sideOpen || DashState.pinned
+    readonly property bool transientOpen: root.states.some(state => state !== root.pinnedState && root.isOpen(state))
+    readonly property bool pinnedOpen: root.pinnedState !== null && root.isOpen(root.pinnedState)
+    readonly property bool pinned: root.pinnedState !== null
 
     property real rightInset: 0
-    property bool pinned: false
+    property QtObject pinnedState: null
     property string pinnedScreen: ""
 
-    function togglePin(screenName: string): void {
-        if (!root.panelOpen && DashState.opened)
+    function isOpen(state: QtObject): bool {
+        if (state === FingerprintState)
+            return FingerprintState.opened || FingerprintState.enrollOpened;
+        if (state === DashState)
+            return DashState.pinned;
+        return state.opened;
+    }
+
+    function edgeOf(state: QtObject): string {
+        if (state === LauncherState || state === ShotState || state === ShareState)
+            return BarEdge.bottom;
+        if (state === FingerprintState && FingerprintState.enrollOpened)
+            return BarEdge.bottom;
+        if (state === DisplayState || state === BarLayoutState || state === DashState)
+            return BarEdge.top;
+        return BarEdge.right;
+    }
+
+    function close(state: QtObject): void {
+        if (state === ShareState)
+            ShareState.dismiss();
+        else if (root.isOpen(state))
+            state.hide();
+    }
+
+    function closeUnpinned(state: QtObject): void {
+        if (state !== root.pinnedState)
+            root.close(state);
+    }
+
+    function togglePin(screenName: string, state: QtObject): void {
+        if (root.pinnedState === state) {
+            root.unpin();
+            return;
+        }
+
+        if (state === DashState && !DashState.pinned)
             DashState.show("");
 
         root.pinnedScreen = screenName;
-        root.pinned = !root.pinned;
+        root.pinnedState = state;
     }
 
-    onPanelOpenChanged: {
-        if (!root.panelOpen)
-            root.pinned = false;
+    function unpin(): void {
+        root.pinnedState = null;
+    }
+
+    onPinnedOpenChanged: {
+        if (!root.pinnedOpen)
+            root.unpin();
     }
 
     function closeExcept(keep: QtObject): void {
-        if (keep !== LauncherState && LauncherState.opened)
-            LauncherState.hide();
-        if (keep !== ShotState && ShotState.opened)
-            ShotState.hide();
-        if (keep !== ShareState)
-            ShareState.dismiss();
-        if (keep !== ControlState && ControlState.opened)
-            ControlState.hide();
-        if (keep !== UpdatesState && UpdatesState.opened)
-            UpdatesState.hide();
-        if (keep !== HardwareState && HardwareState.opened)
-            HardwareState.hide();
-        if (keep !== DashState && DashState.opened)
-            DashState.hide();
-        if (keep !== DisplayState && DisplayState.opened)
-            DisplayState.hide();
-        if (keep !== SettingsState && SettingsState.opened)
-            SettingsState.hide();
-        if (keep !== FingerprintState && (FingerprintState.opened || FingerprintState.enrollOpened))
-            FingerprintState.hide();
-        if (keep !== BarLayoutState && BarLayoutState.opened)
-            BarLayoutState.hide();
+        for (const state of root.states) {
+            if (state === keep)
+                continue;
+            if (keep !== null && state === root.pinnedState && root.edgeOf(state) !== root.edgeOf(keep))
+                continue;
+            root.close(state);
+        }
     }
 
     function closeAll(): void {
         root.closeExcept(null);
     }
 
+    function closeTransient(): void {
+        for (const state of root.states)
+            root.closeUnpinned(state);
+    }
+
     Binding {
         target: DashState
         property: "blocked"
-        value: root.sideOpen
+        value: root.states.some(state => state !== DashState && state !== root.pinnedState && root.isOpen(state)) || (root.pinnedState !== null && root.pinnedState !== DashState && root.edgeOf(root.pinnedState) === BarEdge.top)
     }
 
     Connections {
@@ -105,6 +139,11 @@ Singleton {
         function onOpenedChanged(): void {
             if (ControlState.opened)
                 root.closeExcept(ControlState);
+        }
+
+        function onSectionChanged(): void {
+            if (root.pinnedState === ControlState)
+                root.unpin();
         }
     }
 

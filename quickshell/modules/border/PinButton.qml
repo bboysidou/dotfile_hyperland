@@ -7,6 +7,9 @@ IconButton {
 
     required property Item panel
     required property string screenName
+    required property QtObject owner
+
+    readonly property bool held: BorderState.pinnedState === root.owner
 
     x: root.panel.x + root.panel.width - root.width - Appearance.border.pinInset
     y: root.panel.y + Appearance.border.pinInset
@@ -15,9 +18,9 @@ IconButton {
     opacity: root.panel.opacity
     visible: root.panel.revealed
 
-    icon: BorderState.pinned ? Icons.pin : Icons.pinOutline
+    icon: root.held ? Icons.pin : Icons.pinOutline
     size: Appearance.border.pinSize
-    active: BorderState.pinned
+    active: root.held
 
-    onTriggered: BorderState.togglePin(root.screenName)
+    onTriggered: BorderState.togglePin(root.screenName, root.owner)
 }
