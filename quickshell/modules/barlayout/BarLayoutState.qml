@@ -11,17 +11,14 @@ Singleton {
     id: root
 
     property bool opened: false
-    property string screen: ""
     property string selected: ""
 
     readonly property var labels: Appearance.bar.entryLabels
     readonly property var managed: root.labels.map(entry => entry[0])
-    readonly property var screens: Quickshell.screens.map(entry => entry.name)
-    readonly property var hidden: root.managed.filter(entry => !Prefs.barShows(root.screen, entry))
-    readonly property var board: root.managed.filter(entry => Prefs.barShows(root.screen, entry))
+    readonly property var off: root.managed.filter(entry => !Prefs.barEnabled(entry))
+    readonly property var board: root.managed.filter(entry => Prefs.barEnabled(entry))
 
     function show(): void {
-        root.screen = Monitors.focused;
         root.selected = "";
         root.opened = true;
     }
@@ -58,21 +55,12 @@ Singleton {
             return;
         if (!Prefs.barEnabled(entry))
             Prefs.setBarEnabled(entry, true);
-        if (Prefs.barOf(root.screen).hidden.includes(entry))
-            Prefs.setBarEntry(root.screen, entry, true);
         Prefs.moveBarEntry(entry, zone, before);
     }
 
-    function stash(entry: string): void {
-        if (!root.locked(entry) && Prefs.barShows(root.screen, entry))
-            Prefs.setBarEntry(root.screen, entry, false);
-    }
-
-    function toggleHidden(entry: string): void {
-        if (root.hidden.includes(entry))
-            root.place(entry, Prefs.barZone(entry), "");
-        else
-            root.stash(entry);
+    function turnOff(entry: string): void {
+        if (!root.locked(entry) && root.available(entry))
+            Prefs.setBarEnabled(entry, false);
     }
 
     function toggleOff(entry: string): void {
@@ -81,7 +69,7 @@ Singleton {
     }
 
     function step(delta: int): void {
-        const flat = BarZone.values.reduce((all, zone) => all.concat(root.zoneEntries(zone)), []).concat(root.hidden);
+        const flat = BarZone.values.reduce((all, zone) => all.concat(root.zoneEntries(zone)), []).concat(root.off);
         if (flat.length === 0)
             return;
         const index = flat.indexOf(root.selected);

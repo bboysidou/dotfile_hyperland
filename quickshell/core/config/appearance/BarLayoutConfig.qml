@@ -23,13 +23,10 @@ QtObject {
     readonly property real offOpacity: 0.55
     readonly property int markerWidth: 3
     readonly property int dragThreshold: 6
-    readonly property int screenSegmentWidth: 110
     readonly property int labelSpacing: 8
     readonly property string labelTitle: "Bar layout"
-    readonly property string labelHidden: "Hidden on %1"
+    readonly property string labelOffTray: "Off"
     readonly property string labelReset: "Reset"
     readonly property string labelDone: "Done"
-    readonly property string labelOff: "off"
-    readonly property string labelHint: "Drag widgets between zones or into Hidden. Right-click: turn off on every screen. Arrows select, Shift+arrows move, Space hides, Delete turns off."
-    readonly property string labelZoneTemplate: "%1  ·  %2"
+    readonly property string labelHint: "Drag widgets between zones, or into Off to remove them from every bar. Right-click toggles off. Arrows select, Shift+arrows move, Delete toggles off. Per-monitor visibility lives in Display › Bar."
 }

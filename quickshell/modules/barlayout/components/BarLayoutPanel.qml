@@ -60,7 +60,7 @@ RevealCard {
 
     function finish(): void {
         if (root.lifted && root.target === tray)
-            BarLayoutState.stash(root.dragging);
+            BarLayoutState.turnOff(root.dragging);
         else if (root.lifted && root.target !== null)
             BarLayoutState.place(root.dragging, root.target.zone, root.before);
         root.dragging = "";
@@ -99,8 +99,6 @@ RevealCard {
             BarLayoutState.shift(delta);
         else if (delta !== 0)
             BarLayoutState.step(delta);
-        else if (event.key === Qt.Key_Space)
-            BarLayoutState.toggleHidden(BarLayoutState.selected);
         else if (event.key === Qt.Key_Delete)
             BarLayoutState.toggleOff(BarLayoutState.selected);
         else
@@ -143,21 +141,6 @@ RevealCard {
                 color: Colours.textBright
                 font.pixelSize: Appearance.font.size.large
                 font.bold: true
-            }
-
-            SegmentBar {
-                visible: BarLayoutState.screens.length > 1
-                width: root.config.screenSegmentWidth * BarLayoutState.screens.length
-                implicitWidth: width
-
-                accent: Colours.tabBar
-                options: BarLayoutState.screens.map(name => ({
-                            key: name,
-                            label: name
-                        }))
-                current: BarLayoutState.screen
-
-                onSelected: key => BarLayoutState.screen = key
             }
 
             PillButton {
@@ -246,8 +229,8 @@ RevealCard {
             Layout.fillWidth: true
 
             minHeight: root.config.trayMinHeight
-            title: root.config.labelHidden.arg(BarLayoutState.screen)
-            entries: BarLayoutState.hidden
+            title: root.config.labelOffTray
+            entries: BarLayoutState.off
             dragging: root.lifted ? root.dragging : ""
             targeted: root.target === tray
 

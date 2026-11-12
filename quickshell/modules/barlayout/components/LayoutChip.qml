@@ -51,10 +51,9 @@ StyledRect {
         StyledText {
             anchors.verticalCenter: parent.verticalCenter
 
-            text: root.off ? `${BarLayoutState.label(root.entry)}  ${root.config.labelOff}` : BarLayoutState.label(root.entry)
+            text: BarLayoutState.label(root.entry)
             color: root.ghost ? Colours.surface : Colours.textBright
             font.pixelSize: root.config.chipTextSize
-            font.strikeout: root.off
         }
     }
 
