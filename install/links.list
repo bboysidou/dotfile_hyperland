@@ -22,5 +22,6 @@ gtk/.Xresources                     ~/.Xresources
 dbus/org.freedesktop.FileManager1.service  ~/.local/share/dbus-1/services/org.freedesktop.FileManager1.service
 icons/kora                          ~/.local/share/icons/kora
 icons/kora-robot                    ~/.local/share/icons/kora-robot
+icons/Moga-Black                    ~/.local/share/icons/Moga-Black
 fonts                               ~/.local/share/fonts/dotfiles
 Wallpaper                           ~/Pictures/wallpaper
