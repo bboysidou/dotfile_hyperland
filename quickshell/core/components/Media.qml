@@ -71,14 +71,14 @@ MouseArea {
             font.pixelSize: root.fontSize
         }
 
-        Marquee {
+        ScrollText {
             id: title
 
             visible: !root.compact
             Layout.rightMargin: root.showElapsed ? Appearance.bar.mediaMarginRight : Appearance.spacing.none
+            Layout.preferredWidth: Math.max(0, Math.min(title.implicitWidth, root.titleBudget, Appearance.bar.mediaTitleMaxWidth))
 
-            full: root.label
-            budget: root.titleBudget
+            text: root.label
             color: root.accent
             font.family: root.fontFamily
             font.pixelSize: root.fontSize

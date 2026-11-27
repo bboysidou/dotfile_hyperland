@@ -40,6 +40,7 @@ QtObject {
     readonly property string mouseLowBody: "%1% left"
     readonly property int mediaMarginLeft: 4
     readonly property int mediaMarginRight: 10
+    readonly property int mediaTitleMaxWidth: 160
     readonly property int mediaFrameInterval: 100
     readonly property int mediaGapMin: 20
     readonly property int mediaPositionInterval: 1000
