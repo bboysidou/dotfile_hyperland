@@ -12,6 +12,7 @@ QtObject {
     readonly property int readoutRounding: 8
     readonly property int readoutSize: 12
     readonly property int captureTimeout: 2000
+    readonly property int releaseDelay: 100
     readonly property int maxSuffix: 99
     readonly property string sizeSeparator: " × "
     readonly property string coordSeparator: ", "

@@ -31,6 +31,7 @@ PanelWindow {
     property var region: null
     property var hovered: null
     property bool inside: false
+    property bool releasing: false
 
     function live(): bool {
         return root.ready && ScreenshotState.mode !== ScreenshotMode.all;
@@ -124,7 +125,7 @@ PanelWindow {
     }
 
     screen: root.modelData
-    visible: ScreenshotState.opened
+    visible: ScreenshotState.opened || root.releasing
     color: "transparent"
     mask: root.interactive ? null : root.passThrough
 
@@ -163,11 +164,25 @@ PanelWindow {
         function onCursorChanged(): void {
             root.seed();
         }
+
+        function onOpenedChanged(): void {
+            root.releasing = !ScreenshotState.opened;
+            if (root.releasing)
+                teardown.restart();
+        }
     }
 
     onPrimaryChanged: {
         if (root.interactive && root.primary)
             keys.forceActiveFocus();
+    }
+
+    Timer {
+        id: teardown
+
+        interval: Appearance.screenshot.releaseDelay
+
+        onTriggered: root.releasing = false
     }
 
     ScreencopyView {
